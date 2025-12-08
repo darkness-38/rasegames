@@ -14,20 +14,20 @@
 </head>
 
 <body>
-    <!-- Rase Gerçekleri Ticker -->
+    <!-- Rase Facts Ticker -->
     <div class="ticker-wrap">
         <div class="ticker">
-            <div class="ticker__item" id="fact-text">Rase Games'e Hoş Geldiniz! 💎</div>
+            <div class="ticker__item" id="fact-text">Welcome to Rase Games! 💎</div>
         </div>
     </div>
 
     <div class="game-container">
-        <!-- Sol Panel: Tıklama ve Puan -->
+        <!-- Left Panel: Click and Score -->
         <div class="click-section">
             <div class="score-container">
                 <h1 id="score">0</h1>
                 <p>Rase Token</p>
-                <p class="cps-display">saniyede: <span id="cps">0</span></p>
+                <p class="cps-display">per second: <span id="cps">0</span></p>
             </div>
 
             <div class="click-area">
@@ -37,48 +37,48 @@
             </div>
         </div>
 
-        <!-- Sağ Panel: Yükseltmeler ve Başarımlar -->
+        <!-- Right Panel: Upgrades and Achievements -->
         <div class="right-panel">
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('upgrades')">Yükseltmeler</button>
-                <button class="tab-btn" onclick="switchTab('click-upgrades')">Güçlendirmeler</button>
-                <button class="tab-btn" onclick="switchTab('achievements')">Başarımlar</button>
+                <button class="tab-btn active" onclick="switchTab('upgrades')">Upgrades</button>
+                <button class="tab-btn" onclick="switchTab('click-upgrades')">Power-ups</button>
+                <button class="tab-btn" onclick="switchTab('achievements')">Achievements</button>
             </div>
 
             <div id="upgrades-section" class="panel-content active">
                 <div id="upgrades-container" class="upgrades-list">
-                    <!-- Pasif Yükseltmeler JS ile buraya eklenecek -->
+                    <!-- Passive Upgrades injected via JS -->
                 </div>
             </div>
 
             <div id="click-upgrades-section" class="panel-content" style="display: none;">
                 <div id="click-upgrades-container" class="upgrades-list">
-                    <!-- Tıklama Yükseltmeleri JS ile buraya eklenecek -->
+                    <!-- Click Upgrades injected via JS -->
                 </div>
             </div>
 
             <div id="achievements-section" class="panel-content" style="display: none;">
                 <div id="achievements-container" class="achievements-list">
-                    <!-- Başarımlar JS ile buraya eklenecek -->
+                    <!-- Achievements injected via JS -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Başarım Bildirimi -->
+    <!-- Achievement Notification -->
     <div id="achievement-notification" class="achievement-notification hidden">
         <div class="icon">🏆</div>
         <div class="text">
-            <h4>Başarım Kazanıldı!</h4>
-            <p id="achievement-text">Örnek Başarım</p>
+            <h4>Achievement Unlocked!</h4>
+            <p id="achievement-text">Example Achievement</p>
         </div>
     </div>
 
-    <!-- Ateş Böcekleri Konteyneri -->
+    <!-- Fireflies Container -->
     <div id="fireflies-container"></div>
 
-    <!-- Kaydet Butonu -->
-    <button id="save-btn" class="save-btn" onclick="saveGameManual()">💾 Kaydet</button>
+    <!-- Save Button -->
+    <button id="save-btn" class="save-btn" onclick="saveGameManual()">💾 Save Game</button>
 
     <script src="game.js"></script>
 </body>

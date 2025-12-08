@@ -14,7 +14,7 @@ const handleLocation = async () => {
     if (path.indexOf("/games/rase-clicker") !== -1) {
         const main = document.querySelector('main');
         main.innerHTML = `
-            <iframe src="./shrekClicker/index.html" 
+            <iframe src="/shrekClicker/index.html" 
                     style="width: 100%; height: 90vh; border: none; display: block; border-radius: 24px;" 
                     title="Rase Clicker">
             </iframe>`;
@@ -50,5 +50,7 @@ const handleLocation = async () => {
 window.onpopstate = handleLocation;
 window.route = route;
 
-// Optional: Handle initial load if needed
-// document.addEventListener("DOMContentLoaded", handleLocation);
+// Handle initial load
+document.addEventListener("DOMContentLoaded", () => {
+    handleLocation();
+});

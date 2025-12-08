@@ -1,0 +1,501 @@
+:root {
+    --bg-dark: #0a0a0a;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --accent-green: #4285F4;
+    /* Rase Blue */
+    --accent-glow: radial-gradient(circle, rgba(66, 133, 244, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --card-hover: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+}
+
+.game-container {
+    display: flex;
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    background: rgba(20, 20, 20, 0.5);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    margin-top: 40px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Left Panel */
+.click-section {
+    flex: 0 0 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--card-border);
+    position: relative;
+    background: radial-gradient(circle at center, rgba(66, 133, 244, 0.1) 0%, transparent 70%);
+}
+
+.score-container {
+    text-align: center;
+    margin-bottom: 50px;
+    background: var(--card-bg);
+    padding: 30px 50px;
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+}
+
+#score {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 5rem;
+    color: var(--accent-green);
+    margin: 0;
+    text-shadow: 0 0 40px rgba(66, 133, 244, 0.5);
+}
+
+.score-container p {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+}
+
+.cps-display {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.shrek-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+    outline: none;
+    z-index: 10;
+    position: relative;
+}
+
+.shrek-btn:active {
+    transform: scale(0.95);
+}
+
+.shrek-face {
+    font-size: 180px;
+    filter: drop-shadow(0 0 30px rgba(66, 133, 244, 0.4));
+    transition: transform 0.2s;
+}
+
+.shrek-btn:hover .shrek-face {
+    transform: scale(1.05) rotate(5deg);
+    filter: drop-shadow(0 0 60px rgba(66, 133, 244, 0.8));
+}
+
+/* Right Panel */
+.right-panel {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    margin-bottom: 30px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 5px;
+    border: 1px solid var(--card-border);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 12px;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--card-hover);
+}
+
+.tab-btn.active {
+    background: var(--accent-green);
+    color: #000;
+}
+
+/* Upgrades List */
+.upgrades-list,
+.achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.upgrade-card,
+.achievement-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.upgrade-card:hover:not(.disabled),
+.achievement-card:hover {
+    background: var(--card-hover);
+    transform: translateX(5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.upgrade-card.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+
+.upgrade-icon,
+.achievement-icon {
+    font-size: 2.5rem;
+    margin-right: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.upgrade-info h3,
+.achievement-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-family: 'Clash Display', sans-serif;
+    font-weight: 500;
+}
+
+.upgrade-cost {
+    color: var(--accent-green);
+    font-size: 0.9rem;
+    margin: 5px 0 0;
+    font-weight: 600;
+}
+
+.upgrade-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.1);
+    margin-left: auto;
+    font-family: 'Clash Display', sans-serif;
+}
+
+/* Achievement Cards */
+.achievement-card {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.achievement-card.unlocked {
+    opacity: 1;
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.achievement-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 5px 0 0;
+}
+
+/* Ticker */
+.ticker-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid var(--card-border);
+    z-index: 9999;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ticker {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker 20s linear infinite;
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(100vw);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.ticker__item {
+    font-family: 'Inter', sans-serif;
+    color: var(--accent-green);
+    line-height: 40px;
+}
+
+/* Click Effect */
+.click-effect {
+    position: fixed;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5rem;
+    pointer-events: none;
+    animation: floatUp 0.8s ease-out forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-50px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Fireflies */
+.firefly {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background-color: var(--accent-green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-green), 0 0 20px var(--accent-green);
+    animation: fly 20s infinite linear;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+}
+
+@keyframes fly {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(100vw, -50vh);
+        opacity: 0;
+    }
+}
+
+/* Particles */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.5rem;
+    animation: particleAnim 1s ease-out forwards;
+    z-index: 10000;
+}
+
+@keyframes particleAnim {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) rotate(720deg) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Random Events */
+.golden-onion {
+    position: fixed;
+    font-size: 4rem;
+    cursor: pointer;
+    z-index: 2000;
+    filter: drop-shadow(0 0 15px gold);
+    animation: float 3s ease-in-out infinite, shine 1.5s infinite alternate;
+    transition: transform 0.2s;
+}
+
+.golden-onion:hover {
+    transform: scale(1.2);
+}
+
+.golden-onion:active {
+    transform: scale(0.9);
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes shine {
+    from {
+        filter: drop-shadow(0 0 10px gold);
+    }
+
+    to {
+        filter: drop-shadow(0 0 25px #fff700);
+    }
+}
+
+/* Falling Events */
+.falling-onion {
+    position: fixed;
+    top: -60px;
+    font-size: 2.5rem;
+    pointer-events: none;
+    animation: fall linear forwards;
+    z-index: 9999;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+
+/* Notification */
+.achievement-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #1a1a1a;
+    border: 1px solid #ffd700;
+    color: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 10000;
+    transform: translateY(0);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.achievement-notification.hidden {
+    transform: translateY(150px);
+    opacity: 0;
+}
+
+.achievement-notification h4 {
+    margin: 0;
+    color: #ffd700;
+    font-family: 'Clash Display', sans-serif;
+}
+
+/* Save Button */
+.save-btn {
+    position: fixed;
+    top: 60px;
+    right: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid var(--card-border);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+}
+
+.save-btn:hover {
+    background: var(--text-primary);
+    color: #000;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        margin-top: 40px;
+        border: none;
+    }
+
+    .click-section {
+        flex: 0 0 40%;
+        border-right: none;
+        border-bottom: 1px solid var(--card-border);
+    }
+
+    .shrek-face {
+        font-size: 120px;
+    }
+}

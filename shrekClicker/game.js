@@ -285,17 +285,18 @@ function checkUpgradeAvailability() {
 }
 
 // Rastgele Gerçekler
+// Random Facts
 const randomFacts = [
-    "İlk bilgisayar faresi ahşaptan yapılmıştı. 🪵",
-    "Kodlama hatalarına 'bug' denmesinin sebebi gerçek bir böcektir. 🪲",
-    "İnternetin %90'ı Deep Web'dedir. 🌐",
-    "İlk alan adı symbolics.com'dur. 🏷️",
-    "Google'ın ilk adı 'BackRub' idi. 🔍",
-    "Her ay 5000'den fazla yeni bilgisayar virüsü yazılıyor. 🦠",
-    "Rase Games en iyi oyunları yapar! 🚀",
-    "NASA'nın interneti saniyede 91 GB hızındadır. 🚀",
-    "QWERTY klavye daktilo sıkışmalarını önlemek için tasarlandı. ⌨️",
-    "İlk web kamerası bir kahve makinesini izlemek için kuruldu. ☕"
+    "The first computer mouse was made of wood. 🪵",
+    "A 'bug' in code is named after a real moth found in a relay. 🪲",
+    "90% of the world's currency exists only on computers. 💳",
+    "The first domain name ever registered was symbolics.com. 🏷️",
+    "Google's original name was 'BackRub'. 🔍",
+    "Over 5,000 new computer viruses are released every month. 🦠",
+    "Rase Games builds the future of gaming! 🚀",
+    "NASA's internet speed is 91 GB per second. ⚡",
+    "QWERTY keyboards were designed to slow down typists. ⌨️",
+    "The first webcam was created to check a coffee pot. ☕"
 ];
 
 function updateTicker() {

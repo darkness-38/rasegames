@@ -5,48 +5,42 @@ const route = (event) => {
     handleLocation();
 };
 
-const routes = {
-    404: "/404.html",
-    "/": "/index.html",
-    "/about": "/about.html",
-    "/community": "/community.html",
-};
-
 const handleLocation = async () => {
     const path = window.location.pathname;
-    const routePath = routes[path] || routes[404]; // Fallback? Need to be careful with local file system paths vs server paths.
+    console.log("Current path:", path);
 
-    // For local file testing without a proper server, simple path matching might be tricky if we want "clean URLs".
-    // For a simple implementation on local file system or standard web server:
+    // Special handling for the game route
+    // We use .includes to matching to be robust against file protocols or subdirectories
+    if (path.indexOf("/games/rase-clicker") !== -1) {
+        const main = document.querySelector('main');
+        main.innerHTML = `
+            <iframe src="./shrekClicker/index.html" 
+                    style="width: 100%; height: 90vh; border: none; display: block; border-radius: 24px;" 
+                    title="Rase Clicker">
+            </iframe>`;
+        return;
+    }
 
-    // Actually, for this specific request "URL Routing", usually implies standard browser history API.
-    // However, since we are likely running mostly from files or a basic server, we need to be careful.
-    // But let's verify existing structure.
+    let fileToFetch = "index.html";
 
-    // Ideally, we fetch the content of the target page and replace the 'main' content.
+    // Simple routing logic mapping URL segments to files
+    if (path.endsWith("about") || path.endsWith("about.html")) fileToFetch = "about.html";
+    if (path.endsWith("community") || path.endsWith("community.html")) fileToFetch = "community.html";
+    if (path.endsWith("/") || path.endsWith("index.html")) fileToFetch = "index.html";
 
-    let html = "";
     try {
-        // Map clean paths to actual files
-        let fileToFetch = "index.html"; // Default
-        if (path.endsWith("about") || path.endsWith("about.html")) fileToFetch = "about.html";
-        if (path.endsWith("community") || path.endsWith("community.html")) fileToFetch = "community.html";
-        if (path === "/" || path.endsWith("index.html")) fileToFetch = "index.html";
-
         const response = await fetch(fileToFetch);
         const text = await response.text();
-
-        // Extract content from body/main to avoid full HTML replacement issues
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
-        // Assuming 'main' tag holds the page content
-        const newContent = doc.querySelector('main').innerHTML;
 
-        document.querySelector('main').innerHTML = newContent;
-
-        // Re-initialize particles if needed, or other scripts?
-        // If we replace content, script tags inside might not run automatically.
-        // For now, let's assume static content mostly.
+        // Extract content from main tag
+        const newMain = doc.querySelector('main');
+        if (newMain) {
+            document.querySelector('main').innerHTML = newMain.innerHTML;
+        } else {
+            console.warn("No main tag found in fetched page, loading fallback.");
+        }
 
     } catch (e) {
         console.error("Error loading page", e);
@@ -56,7 +50,5 @@ const handleLocation = async () => {
 window.onpopstate = handleLocation;
 window.route = route;
 
-// Handle initial load
-// handleLocation();
-// Commented out initial load to prevent immediate overwrite if logic is slightly off,
-// usually we call this or bind it to DOMContentLoaded
+// Optional: Handle initial load if needed
+// document.addEventListener("DOMContentLoaded", handleLocation);

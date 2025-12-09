@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rase Clicker | Rase Games</title>
+    <title>Code Clicker | Rase Games</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 </head>
 
@@ -17,7 +17,7 @@
     <!-- Rase Facts Ticker -->
     <div class="ticker-wrap">
         <div class="ticker">
-            <div class="ticker__item" id="fact-text">Welcome to Rase Games! 💎</div>
+            <div class="ticker__item" id="fact-text">Initializing System...</div>
         </div>
     </div>
 
@@ -26,13 +26,13 @@
         <div class="click-section">
             <div class="score-container">
                 <h1 id="score">0</h1>
-                <p>Rase Token</p>
-                <p class="cps-display">per second: <span id="cps">0</span></p>
+                <p>Lines of Code</p>
+                <p class="cps-display">LoC/s: <span id="cps">0</span></p>
             </div>
 
             <div class="click-area">
-                <button id="click-btn" class="shrek-btn">
-                    <div class="shrek-face">💎</div>
+                <button id="click-btn" class="terminal-btn">
+                    <div class="terminal-icon">>_</div>
                 </button>
             </div>
         </div>
@@ -40,9 +40,9 @@
         <!-- Right Panel: Upgrades and Achievements -->
         <div class="right-panel">
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('upgrades')">Upgrades</button>
-                <button class="tab-btn" onclick="switchTab('click-upgrades')">Power-ups</button>
-                <button class="tab-btn" onclick="switchTab('achievements')">Achievements</button>
+                <button class="tab-btn active" onclick="switchTab('upgrades')">Infrastructure</button>
+                <button class="tab-btn" onclick="switchTab('click-upgrades')">Tools</button>
+                <button class="tab-btn" onclick="switchTab('achievements')">Certifications</button>
             </div>
 
             <div id="upgrades-section" class="panel-content active">
@@ -69,7 +69,7 @@
     <div id="achievement-notification" class="achievement-notification hidden">
         <div class="icon">🏆</div>
         <div class="text">
-            <h4>Achievement Unlocked!</h4>
+            <h4>Certification Unlocked!</h4>
             <p id="achievement-text">Example Achievement</p>
         </div>
     </div>
@@ -78,7 +78,7 @@
     <div id="fireflies-container"></div>
 
     <!-- Save Button -->
-    <button id="save-btn" class="save-btn" onclick="saveGameManual()">💾 Save Game</button>
+    <button id="save-btn" class="save-btn" onclick="saveGameManual()">💾 Save System</button>
 
     <script src="game.js"></script>
 </body>

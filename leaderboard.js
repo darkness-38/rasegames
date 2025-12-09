@@ -237,21 +237,33 @@ async function loadAllLeaderboards() {
 }
 
 // Auto-load if on leaderboard page
-function tryLoadLeaderboards() {
-    if (document.getElementById('snake-leaderboard')) {
-        loadAllLeaderboards();
+async function tryLoadLeaderboards() {
+    const el = document.getElementById('snake-leaderboard');
+    if (el) {
+        console.log('Loading leaderboards...');
+        await loadAllLeaderboards();
+        console.log('Leaderboards loaded');
         return true;
     }
     return false;
 }
 
-// Try immediately
-if (!tryLoadLeaderboards()) {
-    // Retry after DOM is ready
-    document.addEventListener('DOMContentLoaded', tryLoadLeaderboards);
-    // Also retry after a short delay (for router)
-    setTimeout(tryLoadLeaderboards, 500);
+// Try loading with multiple attempts
+async function initLeaderboards() {
+    if (await tryLoadLeaderboards()) return;
+
+    // Retry after short delays (for SPA routing)
+    setTimeout(tryLoadLeaderboards, 300);
+    setTimeout(tryLoadLeaderboards, 800);
+    setTimeout(tryLoadLeaderboards, 1500);
 }
+
+// Initialize
+initLeaderboards();
+document.addEventListener('DOMContentLoaded', initLeaderboards);
+
+// Also expose for manual trigger
+window.loadLeaderboards = loadAllLeaderboards;
 
 // Export for games to use
 window.Leaderboard = {

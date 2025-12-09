@@ -1,9 +1,13 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// CODE CLICKER - Enhanced Edition
+// ═══════════════════════════════════════════════════════════════════════════════
+
 // Game Variables
 let score = 0;
 let clickPower = 1;
 let passiveIncome = 0;
 let totalClicks = 0;
-let clickCount = 0;
+let totalEarned = 0;
 
 // DOM Elements
 const scoreElement = document.getElementById('score');
@@ -15,127 +19,217 @@ const achievementsContainer = document.getElementById('achievements-container');
 const notification = document.getElementById('achievement-notification');
 const notificationText = document.getElementById('achievement-text');
 
-// Game Data
+// ═══════════════════════════════════════════════════════════════════════════════
+// GAME DATA
+// ═══════════════════════════════════════════════════════════════════════════════
+
 const passiveUpgrades = [
-    { id: 'localhost', name: 'Localhost', cost: 15, increase: 0.5, count: 0, icon: '💻' },
-    { id: 'git_repo', name: 'Git Repository', cost: 100, increase: 4, count: 0, icon: '📂' },
-    { id: 'cloud_cluster', name: 'Cloud Cluster', cost: 1100, increase: 12, count: 0, icon: '☁️' },
-    { id: 'firewall', name: 'Firewall', cost: 12000, increase: 45, count: 0, icon: '🛡️' },
-    { id: 'ai_assistant', name: 'AI Assistant', cost: 130000, increase: 150, count: 0, icon: '🤖' },
-    { id: 'data_center', name: 'Data Center', cost: 1400000, increase: 600, count: 0, icon: '🏢' }
+    { id: 'localhost', name: 'Localhost', baseCost: 15, increase: 0.1, count: 0, icon: '💻', desc: 'A humble beginning.' },
+    { id: 'git_repo', name: 'Git Repository', baseCost: 100, increase: 1, count: 0, icon: '📂', desc: 'Version control is key.' },
+    { id: 'vps', name: 'VPS Server', baseCost: 500, increase: 5, count: 0, icon: '🖥️', desc: 'Your own virtual server.' },
+    { id: 'cloud_cluster', name: 'Cloud Cluster', baseCost: 3000, increase: 20, count: 0, icon: '☁️', desc: 'Scale to the clouds.' },
+    { id: 'cdn', name: 'CDN Network', baseCost: 10000, increase: 75, count: 0, icon: '🌐', desc: 'Global content delivery.' },
+    { id: 'firewall', name: 'Enterprise Firewall', baseCost: 40000, increase: 200, count: 0, icon: '🛡️', desc: 'Maximum security.' },
+    { id: 'ai_assistant', name: 'AI Co-Pilot', baseCost: 200000, increase: 800, count: 0, icon: '🤖', desc: 'AI writes code for you.' },
+    { id: 'quantum', name: 'Quantum Computer', baseCost: 1000000, increase: 4000, count: 0, icon: '⚛️', desc: 'Beyond classical limits.' },
+    { id: 'data_center', name: 'Hyperscale Data Center', baseCost: 5000000, increase: 20000, count: 0, icon: '🏢', desc: 'Infinite compute power.' },
+    { id: 'neural_net', name: 'Neural Network Farm', baseCost: 50000000, increase: 100000, count: 0, icon: '🧠', desc: 'Sentient code generation.' }
 ];
 
 const clickUpgrades = [
-    { id: 'mech_keyboard', name: 'Mech Keyboard', cost: 500, multiplier: 2, purchased: false, icon: '⌨️' },
-    { id: 'overclock', name: 'Overclocking', cost: 5000, multiplier: 2, purchased: false, icon: '⚡' },
-    { id: 'liquid_cooling', name: 'Liquid Cooling', cost: 50000, multiplier: 2, purchased: false, icon: '💧' }
+    { id: 'mech_keyboard', name: 'Mechanical Keyboard', cost: 100, multiplier: 2, purchased: false, icon: '⌨️', desc: 'Faster typing.' },
+    { id: 'dual_monitor', name: 'Dual Monitors', cost: 500, multiplier: 2, purchased: false, icon: '🖥️', desc: 'More screen real estate.' },
+    { id: 'overclock', name: 'Overclocked CPU', cost: 5000, multiplier: 2, purchased: false, icon: '⚡', desc: 'Push the limits.' },
+    { id: 'ergonomic', name: 'Ergonomic Setup', cost: 25000, multiplier: 2, purchased: false, icon: '🪑', desc: 'Code all day.' },
+    { id: 'liquid_cooling', name: 'Liquid Cooling', cost: 100000, multiplier: 2, purchased: false, icon: '💧', desc: 'Stay cool under pressure.' },
+    { id: 'caffeine', name: 'IV Caffeine Drip', cost: 500000, multiplier: 3, purchased: false, icon: '☕', desc: 'Never sleep again.' }
 ];
 
 const achievements = [
-    { id: 'hello_world', name: 'Hello World', requirement: 100, type: 'score', reward: 50, unlocked: false },
-    { id: 'script_kiddie', name: 'Script Kiddie', requirement: 1000, type: 'clicks', reward: 500, unlocked: false },
-    { id: 'full_stack', name: 'Full Stack Dev', requirement: 1000000, type: 'score', reward: 50000, unlocked: false },
-    { id: 'backup_secure', name: 'Backup Secure', requirement: 0, type: 'manual_save', reward: 100, unlocked: false }
+    { id: 'hello_world', name: 'Hello World', requirement: 100, type: 'score', reward: 50, unlocked: false, desc: 'Earn 100 LoC' },
+    { id: 'script_kiddie', name: 'Script Kiddie', requirement: 100, type: 'clicks', reward: 100, unlocked: false, desc: 'Click 100 times' },
+    { id: 'junior_dev', name: 'Junior Developer', requirement: 1000, type: 'score', reward: 500, unlocked: false, desc: 'Earn 1,000 LoC' },
+    { id: 'clicker', name: 'Compulsive Clicker', requirement: 500, type: 'clicks', reward: 250, unlocked: false, desc: 'Click 500 times' },
+    { id: 'mid_dev', name: 'Mid-Level Developer', requirement: 10000, type: 'score', reward: 2500, unlocked: false, desc: 'Earn 10,000 LoC' },
+    { id: 'senior_dev', name: 'Senior Developer', requirement: 100000, type: 'score', reward: 10000, unlocked: false, desc: 'Earn 100,000 LoC' },
+    { id: 'full_stack', name: 'Full Stack Developer', requirement: 1000000, type: 'score', reward: 100000, unlocked: false, desc: 'Earn 1,000,000 LoC' },
+    { id: 'tech_lead', name: 'Tech Lead', requirement: 10000000, type: 'score', reward: 1000000, unlocked: false, desc: 'Earn 10,000,000 LoC' },
+    { id: 'cto', name: 'CTO', requirement: 100000000, type: 'score', reward: 10000000, unlocked: false, desc: 'Earn 100,000,000 LoC' },
+    { id: 'backup_secure', name: 'Backup Secured', requirement: 0, type: 'manual_save', reward: 100, unlocked: false, desc: 'Manually save the game' },
+    { id: 'first_upgrade', name: 'First Upgrade', requirement: 1, type: 'upgrades', reward: 50, unlocked: false, desc: 'Buy your first upgrade' },
+    { id: 'collector', name: 'Collector', requirement: 10, type: 'upgrades', reward: 500, unlocked: false, desc: 'Own 10 upgrades total' },
+    { id: 'event_hunter', name: 'Event Hunter', requirement: 5, type: 'events', reward: 1000, unlocked: false, desc: 'Catch 5 random events' }
 ];
 
 const facts = [
-    "It works on my machine.",
-    "0.0.0.0/0",
+    "// It works on my machine",
+    "console.log('debugging')...",
+    "git push --force",
+    "There's no place like 127.0.0.1",
+    "sudo rm -rf / (Don't try this)",
+    "while(true) { code(); }",
+    "404: Sleep not found",
     "Have you tried turning it off and on again?",
-    "There is no place like 127.0.0.1",
-    "sudo rm -rf / (Just kidding)"
+    "Coffee.drink() || die()",
+    "Segmentation fault (core dumped)"
 ];
 
-// Initialize Game
+// ═══════════════════════════════════════════════════════════════════════════════
+// RANDOM EVENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const randomEvents = [
+    { id: 'bug_bounty', name: '🐛 Bug Bounty!', icon: '🐛', reward: () => Math.max(1000, passiveIncome * 30), duration: 8000 },
+    { id: 'data_packet', name: '📦 Data Packet!', icon: '📦', reward: () => Math.max(500, passiveIncome * 15), duration: 6000 },
+    { id: 'bitcoin', name: '₿ Found Bitcoin!', icon: '₿', reward: () => Math.max(5000, passiveIncome * 60), duration: 5000 },
+    { id: 'coffee', name: '☕ Coffee Break!', icon: '☕', reward: () => Math.max(200, clickPower * 100), duration: 10000 },
+    { id: 'sponsor', name: '💰 Sponsor Deal!', icon: '💰', reward: () => Math.max(10000, passiveIncome * 120), duration: 4000 }
+];
+
+let eventsCollected = 0;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CORE GAME FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
 function init() {
     loadGame();
     renderUpgrades();
     renderAchievements();
     updateUI();
+
     setInterval(gameLoop, 1000);
-    setInterval(updateTicker, 15000); // Change fact every 15s
-    setInterval(saveGame, 60000); // Auto save every minute
-    initFireflies();
+    setInterval(updateTicker, 10000);
+    setInterval(saveGame, 30000);
+    initParticles();
 
     clickBtn.addEventListener('click', handleClick);
+
+    // Start random events
+    scheduleRandomEvent();
 }
 
-// Core Mechanics
 function handleClick(e) {
     score += clickPower;
     totalClicks++;
-    createParticleEffect(e);
-    checkAchievementsChannel('clicks', totalClicks);
+    totalEarned += clickPower;
+    createClickEffect(e);
+    checkAchievements();
     updateUI();
 }
 
 function gameLoop() {
     score += passiveIncome;
-    checkAchievementsChannel('score', score);
-    checkMilestones();
+    totalEarned += passiveIncome;
+    checkAchievements();
     updateUI();
 }
 
-// Upgrades
+// ═══════════════════════════════════════════════════════════════════════════════
+// UPGRADE SYSTEM
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function getUpgradeCost(upgrade) {
+    return Math.ceil(upgrade.baseCost * Math.pow(1.15, upgrade.count));
+}
+
 function buyUpgrade(id) {
     const upgrade = passiveUpgrades.find(u => u.id === id);
-    if (upgrade && score >= upgrade.cost) {
-        score -= upgrade.cost;
+    if (!upgrade) return;
+
+    const cost = getUpgradeCost(upgrade);
+    if (score >= cost) {
+        score -= cost;
         upgrade.count++;
         passiveIncome += upgrade.increase;
-        upgrade.cost = Math.ceil(upgrade.cost * 1.15);
+
+        // Check upgrade achievements
+        const totalUpgrades = passiveUpgrades.reduce((sum, u) => sum + u.count, 0);
+        checkAchievements('upgrades', totalUpgrades);
+
         updateUI();
-        renderUpgrades(); // Re-render to update cost/count
+        renderUpgrades();
+
+        // Visual feedback
+        showNotification(`Purchased ${upgrade.name}!`, upgrade.increase + '/s');
     }
 }
 
 function buyClickUpgrade(id) {
     const upgrade = clickUpgrades.find(u => u.id === id);
-    if (upgrade && score >= upgrade.cost && !upgrade.purchased) {
+    if (!upgrade || upgrade.purchased) return;
+
+    if (score >= upgrade.cost) {
         score -= upgrade.cost;
         upgrade.purchased = true;
         clickPower *= upgrade.multiplier;
+
         updateUI();
         renderClickUpgrades();
+
+        showNotification(`Purchased ${upgrade.name}!`, `Click x${upgrade.multiplier}`);
     }
 }
 
-// UI Rendering
+// ═══════════════════════════════════════════════════════════════════════════════
+// UI RENDERING
+// ═══════════════════════════════════════════════════════════════════════════════
+
 function renderUpgrades() {
     upgradesContainer.innerHTML = '';
     passiveUpgrades.forEach(u => {
+        const cost = getUpgradeCost(u);
+        const canAfford = score >= cost;
+
         const item = document.createElement('div');
-        item.className = 'upgrade-item';
+        item.className = `upgrade-card ${canAfford ? '' : 'disabled'}`;
         item.onclick = () => buyUpgrade(u.id);
         item.innerHTML = `
-            <span class="icon">${u.icon}</span>
-            <div class="info">
-                <h4>${u.name}</h4>
-                <p>Cost: ${u.cost} | +${u.increase}/s</p>
+            <div class="upgrade-icon">${u.icon}</div>
+            <div class="upgrade-info">
+                <h3>${u.name}</h3>
+                <p class="upgrade-desc">${u.desc}</p>
+                <p class="upgrade-cost">${formatNumber(cost)} LoC | +${u.increase}/s</p>
             </div>
-            <div class="count">${u.count}</div>
+            <div class="upgrade-count">${u.count}</div>
         `;
         upgradesContainer.appendChild(item);
     });
-    renderClickUpgrades();
 }
 
 function renderClickUpgrades() {
     clickUpgradesContainer.innerHTML = '';
     clickUpgrades.forEach(u => {
-        if (!u.purchased) {
-            const item = document.createElement('div');
-            item.className = 'upgrade-item';
-            item.onclick = () => buyClickUpgrade(u.id);
-            item.innerHTML = `
-                <span class="icon">${u.icon}</span>
-                <div class="info">
-                    <h4>${u.name}</h4>
-                    <p>Cost: ${u.cost} | Power x${u.multiplier}</p>
-                </div>
-            `;
-            clickUpgradesContainer.appendChild(item);
-        }
+        if (u.purchased) return;
+
+        const canAfford = score >= u.cost;
+        const item = document.createElement('div');
+        item.className = `upgrade-card ${canAfford ? '' : 'disabled'}`;
+        item.onclick = () => buyClickUpgrade(u.id);
+        item.innerHTML = `
+            <div class="upgrade-icon">${u.icon}</div>
+            <div class="upgrade-info">
+                <h3>${u.name}</h3>
+                <p class="upgrade-desc">${u.desc}</p>
+                <p class="upgrade-cost">${formatNumber(u.cost)} LoC | Power x${u.multiplier}</p>
+            </div>
+        `;
+        clickUpgradesContainer.appendChild(item);
+    });
+
+    // Show purchased ones grayed out
+    clickUpgrades.forEach(u => {
+        if (!u.purchased) return;
+        const item = document.createElement('div');
+        item.className = 'upgrade-card purchased';
+        item.innerHTML = `
+            <div class="upgrade-icon">${u.icon}</div>
+            <div class="upgrade-info">
+                <h3>${u.name}</h3>
+                <p class="upgrade-desc">✓ Owned</p>
+            </div>
+        `;
+        clickUpgradesContainer.appendChild(item);
     });
 }
 
@@ -143,12 +237,13 @@ function renderAchievements() {
     achievementsContainer.innerHTML = '';
     achievements.forEach(a => {
         const item = document.createElement('div');
-        item.className = `achievement-item ${a.unlocked ? 'unlocked' : ''}`;
+        item.className = `achievement-card ${a.unlocked ? 'unlocked' : ''}`;
         item.innerHTML = `
-            <span class="icon">${a.unlocked ? '🏆' : '🔒'}</span>
-            <div class="info">
-                <h4>${a.name}</h4>
-                <p>${a.unlocked ? 'Unlocked!' : 'Locked'}</p>
+            <div class="achievement-icon">${a.unlocked ? '🏆' : '🔒'}</div>
+            <div class="achievement-info">
+                <h3>${a.name}</h3>
+                <p class="achievement-desc">${a.desc}</p>
+                ${a.unlocked ? `<p class="achievement-reward">+${formatNumber(a.reward)} LoC</p>` : ''}
             </div>
         `;
         achievementsContainer.appendChild(item);
@@ -156,197 +251,240 @@ function renderAchievements() {
 }
 
 function updateUI() {
-    scoreElement.textContent = Math.floor(score).toLocaleString();
-    cpsElement.textContent = passiveIncome.toFixed(1);
+    scoreElement.textContent = formatNumber(Math.floor(score));
+    cpsElement.textContent = formatNumber(passiveIncome.toFixed(1));
+
+    // Update affordability styling
+    renderUpgrades();
+    renderClickUpgrades();
 }
 
-function updateAchievementCard(id) {
-    renderAchievements(); // Simple refresh
+function formatNumber(num) {
+    if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
+    if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+    if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+    if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+    return num.toLocaleString();
 }
 
-// Notifications
-function showNotification(name, reward) {
-    notificationText.innerHTML = `${name}<br><span style="font-size: 0.8rem; color: #ffd700;">+${reward} LoC</span>`;
-    notification.classList.remove('hidden');
-    setTimeout(() => {
-        notification.classList.add('hidden');
-    }, 3000);
-}
+// ═══════════════════════════════════════════════════════════════════════════════
+// ACHIEVEMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
 
-// Achievements
-function checkAchievementsChannel(type, value) {
-    achievements.forEach(ach => {
-        if (!ach.unlocked && ach.type === type && value >= ach.requirement) {
-            unlockAchievement(ach);
+function checkAchievements(type = null, value = null) {
+    achievements.forEach(a => {
+        if (a.unlocked) return;
+
+        let shouldUnlock = false;
+
+        switch (a.type) {
+            case 'score':
+                shouldUnlock = totalEarned >= a.requirement;
+                break;
+            case 'clicks':
+                shouldUnlock = totalClicks >= a.requirement;
+                break;
+            case 'upgrades':
+                if (type === 'upgrades') shouldUnlock = value >= a.requirement;
+                break;
+            case 'events':
+                if (type === 'events') shouldUnlock = value >= a.requirement;
+                break;
+        }
+
+        if (shouldUnlock) {
+            unlockAchievement(a);
         }
     });
 }
 
-function unlockAchievement(ach) {
-    ach.unlocked = true;
-    score += ach.reward;
-    showNotification(ach.name, ach.reward);
+function unlockAchievement(a) {
+    if (a.unlocked) return;
+    a.unlocked = true;
+    score += a.reward;
+    totalEarned += a.reward;
+
+    showNotification(`🏆 ${a.name}`, `+${formatNumber(a.reward)} LoC`);
     renderAchievements();
 }
 
-// Effects
-function createParticleEffect(e) {
-    const particle = document.createElement('div');
-    particle.className = 'click-particle';
-    particle.textContent = `+${clickPower}`;
-    particle.style.left = `${e.clientX}px`;
-    particle.style.top = `${e.clientY}px`;
-    document.body.appendChild(particle);
+// ═══════════════════════════════════════════════════════════════════════════════
+// RANDOM EVENTS
+// ═══════════════════════════════════════════════════════════════════════════════
 
-    setTimeout(() => particle.remove(), 1000);
+function scheduleRandomEvent() {
+    const delay = Math.random() * 30000 + 20000; // 20-50 seconds
+    setTimeout(spawnRandomEvent, delay);
 }
 
-// Ticker
+function spawnRandomEvent() {
+    const event = randomEvents[Math.floor(Math.random() * randomEvents.length)];
+
+    const el = document.createElement('div');
+    el.className = 'random-event';
+    el.innerHTML = `<span>${event.icon}</span>`;
+
+    // Random position
+    const x = Math.random() * (window.innerWidth - 100) + 50;
+    const y = Math.random() * (window.innerHeight - 200) + 100;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+
+    el.onclick = () => {
+        const reward = event.reward();
+        score += reward;
+        totalEarned += reward;
+        eventsCollected++;
+
+        checkAchievements('events', eventsCollected);
+        showNotification(event.name, `+${formatNumber(reward)} LoC`);
+
+        // Burst effect
+        createBurstEffect(el);
+        el.remove();
+        updateUI();
+    };
+
+    document.body.appendChild(el);
+
+    // Remove after duration
+    setTimeout(() => {
+        if (el.parentElement) {
+            el.classList.add('fade-out');
+            setTimeout(() => el.remove(), 500);
+        }
+    }, event.duration);
+
+    // Schedule next
+    scheduleRandomEvent();
+}
+
+function createBurstEffect(source) {
+    const rect = source.getBoundingClientRect();
+    for (let i = 0; i < 10; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'burst-particle';
+        particle.style.left = (rect.left + rect.width / 2) + 'px';
+        particle.style.top = (rect.top + rect.height / 2) + 'px';
+        particle.style.setProperty('--angle', (i * 36) + 'deg');
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 600);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// EFFECTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function createClickEffect(e) {
+    const effect = document.createElement('div');
+    effect.className = 'click-effect';
+    effect.textContent = `+${clickPower}`;
+    effect.style.left = e.clientX + 'px';
+    effect.style.top = e.clientY + 'px';
+    document.body.appendChild(effect);
+    setTimeout(() => effect.remove(), 800);
+}
+
+function initParticles() {
+    const container = document.getElementById('fireflies-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'matrix-particle';
+        p.textContent = Math.random() > 0.5 ? '0' : '1';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 10 + 's';
+        p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        container.appendChild(p);
+    }
+}
+
 function updateTicker() {
     const ticker = document.getElementById('fact-text');
-    if (ticker) {
-        ticker.textContent = facts[Math.floor(Math.random() * facts.length)];
-    }
+    if (ticker) ticker.textContent = facts[Math.floor(Math.random() * facts.length)];
 }
 
-// Fireflies (Matrix Rain ish)
-function initFireflies() {
-    const container = document.getElementById('fireflies-container');
-    container.innerHTML = ''; // Clear old
-    for (let i = 0; i < 20; i++) {
-        const f = document.createElement('div');
-        f.className = 'firefly';
-        f.innerText = '01';
-        f.style.left = Math.random() * 100 + '%';
-        f.style.top = Math.random() * 100 + '%';
-        f.style.animationDelay = Math.random() * 5 + 's';
-        f.style.color = '#0f0';
-        f.style.fontSize = '10px';
-        f.style.opacity = '0.3';
-        container.appendChild(f);
-    }
+function showNotification(title, subtitle) {
+    notificationText.innerHTML = `${title}<br><span style="font-size: 0.8rem; color: #0f0;">${subtitle}</span>`;
+    notification.classList.remove('hidden');
+    setTimeout(() => notification.classList.add('hidden'), 3000);
 }
 
-// Save/Load System
+// ═══════════════════════════════════════════════════════════════════════════════
+// SAVE / LOAD
+// ═══════════════════════════════════════════════════════════════════════════════
+
 function saveGame() {
-    const saveData = {
-        score,
-        clickPower,
-        passiveIncome,
-        totalClicks,
-        upgrades: passiveUpgrades.map(u => ({ id: u.id, count: u.count, cost: u.cost })),
+    const data = {
+        score, clickPower, passiveIncome, totalClicks, totalEarned, eventsCollected,
+        upgrades: passiveUpgrades.map(u => ({ id: u.id, count: u.count })),
         clickUpgrades: clickUpgrades.map(u => ({ id: u.id, purchased: u.purchased })),
-        achievements: achievements.map(a => ({ id: a.id, unlocked: a.unlocked }))
+        achievements: achievements.map(a => ({ id: a.id, unlocked: a.unlocked })),
+        savedAt: Date.now()
     };
-    localStorage.setItem('codeClickerSave', JSON.stringify(saveData));
+    localStorage.setItem('codeClickerSave_v2', JSON.stringify(data));
 }
 
 function loadGame() {
-    // Try legacy save first if new one doesn't exist to migrate? 
-    // Or just clean start. Let's do separate save key to avoid conflicts with old structure.
-    const saved = JSON.parse(localStorage.getItem('codeClickerSave'));
-    if (saved) {
-        score = saved.score || 0;
-        clickPower = saved.clickPower || 1;
-        passiveIncome = saved.passiveIncome || 0;
-        totalClicks = saved.totalClicks || 0;
+    const saved = JSON.parse(localStorage.getItem('codeClickerSave_v2'));
+    if (!saved) return;
 
-        if (saved.upgrades) {
-            saved.upgrades.forEach(savedU => {
-                const u = passiveUpgrades.find(p => p.id === savedU.id);
-                if (u) {
-                    u.count = savedU.count;
-                    u.cost = savedU.cost;
-                }
-            });
-        }
+    score = saved.score || 0;
+    clickPower = saved.clickPower || 1;
+    passiveIncome = saved.passiveIncome || 0;
+    totalClicks = saved.totalClicks || 0;
+    totalEarned = saved.totalEarned || 0;
+    eventsCollected = saved.eventsCollected || 0;
 
-        if (saved.clickUpgrades) {
-            saved.clickUpgrades.forEach(savedU => {
-                const u = clickUpgrades.find(p => p.id === savedU.id);
-                if (u) u.purchased = savedU.purchased;
-            });
-        }
+    if (saved.upgrades) {
+        saved.upgrades.forEach(s => {
+            const u = passiveUpgrades.find(p => p.id === s.id);
+            if (u) u.count = s.count;
+        });
+        // Recalculate passive income
+        passiveIncome = passiveUpgrades.reduce((sum, u) => sum + (u.increase * u.count), 0);
+    }
 
-        if (saved.achievements) {
-            saved.achievements.forEach(savedA => {
-                const a = achievements.find(p => p.id === savedA.id);
-                if (a) a.unlocked = savedA.unlocked;
-            });
-        }
+    if (saved.clickUpgrades) {
+        saved.clickUpgrades.forEach(s => {
+            const u = clickUpgrades.find(p => p.id === s.id);
+            if (u) u.purchased = s.purchased;
+        });
+        // Recalculate click power
+        clickPower = 1;
+        clickUpgrades.forEach(u => { if (u.purchased) clickPower *= u.multiplier; });
+    }
+
+    if (saved.achievements) {
+        saved.achievements.forEach(s => {
+            const a = achievements.find(p => p.id === s.id);
+            if (a) a.unlocked = s.unlocked;
+        });
     }
 }
 
-// Manual Save & Special Achievements
 window.saveGameManual = function () {
     saveGame();
-    // Check manual save achievement
-    const ach = achievements.find(a => a.id === 'backup_secure');
-    if (ach && !ach.unlocked) {
-        unlockAchievement(ach);
-        saveGame(); // Save again to store the unlocked achievement
+    const a = achievements.find(x => x.id === 'backup_secure');
+    if (a && !a.unlocked) {
+        unlockAchievement(a);
+        saveGame();
     } else {
-        const prevText = notificationText.innerHTML;
-        notificationText.textContent = "System Backup Complete!";
-        notification.classList.remove('hidden');
-        setTimeout(() => notification.classList.add('hidden'), 2000);
+        showNotification('💾 System Saved!', 'Progress backed up');
     }
 };
 
-// Global Tabs
 window.switchTab = function (tabName) {
     document.querySelectorAll('.panel-content').forEach(p => p.style.display = 'none');
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
     document.getElementById(`${tabName}-section`).style.display = 'block';
+    event.target.classList.add('active');
 };
 
-// Events / Milestones logic from previous history
-const milestones = [
-    { score: 1000, reached: false, event: 'data_surge' },
-    { score: 10000, reached: false, event: 'system_overdrive' },
-    { score: 50000, reached: false, event: 'singularity' }
-];
-
-function checkMilestones() {
-    milestones.forEach(m => {
-        if (!m.reached && score >= m.score) {
-            m.reached = true;
-            showNotification("Traffic Spike!", "Bonus");
-        }
-    });
-}
-
-function scheduleNextBugBounty() {
-    setTimeout(spawnBugBounty, Math.random() * 30000 + 30000); // 30-60s
-}
-
-function spawnBugBounty() {
-    const bug = document.createElement('div');
-    bug.className = 'bug-bounty';
-    bug.innerText = '🐛';
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 100);
-    bug.style.position = 'fixed';
-    bug.style.left = `${x}px`;
-    bug.style.top = `${y}px`;
-    bug.style.fontSize = '2rem';
-    bug.style.cursor = 'pointer';
-    bug.style.zIndex = '1000';
-
-    bug.onclick = () => {
-        const reward = Math.max(500, passiveIncome * 60);
-        score += reward;
-        showNotification("Bug Fixed!", Math.floor(reward));
-        bug.remove();
-    };
-
-    document.body.appendChild(bug);
-    setTimeout(() => { if (bug.parentElement) bug.remove(); }, 10000);
-
-    scheduleNextBugBounty();
-}
-
-// Start
+// ═══════════════════════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════════════════════
 init();
-scheduleNextBugBounty();

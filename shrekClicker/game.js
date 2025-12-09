@@ -117,6 +117,9 @@ function handleClick(e) {
     createClickEffect(e);
     checkAchievements();
     updateUI();
+
+    // Play click sound
+    if (typeof playSound !== 'undefined') playSound('click');
 }
 
 function gameLoop() {
@@ -153,6 +156,9 @@ function buyUpgrade(id) {
 
         // Visual feedback
         showNotification(`Purchased ${upgrade.name}!`, upgrade.increase + '/s');
+
+        // Play upgrade sound
+        if (typeof playSound !== 'undefined') playSound('upgrade');
     }
 }
 
@@ -307,6 +313,9 @@ function unlockAchievement(a) {
 
     showNotification(`🏆 ${a.name}`, `+${formatNumber(a.reward)} LoC`);
     renderAchievements();
+
+    // Play achievement sound
+    if (typeof playSound !== 'undefined') playSound('achievement');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -67,6 +67,9 @@ function initGame() {
 
     if (gameLoop) clearInterval(gameLoop);
     gameLoop = setInterval(drawGame, GAME_SPEED);
+
+    // Play start sound
+    if (typeof playSound !== 'undefined') playSound('start');
 }
 
 function createFood() {
@@ -115,6 +118,9 @@ function drawGame() {
             setCookie('snakeHighScore', highScore, 365);
         }
         createFood();
+
+        // Play eat sound
+        if (typeof playSound !== 'undefined') playSound('eat');
 
         // Add visual particle effect (simplified by just flashing background slightly or handled via CSS if we had it linked)
     } else {
@@ -182,6 +188,9 @@ function gameOver() {
     clearInterval(gameLoop);
     finalScoreElement.textContent = score;
     gameOverScreen.classList.remove('hidden');
+
+    // Play game over sound
+    if (typeof playSound !== 'undefined') playSound('gameover');
 }
 
 document.addEventListener('keydown', (e) => {

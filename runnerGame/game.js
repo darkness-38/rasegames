@@ -69,6 +69,7 @@ let highScore = parseInt(getCookie('crHighScore')) || 0;
 let gameSpeed = BASE_GAME_SPEED;
 let animationId = null;
 let frameCount = 0;
+let bgMusic = null;
 
 // Player
 let player = {
@@ -454,6 +455,9 @@ function updateCoins() {
             coinsEl.textContent = coins;
             coin.collected = true;
 
+            // Play collect sound
+            if (typeof playSound !== 'undefined') playSound('collect');
+
             // Particles
             for (let i = 0; i < 5; i++) {
                 particles.push({
@@ -519,6 +523,9 @@ function jump() {
         player.vy = BASE_JUMP_FORCE * jumpBoost;
         player.isJumping = true;
         player.jumpCount++;
+
+        // Play jump sound
+        if (typeof playSound !== 'undefined') playSound('jump');
 
         // Jump particles
         for (let i = 0; i < 3; i++) {
@@ -631,6 +638,18 @@ function startGame() {
 
     gameRunning = true;
     requestAnimationFrame(gameLoop);
+
+    // Play start sound
+    if (typeof playSound !== 'undefined') playSound('start');
+
+    // Start background music
+    if (!bgMusic) {
+        bgMusic = new Audio('/sounds/cyber_background.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.3;
+    }
+    bgMusic.currentTime = 0;
+    bgMusic.play().catch(() => { });
 }
 
 function gameOver() {
@@ -652,6 +671,14 @@ function gameOver() {
 
     gameScreen.classList.add('hidden');
     gameOverScreen.classList.remove('hidden');
+
+    // Stop background music
+    if (bgMusic) {
+        bgMusic.pause();
+    }
+
+    // Play crash sound
+    if (typeof playSound !== 'undefined') playSound('crash');
 }
 
 function showMenu() {

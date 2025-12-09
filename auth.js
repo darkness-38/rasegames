@@ -46,8 +46,12 @@ async function initAuth() {
             authStateChecked = true;
             window.authStateChecked = true;
             if (!user) {
-                showAuthModal();
+                // Force modal open and prevent closing
+                showAuthModal(true);
             }
+        } else if (!user) {
+            // If user logs out or session expires, force modal
+            showAuthModal(true);
         }
     });
 }
@@ -145,35 +149,13 @@ async function logoutUser() {
     try {
         await auth.signOut();
         showNotification('Logged out', 'info');
+        // Immediately show modal and prevent closing
+        showAuthModal(true);
     } catch (error) {
         console.error('Logout error:', error);
     }
 }
-
-function isRegisteredUser() {
-    return currentUser && !currentUser.isAnonymous;
-}
-
-function getUsername() {
-    if (!currentUser) return null;
-    return currentUser.displayName || 'Anonymous';
-}
-
-function getErrorMessage(code) {
-    const messages = {
-        'auth/email-already-in-use': 'Email already in use',
-        'auth/invalid-email': 'Invalid email address',
-        'auth/weak-password': 'Password must be at least 6 characters',
-        'auth/user-not-found': 'User not found',
-        'auth/wrong-password': 'Wrong password'
-    };
-    return messages[code] || 'An error occurred';
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// UI FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════════
-
+// ... [existing code] ...
 function createAuthModal() {
     if (document.getElementById('auth-modal')) return;
 
@@ -181,9 +163,9 @@ function createAuthModal() {
     modal.id = 'auth-modal';
     modal.className = 'auth-modal hidden';
     modal.innerHTML = `
-        <div class="auth-overlay" onclick="hideAuthModal()"></div>
+        <div class="auth-overlay" id="auth-overlay"></div>
         <div class="auth-container">
-            <button class="auth-close" onclick="hideAuthModal()">×</button>
+            <button class="auth-close" id="auth-close-btn" onclick="hideAuthModal()">×</button>
             
             <div class="auth-tabs">
                 <button class="auth-tab active" onclick="switchAuthTab('login')">Log In</button>
@@ -216,12 +198,28 @@ function createAuthModal() {
     document.body.appendChild(modal);
 }
 
-function showAuthModal() {
+function showAuthModal(force = false) {
     createAuthModal();
-    document.getElementById('auth-modal').classList.remove('hidden');
+    const modal = document.getElementById('auth-modal');
+    modal.classList.remove('hidden');
+
+    // If forced (not logged in), remove close button and overlay click
+    const closeBtn = document.getElementById('auth-close-btn');
+    const overlay = document.getElementById('auth-overlay');
+
+    if (force || !currentUser) {
+        closeBtn.style.display = 'none';
+        overlay.onclick = null;
+    } else {
+        closeBtn.style.display = 'block';
+        overlay.onclick = hideAuthModal;
+    }
 }
 
 function hideAuthModal() {
+    // Prevent hiding if no user is logged in
+    if (!currentUser) return;
+
     const modal = document.getElementById('auth-modal');
     if (modal) modal.classList.add('hidden');
 }

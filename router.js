@@ -65,16 +65,20 @@ const handleLocation = async () => {
         }
 
         // Post-load hooks - run after content is loaded
-        setTimeout(() => {
+        const runPageScripts = () => {
             // Always update auth UI on page change
             if (typeof updateAuthUI === 'function') {
                 updateAuthUI();
             }
 
             // Page-specific initializations
-            if (path.includes('leaderboard') && window.loadLeaderboards) {
+            const isLeaderboard = path.includes('leaderboard');
+            if (isLeaderboard && window.loadLeaderboards) {
+                // Retry loading leaderboards in case of DOM delay
                 window.loadLeaderboards();
+                setTimeout(window.loadLeaderboards, 300);
             }
+
             if (path.includes('profile') && window.initProfile) {
                 window.initProfile();
             }
@@ -83,7 +87,10 @@ const handleLocation = async () => {
             if (typeof createParticles === 'function' && document.querySelector('.particles-container')) {
                 createParticles();
             }
-        }, 100);
+        };
+
+        setTimeout(runPageScripts, 50);
+        setTimeout(runPageScripts, 200);
 
     } catch (e) {
         console.error("Error loading page", e);

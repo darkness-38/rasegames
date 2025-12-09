@@ -22,28 +22,37 @@ let firebaseReady = false;
 
 // Load Firebase SDK
 async function loadFirebase() {
-    if (firebaseReady && db) return true;
+    if (firebaseReady && db) {
+        console.log('Firebase already loaded');
+        return true;
+    }
 
     try {
+        console.log('Loading Firebase SDK...');
         // Load Firebase App first
         await loadScript(FIREBASE_SDK);
+        console.log('Firebase App SDK loaded');
 
         // Wait for firebase to be available
-        await waitForGlobal('firebase', 2000);
+        await waitForGlobal('firebase', 3000);
+        console.log('Firebase global available');
 
         // Load Database
         await loadScript(FIREBASE_DB);
+        console.log('Firebase Database SDK loaded');
 
         // Wait a bit for database to attach
-        await new Promise(r => setTimeout(r, 100));
+        await new Promise(r => setTimeout(r, 200));
 
         // Initialize
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
+            console.log('Firebase initialized');
         }
 
         db = firebase.database();
         firebaseReady = true;
+        console.log('Firebase ready!');
         return true;
     } catch (e) {
         console.error('Firebase load error:', e);
@@ -167,6 +176,7 @@ async function getLeaderboard(game, limit = 10) {
     }
 
     try {
+        console.log(`Fetching leaderboard: ${game}`);
         const snapshot = await db.ref(`leaderboards/${game}`)
             .orderByChild('score')
             .limitToLast(limit)
@@ -182,6 +192,7 @@ async function getLeaderboard(game, limit = 10) {
 
         // Sort descending
         entries.sort((a, b) => b.score - a.score);
+        console.log(`Leaderboard ${game}: ${entries.length} entries`);
         return entries;
     } catch (e) {
         console.error('Get leaderboard error:', e);

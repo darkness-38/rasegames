@@ -87,8 +87,18 @@ async function loadUserProfile() {
         }
 
         // Set join date
-        if (userProfile.createdAt) {
-            document.getElementById('stat-joined').textContent = formatDate(userProfile.createdAt);
+        let createdAt = userProfile.createdAt;
+        if (!createdAt && user.metadata && user.metadata.creationTime) {
+            createdAt = new Date(user.metadata.creationTime).getTime();
+
+            // Save to DB for future faster access if missing
+            if (!userProfile.createdAt) {
+                db.ref(`users/${user.uid}/createdAt`).set(createdAt).catch(() => { });
+            }
+        }
+
+        if (createdAt) {
+            document.getElementById('stat-joined').textContent = formatDate(createdAt);
         }
 
         // Get best ranking from all leaderboards
@@ -184,12 +194,12 @@ async function saveProfile(e) {
     const username = document.getElementById('input-username').value.trim();
 
     if (!username || username.length < 2) {
-        alert('Kullanıcı adı en az 2 karakter olmalı');
+        alert('Username must be at least 2 characters');
         return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Kaydediliyor...';
+    btn.textContent = 'Saving...';
 
     try {
         const user = window.currentUser;
@@ -207,15 +217,15 @@ async function saveProfile(e) {
         // Update UI
         document.getElementById('display-name').textContent = username;
 
-        showProfileNotification('Profil kaydedildi!', 'success');
+        showProfileNotification('Profile saved!', 'success');
 
     } catch (e) {
         console.error('Save profile error:', e);
-        showProfileNotification('Bir hata oluştu', 'error');
+        showProfileNotification('An error occurred', 'error');
     }
 
     btn.disabled = false;
-    btn.textContent = 'Kaydet';
+    btn.textContent = 'Save';
 }
 
 function formatScore(num) {
@@ -226,7 +236,7 @@ function formatScore(num) {
 
 function formatDate(timestamp) {
     const date = new Date(timestamp);
-    const months = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 

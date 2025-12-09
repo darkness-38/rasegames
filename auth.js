@@ -29,13 +29,26 @@ async function initAuth() {
 
     auth = firebase.auth();
 
+    // Set persistence to LOCAL (stays logged in until logout)
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
     // Listen for auth state changes
+    let authStateChecked = false;
     auth.onAuthStateChanged(user => {
         currentUser = user;
         updateAuthUI();
 
         // Store in window for other scripts
         window.currentUser = user;
+
+        // Only show modal after first auth check and if not logged in
+        if (!authStateChecked) {
+            authStateChecked = true;
+            window.authStateChecked = true;
+            if (!user) {
+                showAuthModal();
+            }
+        }
     });
 }
 
@@ -288,13 +301,6 @@ function showNotification(message, type = 'info') {
 // Auto-init
 document.addEventListener('DOMContentLoaded', () => {
     initAuth();
-
-    // Show login modal if not logged in (after short delay)
-    setTimeout(() => {
-        if (!currentUser) {
-            showAuthModal();
-        }
-    }, 1000);
 });
 
 // Export

@@ -73,7 +73,10 @@ async function loadUserProfile() {
     // Load from database
     try {
         await loadFirebaseDB();
-        const snapshot = await firebase.database().ref(`users/${user.uid}`).once('value');
+        const db = firebase.database();
+
+        // Load user profile
+        const snapshot = await db.ref(`users/${user.uid}`).once('value');
         userProfile = snapshot.val() || {};
 
         // Set avatar
@@ -83,16 +86,46 @@ async function loadUserProfile() {
             renderAvatarGrid();
         }
 
-        // Set stats
-        if (userProfile.gamesPlayed) {
-            document.getElementById('stat-games').textContent = userProfile.gamesPlayed;
-        }
-        if (userProfile.bestScore) {
-            document.getElementById('stat-best').textContent = formatScore(userProfile.bestScore);
-        }
+        // Set join date
         if (userProfile.createdAt) {
             document.getElementById('stat-joined').textContent = formatDate(userProfile.createdAt);
         }
+
+        // Get best ranking from all leaderboards
+        const games = ['snake', 'clicker', 'runner'];
+        let bestRank = null;
+        let totalGames = 0;
+
+        for (const game of games) {
+            const leaderboardSnapshot = await db.ref(`leaderboards/${game}`)
+                .orderByChild('score')
+                .once('value');
+
+            const entries = [];
+            leaderboardSnapshot.forEach(child => {
+                entries.push({
+                    uid: child.val().uid,
+                    score: child.val().score
+                });
+            });
+
+            // Sort by score descending
+            entries.sort((a, b) => b.score - a.score);
+
+            // Find user's rank in this game
+            const userIndex = entries.findIndex(e => e.uid === user.uid);
+            if (userIndex !== -1) {
+                totalGames++;
+                const rank = userIndex + 1;
+                if (bestRank === null || rank < bestRank) {
+                    bestRank = rank;
+                }
+            }
+        }
+
+        // Update stats
+        document.getElementById('stat-games').textContent = totalGames;
+        document.getElementById('stat-best').textContent = bestRank ? `#${bestRank}` : '-';
 
     } catch (e) {
         console.error('Load profile error:', e);
@@ -100,10 +133,25 @@ async function loadUserProfile() {
 }
 
 async function loadFirebaseDB() {
-    if (typeof firebase !== 'undefined' && firebase.database) return;
+    if (typeof firebase !== 'undefined' && typeof firebase.database === 'function') return;
 
     await loadScriptOnce('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
     await loadScriptOnce('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
+
+    // Wait for firebase.database to be available
+    await new Promise((resolve, reject) => {
+        let attempts = 0;
+        const check = () => {
+            if (typeof firebase !== 'undefined' && typeof firebase.database === 'function') {
+                resolve();
+            } else if (attempts++ > 30) {
+                reject(new Error('firebase.database not available'));
+            } else {
+                setTimeout(check, 100);
+            }
+        };
+        check();
+    });
 
     if (!firebase.apps.length) {
         firebase.initializeApp({
@@ -123,7 +171,7 @@ function loadScriptOnce(src) {
         }
         const script = document.createElement('script');
         script.src = src;
-        script.onload = resolve;
+        script.onload = () => setTimeout(resolve, 50);
         script.onerror = reject;
         document.head.appendChild(script);
     });

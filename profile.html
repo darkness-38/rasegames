@@ -250,9 +250,9 @@
             <div class="profile-container">
                 <!-- Not logged in state -->
                 <div id="not-logged-in" class="profile-card not-logged-in hidden">
-                    <h2>Giriş Yapmalısın</h2>
-                    <p>Profilini görmek için giriş yap veya kayıt ol.</p>
-                    <button onclick="showAuthModal()" class="save-btn" style="margin-top: 20px;">Giriş Yap</button>
+                    <h2>Login Required</h2>
+                    <p>Please log in or sign up to view your profile.</p>
+                    <button onclick="showAuthModal()" class="save-btn" style="margin-top: 20px;">Log In</button>
                 </div>
 
                 <!-- Profile content -->
@@ -272,11 +272,11 @@
                         <div class="profile-stats">
                             <div class="stat-item">
                                 <div class="stat-value" id="stat-games">0</div>
-                                <div class="stat-label">Games Played</div>
+                                <div class="stat-label">Games Ranked</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-value" id="stat-best">0</div>
-                                <div class="stat-label">Best Score</div>
+                                <div class="stat-value" id="stat-best">-</div>
+                                <div class="stat-label">Best Rank</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-value" id="stat-joined">-</div>
@@ -286,21 +286,21 @@
                     </div>
 
                     <div class="profile-card">
-                        <h3 style="margin-top: 0; margin-bottom: 20px;">Profili Düzenle</h3>
+                        <h3 style="margin-top: 0; margin-bottom: 20px;">Edit Profile</h3>
 
                         <form class="profile-form" onsubmit="saveProfile(event)">
                             <div class="form-group">
-                                <label>Kullanıcı Adı</label>
-                                <input type="text" id="input-username" placeholder="Kullanıcı adın" maxlength="20"
+                                <label>Username</label>
+                                <input type="text" id="input-username" placeholder="Your username" maxlength="20"
                                     required>
                             </div>
 
                             <div class="form-group">
-                                <label>Avatar Seç</label>
+                                <label>Select Avatar</label>
                                 <div class="avatar-grid" id="avatar-grid"></div>
                             </div>
 
-                            <button type="submit" class="save-btn" id="save-btn">Kaydet</button>
+                            <button type="submit" class="save-btn" id="save-btn">Save</button>
                         </form>
                     </div>
                 </div>

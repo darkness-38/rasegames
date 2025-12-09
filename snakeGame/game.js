@@ -14,7 +14,7 @@ const GAME_SPEED = 100;
 
 // Game State
 let score = 0;
-let highScore = localStorage.getItem('snakeHighScore') || 0;
+let highScore = getCookie('snakeHighScore') || 0;
 let snake = [];
 let food = { x: 0, y: 0 };
 let dx = 0;
@@ -25,6 +25,28 @@ let isPaused = false;
 
 // Initialize High Score
 highScoreElement.textContent = highScore;
+
+// Cookie Helpers
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
 
 function initGame() {
     snake = [
@@ -68,10 +90,10 @@ function drawGame() {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
     // Check Wall Collision
-    if (head.x < 0) head.x = TILE_COUNT - 1;
-    if (head.x >= TILE_COUNT) head.x = 0;
-    if (head.y < 0) head.y = TILE_COUNT - 1;
-    if (head.y >= TILE_COUNT) head.y = 0;
+    if (head.x < 0 || head.x >= TILE_COUNT || head.y < 0 || head.y >= TILE_COUNT) {
+        gameOver();
+        return;
+    }
 
     // Check Self Collision
     for (let i = 0; i < snake.length; i++) {
@@ -90,7 +112,7 @@ function drawGame() {
         if (score > highScore) {
             highScore = score;
             highScoreElement.textContent = highScore;
-            localStorage.setItem('snakeHighScore', highScore);
+            setCookie('snakeHighScore', highScore, 365);
         }
         createFood();
 

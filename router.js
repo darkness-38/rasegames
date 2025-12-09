@@ -64,15 +64,24 @@ const handleLocation = async () => {
             console.warn("No main tag found in fetched page, loading fallback.");
         }
 
-        // Post-load hooks for specific pages
+        // Post-load hooks - run after content is loaded
         setTimeout(() => {
-            // Load leaderboards if on leaderboard page
+            // Always update auth UI on page change
+            if (typeof updateAuthUI === 'function') {
+                updateAuthUI();
+            }
+
+            // Page-specific initializations
             if (path.includes('leaderboard') && window.loadLeaderboards) {
                 window.loadLeaderboards();
             }
-            // Init profile if on profile page
-            if (path.includes('profile') && typeof initProfile === 'function') {
-                initProfile();
+            if (path.includes('profile') && window.initProfile) {
+                window.initProfile();
+            }
+
+            // Re-initialize particles if they exist
+            if (typeof createParticles === 'function' && document.querySelector('.particles-container')) {
+                createParticles();
             }
         }, 100);
 

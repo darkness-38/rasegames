@@ -211,3 +211,6 @@ if (typeof window !== 'undefined') {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', initProfile);
+
+// Export for router
+window.initProfile = initProfile;

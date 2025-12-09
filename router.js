@@ -31,6 +31,16 @@ const handleLocation = async () => {
         return;
     }
 
+    if (path.indexOf("/games/cyber-runner") !== -1) {
+        const main = document.querySelector('main');
+        main.innerHTML = `
+            <iframe src="/runnerGame/index.html" 
+                    style="width: 100%; height: 90vh; border: none; display: block; border-radius: 24px;" 
+                    title="Cyber Runner">
+            </iframe>`;
+        return;
+    }
+
     let fileToFetch = "index.html";
 
     // Simple routing logic mapping URL segments to files

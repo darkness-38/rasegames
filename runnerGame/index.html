@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Runner | Rase Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-wrapper">
+        <!-- Main Menu -->
+        <div id="mainMenu" class="screen">
+            <h1 class="game-title">CYBER<span>RUNNER</span></h1>
+            <p class="subtitle">Escape the system</p>
+            <button id="playBtn" class="btn-primary">▶ PLAY</button>
+            <button id="shopBtn" class="btn-secondary">🛒 UPGRADES</button>
+            <div class="coin-display">
+                <span class="coin-icon">💎</span>
+                <span id="totalCoins">0</span>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen hidden">
+            <div id="gameHUD">
+                <div class="hud-item">
+                    <span>SCORE</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="hud-item">
+                    <span>💎</span>
+                    <span id="coins">0</span>
+                </div>
+                <div class="hud-item">
+                    <span>BEST</span>
+                    <span id="highScore">0</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+            <div id="mobileControls">
+                <button id="jumpBtn" class="mobile-btn">JUMP</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen hidden">
+            <h2>SYSTEM CRASH</h2>
+            <div class="stats">
+                <p>Score: <span id="finalScore">0</span></p>
+                <p>Coins: +<span id="earnedCoins">0</span> 💎</p>
+            </div>
+            <button id="retryBtn" class="btn-primary">↻ RETRY</button>
+            <button id="menuBtn" class="btn-secondary">⌂ MENU</button>
+        </div>
+
+        <!-- Shop Screen -->
+        <div id="shopScreen" class="screen hidden">
+            <h2>UPGRADES</h2>
+            <div class="shop-coins">
+                <span class="coin-icon">💎</span>
+                <span id="shopCoins">0</span>
+            </div>
+            <div id="upgradesList"></div>
+            <button id="backBtn" class="btn-secondary">← BACK</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

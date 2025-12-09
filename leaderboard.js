@@ -22,17 +22,26 @@ let firebaseReady = false;
 
 // Load Firebase SDK
 async function loadFirebase() {
-    if (firebaseReady) return true;
+    if (firebaseReady && db) return true;
 
     try {
-        // Load Firebase App
+        // Load Firebase App first
         await loadScript(FIREBASE_SDK);
+
+        // Wait for firebase to be available
+        await waitForGlobal('firebase', 2000);
+
+        // Load Database
         await loadScript(FIREBASE_DB);
+
+        // Wait a bit for database to attach
+        await new Promise(r => setTimeout(r, 100));
 
         // Initialize
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
+
         db = firebase.database();
         firebaseReady = true;
         return true;
@@ -44,15 +53,32 @@ async function loadFirebase() {
 
 function loadScript(src) {
     return new Promise((resolve, reject) => {
-        if (document.querySelector(`script[src="${src}"]`)) {
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
             resolve();
             return;
         }
         const script = document.createElement('script');
         script.src = src;
-        script.onload = resolve;
+        script.onload = () => setTimeout(resolve, 50);
         script.onerror = reject;
         document.head.appendChild(script);
+    });
+}
+
+function waitForGlobal(name, timeout = 2000) {
+    return new Promise((resolve, reject) => {
+        const start = Date.now();
+        const check = () => {
+            if (window[name]) {
+                resolve();
+            } else if (Date.now() - start > timeout) {
+                reject(new Error(`${name} not loaded`));
+            } else {
+                setTimeout(check, 50);
+            }
+        };
+        check();
     });
 }
 
@@ -211,8 +237,20 @@ async function loadAllLeaderboards() {
 }
 
 // Auto-load if on leaderboard page
-if (document.getElementById('snake-leaderboard')) {
-    loadAllLeaderboards();
+function tryLoadLeaderboards() {
+    if (document.getElementById('snake-leaderboard')) {
+        loadAllLeaderboards();
+        return true;
+    }
+    return false;
+}
+
+// Try immediately
+if (!tryLoadLeaderboards()) {
+    // Retry after DOM is ready
+    document.addEventListener('DOMContentLoaded', tryLoadLeaderboards);
+    // Also retry after a short delay (for router)
+    setTimeout(tryLoadLeaderboards, 500);
 }
 
 // Export for games to use

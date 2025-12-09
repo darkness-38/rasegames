@@ -10,29 +10,29 @@ let userProfile = null;
 
 // Initialize profile page
 function initProfile() {
+    // Render avatar grid first
+    renderAvatarGrid();
+
     // Wait for auth to initialize
+    let attempts = 0;
     const checkAuth = setInterval(() => {
-        if (typeof currentUser !== 'undefined') {
+        attempts++;
+        const user = window.currentUser;
+
+        if (user !== undefined) {
             clearInterval(checkAuth);
 
-            if (currentUser && !currentUser.isAnonymous) {
+            if (user && !user.isAnonymous) {
                 showProfileContent();
                 loadUserProfile();
-            } else if (currentUser && currentUser.isAnonymous) {
-                showNotLoggedIn();
             } else {
-                // Not logged in yet, wait a bit more
-                setTimeout(() => {
-                    if (!currentUser || currentUser.isAnonymous) {
-                        showNotLoggedIn();
-                    }
-                }, 1500);
+                showNotLoggedIn();
             }
+        } else if (attempts > 30) { // 3 seconds max
+            clearInterval(checkAuth);
+            showNotLoggedIn();
         }
     }, 100);
-
-    // Render avatar grid
-    renderAvatarGrid();
 }
 
 function showProfileContent() {
@@ -62,17 +62,18 @@ function selectAvatar(avatar) {
 }
 
 async function loadUserProfile() {
-    if (!currentUser) return;
+    const user = window.currentUser;
+    if (!user) return;
 
     // Display basic info
-    document.getElementById('display-name').textContent = currentUser.displayName || 'Player';
-    document.getElementById('user-email').textContent = currentUser.email || '';
-    document.getElementById('input-username').value = currentUser.displayName || '';
+    document.getElementById('display-name').textContent = user.displayName || 'Player';
+    document.getElementById('user-email').textContent = user.email || '';
+    document.getElementById('input-username').value = user.displayName || '';
 
     // Load from database
     try {
         await loadFirebaseDB();
-        const snapshot = await firebase.database().ref(`users/${currentUser.uid}`).once('value');
+        const snapshot = await firebase.database().ref(`users/${user.uid}`).once('value');
         userProfile = snapshot.val() || {};
 
         // Set avatar
@@ -143,12 +144,13 @@ async function saveProfile(e) {
     btn.textContent = 'Kaydediliyor...';
 
     try {
+        const user = window.currentUser;
         // Update Firebase Auth profile
-        await currentUser.updateProfile({ displayName: username });
+        await user.updateProfile({ displayName: username });
 
         // Update database
         await loadFirebaseDB();
-        await firebase.database().ref(`users/${currentUser.uid}`).update({
+        await firebase.database().ref(`users/${user.uid}`).update({
             username: username,
             avatar: selectedAvatar,
             updatedAt: Date.now()
@@ -196,7 +198,8 @@ if (typeof window !== 'undefined') {
 
         // Refresh profile if on profile page
         if (document.getElementById('profile-content')) {
-            if (currentUser && !currentUser.isAnonymous) {
+            const user = window.currentUser;
+            if (user && !user.isAnonymous) {
                 showProfileContent();
                 loadUserProfile();
             } else {

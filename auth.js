@@ -265,7 +265,7 @@ function updateAuthUI() {
         if (currentUser.isAnonymous) {
             userDisplay.innerHTML = `<span class="user-guest">👤 Misafir</span> <button onclick="showAuthModal()" class="btn-small">Kayıt Ol</button>`;
         } else {
-            userDisplay.innerHTML = `<span class="user-name">👤 ${currentUser.displayName}</span> <button onclick="logoutUser()" class="btn-small">Çıkış</button>`;
+            userDisplay.innerHTML = `<a href="/profile" onclick="route()" class="user-name-link">👤 ${currentUser.displayName}</a> <button onclick="logoutUser()" class="btn-small">Çıkış</button>`;
         }
     } else {
         userDisplay.innerHTML = `<button onclick="showAuthModal()" class="btn-small">Giriş Yap</button>`;

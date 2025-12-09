@@ -203,10 +203,11 @@ async function getLeaderboard(game, limit = 10) {
 // Render leaderboard to table
 function renderLeaderboard(elementId, entries) {
     const tbody = document.getElementById(elementId);
+    console.log(`Rendering ${elementId}:`, tbody ? 'found' : 'NOT FOUND', entries.length, 'entries');
     if (!tbody) return;
 
     if (entries.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="empty-message">No scores yet. Be the first!</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-message">Henüz skor yok. İlk sen ol!</td></tr>';
         return;
     }
 

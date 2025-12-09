@@ -21,6 +21,16 @@ const handleLocation = async () => {
         return;
     }
 
+    if (path.indexOf("/games/snake") !== -1) {
+        const main = document.querySelector('main');
+        main.innerHTML = `
+            <iframe src="/snakeGame/index.html" 
+                    style="width: 100%; height: 90vh; border: none; display: block; border-radius: 24px;" 
+                    title="Neon Snake">
+            </iframe>`;
+        return;
+    }
+
     let fileToFetch = "index.html";
 
     // Simple routing logic mapping URL segments to files

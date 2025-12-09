@@ -19,45 +19,60 @@ const FIREBASE_DB = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database
 
 let db = null;
 let firebaseReady = false;
+let firebaseLoading = null; // Loading lock
 
 // Load Firebase SDK
 async function loadFirebase() {
     if (firebaseReady && db) {
-        console.log('Firebase already loaded');
         return true;
     }
 
-    try {
-        console.log('Loading Firebase SDK...');
-        // Load Firebase App first
-        await loadScript(FIREBASE_SDK);
-        console.log('Firebase App SDK loaded');
+    // If already loading, wait for that to complete
+    if (firebaseLoading) {
+        return firebaseLoading;
+    }
 
-        // Wait for firebase to be available
-        await waitForGlobal('firebase', 3000);
-        console.log('Firebase global available');
+    firebaseLoading = (async () => {
+        try {
+            // Load Firebase App first
+            await loadScript(FIREBASE_SDK);
 
-        // Load Database
-        await loadScript(FIREBASE_DB);
-        console.log('Firebase Database SDK loaded');
+            // Wait for firebase to be available
+            await waitForGlobal('firebase', 3000);
 
-        // Wait a bit for database to attach
-        await new Promise(r => setTimeout(r, 200));
+            // Load Database
+            await loadScript(FIREBASE_DB);
 
-        // Initialize
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-            console.log('Firebase initialized');
+            // Wait for firebase.database to be a function
+            await new Promise((resolve, reject) => {
+                let attempts = 0;
+                const check = () => {
+                    if (typeof firebase.database === 'function') {
+                        resolve();
+                    } else if (attempts++ > 30) {
+                        reject(new Error('firebase.database not available'));
+                    } else {
+                        setTimeout(check, 100);
+                    }
+                };
+                check();
+            });
+
+            // Initialize
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+
+            db = firebase.database();
+            firebaseReady = true;
+            return true;
+        } catch (e) {
+            console.error('Firebase load error:', e);
+            return false;
         }
+    })();
 
-        db = firebase.database();
-        firebaseReady = true;
-        console.log('Firebase ready!');
-        return true;
-    } catch (e) {
-        console.error('Firebase load error:', e);
-        return false;
-    }
+    return firebaseLoading;
 }
 
 function loadScript(src) {
@@ -203,11 +218,10 @@ async function getLeaderboard(game, limit = 10) {
 // Render leaderboard to table
 function renderLeaderboard(elementId, entries) {
     const tbody = document.getElementById(elementId);
-    console.log(`Rendering ${elementId}:`, tbody ? 'found' : 'NOT FOUND', entries.length, 'entries');
     if (!tbody) return;
 
     if (entries.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="empty-message">Henüz skor yok. İlk sen ol!</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-message">No scores yet. Be the first!</td></tr>';
         return;
     }
 

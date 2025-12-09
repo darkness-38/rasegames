@@ -138,3 +138,99 @@ button:active {
     color: rgba(255, 255, 255, 0.4);
     font-size: 0.9rem;
 }
+
+/* Mobile Responsive */
+@media (max-width: 500px) {
+    .game-container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .score-board {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 1rem;
+    }
+
+    .score-item {
+        padding: 6px 15px;
+    }
+
+    .canvas-wrapper {
+        padding: 3px;
+        max-width: 95vw;
+    }
+
+    canvas {
+        width: 300px !important;
+        height: 300px !important;
+    }
+
+    .overlay h2 {
+        font-size: 1.8rem;
+    }
+
+    .overlay p {
+        font-size: 0.95rem;
+        padding: 0 10px;
+    }
+
+    button {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+
+    .controls-hint {
+        font-size: 0.8rem;
+    }
+}
+
+/* Mobile Controls D-Pad */
+.mobile-controls {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.control-row {
+    display: flex;
+    gap: 5px;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:active {
+    background: var(--primary);
+    color: #000;
+    transform: scale(0.95);
+}
+
+@media (max-width: 500px) {
+    .mobile-controls {
+        display: flex;
+    }
+
+    .controls-hint {
+        display: none;
+    }
+}

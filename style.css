@@ -236,18 +236,126 @@ main {
     background: var(--card-bg);
 }
 
-@media (max-width: 768px) {
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 1024px) {
     .navbar {
-        padding: 1rem 2rem;
+        padding: 1.2rem 2rem;
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
+    }
+
+    .game-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 0 1.5rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .logo-text {
+        font-size: 1.3rem;
+    }
+
+    .nav-links {
+        gap: 1.2rem;
+        width: 100%;
+        justify-content: center;
+        order: 3;
+    }
+
+    .nav-link {
+        font-size: 0.85rem;
+    }
+
+    .hero {
+        padding-top: 2rem;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
         padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        padding: 0 1.5rem;
+        margin-bottom: 2rem;
     }
 
     .game-grid {
         grid-template-columns: 1fr;
-        padding: 0 1.5rem;
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+
+    .game-card {
+        padding: 1.5rem;
+    }
+
+    .game-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .card-icon {
+        font-size: 2rem;
+    }
+
+    .play-indicator {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+
+    .logo-text {
+        font-size: 1.1rem;
+    }
+
+    .nav-links {
+        gap: 0.8rem;
+    }
+
+    .nav-link {
+        font-size: 0.8rem;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .game-card {
+        padding: 1.2rem;
+    }
+
+    .game-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .game-card p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
     }
 }

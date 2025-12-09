@@ -79,11 +79,10 @@ const facts = [
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const randomEvents = [
-    { id: 'bug_bounty', name: '🐛 Bug Bounty!', icon: '🐛', reward: () => Math.max(1000, passiveIncome * 30), duration: 8000 },
-    { id: 'data_packet', name: '📦 Data Packet!', icon: '📦', reward: () => Math.max(500, passiveIncome * 15), duration: 6000 },
-    { id: 'bitcoin', name: '₿ Found Bitcoin!', icon: '₿', reward: () => Math.max(5000, passiveIncome * 60), duration: 5000 },
-    { id: 'coffee', name: '☕ Coffee Break!', icon: '☕', reward: () => Math.max(200, clickPower * 100), duration: 10000 },
-    { id: 'sponsor', name: '💰 Sponsor Deal!', icon: '💰', reward: () => Math.max(10000, passiveIncome * 120), duration: 4000 }
+    { id: 'bug_bounty', name: '🐛 Bug Bounty!', icon: '🐛', reward: () => Math.min(1500, Math.max(100, passiveIncome * 30)), duration: 8000 },
+    { id: 'data_packet', name: '📦 Data Packet!', icon: '📦', reward: () => Math.min(1500, Math.max(50, passiveIncome * 15)), duration: 6000 },
+    { id: 'coffee', name: '☕ Coffee Break!', icon: '☕', reward: () => Math.min(1500, Math.max(50, clickPower * 50)), duration: 10000 },
+    { id: 'sponsor', name: '💰 Sponsor Deal!', icon: '💰', reward: () => Math.min(1500, Math.max(300, passiveIncome * 100)), duration: 4000 }
 ];
 
 let eventsCollected = 0;
@@ -106,7 +105,9 @@ function init() {
     clickBtn.addEventListener('click', handleClick);
 
     // Start random events
+    // Start random events
     scheduleRandomEvent();
+    scheduleBitcoinEvent();
 }
 
 function handleClick(e) {
@@ -357,6 +358,58 @@ function spawnRandomEvent() {
 
     // Schedule next
     scheduleRandomEvent();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BITCOIN SPECIFIC EVENT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function scheduleBitcoinEvent() {
+    setTimeout(spawnBitcoinEvent, 300000); // 300 seconds (5 minutes) fixed
+}
+
+function spawnBitcoinEvent() {
+    const el = document.createElement('div');
+    el.className = 'random-event';
+    el.innerHTML = `<span>₿</span>`;
+
+    // Random position
+    const x = Math.random() * (window.innerWidth - 100) + 50;
+    const y = Math.random() * (window.innerHeight - 200) + 100;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+
+    // Special styling for Bitcoin
+    el.style.filter = "drop-shadow(0 0 15px #f7931a)";
+
+    el.onclick = () => {
+        // Reward 5000 - 7000
+        const reward = Math.floor(Math.random() * (7000 - 5000 + 1)) + 5000;
+        score += reward;
+        totalEarned += reward;
+        eventsCollected++;
+
+        checkAchievements('events', eventsCollected);
+        showNotification("₿ Found Bitcoin!", `+${formatNumber(reward)} LoC`);
+
+        // Burst effect
+        createBurstEffect(el);
+        el.remove();
+        updateUI();
+    };
+
+    document.body.appendChild(el);
+
+    // Remove after 10 seconds if not clicked
+    setTimeout(() => {
+        if (el.parentElement) {
+            el.classList.add('fade-out');
+            setTimeout(() => el.remove(), 500);
+        }
+    }, 10000);
+
+    // Schedule next
+    scheduleBitcoinEvent();
 }
 
 function createBurstEffect(source) {

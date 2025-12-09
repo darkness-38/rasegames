@@ -223,6 +223,24 @@ document.addEventListener('keydown', (e) => {
 
 restartBtn.addEventListener('click', initGame);
 
+// Mobile Controls
+function setDirection(newDx, newDy) {
+    if (!isGameRunning && !startScreen.classList.contains('hidden')) {
+        initGame();
+        return;
+    }
+    if (!isGameRunning) return;
+
+    // Prevent reversing
+    if (newDx !== 0 && dx !== -newDx) { dx = newDx; dy = 0; }
+    if (newDy !== 0 && dy !== -newDy) { dy = newDy; dx = 0; }
+}
+
+document.getElementById('upBtn')?.addEventListener('click', () => setDirection(0, -1));
+document.getElementById('downBtn')?.addEventListener('click', () => setDirection(0, 1));
+document.getElementById('leftBtn')?.addEventListener('click', () => setDirection(-1, 0));
+document.getElementById('rightBtn')?.addEventListener('click', () => setDirection(1, 0));
+
 // Initial draw to show something before start
 ctx.fillStyle = '#111116';
 ctx.fillRect(0, 0, canvas.width, canvas.height);

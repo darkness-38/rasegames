@@ -104,21 +104,26 @@ async function loginWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         const result = await auth.signInWithPopup(provider);
 
-        // Save to database if first time
-        const db = firebase.database();
-        const userRef = db.ref(`users/${result.user.uid}`);
-        const snapshot = await userRef.once('value');
-        if (!snapshot.exists()) {
-            await userRef.set({
-                username: result.user.displayName,
-                createdAt: Date.now()
-            });
+        // Try to save to database (don't fail if this doesn't work)
+        try {
+            const db = firebase.database();
+            const userRef = db.ref(`users/${result.user.uid}`);
+            const snapshot = await userRef.once('value');
+            if (!snapshot.exists()) {
+                await userRef.set({
+                    username: result.user.displayName,
+                    createdAt: Date.now()
+                });
+            }
+        } catch (dbError) {
+            console.log('Database save skipped:', dbError.message);
         }
 
         hideAuthModal();
         showNotification('Google ile giriş başarılı!', 'success');
         return { success: true };
     } catch (error) {
+        console.error('Google login error:', error);
         return { success: false, error: getErrorMessage(error.code) };
     }
 }

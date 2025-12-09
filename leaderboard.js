@@ -153,17 +153,36 @@ async function submitScore(game, score) {
     const ref = db.ref(`leaderboards/${game}`);
 
     try {
-        // Check if user already has a score (by uid)
+        // Check if user already has scores (by uid)
         const snapshot = await ref.orderByChild('uid').equalTo(uid).once('value');
         const existing = snapshot.val();
 
         if (existing) {
-            // Update only if new score is higher
-            const key = Object.keys(existing)[0];
-            if (score > existing[key].score) {
-                await ref.child(key).update({
+            const keys = Object.keys(existing);
+
+            // Find highest existing score
+            let highestKey = keys[0];
+            let highestScore = existing[keys[0]].score;
+
+            for (const key of keys) {
+                if (existing[key].score > highestScore) {
+                    highestScore = existing[key].score;
+                    highestKey = key;
+                }
+            }
+
+            // Delete all duplicate entries except the one with highest score
+            for (const key of keys) {
+                if (key !== highestKey) {
+                    await ref.child(key).remove();
+                }
+            }
+
+            // Update the remaining entry if new score is higher
+            if (score > highestScore) {
+                await ref.child(highestKey).update({
                     score: score,
-                    name: name, // Update name in case it changed
+                    name: name,
                     timestamp: Date.now()
                 });
             }

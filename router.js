@@ -64,6 +64,18 @@ const handleLocation = async () => {
             console.warn("No main tag found in fetched page, loading fallback.");
         }
 
+        // Post-load hooks for specific pages
+        setTimeout(() => {
+            // Load leaderboards if on leaderboard page
+            if (path.includes('leaderboard') && window.loadLeaderboards) {
+                window.loadLeaderboards();
+            }
+            // Init profile if on profile page
+            if (path.includes('profile') && typeof initProfile === 'function') {
+                initProfile();
+            }
+        }, 100);
+
     } catch (e) {
         console.error("Error loading page", e);
     }

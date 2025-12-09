@@ -679,6 +679,11 @@ function gameOver() {
 
     // Play crash sound
     if (typeof playSound !== 'undefined') playSound('crash');
+
+    // Submit to leaderboard
+    if (window.Leaderboard && finalScore > 0) {
+        Leaderboard.submit('runner', finalScore);
+    }
 }
 
 function showMenu() {

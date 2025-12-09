@@ -1,0 +1,223 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// RASE GAMES - Global Leaderboard System
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBigRK1QV1nO-qTmMMLUcnCtXtW0e_sXnQ",
+    authDomain: "rasegames-9934f.firebaseapp.com",
+    databaseURL: "https://rasegames-9934f-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "rasegames-9934f",
+    storageBucket: "rasegames-9934f.firebasestorage.app",
+    messagingSenderId: "762399445136",
+    appId: "1:762399445136:web:7dea2f9064963fc03dc815"
+};
+
+// Firebase SDK (using compat version for simplicity)
+const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+const FIREBASE_DB = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+
+let db = null;
+let firebaseReady = false;
+
+// Load Firebase SDK
+async function loadFirebase() {
+    if (firebaseReady) return true;
+
+    try {
+        // Load Firebase App
+        await loadScript(FIREBASE_SDK);
+        await loadScript(FIREBASE_DB);
+
+        // Initialize
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.database();
+        firebaseReady = true;
+        return true;
+    } catch (e) {
+        console.error('Firebase load error:', e);
+        return false;
+    }
+}
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) {
+            resolve();
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LEADERBOARD FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Get player name (stored in cookie or prompt)
+function getPlayerName() {
+    let name = getCookieLB('playerName');
+    if (!name) {
+        name = prompt('Enter your name for the leaderboard:', 'Player');
+        if (name && name.trim()) {
+            name = name.trim().substring(0, 20); // Max 20 chars
+            setCookieLB('playerName', name);
+        } else {
+            name = 'Anonymous';
+        }
+    }
+    return name;
+}
+
+function setCookieLB(name, value) {
+    document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=31536000`;
+}
+
+function getCookieLB(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+}
+
+// Submit score to leaderboard (only for registered users)
+async function submitScore(game, score) {
+    // Check if user is registered (not anonymous)
+    const user = window.currentUser;
+    if (!user || user.isAnonymous) {
+        console.log('Leaderboard: Only registered users can submit scores');
+        return false;
+    }
+
+    if (!await loadFirebase()) {
+        console.error('Firebase not loaded');
+        return false;
+    }
+
+    const name = user.displayName || 'Player';
+    const uid = user.uid;
+    const ref = db.ref(`leaderboards/${game}`);
+
+    try {
+        // Check if user already has a score (by uid)
+        const snapshot = await ref.orderByChild('uid').equalTo(uid).once('value');
+        const existing = snapshot.val();
+
+        if (existing) {
+            // Update only if new score is higher
+            const key = Object.keys(existing)[0];
+            if (score > existing[key].score) {
+                await ref.child(key).update({
+                    score: score,
+                    name: name, // Update name in case it changed
+                    timestamp: Date.now()
+                });
+            }
+        } else {
+            // Add new entry
+            await ref.push({
+                uid: uid,
+                name: name,
+                score: score,
+                timestamp: Date.now()
+            });
+        }
+
+        return true;
+    } catch (e) {
+        console.error('Submit score error:', e);
+        return false;
+    }
+}
+
+// Get top scores for a game
+async function getLeaderboard(game, limit = 10) {
+    if (!await loadFirebase()) {
+        return [];
+    }
+
+    try {
+        const snapshot = await db.ref(`leaderboards/${game}`)
+            .orderByChild('score')
+            .limitToLast(limit)
+            .once('value');
+
+        const entries = [];
+        snapshot.forEach(child => {
+            entries.push({
+                name: child.val().name,
+                score: child.val().score
+            });
+        });
+
+        // Sort descending
+        entries.sort((a, b) => b.score - a.score);
+        return entries;
+    } catch (e) {
+        console.error('Get leaderboard error:', e);
+        return [];
+    }
+}
+
+// Render leaderboard to table
+function renderLeaderboard(elementId, entries) {
+    const tbody = document.getElementById(elementId);
+    if (!tbody) return;
+
+    if (entries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty-message">No scores yet. Be the first!</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = entries.map((entry, i) => `
+        <tr>
+            <td class="rank rank-${i + 1}">#${i + 1}</td>
+            <td class="player-name">${escapeHtml(entry.name)}</td>
+            <td class="player-score">${formatNumber(entry.score)}</td>
+        </tr>
+    `).join('');
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function formatNumber(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num.toString();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LOAD LEADERBOARDS ON PAGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function loadAllLeaderboards() {
+    const [snake, clicker, runner] = await Promise.all([
+        getLeaderboard('snake'),
+        getLeaderboard('clicker'),
+        getLeaderboard('runner')
+    ]);
+
+    renderLeaderboard('snake-leaderboard', snake);
+    renderLeaderboard('clicker-leaderboard', clicker);
+    renderLeaderboard('runner-leaderboard', runner);
+}
+
+// Auto-load if on leaderboard page
+if (document.getElementById('snake-leaderboard')) {
+    loadAllLeaderboards();
+}
+
+// Export for games to use
+window.Leaderboard = {
+    submit: submitScore,
+    get: getLeaderboard,
+    getPlayerName: getPlayerName
+};

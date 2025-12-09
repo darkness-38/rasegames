@@ -46,6 +46,7 @@ const handleLocation = async () => {
     // Simple routing logic mapping URL segments to files
     if (path.endsWith("about") || path.endsWith("about.html")) fileToFetch = "about.html";
     if (path.endsWith("community") || path.endsWith("community.html")) fileToFetch = "community.html";
+    if (path.endsWith("leaderboard") || path.endsWith("leaderboard.html")) fileToFetch = "leaderboard.html";
     if (path.endsWith("/") || path.endsWith("index.html")) fileToFetch = "index.html";
 
     try {

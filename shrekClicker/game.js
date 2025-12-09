@@ -488,6 +488,11 @@ function saveGame() {
         savedAt: Date.now()
     };
     localStorage.setItem('codeClickerSave_v2', JSON.stringify(data));
+
+    // Submit to leaderboard
+    if (window.Leaderboard && totalEarned > 0) {
+        Leaderboard.submit('clicker', Math.floor(totalEarned));
+    }
 }
 
 function loadGame() {

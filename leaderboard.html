@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboards - Rase Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .leaderboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 0 20px;
+            margin-bottom: 50px;
+        }
+
+        .game-leaderboard {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-icon {
+            font-size: 2rem;
+        }
+
+        .leaderboard-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .leaderboard-table th {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard-table tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rank {
+            font-weight: 700;
+            width: 50px;
+        }
+
+        .rank-1 {
+            color: #ffd700;
+        }
+
+        .rank-2 {
+            color: #c0c0c0;
+        }
+
+        .rank-3 {
+            color: #cd7f32;
+        }
+
+        .player-name {
+            font-weight: 500;
+        }
+
+        .player-score {
+            text-align: right;
+            font-family: 'Clash Display', sans-serif;
+            color: #00d4ff;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 30px;
+        }
+
+        .loading {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 30px;
+        }
+
+        @media (max-width: 600px) {
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/" onclick="route()" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link" onclick="route()">Games</a>
+            <a href="/about" class="nav-link" onclick="route()">About</a>
+            <a href="/leaderboard" class="nav-link" onclick="route()">Leaderboards</a>
+            <a href="/community" class="nav-link" onclick="route()">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Global <span class="text-gradient">Leaderboards</span>
+            </h1>
+            <p class="hero-subtitle">
+                Compete with players worldwide and climb to the top!
+            </p>
+
+            <div class="leaderboard-container">
+                <!-- Snake Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🐍</span>
+                        <h2 class="leaderboard-title">Neon Snake</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="snake-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Code Clicker Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">💻</span>
+                        <h2 class="leaderboard-title">Code Clicker</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Total LoC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clicker-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Cyber Runner Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🏃</span>
+                        <h2 class="leaderboard-title">Cyber Runner</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Best Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="runner-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="particles.js"></script>
+    <script src="auth.js"></script>
+    <script src="leaderboard.js"></script>
+    <script src="router.js"></script>
+</body>
+
+</html>

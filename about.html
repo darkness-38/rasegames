@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Rase Games</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -28,7 +29,9 @@
         <div class="nav-links">
             <a href="/" class="nav-link" onclick="route()">Games</a>
             <a href="/about" class="nav-link" onclick="route()">About</a>
+            <a href="/leaderboard" class="nav-link" onclick="route()">Leaderboards</a>
             <a href="/community" class="nav-link" onclick="route()">Community</a>
+            <div id="user-display"></div>
         </div>
     </nav>
 
@@ -48,6 +51,7 @@
     </main>
 
     <script src="particles.js"></script>
+    <script src="auth.js"></script>
     <script src="router.js"></script>
 </body>
 

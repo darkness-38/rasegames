@@ -191,6 +191,11 @@ function gameOver() {
 
     // Play game over sound
     if (typeof playSound !== 'undefined') playSound('gameover');
+
+    // Submit to leaderboard
+    if (window.Leaderboard && score > 0) {
+        Leaderboard.submit('snake', score);
+    }
 }
 
 document.addEventListener('keydown', (e) => {

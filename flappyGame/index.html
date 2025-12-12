@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Bird - Rase Games</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../auth.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../auth.js"></script>
+    <script src="../leaderboard.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/index.html" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+            <a href="/community.html" class="nav-link">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+
+        <div class="game-area">
+            <div class="score-display">
+                <div class="current-score">
+                    <span class="label">SCORE</span>
+                    <span id="score" class="value">0</span>
+                </div>
+                <div class="high-score">
+                    <span class="label">BEST</span>
+                    <span id="highScore" class="value">0</span>
+                </div>
+            </div>
+
+            <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+            <div id="startScreen" class="overlay">
+                <h2>Pixel Bird</h2>
+                <p>Tap or press Space to fly!</p>
+                <div class="bird-preview">🐦</div>
+                <p class="hint">Avoid the neon pipes</p>
+            </div>
+
+            <div id="gameOverScreen" class="overlay hidden">
+                <h2>Game Over</h2>
+                <p>Score: <span id="finalScore">0</span></p>
+                <button id="restartBtn" class="neon-btn">Try Again</button>
+            </div>
+        </div>
+
+        <script src="game.js"></script>
+</body>
+
+</html>

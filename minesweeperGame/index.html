@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bomb Squad - Rase Games</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../auth.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../auth.js"></script>
+    <script src="../leaderboard.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/index.html" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+            <a href="/community.html" class="nav-link">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">Bomb Squad</h1>
+        </div>
+    </div>
+
+    <div class="game-info">
+        <div class="info-box">
+            <span class="label">💣 MINES</span>
+            <span id="mineCount" class="value">10</span>
+        </div>
+        <div class="info-box">
+            <span class="label">🚩 FLAGS</span>
+            <span id="flagCount" class="value">0</span>
+        </div>
+        <div class="info-box">
+            <span class="label">⏱️ TIME</span>
+            <span id="timer" class="value">0</span>
+        </div>
+        <div class="info-box">
+            <span class="label">🏆 BEST</span>
+            <span id="bestTime" class="value">--</span>
+        </div>
+    </div>
+
+    <div class="difficulty-select">
+        <button class="diff-btn active" data-size="9" data-mines="10">Easy</button>
+        <button class="diff-btn" data-size="12" data-mines="20">Medium</button>
+        <button class="diff-btn" data-size="16" data-mines="40">Hard</button>
+    </div>
+
+    <div id="gameBoard" class="game-board"></div>
+
+    <div id="gameOverScreen" class="overlay hidden">
+        <h2 id="resultText">Game Over</h2>
+        <p id="resultMessage"></p>
+        <button id="restartBtn" class="neon-btn">Play Again</button>
+    </div>
+
+    <p class="hint">Left click to reveal • Right click to flag</p>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

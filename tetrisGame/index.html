@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Blocks - Rase Games</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../auth.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../auth.js"></script>
+    <script src="../leaderboard.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/index.html" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+            <a href="/community.html" class="nav-link">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">Cyber Blocks</h1>
+        </div>
+
+        <div class="game-wrapper">
+            <div class="side-panel left-panel">
+                <div class="next-piece-box">
+                    <h3>NEXT</h3>
+                    <canvas id="nextCanvas" width="100" height="100"></canvas>
+                </div>
+                <div class="hold-piece-box">
+                    <h3>HOLD</h3>
+                    <canvas id="holdCanvas" width="100" height="100"></canvas>
+                </div>
+            </div>
+
+            <div class="main-game">
+                <canvas id="gameCanvas" width="300" height="600"></canvas>
+                <div id="startScreen" class="overlay">
+                    <h2>Cyber Blocks</h2>
+                    <p>Press any key or tap to start</p>
+                    <div class="controls-hint">
+                        <span>← → Move</span>
+                        <span>↑ Rotate</span>
+                        <span>↓ Soft Drop</span>
+                        <span>Space Hard Drop</span>
+                    </div>
+                </div>
+                <div id="gameOverScreen" class="overlay hidden">
+                    <h2>Game Over</h2>
+                    <p>Score: <span id="finalScore">0</span></p>
+                    <p>Lines: <span id="finalLines">0</span></p>
+                    <button id="restartBtn" class="neon-btn">Play Again</button>
+                </div>
+            </div>
+
+            <div class="side-panel right-panel">
+                <div class="score-box">
+                    <h3>SCORE</h3>
+                    <div id="score" class="score-value">0</div>
+                </div>
+                <div class="lines-box">
+                    <h3>LINES</h3>
+                    <div id="lines" class="score-value">0</div>
+                </div>
+                <div class="level-box">
+                    <h3>LEVEL</h3>
+                    <div id="level" class="score-value">1</div>
+                </div>
+                <div class="highscore-box">
+                    <h3>HIGH SCORE</h3>
+                    <div id="highScore" class="score-value">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-controls">
+            <button id="leftBtn" class="control-btn">←</button>
+            <button id="downBtn" class="control-btn">↓</button>
+            <button id="rotateBtn" class="control-btn">↻</button>
+            <button id="rightBtn" class="control-btn">→</button>
+            <button id="dropBtn" class="control-btn drop">⤓</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Pong - Rase Games</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../auth.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../auth.js"></script>
+    <script src="../leaderboard.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/index.html" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+            <a href="/community.html" class="nav-link">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">Retro Pong</h1>
+        </div>
+    </div>
+
+    <div class="game-area">
+        <div class="score-board">
+            <div class="player-score">
+                <span class="label">YOU</span>
+                <span id="playerScore" class="score">0</span>
+            </div>
+            <div class="vs">VS</div>
+            <div class="ai-score">
+                <span class="label">CPU</span>
+                <span id="aiScore" class="score">0</span>
+            </div>
+        </div>
+
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+        <div id="startScreen" class="overlay">
+            <h2>Retro Pong</h2>
+            <p>First to 10 points wins!</p>
+            <p class="hint">Move mouse or touch to control paddle</p>
+            <button id="startBtn" class="neon-btn">Start Game</button>
+        </div>
+
+        <div id="gameOverScreen" class="overlay hidden">
+            <h2 id="resultText">You Win!</h2>
+            <p>Final Score: <span id="finalPlayerScore">0</span> - <span id="finalAiScore">0</span></p>
+            <button id="restartBtn" class="neon-btn">Play Again</button>
+        </div>
+    </div>
+
+    <div class="mobile-controls">
+        <button id="upBtn" class="control-btn">▲</button>
+        <button id="downBtn" class="control-btn">▼</button>
+    </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

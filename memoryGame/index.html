@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Match - Rase Games</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../auth.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../auth.js"></script>
+    <script src="../leaderboard.js"></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/index.html" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+            <a href="/community.html" class="nav-link">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">Mind Match</h1>
+        </div>
+    </div>
+
+    <div class="game-info">
+        <div class="info-box">
+            <span class="label">MOVES</span>
+            <span id="moves" class="value">0</span>
+        </div>
+        <div class="info-box">
+            <span class="label">PAIRS</span>
+            <span id="pairs" class="value">0/8</span>
+        </div>
+        <div class="info-box">
+            <span class="label">TIME</span>
+            <span id="timer" class="value">0</span>
+        </div>
+        <div class="info-box">
+            <span class="label">BEST</span>
+            <span id="bestScore" class="value">--</span>
+        </div>
+    </div>
+
+    <div id="gameBoard" class="game-board"></div>
+
+    <button id="restartBtn" class="neon-btn">New Game</button>
+
+    <div id="gameOverScreen" class="overlay hidden">
+        <h2>🎉 Congratulations!</h2>
+        <p>You found all pairs!</p>
+        <p>Moves: <span id="finalMoves">0</span> • Time: <span id="finalTime">0</span>s</p>
+        <p>Score: <span id="finalScore">0</span></p>
+        <button id="playAgainBtn" class="neon-btn">Play Again</button>
+    </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

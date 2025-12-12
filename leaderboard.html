@@ -127,15 +127,15 @@
 
     <nav class="navbar">
         <div class="logo">
-            <a href="/" onclick="route()" style="text-decoration: none; color: inherit;">
+            <a href="/index.html" style="text-decoration: none; color: inherit;">
                 <span class="logo-text">Rase Games</span>
             </a>
         </div>
         <div class="nav-links">
-            <a href="/" class="nav-link" onclick="route()">Games</a>
-            <a href="/about" class="nav-link" onclick="route()">About</a>
-            <a href="/leaderboard" class="nav-link" onclick="route()">Leaderboards</a>
-            <a href="/community" class="nav-link" onclick="route()">Community</a>
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+            <a href="/community.html" class="nav-link">Community</a>
             <div id="user-display"></div>
         </div>
     </nav>
@@ -209,6 +209,160 @@
                             </tr>
                         </thead>
                         <tbody id="runner-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tetris Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🧱</span>
+                        <h2 class="leaderboard-title">Cyber Blocks</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tetris-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Flappy Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🐦</span>
+                        <h2 class="leaderboard-title">Pixel Bird</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flappy-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pong Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🏓</span>
+                        <h2 class="leaderboard-title">Retro Pong</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Wins</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pong-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Minesweeper Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">💣</span>
+                        <h2 class="leaderboard-title">Bomb Squad</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="minesweeper-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Memory Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🃏</span>
+                        <h2 class="leaderboard-title">Mind Match</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="memory-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 2048 Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">🔢</span>
+                        <h2 class="leaderboard-title">Power 2048</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="game2048-leaderboard">
+                            <tr>
+                                <td colspan="3" class="loading">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tic Tac Toe Leaderboard -->
+                <div class="game-leaderboard">
+                    <div class="leaderboard-header">
+                        <span class="leaderboard-icon">⭕</span>
+                        <h2 class="leaderboard-title">Tic Tac Pro</h2>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th style="text-align: right;">Win Streak</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tictactoe-leaderboard">
                             <tr>
                                 <td colspan="3" class="loading">Loading...</td>
                             </tr>

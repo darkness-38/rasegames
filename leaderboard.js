@@ -270,15 +270,29 @@ function formatNumber(num) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 async function loadAllLeaderboards() {
-    const [snake, clicker, runner] = await Promise.all([
+    const [snake, clicker, runner, tetris, flappy, pong, minesweeper, memory, game2048, tictactoe] = await Promise.all([
         getLeaderboard('snake'),
         getLeaderboard('clicker'),
-        getLeaderboard('runner')
+        getLeaderboard('runner'),
+        getLeaderboard('tetris'),
+        getLeaderboard('flappy'),
+        getLeaderboard('pong'),
+        getLeaderboard('minesweeper'),
+        getLeaderboard('memory'),
+        getLeaderboard('game2048'),
+        getLeaderboard('tictactoe')
     ]);
 
     renderLeaderboard('snake-leaderboard', snake);
     renderLeaderboard('clicker-leaderboard', clicker);
     renderLeaderboard('runner-leaderboard', runner);
+    renderLeaderboard('tetris-leaderboard', tetris);
+    renderLeaderboard('flappy-leaderboard', flappy);
+    renderLeaderboard('pong-leaderboard', pong);
+    renderLeaderboard('minesweeper-leaderboard', minesweeper);
+    renderLeaderboard('memory-leaderboard', memory);
+    renderLeaderboard('game2048-leaderboard', game2048);
+    renderLeaderboard('tictactoe-leaderboard', tictactoe);
 }
 
 // Auto-load if on leaderboard page

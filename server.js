@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname), {
 }));
 
 // Fallback: serve index.html for directory paths
-app.get('*', (req, res, next) => {
+app.get('/(.*)', (req, res, next) => {
     const filePath = path.join(__dirname, req.path, 'index.html');
     res.sendFile(filePath, (err) => {
         if (err) next();

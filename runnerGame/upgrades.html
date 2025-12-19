@@ -4,16 +4,21 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Cyber Runner - Upgrades | Rase Games</title>
+    <title>Upgrades - Cyber Runner | Rase Games</title>
+    <!-- Rasegames CSS -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/auth.css">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -21,275 +26,61 @@
                 extend: {
                     colors: {
                         "primary": "#3b82f6",
-                        "primary-dark": "#1e3a5f",
-                        "background-light": "#f1f5f9",
                         "background-dark": "#0a0f1a",
                         "surface-dark": "#111827",
+                        "surface-border": "#1e3a5f",
                         "text-muted": "#94a3b8"
                     },
-                    fontFamily: {
-                        "display": ["Space Grotesk", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "2xl": "1rem",
-                        "full": "9999px"
-                    },
-                    backgroundImage: {
-                        'grid-pattern': "linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px)"
-                    }
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] }
                 },
             },
         }
     </script>
     <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0a0f1a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #1e3a5f;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3b82f6;
-        }
-
-        .cyber-glow {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
-        }
-
-        .cyber-border-gradient {
-            position: relative;
-        }
-
-        .cyber-border-gradient::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-            opacity: 0.5;
+        body {
+            background: #0a0f1a !important;
         }
     </style>
 </head>
 
-<body
-    class="bg-background-dark text-white font-display h-screen flex overflow-hidden selection:bg-primary selection:text-white">
-    <!-- SIDEBAR -->
-    <aside
-        class="hidden md:flex w-64 flex-col border-r border-[#1e3a5f] bg-[#0a0f1a] h-full flex-shrink-0 relative z-20">
-        <div class="flex flex-col h-full p-4 justify-between">
-            <div class="flex flex-col gap-6">
-                <!-- Branding -->
-                <div class="flex items-center gap-3 px-2">
-                    <div class="bg-center bg-no-repeat bg-cover rounded-full size-12 border-2 border-primary cyber-glow"
-                        style='background-image: url("https://images.unsplash.com/photo-1614729939124-032d1e6c9945?w=100");'>
-                    </div>
-                    <div>
-                        <h1 class="text-white text-lg font-bold tracking-wide">CYBER RUNNER</h1>
-                        <div class="flex items-center gap-1">
-                            <span class="size-2 rounded-full bg-primary animate-pulse"></span>
-                            <span class="text-xs text-text-muted">ONLINE</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Navigation -->
-                <nav class="flex flex-col gap-2">
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors text-text-muted hover:text-white group"
-                        href="index.html">
-                        <span class="material-symbols-outlined group-hover:text-primary transition-colors">home</span>
-                        <span class="text-sm font-medium">Home</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-[#1e3a5f]/50 border border-[#3b82f6]/30 text-white shadow-[0_0_10px_rgba(59,130,246,0.1)]"
-                        href="#">
-                        <span class="material-symbols-outlined text-primary">arrow_circle_up</span>
-                        <span class="text-sm font-bold">Upgrades</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors text-text-muted hover:text-white group"
-                        href="/leaderboard.html">
-                        <span
-                            class="material-symbols-outlined group-hover:text-primary transition-colors">leaderboard</span>
-                        <span class="text-sm font-medium">Leaderboard</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors text-text-muted hover:text-white group"
-                        href="/index.html">
-                        <span
-                            class="material-symbols-outlined group-hover:text-primary transition-colors">sports_esports</span>
-                        <span class="text-sm font-medium">All Games</span>
-                    </a>
-                </nav>
-            </div>
-            <!-- Bottom Info -->
-            <div class="px-3 py-4 border-t border-[#1e3a5f]">
-                <p class="text-xs text-text-muted uppercase tracking-widest mb-1">System Version</p>
-                <p class="text-sm font-mono">v.2.4.0-alpha</p>
-            </div>
+<body class="bg-background-dark text-white font-display min-h-screen">
+    <!-- RASEGAMES NAVBAR -->
+    <nav class="navbar">
+        <a href="/index.html" class="nav-logo">
+            <span class="logo-icon">🎮</span>
+            <span class="logo-text">Rase Games</span>
+        </a>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
         </div>
-    </aside>
+        <div id="user-display"></div>
+    </nav>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-1 flex flex-col h-full min-w-0 bg-[#0a0f1a] relative">
-        <!-- Background Grid Effect -->
-        <div class="absolute inset-0 bg-grid-pattern bg-[length:40px_40px] opacity-20 pointer-events-none"></div>
-
-        <!-- TOP BAR -->
-        <header
-            class="flex items-center justify-between whitespace-nowrap border-b border-[#1e3a5f] px-6 py-4 bg-[#0a0f1a]/80 backdrop-blur-sm z-10 sticky top-0">
-            <div class="flex items-center gap-4 text-white">
-                <button class="md:hidden text-white">
-                    <span class="material-symbols-outlined">menu</span>
-                </button>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary">terminal</span>
-                    <h2 class="text-white text-lg font-bold leading-tight tracking-widest">NEURAL LINK // UPGRADES</h2>
-                </div>
+    <main class="pt-24 px-4 pb-8 max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+            <div class="flex items-center gap-4">
+                <a href="index.html"
+                    class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-dark hover:bg-surface-border text-text-muted hover:text-white transition-all border border-surface-border">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="font-bold text-sm">BACK</span>
+                </a>
+                <h1 class="text-2xl font-bold text-white">UPGRADES</h1>
             </div>
-            <div class="flex items-center gap-3">
-                <div
-                    class="flex items-center bg-surface-dark border border-[#1e3a5f] rounded-lg h-10 px-4 gap-2 shadow-sm">
-                    <span class="material-symbols-outlined text-primary text-[20px]">diamond</span>
-                    <span id="coinDisplay" class="text-white text-sm font-bold tracking-wider">0</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- SCROLLABLE AREA -->
-        <div class="flex-1 overflow-y-auto p-4 lg:p-8">
-            <div class="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6 h-full">
-                <!-- LEFT COLUMN: GRID -->
-                <div class="flex-1 flex flex-col gap-6 min-h-0">
-                    <!-- TABS -->
-                    <div class="cyber-border-gradient">
-                        <div class="flex gap-8 overflow-x-auto pb-1 no-scrollbar">
-                            <button class="flex flex-col items-center group pb-3 min-w-[80px]">
-                                <span class="text-primary text-sm font-bold tracking-wider">ALL</span>
-                                <div class="h-[3px] w-full bg-primary mt-3 shadow-[0_0_8px_#3b82f6]"></div>
-                            </button>
-                            <button class="flex flex-col items-center group pb-3 min-w-[80px]">
-                                <span
-                                    class="text-text-muted text-sm font-bold tracking-wider group-hover:text-white transition-colors">LOCOMOTION</span>
-                                <div
-                                    class="h-[3px] w-full bg-transparent mt-3 group-hover:bg-white/20 transition-colors">
-                                </div>
-                            </button>
-                            <button class="flex flex-col items-center group pb-3 min-w-[80px]">
-                                <span
-                                    class="text-text-muted text-sm font-bold tracking-wider group-hover:text-white transition-colors">PASSIVE</span>
-                                <div
-                                    class="h-[3px] w-full bg-transparent mt-3 group-hover:bg-white/20 transition-colors">
-                                </div>
-                            </button>
-                            <button class="flex flex-col items-center group pb-3 min-w-[80px]">
-                                <span
-                                    class="text-text-muted text-sm font-bold tracking-wider group-hover:text-white transition-colors">ECONOMY</span>
-                                <div
-                                    class="h-[3px] w-full bg-transparent mt-3 group-hover:bg-white/20 transition-colors">
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- GRID -->
-                    <div id="upgradeGrid"
-                        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-20">
-                        <!-- Cards will be generated by JS -->
-                    </div>
-                </div>
-
-                <!-- RIGHT COLUMN: DETAIL PANEL -->
-                <div class="w-full xl:w-[400px] flex-shrink-0 z-10">
-                    <div
-                        class="xl:sticky xl:top-0 bg-[#111827] border border-[#3b82f6] rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col">
-                        <!-- Preview Image -->
-                        <div class="relative w-full aspect-video bg-black group overflow-hidden">
-                            <div id="detailImage"
-                                class="absolute inset-0 bg-cover bg-center opacity-80 transition-transform duration-700 group-hover:scale-105"
-                                style='background-image: url("https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800");'>
-                            </div>
-                            <div
-                                class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-20">
-                            </div>
-                            <div id="detailBadge"
-                                class="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
-                                Passive
-                            </div>
-                        </div>
-                        <!-- Content -->
-                        <div class="p-6 flex flex-col gap-6">
-                            <div>
-                                <h3 id="detailTitle"
-                                    class="text-2xl font-bold text-white mb-1 uppercase tracking-tight">Select an
-                                    Upgrade</h3>
-                                <p id="detailSubtitle" class="text-primary text-sm font-medium tracking-wide mb-4">
-                                    NEURAL INTERFACE</p>
-                                <p id="detailDesc"
-                                    class="text-text-muted text-sm leading-relaxed border-l-2 border-primary/30 pl-3">
-                                    Click on an upgrade card to view details and purchase.
-                                </p>
-                            </div>
-                            <!-- Stats -->
-                            <div class="flex flex-col gap-3 p-4 bg-black/20 rounded-lg border border-white/5">
-                                <div
-                                    class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text-muted mb-1">
-                                    <span>Effect Power</span>
-                                    <span id="detailBonus" class="text-primary">+0%</span>
-                                </div>
-                                <div class="w-full bg-[#0a0f1a] h-2 rounded-full overflow-hidden">
-                                    <div id="detailPowerBar"
-                                        class="bg-primary h-full w-[0%] shadow-[0_0_10px_#3b82f6] transition-all"></div>
-                                </div>
-                            </div>
-                            <!-- Current Level -->
-                            <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                                <span class="text-sm text-text-muted">Current Rank</span>
-                                <div class="flex items-center gap-2">
-                                    <span id="detailLevel" class="text-white font-bold">Level 0</span>
-                                    <span id="detailMaxLevel" class="text-text-muted text-xs">/ 5</span>
-                                </div>
-                            </div>
-                            <!-- Level bars -->
-                            <div class="flex gap-1">
-                                <div id="lvlBar1" class="h-1.5 flex-1 rounded-full bg-[#1e3a5f]"></div>
-                                <div id="lvlBar2" class="h-1.5 flex-1 rounded-full bg-[#1e3a5f]"></div>
-                                <div id="lvlBar3" class="h-1.5 flex-1 rounded-full bg-[#1e3a5f]"></div>
-                                <div id="lvlBar4" class="h-1.5 flex-1 rounded-full bg-[#1e3a5f]"></div>
-                                <div id="lvlBar5" class="h-1.5 flex-1 rounded-full bg-[#1e3a5f]"></div>
-                            </div>
-                            <!-- Actions -->
-                            <div class="flex flex-col gap-3">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-xs text-text-muted uppercase">Upgrade Cost</span>
-                                    <span class="text-xs text-text-muted uppercase">Balance: <span
-                                            id="detailBalance">0</span> ♦</span>
-                                </div>
-                                <button id="purchaseBtn"
-                                    class="w-full bg-primary hover:bg-[#60a5fa] disabled:bg-[#1e3a5f] disabled:cursor-not-allowed text-white font-bold text-lg h-14 rounded-lg flex items-center justify-between px-6 transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] group">
-                                    <span class="uppercase tracking-wider">Purchase</span>
-                                    <div
-                                        class="flex items-center gap-1 bg-[#0a0f1a]/20 px-3 py-1 rounded group-hover:bg-[#0a0f1a]/30 transition-colors">
-                                        <span id="detailCost">0</span>
-                                        <span class="material-symbols-outlined text-[18px]">diamond</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex items-center gap-2 bg-surface-dark border border-surface-border rounded-lg h-10 px-4">
+                <span class="material-symbols-outlined text-primary">diamond</span>
+                <span id="coinDisplay" class="text-white font-bold">0</span>
             </div>
         </div>
+
+        <!-- Upgrade Grid -->
+        <div id="upgradeGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </main>
 
+    <script src="/auth.js"></script>
     <script>
         // Cookie helpers
         function setCookie(name, value, days = 365) {
@@ -304,37 +95,12 @@
 
         // Data
         let totalCoins = parseInt(getCookie('crCoins')) || 0;
-        let selectedUpgrade = null;
 
         const upgrades = {
-            doubleJump: {
-                level: 0, maxLevel: 1, baseCost: 100,
-                name: 'Double Jump', icon: '⬆️',
-                desc: 'Unlocks the ability to jump again while mid-air. Essential for reaching higher platforms and avoiding obstacles.',
-                category: 'LOCOMOTION',
-                image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400'
-            },
-            magnet: {
-                level: 0, maxLevel: 3, baseCost: 50,
-                name: 'Coin Magnet', icon: '🧲',
-                desc: 'Creates a magnetic field around you that attracts nearby coins. Each level increases the attraction range.',
-                category: 'PASSIVE',
-                image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400'
-            },
-            coinBonus: {
-                level: 0, maxLevel: 5, baseCost: 75,
-                name: 'Coin Multiplier', icon: '💰',
-                desc: 'Increases the value of each coin collected. +50% bonus per level. Stack for massive rewards.',
-                category: 'ECONOMY',
-                image: 'https://images.unsplash.com/photo-1624365169364-0640dd10e180?w=400'
-            },
-            jumpHeight: {
-                level: 0, maxLevel: 3, baseCost: 120,
-                name: 'Jump Boost', icon: '🚀',
-                desc: 'Enhances your cybernetic legs for higher jumps. +15% jump height per level.',
-                category: 'LOCOMOTION',
-                image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400'
-            }
+            doubleJump: { level: 0, maxLevel: 1, baseCost: 100, name: 'Double Jump', icon: '⬆️', desc: 'Jump again mid-air' },
+            magnet: { level: 0, maxLevel: 3, baseCost: 50, name: 'Coin Magnet', icon: '🧲', desc: 'Attract nearby coins' },
+            coinBonus: { level: 0, maxLevel: 5, baseCost: 75, name: 'Coin Bonus', icon: '💰', desc: '+50% coin value per level' },
+            jumpHeight: { level: 0, maxLevel: 3, baseCost: 120, name: 'Jump Boost', icon: '🚀', desc: '+15% jump height per level' }
         };
 
         // Load saved upgrades
@@ -346,9 +112,8 @@
             } catch (e) { }
         }
 
-        function updateCoinDisplay() {
-            document.getElementById('coinDisplay').textContent = totalCoins.toLocaleString();
-            document.getElementById('detailBalance').textContent = totalCoins.toLocaleString();
+        function updateDisplay() {
+            document.getElementById('coinDisplay').textContent = totalCoins;
         }
 
         function renderGrid() {
@@ -358,90 +123,32 @@
             Object.entries(upgrades).forEach(([key, upg]) => {
                 const cost = upg.baseCost * (upg.level + 1);
                 const maxed = upg.level >= upg.maxLevel;
-                const isSelected = selectedUpgrade === key;
-
-                const levelBars = Array(upg.maxLevel).fill(0).map((_, i) =>
-                    `<div class="h-1.5 flex-1 rounded-full ${i < upg.level ? 'bg-primary' : 'bg-[#1e3a5f]'}"></div>`
-                ).join('');
+                const canBuy = totalCoins >= cost && !maxed;
 
                 const card = document.createElement('div');
-                card.className = `group relative bg-surface-dark border ${isSelected ? 'border-primary shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'border-[#1e3a5f] hover:border-text-muted'} rounded-xl overflow-hidden cursor-pointer transition-all hover:-translate-y-1 ${maxed ? 'opacity-75' : ''}`;
+                card.className = `bg-surface-dark border border-surface-border rounded-xl p-5 flex flex-col gap-3 transition-all ${maxed ? 'opacity-60' : 'hover:border-primary hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]'}`;
 
                 card.innerHTML = `
-                    <div class="aspect-square w-full bg-cover bg-center relative" style="background-image: url('${upg.image}');">
-                        <div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-90"></div>
-                        ${maxed ? '<div class="absolute top-2 right-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span></div>' : ''}
-                        <div class="absolute bottom-3 left-3 right-3">
-                            <div class="flex justify-between items-end">
-                                <p class="${isSelected ? 'text-white' : 'text-text-muted'} group-hover:text-white text-base font-bold leading-tight transition-colors">${upg.name}</p>
-                                <span class="text-lg">${upg.icon}</span>
-                            </div>
-                            <p class="text-xs text-text-muted mt-1 line-clamp-1">${upg.desc.substring(0, 40)}...</p>
-                            <div class="flex gap-1 mt-2">${levelBars}</div>
-                            ${!maxed ? `<div class="flex items-center gap-1 mt-2 text-xs"><span class="material-symbols-outlined text-primary text-sm">diamond</span><span class="text-primary font-bold">${cost}</span></div>` : '<div class="text-xs text-primary font-bold mt-2">MAX LEVEL</div>'}
-                        </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl">${upg.icon}</span>
+                        ${maxed ? '<span class="text-xs bg-primary/20 text-primary px-2 py-1 rounded font-bold">MAX</span>' : ''}
+                    </div>
+                    <h3 class="text-lg font-bold text-white">${upg.name}</h3>
+                    <p class="text-sm text-text-muted">${upg.desc}</p>
+                    <div class="flex gap-1 mt-1">
+                        ${Array(upg.maxLevel).fill(0).map((_, i) => `<div class="h-1.5 flex-1 rounded-full ${i < upg.level ? 'bg-primary' : 'bg-surface-border'}"></div>`).join('')}
+                    </div>
+                    <div class="flex items-center justify-between mt-2 pt-3 border-t border-surface-border">
+                        <span class="text-sm text-text-muted">Level ${upg.level}/${upg.maxLevel}</span>
+                        ${maxed ? '' : `<button onclick="buyUpgrade('${key}')" class="flex items-center gap-1 px-4 py-2 rounded-lg font-bold text-sm transition-all ${canBuy ? 'bg-primary hover:bg-primary/80 text-white' : 'bg-surface-border text-text-muted cursor-not-allowed'}">
+                            <span class="material-symbols-outlined text-sm">diamond</span>
+                            ${cost}
+                        </button>`}
                     </div>
                 `;
 
-                card.onclick = () => selectUpgrade(key);
                 grid.appendChild(card);
             });
-        }
-
-        function selectUpgrade(key) {
-            selectedUpgrade = key;
-            renderGrid();
-            updateDetailPanel(key);
-        }
-
-        function updateDetailPanel(key) {
-            const upg = upgrades[key];
-            if (!upg) return;
-
-            const cost = upg.baseCost * (upg.level + 1);
-            const maxed = upg.level >= upg.maxLevel;
-            const canBuy = totalCoins >= cost && !maxed;
-
-            document.getElementById('detailImage').style.backgroundImage = `url('${upg.image}')`;
-            document.getElementById('detailBadge').textContent = upg.category;
-            document.getElementById('detailTitle').textContent = upg.name;
-            document.getElementById('detailSubtitle').textContent = `CYBER ENHANCEMENT // MK-${upg.level + 1}`;
-            document.getElementById('detailDesc').textContent = upg.desc;
-
-            // Calculate bonus
-            let bonusText = '+0%';
-            let powerPercent = 0;
-            if (key === 'doubleJump') {
-                bonusText = upg.level > 0 ? 'ACTIVE' : 'INACTIVE';
-                powerPercent = upg.level * 100;
-            } else if (key === 'magnet') {
-                bonusText = '+' + (upg.level * 35) + ' range';
-                powerPercent = (upg.level / upg.maxLevel) * 100;
-            } else if (key === 'coinBonus') {
-                bonusText = '+' + (upg.level * 50) + '% coins';
-                powerPercent = (upg.level / upg.maxLevel) * 100;
-            } else if (key === 'jumpHeight') {
-                bonusText = '+' + (upg.level * 15) + '% height';
-                powerPercent = (upg.level / upg.maxLevel) * 100;
-            }
-
-            document.getElementById('detailBonus').textContent = bonusText;
-            document.getElementById('detailPowerBar').style.width = powerPercent + '%';
-            document.getElementById('detailLevel').textContent = 'Level ' + upg.level;
-            document.getElementById('detailMaxLevel').textContent = '/ ' + upg.maxLevel;
-            document.getElementById('detailCost').textContent = maxed ? 'MAX' : cost;
-
-            // Update level bars
-            for (let i = 1; i <= 5; i++) {
-                const bar = document.getElementById('lvlBar' + i);
-                if (bar) {
-                    bar.className = `h-1.5 flex-1 rounded-full ${i <= upg.level ? 'bg-primary' : 'bg-[#1e3a5f]'}`;
-                }
-            }
-
-            const btn = document.getElementById('purchaseBtn');
-            btn.disabled = !canBuy;
-            btn.onclick = maxed ? null : () => buyUpgrade(key);
         }
 
         function buyUpgrade(key) {
@@ -457,18 +164,14 @@
                     Object.fromEntries(Object.entries(upgrades).map(([k, v]) => [k, v.level]))
                 )));
 
-                updateCoinDisplay();
+                updateDisplay();
                 renderGrid();
-                updateDetailPanel(key);
             }
         }
 
         // Init
-        updateCoinDisplay();
+        updateDisplay();
         renderGrid();
-        if (Object.keys(upgrades).length > 0) {
-            selectUpgrade(Object.keys(upgrades)[0]);
-        }
     </script>
 </body>
 

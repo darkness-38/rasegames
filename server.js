@@ -60,9 +60,9 @@ function createRoom(hostId) {
 
 function joinRoom(code, guestId) {
     const room = rooms.get(code);
-    if (!room) return { error: 'Oda bulunamadı!' };
-    if (room.guest) return { error: 'Oda dolu!' };
-    if (room.host === guestId) return { error: 'Kendi odanıza katılamazsınız!' };
+    if (!room) return { error: 'Cant find room!' };
+    if (room.guest) return { error: 'Room is full!' };
+    if (room.host === guestId) return { error: 'You cant join your own room!' };
 
     room.guest = guestId;
     room.state = 'selecting';
@@ -82,7 +82,7 @@ function leaveRoom(playerId) {
 
     if (room.host === playerId) {
         if (room.guest) {
-            io.to(room.guest).emit('roomClosed', { reason: 'Host odadan ayrıldı' });
+            io.to(room.guest).emit('roomClosed', { reason: 'Host left the room' });
             playerRooms.delete(room.guest);
         }
         rooms.delete(code);
@@ -102,7 +102,7 @@ function leaveRoom(playerId) {
 io.on('connection', (socket) => {
     console.log(`Player connected: ${socket.id}`);
 
-    
+
     socket.on('createRoom', () => {
         const room = createRoom(socket.id);
         socket.join(room.code);
@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
         console.log(`Room created: ${room.code} by ${socket.id}`);
     });
 
-    
+
     socket.on('joinRoom', (code) => {
         const result = joinRoom(code.toUpperCase(), socket.id);
 
@@ -126,7 +126,7 @@ io.on('connection', (socket) => {
         console.log(`Player ${socket.id} joined room ${code}`);
     });
 
-    
+
     socket.on('selectCharacter', ({ character }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('opponentSelectedCharacter', { character });
     });
 
-    
+
     socket.on('selectArena', ({ arena }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -155,7 +155,7 @@ io.on('connection', (socket) => {
         io.to(code).emit('arenaSelected', { arena });
     });
 
-    
+
     socket.on('playerReady', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -181,14 +181,14 @@ io.on('connection', (socket) => {
         }
     });
 
-    
+
     socket.on('playerInput', (inputData) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
         socket.to(code).emit('opponentInput', inputData);
     });
 
-    
+
     socket.on('gameStateSync', (state) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -200,14 +200,14 @@ io.on('connection', (socket) => {
         socket.to(code).emit('gameStateUpdate', state);
     });
 
-    
+
     socket.on('roundEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
         socket.to(code).emit('roundEnded', data);
     });
 
-    
+
     socket.on('matchEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -222,7 +222,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('matchEnded', data);
     });
 
-    
+
     socket.on('requestRematch', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -246,7 +246,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    
+
     socket.on('chatMessage', (message) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -257,13 +257,13 @@ io.on('connection', (socket) => {
         });
     });
 
-    
+
     socket.on('disconnect', () => {
         console.log(`Player disconnected: ${socket.id}`);
         leaveRoom(socket.id);
     });
 
-    
+
     socket.on('leaveRoom', () => {
         leaveRoom(socket.id);
     });
@@ -274,6 +274,6 @@ io.on('connection', (socket) => {
 
 
 server.listen(PORT, () => {
-    console.log(`🎮 Rase Games Server running on port ${PORT}`);
-    console.log(`   Open http://localhost:${PORT} in your browser`);
+    console.log(`Rase Games Server running on port ${PORT}`);
+    console.log(`Open http://localhost:${PORT} in your browser`);
 });

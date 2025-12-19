@@ -7,8 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f1323">
-    <title>Fight Arena - Online Dövüş Oyunu</title>
-    <meta name="description" content="Brawlhalla, Mortal Kombat ve Street Fighter tarzında online 2D dövüş oyunu">
+    <title>Fight Arena - Online Fighting Game</title>
+    <meta name="description"
+        content="Online 2D fighting game in the style of Brawlhalla, Mortal Kombat and Street Fighter">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/auth.css">
@@ -50,28 +51,28 @@
             }
         };
     </script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 
 <body
     class="dark bg-background-dark min-h-screen text-white overflow-hidden selection:bg-primary selection:text-black font-display">
-    
+
     <div class="fixed inset-0 z-0">
-        
+
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 mix-blend-overlay"
             style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAHNeed4gHQAjiJq0r4BkHNA1yiQ3zVpHMyF4W53pggOwdMf0LhepvyNCbIunYrD3ibceW4YcIncRARKhL5x9dZtgqlePjxbzV-PngrYLfY8LRJYbRpM-Vcb1nzvunX78z9-uXwkoT2tznQZIXNe8RzeGOlVkedDGM7oONMeq6WQ3tJcwSWTrI82MRsl-RqcfU1FVik1wnwS_0EEFTjADPQ3yZN-cIN-Hd6Zy44DrW-x0dKdt2lfnMPpXluXzi9Rx3hqZI7i0Waufk");'>
         </div>
-        
+
         <div
             class="absolute inset-0 bg-gradient-to-b from-background-dark/80 via-background-dark/90 to-background-dark">
         </div>
-        
+
         <div
             class="absolute inset-0 bg-[linear-gradient(rgba(20,34,16,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(20,34,16,0.1)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)]">
         </div>
     </div>
 
-    
+
     <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
         <div class="logo">
             <a href="/index.html" style="text-decoration: none; color: inherit;">
@@ -87,20 +88,20 @@
         </div>
     </nav>
 
-    
+
     <div id="main-menu" class="screen active">
         <div class="relative z-10 flex flex-col h-screen max-w-[1440px] mx-auto w-full" style="padding-top: 80px;">
-            
+
             <header class="flex items-center justify-between px-6 py-5 md:px-10 lg:px-16 w-full">
                 <div class="flex items-center gap-4">
-                    
+
                     <a href="/index.html"
                         class="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-dark/50 border border-white/5 backdrop-blur-sm hover:border-primary/50 hover:text-primary transition-all duration-300 group">
                         <span
                             class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
                         <span class="text-xs font-bold tracking-widest uppercase">Back to Games</span>
                     </a>
-                    
+
                     <div
                         class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-dark/50 border border-white/5 backdrop-blur-sm">
                         <span class="relative flex h-2.5 w-2.5">
@@ -121,9 +122,9 @@
                 </div>
             </header>
 
-            
+
             <main class="flex-1 flex flex-col items-center justify-center px-4 pb-12 w-full">
-                
+
                 <div class="flex flex-col items-center mb-12 md:mb-16">
                     <div class="mb-4 text-primary animate-pulse">
                         <span class="material-symbols-outlined text-6xl md:text-8xl"
@@ -137,9 +138,9 @@
                         Kombat Simulator</p>
                 </div>
 
-                
+
                 <div class="flex flex-col gap-4 w-full max-w-[420px]">
-                    
+
                     <button onclick="showOnlineMenu()"
                         class="group relative overflow-hidden flex items-center justify-between w-full h-16 md:h-20 px-8 rounded-full bg-primary text-surface-dark font-black text-lg md:text-xl tracking-wider uppercase shadow-neon hover:shadow-neon-strong hover:-translate-y-1 transition-all duration-300">
                         <div
@@ -147,46 +148,46 @@
                         </div>
                         <span class="flex items-center gap-3 z-10">
                             <span class="material-symbols-outlined text-3xl">public</span>
-                            Online Maç
+                            Online Match
                         </span>
                         <span
                             class="material-symbols-outlined text-2xl opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 z-10">swords</span>
                     </button>
 
-                    
+
                     <button onclick="startLocalGame()"
                         class="group relative flex items-center justify-between w-full h-14 md:h-16 px-8 rounded-full bg-surface-dark border border-white/10 hover:border-primary/50 text-white font-bold text-base md:text-lg tracking-wider uppercase hover:bg-surface-dark/90 hover:-translate-y-0.5 transition-all duration-300">
                         <span class="flex items-center gap-3">
                             <span
                                 class="material-symbols-outlined text-white/60 group-hover:text-primary transition-colors">group</span>
-                            Yerel Maç
+                            Local Match
                         </span>
                         <span class="w-2 h-2 rounded-full bg-white/20 group-hover:bg-primary transition-colors"></span>
                     </button>
 
-                    
+
                     <button onclick="startTraining()"
                         class="group relative flex items-center justify-between w-full h-14 md:h-16 px-8 rounded-full bg-surface-dark border border-white/10 hover:border-primary/50 text-white font-bold text-base md:text-lg tracking-wider uppercase hover:bg-surface-dark/90 hover:-translate-y-0.5 transition-all duration-300">
                         <span class="flex items-center gap-3">
                             <span
                                 class="material-symbols-outlined text-white/60 group-hover:text-primary transition-colors">fitness_center</span>
-                            Eğitim Modu
+                            Training Mode
                         </span>
                         <span class="w-2 h-2 rounded-full bg-white/20 group-hover:bg-primary transition-colors"></span>
                     </button>
 
-                    
+
                     <button onclick="showControls()"
                         class="group mt-2 flex items-center justify-center w-full h-12 rounded-full text-white/50 hover:text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-white/5 transition-all duration-300">
                         <span class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-lg">gamepad</span>
-                            Kontroller
+                            Controls
                         </span>
                     </button>
                 </div>
             </main>
 
-            
+
             <footer class="py-4 md:py-6 text-center px-4">
                 <div
                     class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
@@ -199,9 +200,9 @@
         </div>
     </div>
 
-    
+
     <div id="character-select" class="screen">
-        
+
         <div class="fixed inset-0 z-0">
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
                 style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAHNeed4gHQAjiJq0r4BkHNA1yiQ3zVpHMyF4W53pggOwdMf0LhepvyNCbIunYrD3ibceW4YcIncRARKhL5x9dZtgqlePjxbzV-PngrYLfY8LRJYbRpM-Vcb1nzvunX78z9-uXwkoT2tznQZIXNe8RzeGOlVkedDGM7oONMeq6WQ3tJcwSWTrI82MRsl-RqcfU1FVik1wnwS_0EEFTjADPQ3yZN-cIN-Hd6Zy44DrW-x0dKdt2lfnMPpXluXzi9Rx3hqZI7i0Waufk");'>
@@ -215,7 +216,7 @@
         </div>
 
         <div class="relative z-10 flex flex-col h-screen w-full overflow-y-auto">
-            
+
             <header class="flex items-center justify-between px-6 py-5 md:px-10 w-full">
                 <button onclick="goToMenu()"
                     class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-dark/50 border border-white/10 hover:border-primary/50 hover:bg-surface-dark text-white/80 hover:text-primary transition-all duration-300 group backdrop-blur-sm">
@@ -223,14 +224,14 @@
                         class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     <span class="text-xs md:text-sm font-bold tracking-widest uppercase">Back</span>
                 </button>
-                <div class="text-xs font-bold tracking-[0.2em] text-white/30 hidden sm:block uppercase">Karakter Seçimi
+                <div class="text-xs font-bold tracking-[0.2em] text-white/30 hidden sm:block uppercase">Character Select
                 </div>
                 <div class="w-24"></div>
             </header>
 
-            
+
             <main class="flex-1 flex flex-col px-4 md:px-10 pb-6 max-w-[1400px] mx-auto w-full">
-                
+
                 <div class="flex flex-col items-center mb-8">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-black italic tracking-tighter text-white uppercase leading-none text-center drop-shadow-[0_0_15px_rgba(70,236,19,0.3)] glitch-text"
                         data-text="SELECT CHARACTER">
@@ -239,9 +240,9 @@
                     <div class="mt-2 w-24 h-1 bg-primary shadow-neon"></div>
                 </div>
 
-                
+
                 <div class="flex flex-col xl:flex-row gap-6 xl:gap-8 mb-8">
-                    
+
                     <div class="flex-1" id="p1-select">
                         <div class="flex items-center gap-3 mb-4 pb-3 border-b border-primary/30">
                             <div
@@ -254,7 +255,7 @@
                             </div>
                         </div>
                         <div class="character-cards grid grid-cols-3 gap-3" id="p1-cards">
-                            
+
                             <div class="char-card group cursor-pointer rounded-xl overflow-hidden border-2 border-white/10 hover:border-primary/50 bg-surface-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-neon"
                                 data-char="warrior" onclick="selectCharacter(1, 'warrior')">
                                 <div
@@ -292,7 +293,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="char-card group cursor-pointer rounded-xl overflow-hidden border-2 border-white/10 hover:border-primary/50 bg-surface-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-neon"
                                 data-char="ninja" onclick="selectCharacter(1, 'ninja')">
                                 <div
@@ -330,7 +331,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="char-card group cursor-pointer rounded-xl overflow-hidden border-2 border-white/10 hover:border-primary/50 bg-surface-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-neon"
                                 data-char="mage" onclick="selectCharacter(1, 'mage')">
                                 <div
@@ -371,7 +372,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="vs-divider flex xl:flex-col items-center justify-center py-4 xl:py-0 xl:px-4">
                         <div
                             class="hidden xl:block h-full w-px bg-gradient-to-b from-transparent via-white/20 to-transparent">
@@ -388,7 +389,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="flex-1" id="p2-select">
                         <div
                             class="flex items-center gap-3 mb-4 pb-3 border-b border-red-500/30 xl:flex-row-reverse xl:text-right">
@@ -402,7 +403,7 @@
                             </div>
                         </div>
                         <div class="character-cards grid grid-cols-3 gap-3" id="p2-cards">
-                            
+
                             <div class="char-card group cursor-pointer rounded-xl overflow-hidden border-2 border-white/10 hover:border-red-500/50 bg-surface-dark transition-all duration-300 hover:-translate-y-1"
                                 data-char="warrior" onclick="selectCharacter(2, 'warrior')">
                                 <div
@@ -440,7 +441,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="char-card group cursor-pointer rounded-xl overflow-hidden border-2 border-white/10 hover:border-red-500/50 bg-surface-dark transition-all duration-300 hover:-translate-y-1"
                                 data-char="ninja" onclick="selectCharacter(2, 'ninja')">
                                 <div
@@ -478,7 +479,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="char-card group cursor-pointer rounded-xl overflow-hidden border-2 border-white/10 hover:border-red-500/50 bg-surface-dark transition-all duration-300 hover:-translate-y-1"
                                 data-char="mage" onclick="selectCharacter(2, 'mage')">
                                 <div
@@ -521,7 +522,7 @@
                 </div>
 
 
-                
+
                 <div class="select-actions flex justify-center gap-4">
                     <button
                         class="action-btn back-btn px-8 py-4 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 font-bold uppercase tracking-widest transition-colors flex items-center gap-2"
@@ -543,12 +544,12 @@
         </div>
     </div>
 
-    
+
     <div id="controls-screen" class="screen">
-        
+
         <div class="fixed inset-0 z-0">
             <div class="absolute inset-0 bg-background-dark"></div>
-            
+
             <div
                 class="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] pointer-events-none">
             </div>
@@ -558,7 +559,7 @@
         </div>
 
         <div class="relative z-10 flex flex-col h-full w-full overflow-y-auto">
-            
+
             <div class="w-full px-6 py-6 lg:px-20 flex justify-between items-center">
                 <button onclick="goToMenu()"
                     class="group flex items-center justify-center gap-3 px-6 h-12 rounded-lg bg-surface-dark/50 border border-white/10 hover:border-primary/50 hover:bg-surface-dark transition-all duration-300">
@@ -566,23 +567,23 @@
                         class="material-symbols-outlined text-white group-hover:text-primary transition-colors">arrow_back</span>
                     <span class="text-sm font-bold tracking-widest text-gray-300 group-hover:text-white">GO BACK</span>
                 </button>
-                <div class="text-xs font-bold tracking-[0.2em] text-white/30 hidden sm:block">SİSTEM AYARLARI //
-                    KONTROLLER</div>
+                <div class="text-xs font-bold tracking-[0.2em] text-white/30 hidden sm:block">SYSTEM SETTINGS //
+                    CONTROLS</div>
             </div>
 
             <div class="px-6 lg:px-20 pb-20 flex flex-1 justify-center">
                 <div class="flex flex-col max-w-[1200px] flex-1 w-full">
-                    
+
                     <div class="flex flex-col gap-2 mb-10 border-l-4 border-primary pl-6 py-2">
                         <h1 class="text-white text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none">
-                            KONTROLLER</h1>
+                            CONTROLS</h1>
                         <p class="text-gray-400 text-lg font-medium tracking-wide">How Will You Control Your Fighter?
                         </p>
                     </div>
 
-                    
+
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        
+
                         <div class="lg:col-span-5 flex flex-col gap-6">
                             <div
                                 class="bg-surface-dark border border-white/5 rounded-xl p-6 relative overflow-hidden group">
@@ -592,13 +593,13 @@
                                 <div class="flex flex-col gap-4 relative z-10">
                                     <h3 class="text-xl font-bold text-white flex items-center gap-2">
                                         <span class="material-symbols-outlined text-primary">gamepad</span>
-                                        Klavye Düzeni
+                                        Keyboard Layout
                                     </h3>
-                                    
+
                                     <div
                                         class="w-full aspect-[4/3] bg-background-dark rounded-lg border border-white/10 flex items-center justify-center relative overflow-hidden">
                                         <div class="grid grid-cols-5 gap-2 p-4">
-                                            
+
                                             <div class="col-start-2 flex justify-center">
                                                 <div
                                                     class="w-12 h-12 rounded-lg bg-surface-dark border border-primary/50 flex items-center justify-center text-primary font-bold shadow-lg shadow-primary/20">
@@ -644,7 +645,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="bg-surface-dark/50 border border-white/5 rounded-xl p-6 flex flex-col gap-4">
                                 <div class="flex items-center gap-3 text-sm text-gray-300">
                                     <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
@@ -657,9 +658,9 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="lg:col-span-7 flex flex-col gap-8">
-                            
+
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center gap-3 px-2">
                                     <span class="material-symbols-outlined text-primary">directions_run</span>
@@ -677,7 +678,7 @@
                                         </thead>
                                         <tbody class="divide-y divide-white/5">
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Sola Hareket
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Move Left
                                                 </td>
                                                 <td class="px-6 py-3 flex justify-end">
                                                     <span
@@ -685,7 +686,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Sağa Hareket
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Move Right
                                                 </td>
                                                 <td class="px-6 py-3 flex justify-end">
                                                     <span
@@ -711,7 +712,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center gap-3 px-2">
                                     <span class="material-symbols-outlined text-primary">swords</span>
@@ -729,7 +730,7 @@
                                         </thead>
                                         <tbody class="divide-y divide-white/5">
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Hafif Saldırı
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Light Attack
                                                 </td>
                                                 <td class="px-6 py-3 flex justify-end">
                                                     <span
@@ -737,7 +738,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Ağır Saldırı
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Heavy Attack
                                                 </td>
                                                 <td class="px-6 py-3 flex justify-end">
                                                     <span
@@ -745,7 +746,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Özel Yetenek
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Special Ability
                                                 </td>
                                                 <td class="px-6 py-3 flex justify-end">
                                                     <span
@@ -755,7 +756,7 @@
                                             <tr class="group hover:bg-white/5 transition-colors">
                                                 <td
                                                     class="px-6 py-4 text-sm font-medium text-gray-200 flex items-center gap-2">
-                                                    Savunma (Blok)
+                                                    Defense (Block)
                                                     <span
                                                         class="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold">IMPORTANT</span>
                                                 </td>
@@ -769,7 +770,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center gap-3 px-2">
                                     <span class="material-symbols-outlined text-red-500">person</span>
@@ -788,7 +789,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Zıpla / Eğil
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Jump / Crouch
                                                 </td>
                                                 <td class="px-6 py-3 flex justify-end">
                                                     <span
@@ -797,8 +798,8 @@
                                                 </td>
                                             </tr>
                                             <tr class="group hover:bg-white/5 transition-colors">
-                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Hafif / Ağır /
-                                                    Özel</td>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-200">Light / Heavy /
+                                                    Special</td>
                                                 <td class="px-6 py-3 flex justify-end gap-2">
                                                     <span
                                                         class="w-10 h-10 flex items-center justify-center rounded bg-background-dark border border-white/20 text-white font-bold text-sm">J</span>
@@ -820,7 +821,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center gap-3 px-2">
                                     <span class="material-symbols-outlined text-yellow-500">star</span>
@@ -856,11 +857,11 @@
         </div>
     </div>
 
-    
+
     <div id="game-screen" class="screen">
-        
+
         <div class="game-hud">
-            
+
             <div class="player-hud p1-hud">
                 <div class="player-info">
                     <div class="player-portrait" id="p1-portrait"></div>
@@ -878,13 +879,13 @@
                 <div class="combo-counter" id="p1-combo"></div>
             </div>
 
-            
+
             <div class="center-hud">
                 <div class="round-indicator" id="round-indicator">ROUND 1</div>
                 <div class="timer" id="game-timer">99</div>
             </div>
 
-            
+
             <div class="player-hud p2-hud">
                 <div class="combo-counter" id="p2-combo"></div>
                 <div class="player-bars">
@@ -903,13 +904,13 @@
             </div>
         </div>
 
-        
+
         <canvas id="game-canvas"></canvas>
 
-        
+
         <div class="announcer" id="announcer"></div>
 
-        
+
         <div class="pause-menu" id="pause-menu">
             <h2>PAUSED</h2>
             <button class="menu-btn" onclick="resumeGame()">Resume</button>
@@ -918,7 +919,7 @@
         </div>
     </div>
 
-    
+
     <div id="result-screen" class="screen">
         <div class="result-container">
             <h2 class="result-title" id="result-title">PLAYER 1 WINS!</h2>
@@ -937,7 +938,7 @@
         </div>
     </div>
 
-    
+
     <div id="online-menu" class="screen">
         <div class="fixed inset-0 z-0">
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 mix-blend-overlay"
@@ -981,7 +982,7 @@
                     <div class="mt-2 w-24 h-1 bg-primary shadow-neon"></div>
                 </div>
                 <div class="w-full max-w-[500px] flex flex-col gap-8">
-                    
+
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center gap-3 px-2">
                             <span class="material-symbols-outlined text-primary text-2xl">add_box</span>
@@ -1004,18 +1005,18 @@
                                 <span class="material-symbols-outlined text-3xl">swords</span>
                             </div>
                         </button>
-                        
+
                         <div id="room-code"
                             class="hidden text-center py-4 px-6 bg-surface-dark/80 rounded-xl border border-primary/50">
                             <p class="text-sm text-white/60 mb-2">Your Room Code:</p>
                             <p class="text-3xl font-mono font-bold text-primary tracking-widest"></p>
                         </div>
                     </div>
-                    
+
                     <div class="relative flex py-2 items-center opacity-40">
                         <div class="flex-grow border-t border-white/20"></div>
                     </div>
-                    
+
                     <div class="flex flex-col gap-5">
                         <div class="flex items-center gap-3 px-2">
                             <span class="material-symbols-outlined text-primary text-2xl">meeting_room</span>
@@ -1036,14 +1037,14 @@
                                     class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-20deg] translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out">
                                 </div>
                                 <span class="flex items-center justify-center gap-3 relative z-10">
-                                    Katıl
+                                    Join
                                     <span
                                         class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform">login</span>
                                 </span>
                             </button>
                         </div>
                     </div>
-                    
+
                     <div id="connection-status" class="text-center text-sm text-white/60"></div>
                 </div>
             </main>
@@ -1059,7 +1060,7 @@
         </div>
     </div>
 
-    
+
     <div id="battle-prep" class="screen">
         <div class="fixed inset-0 z-0">
             <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
@@ -1068,7 +1069,7 @@
             <div
                 class="absolute inset-0 bg-gradient-to-b from-background-dark via-background-dark/95 to-background-dark">
             </div>
-            
+
             <div
                 class="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -translate-y-1/2">
             </div>
@@ -1077,7 +1078,7 @@
             </div>
         </div>
 
-        
+
         <header
             class="absolute top-0 left-0 right-0 flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 py-4 bg-background-dark/80 backdrop-blur-sm z-20">
             <div class="flex items-center gap-4 text-white">
@@ -1104,13 +1105,13 @@
             </div>
         </header>
 
-        
+
         <div class="relative z-10 flex flex-col h-screen max-w-[1440px] mx-auto w-full pt-20 pb-6 px-4 md:px-10">
             <div class="flex-1 flex flex-col xl:flex-row gap-6 items-stretch justify-center">
 
-                
+
                 <div class="flex-1 flex flex-col gap-4 max-w-md xl:max-w-none">
-                    
+
                     <div class="flex items-center justify-between border-b border-white/10 pb-3">
                         <div class="flex items-center gap-3">
                             <div
@@ -1125,11 +1126,11 @@
                         </div>
                         <div
                             class="px-2 py-1 bg-primary/20 text-primary border border-primary/30 rounded text-[10px] font-bold uppercase tracking-wider">
-                            Takımın
+                            Your Team
                         </div>
                     </div>
 
-                    
+
                     <div id="prep-p1-character"
                         class="group flex flex-col bg-surface-dark rounded-xl overflow-hidden border border-white/10 hover:border-primary/30 transition-all duration-300">
                         <div class="relative w-full aspect-[4/3]">
@@ -1156,7 +1157,7 @@
                         </div>
                     </div>
 
-                    
+
                     <button id="prep-ready-btn" onclick="toggleReady()"
                         class="w-full py-4 bg-primary hover:bg-primary-dark text-surface-dark font-bold text-lg rounded-xl tracking-widest uppercase transition-all shadow-neon hover:shadow-neon-strong flex items-center justify-center gap-3 group/btn">
                         <span>Ready</span>
@@ -1165,11 +1166,11 @@
                     </button>
                 </div>
 
-                
+
                 <div class="flex xl:flex-col items-center justify-center gap-4 xl:gap-6 min-w-[120px] py-4 xl:py-0">
-                    
+
                     <div class="flex flex-col items-center">
-                        <p class="text-white/40 text-[10px] font-mono uppercase tracking-widest mb-1">Otomatik Başlama
+                        <p class="text-white/40 text-[10px] font-mono uppercase tracking-widest mb-1">Auto Start
                         </p>
                         <div class="flex items-center gap-1">
                             <div
@@ -1182,23 +1183,23 @@
                         </div>
                     </div>
 
-                    
+
                     <div
                         class="relative flex items-center justify-center size-20 xl:size-24 rounded-full bg-gradient-to-br from-primary to-background-dark border-4 border-background-dark shadow-2xl z-10">
                         <span class="text-white text-3xl xl:text-4xl font-black italic">VS</span>
                         <div class="absolute inset-0 rounded-full border border-white/10"></div>
                     </div>
 
-                    
+
                     <div class="hidden xl:flex flex-col items-center text-center gap-2 opacity-60">
                         <span class="material-symbols-outlined text-2xl text-white/40">public</span>
                         <span class="text-[10px] text-white/40 uppercase tracking-wider">Server: EU-West</span>
                     </div>
                 </div>
 
-                
+
                 <div class="flex-1 flex flex-col gap-4 max-w-md xl:max-w-none opacity-90">
-                    
+
                     <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-row-reverse">
                         <div class="flex items-center gap-3 flex-row-reverse">
                             <div
@@ -1207,17 +1208,17 @@
                             </div>
                             <div class="text-right">
                                 <h2 class="text-xl font-bold tracking-tight text-white uppercase" id="prep-p2-name">
-                                    Rakip</h2>
+                                    Opponent</h2>
                                 <p class="text-red-400 text-xs font-mono font-medium">LVL ?? • ???</p>
                             </div>
                         </div>
                         <div
                             class="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded text-[10px] font-bold uppercase tracking-wider">
-                            Düşman
+                            Enemy
                         </div>
                     </div>
 
-                    
+
                     <div id="prep-p2-character"
                         class="flex flex-col bg-surface-dark rounded-xl overflow-hidden border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
                         <div class="relative w-full aspect-[4/3]">
@@ -1242,7 +1243,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div id="prep-opponent-status"
                         class="w-full py-4 border border-white/10 bg-surface-dark text-white/40 font-mono text-sm uppercase rounded-xl flex items-center justify-center gap-3">
                         <span class="relative flex h-3 w-3">
@@ -1250,12 +1251,12 @@
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/40 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-white/50"></span>
                         </span>
-                        <span>Waiting for opponent.../span>
+                        <span>Waiting for opponent...</span>
                     </div>
                 </div>
             </div>
 
-            
+
             <div class="mt-6 flex justify-center">
                 <button onclick="cancelMatch()"
                     class="px-8 py-3 rounded-xl border border-red-500/30 text-red-500 hover:bg-red-500/10 hover:border-red-500 font-bold uppercase tracking-widest text-sm transition-colors flex items-center gap-2">
@@ -1266,7 +1267,7 @@
         </div>
     </div>
 
-    
+
     <script src="js/assets.js"></script>
     <script src="js/input.js"></script>
     <script src="js/physics.js"></script>

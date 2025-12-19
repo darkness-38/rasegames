@@ -903,16 +903,23 @@ function setupMultiplayerCallbacks() {
 
     multiplayer.onGameStateUpdate = (state) => {
         if (!gameState.isHost && gameState.player1 && gameState.player2) {
-
-            gameState.player1.x = state.p1.x;
-            gameState.player1.y = state.p1.y;
+            // Store target positions for interpolation instead of direct assignment
+            gameState.player1.targetX = state.p1.x;
+            gameState.player1.targetY = state.p1.y;
             gameState.player1.health = state.p1.health;
             gameState.player1.energy = state.p1.energy;
 
-            gameState.player2.x = state.p2.x;
-            gameState.player2.y = state.p2.y;
+            gameState.player2.targetX = state.p2.x;
+            gameState.player2.targetY = state.p2.y;
             gameState.player2.health = state.p2.health;
             gameState.player2.energy = state.p2.energy;
+
+            // Interpolate positions smoothly (lerp)
+            const lerpFactor = 0.3; // Adjust for smoother/faster interpolation
+            gameState.player1.x += (gameState.player1.targetX - gameState.player1.x) * lerpFactor;
+            gameState.player1.y += (gameState.player1.targetY - gameState.player1.y) * lerpFactor;
+            gameState.player2.x += (gameState.player2.targetX - gameState.player2.x) * lerpFactor;
+            gameState.player2.y += (gameState.player2.targetY - gameState.player2.y) * lerpFactor;
         }
     };
 

@@ -5,36 +5,41 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <title>Cyber Runner | Rase Games</title>
+    <!-- Rasegames CSS -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/auth.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <!-- Theme Configuration -->
+    <!-- Theme Configuration - BLUE THEME -->
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#36e27b",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#112117",
-                        "surface-dark": "#1c3326",
-                        "surface-border": "#366348",
-                        "text-muted": "#95c6a9",
+                        "primary": "#3b82f6",
+                        "primary-light": "#60a5fa",
+                        "background-dark": "#0a0f1a",
+                        "surface-dark": "#111827",
+                        "surface-border": "#1e3a5f",
+                        "text-muted": "#94a3b8",
                     },
                     fontFamily: {
                         "display": ["Spline Sans", "sans-serif"]
                     },
                     borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
                     backgroundImage: {
-                        'grid-pattern': "linear-gradient(to right, #254632 1px, transparent 1px), linear-gradient(to bottom, #254632 1px, transparent 1px)",
+                        'grid-pattern': "linear-gradient(to right, #1e3a5f 1px, transparent 1px), linear-gradient(to bottom, #1e3a5f 1px, transparent 1px)",
                     }
                 },
             },
@@ -59,11 +64,11 @@
 
             0%,
             100% {
-                box-shadow: 0 0 20px rgba(54, 226, 123, 0.4);
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
             }
 
             50% {
-                box-shadow: 0 0 40px rgba(54, 226, 123, 0.7);
+                box-shadow: 0 0 40px rgba(59, 130, 246, 0.7);
             }
         }
 
@@ -76,17 +81,18 @@
         }
 
         .glass-panel {
-            background: rgba(17, 33, 23, 0.7);
+            background: rgba(10, 15, 26, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
 
-        .screen {
-            display: none;
+        /* CRITICAL: Screen visibility */
+        .game-screen {
+            display: none !important;
         }
 
-        .screen.active {
-            display: flex;
+        .game-screen.active {
+            display: flex !important;
         }
 
         #gameCanvas {
@@ -94,39 +100,37 @@
             max-width: 100%;
             max-height: 100%;
             border-radius: 1rem;
-            box-shadow: 0 0 30px rgba(54, 226, 123, 0.2);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
         }
 
-        .upgrade-card {
-            background: rgba(28, 51, 38, 0.8);
-            border: 1px solid #366348;
-            border-radius: 1rem;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-        }
-
-        .upgrade-card:hover {
-            border-color: #36e27b;
-            box-shadow: 0 0 15px rgba(54, 226, 123, 0.2);
-        }
-
-        .upgrade-card.max-level {
-            opacity: 0.6;
+        /* Hide rasegames navbar styles that might conflict */
+        body {
+            background: #0a0f1a !important;
         }
     </style>
 </head>
 
-<body
-    class="bg-background-light dark:bg-background-dark text-white font-display overflow-x-hidden selection:bg-primary selection:text-background-dark">
-    <div class="relative min-h-screen w-full flex flex-col overflow-hidden">
+<body class="bg-background-dark text-white font-display overflow-x-hidden selection:bg-primary selection:text-white">
+    <!-- RASEGAMES NAVBAR -->
+    <nav class="navbar" style="position: relative; z-index: 100;">
+        <a href="/index.html" class="nav-logo">
+            <span class="logo-icon">🎮</span>
+            <span class="logo-text">Rase Games</span>
+        </a>
+        <div class="nav-links">
+            <a href="/index.html" class="nav-link">Games</a>
+            <a href="/about.html" class="nav-link">About</a>
+            <a href="/leaderboard.html" class="nav-link">Leaderboards</a>
+        </div>
+        <div id="user-display"></div>
+    </nav>
+
+    <div class="relative min-h-screen w-full flex flex-col overflow-hidden" style="padding-top: 70px;">
         <!-- Background Elements -->
         <div class="absolute inset-0 z-0">
             <!-- Cyberpunk City Background -->
-            <div class="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity"
-                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBnXeAgjsyCVHaqw4K1ggjbGNzj06-36MGLjHWRj_9HIbPsT_6jvchVvHQV625G32WDazNEGaU-5GwYEK6O15c9jAjEPHo5_If-oOrmK4XpBlwoN-5-ilHvNUZ2_UvG1hajItVqmxBGpyIzsCrrz7lFMWBD-aL3BqY7g-oKj4yTRY8rtvFe8mPxSkTHRnill5iWUQZP96b_6Ubp6S-E57X7r7Qka0g1jebwWldIzW4Q6jGUzDyI0x1zT_SwXKb6R9CHV7oqMwOCag');">
+            <div class="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+                style="background-image: url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1920');">
             </div>
             <!-- Grid Overlay -->
             <div class="absolute inset-0 bg-grid-pattern bg-[length:40px_40px] opacity-10 pointer-events-none"></div>
@@ -137,52 +141,9 @@
             </div>
         </div>
 
-        <!-- Top Navigation Bar -->
-        <header
-            class="relative z-20 flex flex-wrap items-center justify-between px-6 py-4 md:px-10 lg:px-16 border-b border-surface-border/30 glass-panel">
-            <!-- Logo Section -->
-            <a href="/index.html"
-                class="flex items-center gap-3 group cursor-pointer hover:opacity-80 transition-opacity">
-                <div
-                    class="relative flex items-center justify-center size-10 rounded-full bg-surface-dark border border-primary text-primary shadow-[0_0_15px_rgba(54,226,123,0.3)]">
-                    <span class="material-symbols-outlined text-2xl">bolt</span>
-                </div>
-                <div class="flex flex-col">
-                    <h2 class="text-white text-lg font-black leading-none tracking-widest">CYBER-RUN</h2>
-                    <span class="text-primary text-[10px] font-bold tracking-[0.2em] opacity-80">RASE GAMES</span>
-                </div>
-            </a>
-
-            <!-- Stats & Profile Section -->
-            <div class="flex flex-1 justify-end items-center gap-4 md:gap-8 mt-4 md:mt-0">
-                <!-- Resource Counter -->
-                <div
-                    class="hidden sm:flex items-center gap-3 bg-surface-dark/80 border border-surface-border rounded-full px-4 py-1.5 shadow-lg">
-                    <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary text-xl">diamond</span>
-                        <span id="headerCoins" class="font-mono font-bold text-lg text-white tracking-wider">0</span>
-                    </div>
-                    <div class="w-px h-4 bg-surface-border"></div>
-                    <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined text-text-muted text-lg">military_tech</span>
-                        <span id="headerBest" class="font-mono font-bold text-sm text-text-muted">BEST: 0</span>
-                    </div>
-                </div>
-
-                <!-- Action Icons -->
-                <div class="flex gap-3">
-                    <a href="/index.html"
-                        class="flex items-center justify-center size-10 rounded-full bg-surface-dark hover:bg-surface-border text-white border border-transparent hover:border-primary/50 transition-all duration-300">
-                        <span class="material-symbols-outlined">home</span>
-                    </a>
-                    <div id="user-display"></div>
-                </div>
-            </div>
-        </header>
-
         <!-- ==================== MAIN MENU SCREEN ==================== -->
         <main id="mainMenu"
-            class="screen active relative z-10 flex flex-1 flex-col items-center justify-center w-full max-w-7xl mx-auto px-4 py-8 lg:flex-row lg:justify-between">
+            class="game-screen active relative z-10 flex flex-1 flex-col items-center justify-center w-full max-w-7xl mx-auto px-4 py-8 lg:flex-row lg:justify-between">
             <!-- Left Side: Hero Text & Buttons -->
             <div
                 class="flex flex-col items-center lg:items-start text-center lg:text-left gap-8 max-w-2xl w-full pt-10 lg:pt-0">
@@ -197,7 +158,7 @@
                         class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter drop-shadow-2xl">
                         CYBER<br />
                         <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#84ffb5] to-primary bg-[length:200%_auto] animate-pulse">RUNNER</span>
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-light to-primary bg-[length:200%_auto] animate-pulse">RUNNER</span>
                     </h1>
                     <p class="text-text-muted text-lg md:text-xl font-normal max-w-md mt-4 leading-relaxed">
                         Navigate the neon grid. Hack the system. Survive the glitch.
@@ -214,7 +175,7 @@
                     <div class="w-px h-10 bg-surface-border"></div>
                     <div class="flex flex-col items-center">
                         <span class="material-symbols-outlined text-white mb-1">military_tech</span>
-                        <span id="mobileBest" class="font-bold">BEST: 0</span>
+                        <span id="mobileBest" class="font-bold text-sm">BEST: 0</span>
                     </div>
                 </div>
 
@@ -222,20 +183,24 @@
                 <div class="flex flex-col w-full max-w-sm gap-4 mt-4">
                     <!-- Play Button -->
                     <button id="playBtn"
-                        class="group relative flex items-center justify-center w-full h-16 rounded-full bg-primary hover:bg-[#2fcc6e] text-background-dark gap-3 text-lg font-black tracking-widest transition-all transform hover:scale-[1.02] hover:-translate-y-1 animate-pulse-glow overflow-hidden">
+                        class="group relative flex items-center justify-center w-full h-16 rounded-full bg-primary hover:bg-primary-light text-white gap-3 text-lg font-black tracking-widest transition-all transform hover:scale-[1.02] hover:-translate-y-1 animate-pulse-glow overflow-hidden">
                         <div
                             class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12">
                         </div>
                         <span
                             class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">play_circle</span>
-                        <span>INITIATE RUN</span>
+                        <span>PLAY NOW</span>
                     </button>
 
                     <!-- Upgrades Button -->
                     <button id="shopBtn"
-                        class="flex items-center justify-center w-full h-14 rounded-full bg-surface-dark hover:bg-surface-border/50 border border-surface-border hover:border-primary/50 text-white gap-3 text-sm font-bold tracking-[0.1em] transition-all hover:shadow-[0_0_15px_rgba(54,226,123,0.1)]">
+                        class="flex items-center justify-center w-full h-14 rounded-full bg-surface-dark hover:bg-surface-border/50 border border-surface-border hover:border-primary/50 text-white gap-3 text-sm font-bold tracking-[0.1em] transition-all hover:shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                         <span class="material-symbols-outlined text-text-muted">deployed_code</span>
-                        <span>SYSTEM UPGRADES</span>
+                        <span>UPGRADES</span>
+                        <div class="flex items-center gap-1 ml-2 px-2 py-1 bg-primary/20 rounded-full">
+                            <span class="material-symbols-outlined text-primary text-sm">diamond</span>
+                            <span id="headerCoins" class="text-primary text-sm font-bold">0</span>
+                        </div>
                     </button>
 
                     <!-- Quick Menu -->
@@ -248,62 +213,49 @@
                 </div>
             </div>
 
-            <!-- Right Side: Decorative Card -->
+            <!-- Right Side: Stats Card -->
             <div
-                class="hidden lg:flex flex-1 justify-end items-center relative h-full min-h-[500px] w-full pointer-events-none">
+                class="hidden lg:flex flex-1 justify-end items-center relative h-full min-h-[400px] w-full pointer-events-none">
                 <div
-                    class="relative w-[380px] h-[520px] bg-surface-dark/40 border border-surface-border rounded-[2rem] backdrop-blur-sm p-6 flex flex-col justify-between animate-float shadow-2xl shadow-black/50">
-                    <!-- Card Header -->
-                    <div class="flex justify-between items-start">
-                        <div class="flex flex-col">
-                            <span class="text-xs font-bold text-text-muted tracking-widest">CURRENT LOADOUT</span>
-                            <h3 class="text-2xl font-bold text-white">SPECTRE V2</h3>
+                    class="relative w-[320px] bg-surface-dark/60 border border-surface-border rounded-2xl backdrop-blur-sm p-6 flex flex-col gap-4 animate-float shadow-2xl shadow-black/50">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-white">YOUR STATS</h3>
+                        <span class="material-symbols-outlined text-primary">analytics</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-background-dark/50 rounded-xl p-4 text-center border border-surface-border/50">
+                            <span class="material-symbols-outlined text-primary text-2xl">diamond</span>
+                            <p id="statCoins" class="text-2xl font-black text-white mt-1">0</p>
+                            <p class="text-xs text-text-muted">COINS</p>
                         </div>
-                        <span class="material-symbols-outlined text-primary">verified</span>
+                        <div class="bg-background-dark/50 rounded-xl p-4 text-center border border-surface-border/50">
+                            <span class="material-symbols-outlined text-yellow-500 text-2xl">emoji_events</span>
+                            <p id="statBest" class="text-2xl font-black text-white mt-1">0</p>
+                            <p class="text-xs text-text-muted">BEST SCORE</p>
+                        </div>
                     </div>
 
-                    <!-- Character Image -->
-                    <div
-                        class="absolute inset-0 m-auto w-full h-full flex items-center justify-center pointer-events-none overflow-visible z-10">
-                        <img class="h-[120%] w-auto object-cover opacity-90 drop-shadow-[0_0_20px_rgba(54,226,123,0.2)]"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnfwr2Ee84vLF8tqRoHavUF8SRS3SPzYs_z4OqgDc1lDQzs9u0Pn3AtqET-tN4JpBjOEILtlGjqrhHs1uESfh-CJ7goM50AQn_H3QlBWWuRStI41jD7TKk4OsZllU3htdNbob0vM_3XhwZDgC_T1BaANouBiENyQzl4A2bmAaf5HqafdrpHt1icpJVdrh1sU29UU45myZv7I3PAXeB_1fe0DTm00fvoW-FOMUdaz2uIty9JNyS_JLYBXyUbMi7u-grmkZtstTlbw"
-                            style="mask-image: linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);" />
-                    </div>
-
-                    <!-- Card Stats Footer -->
-                    <div class="relative z-20 bg-background-dark/80 rounded-xl p-4 border border-surface-border/50">
-                        <div class="grid grid-cols-3 gap-2 text-center">
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[10px] text-text-muted font-bold">SPEED</span>
-                                <div class="h-1 w-full bg-surface-dark rounded-full overflow-hidden">
-                                    <div id="speedBar" class="h-full bg-primary w-[50%]"></div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[10px] text-text-muted font-bold">JUMP</span>
-                                <div class="h-1 w-full bg-surface-dark rounded-full overflow-hidden">
-                                    <div id="jumpBar" class="h-full bg-primary w-[50%]"></div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[10px] text-text-muted font-bold">LUCK</span>
-                                <div class="h-1 w-full bg-surface-dark rounded-full overflow-hidden">
-                                    <div id="luckBar" class="h-full bg-primary w-[50%]"></div>
-                                </div>
-                            </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between text-xs text-text-muted">
+                            <span>Jump Power</span>
+                            <span id="jumpLevel" class="text-primary">Lv.1</span>
+                        </div>
+                        <div class="h-2 bg-background-dark rounded-full overflow-hidden">
+                            <div id="jumpBar" class="h-full bg-primary w-[20%] transition-all"></div>
                         </div>
                     </div>
                 </div>
                 <!-- Decorative glow -->
                 <div
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px] pointer-events-none">
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[80px] pointer-events-none">
                 </div>
             </div>
         </main>
 
         <!-- ==================== GAME SCREEN ==================== -->
         <main id="gameScreen"
-            class="screen relative z-10 flex flex-1 flex-col items-center justify-center w-full px-4 py-4">
+            class="game-screen relative z-10 flex flex-1 flex-col items-center justify-center w-full px-4 py-4">
             <!-- Game HUD -->
             <div
                 class="w-full max-w-4xl flex justify-between items-center mb-4 glass-panel rounded-xl px-6 py-3 border border-surface-border/50">
@@ -330,9 +282,9 @@
             </div>
 
             <!-- Mobile Controls -->
-            <div id="mobileControls" class="md:hidden mt-4 flex gap-4">
+            <div id="mobileControls" class="md:hidden mt-4 w-full max-w-4xl">
                 <button id="jumpBtn"
-                    class="flex-1 h-20 rounded-2xl bg-surface-dark border border-surface-border text-white font-bold text-lg tracking-widest active:bg-primary active:text-background-dark transition-all">
+                    class="w-full h-20 rounded-2xl bg-surface-dark border border-surface-border text-white font-bold text-lg tracking-widest active:bg-primary active:text-white transition-all flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-3xl">keyboard_arrow_up</span>
                     <span>JUMP</span>
                 </button>
@@ -341,7 +293,7 @@
 
         <!-- ==================== GAME OVER SCREEN ==================== -->
         <main id="gameOverScreen"
-            class="screen relative z-10 flex flex-1 flex-col items-center justify-center w-full px-4 py-8">
+            class="game-screen relative z-10 flex flex-1 flex-col items-center justify-center w-full px-4 py-8">
             <div
                 class="flex flex-col items-center gap-8 max-w-md w-full glass-panel rounded-3xl p-8 border border-surface-border">
                 <!-- Title -->
@@ -366,7 +318,7 @@
                 <!-- Buttons -->
                 <div class="flex flex-col w-full gap-3">
                     <button id="retryBtn"
-                        class="flex items-center justify-center w-full h-14 rounded-full bg-primary hover:bg-[#2fcc6e] text-background-dark gap-3 font-bold tracking-widest transition-all">
+                        class="flex items-center justify-center w-full h-14 rounded-full bg-primary hover:bg-primary-light text-white gap-3 font-bold tracking-widest transition-all">
                         <span class="material-symbols-outlined">refresh</span>
                         <span>RETRY</span>
                     </button>
@@ -380,138 +332,31 @@
         </main>
 
         <!-- ==================== SHOP SCREEN ==================== -->
-        <main id="shopScreen" class="screen relative z-10 flex flex-1 h-full min-h-0 overflow-hidden">
-            <!-- Background Grid Effect -->
-            <div class="absolute inset-0 bg-grid-pattern bg-[length:40px_40px] opacity-10 pointer-events-none"></div>
-
-            <!-- SCROLLABLE CONTENT -->
-            <div class="flex-1 overflow-y-auto p-4 lg:p-8">
-                <div class="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
-                    <!-- LEFT COLUMN: Header & Grid -->
-                    <div class="flex-1 flex flex-col gap-6 min-h-0">
-                        <!-- TOP BAR -->
-                        <div
-                            class="flex items-center justify-between flex-wrap gap-4 pb-4 border-b border-surface-border/50">
-                            <div class="flex items-center gap-4">
-                                <button id="backBtn"
-                                    class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-dark hover:bg-surface-border text-text-muted hover:text-white transition-all border border-surface-border">
-                                    <span class="material-symbols-outlined">arrow_back</span>
-                                    <span class="font-bold text-sm">BACK</span>
-                                </button>
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-primary">terminal</span>
-                                    <h2 class="text-white text-lg font-bold tracking-widest">NEURAL LINK // UPGRADES
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="flex items-center bg-surface-dark border border-surface-border rounded-lg h-10 px-4 gap-2">
-                                    <span class="material-symbols-outlined text-primary text-[20px]">diamond</span>
-                                    <span id="shopCoins" class="text-white text-sm font-bold tracking-wider">0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- UPGRADE GRID -->
-                        <div id="upgradesList"
-                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-8"></div>
-                    </div>
-
-                    <!-- RIGHT COLUMN: DETAIL PANEL (Visible when upgrade selected) -->
-                    <div id="upgradeDetailPanel" class="hidden xl:block w-full xl:w-[380px] flex-shrink-0">
-                        <div
-                            class="xl:sticky xl:top-0 bg-surface-dark border border-primary rounded-xl shadow-[0_0_20px_rgba(54,226,123,0.15)] overflow-hidden flex flex-col">
-                            <!-- Preview Image -->
-                            <div class="relative w-full aspect-video bg-background-dark overflow-hidden">
-                                <div id="upgradeImage"
-                                    class="absolute inset-0 bg-cover bg-center opacity-80 transition-transform duration-700 hover:scale-105"
-                                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuATv1hD6Bb0po7VTAlnQjsF_dRsrQM0yEvGsUpbnXspDccWD-4aZrcGmnywGh5nlisRy2GR_K183WFRGalJjv9T83g5Wzpm1YEKcf_rbUKB5DMeEMd71ia-SRgJ9w8si29xphRGB8WlYsEn6zXJ-Aq73zCkqw7j11kL9vmeejQUwPF2rzIdD4jjoYu7k_m_2_lrvuAXzHKhmXarOu1d7Ylk4jtAwtLnSte0JOse8JLeLqlBXqrXK88JbGIYe9XvQRPDDyT7PhZMTg');">
-                                </div>
-                                <!-- Scanline overlay -->
-                                <div
-                                    class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-20">
-                                </div>
-                                <!-- Badge -->
-                                <div id="upgradeBadge"
-                                    class="absolute top-4 left-4 bg-primary text-background-dark text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">
-                                    PASSIVE
-                                </div>
-                            </div>
-
-                            <!-- Content -->
-                            <div class="p-6 flex flex-col gap-5">
-                                <!-- Header Info -->
-                                <div>
-                                    <h3 id="upgradeTitle"
-                                        class="text-xl font-bold text-white mb-1 uppercase tracking-tight">Select an
-                                        Upgrade</h3>
-                                    <p id="upgradeSubtitle" class="text-primary text-xs font-medium tracking-wide mb-3">
-                                        NEURAL INTERFACE</p>
-                                    <p id="upgradeDesc"
-                                        class="text-text-muted text-sm leading-relaxed border-l-2 border-primary/30 pl-3">
-                                        Click on an upgrade card to view details and purchase.
-                                    </p>
-                                </div>
-
-                                <!-- Stats -->
-                                <div
-                                    class="flex flex-col gap-3 p-4 bg-background-dark/50 rounded-lg border border-surface-border/50">
-                                    <div
-                                        class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-text-muted mb-1">
-                                        <span>Effect Power</span>
-                                        <span id="upgradeBonus" class="text-primary">+0%</span>
-                                    </div>
-                                    <div class="w-full bg-background-dark h-2 rounded-full overflow-hidden">
-                                        <div id="upgradePowerBar"
-                                            class="bg-primary h-full w-[0%] shadow-[0_0_10px_#36e27b] transition-all">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Current Level -->
-                                <div class="flex items-center justify-between border-b border-surface-border/50 pb-4">
-                                    <span class="text-sm text-text-muted">Current Level</span>
-                                    <div class="flex items-center gap-2">
-                                        <span id="upgradeLevel" class="text-white font-bold">0</span>
-                                        <span id="upgradeMaxLevel" class="text-text-muted text-xs">/ 5</span>
-                                    </div>
-                                </div>
-
-                                <!-- Level Progress -->
-                                <div class="flex gap-1">
-                                    <div id="levelBar1" class="h-1.5 flex-1 rounded-full bg-surface-border"></div>
-                                    <div id="levelBar2" class="h-1.5 flex-1 rounded-full bg-surface-border"></div>
-                                    <div id="levelBar3" class="h-1.5 flex-1 rounded-full bg-surface-border"></div>
-                                    <div id="levelBar4" class="h-1.5 flex-1 rounded-full bg-surface-border"></div>
-                                    <div id="levelBar5" class="h-1.5 flex-1 rounded-full bg-surface-border"></div>
-                                </div>
-
-                                <!-- Actions -->
-                                <div class="flex flex-col gap-3 mt-2">
-                                    <div class="flex justify-between items-center text-xs text-text-muted">
-                                        <span>Upgrade Cost</span>
-                                        <span>Balance: <span id="detailBalance">0</span> ♦</span>
-                                    </div>
-                                    <button id="purchaseBtn"
-                                        class="w-full bg-primary hover:bg-[#2bc466] disabled:bg-surface-border disabled:cursor-not-allowed text-background-dark font-bold text-lg h-14 rounded-lg flex items-center justify-between px-6 transition-all shadow-[0_0_15px_rgba(54,226,123,0.3)] hover:shadow-[0_0_25px_rgba(54,226,123,0.5)]">
-                                        <span class="uppercase tracking-wider">Purchase</span>
-                                        <div class="flex items-center gap-1 bg-background-dark/20 px-3 py-1 rounded">
-                                            <span id="upgradeCost">0</span>
-                                            <span class="material-symbols-outlined text-[18px]">diamond</span>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <main id="shopScreen" class="game-screen relative z-10 flex flex-1 flex-col w-full max-w-4xl mx-auto px-4 py-8">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-surface-border/50">
+                <button id="backBtn"
+                    class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-dark hover:bg-surface-border text-text-muted hover:text-white transition-all border border-surface-border">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="font-bold text-sm">BACK</span>
+                </button>
+                <h2 class="text-xl font-bold text-white tracking-widest flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">terminal</span>
+                    UPGRADES
+                </h2>
+                <div class="flex items-center gap-2 bg-surface-dark border border-surface-border rounded-lg h-10 px-4">
+                    <span class="material-symbols-outlined text-primary text-lg">diamond</span>
+                    <span id="shopCoins" class="text-white font-bold">0</span>
                 </div>
             </div>
+
+            <!-- Upgrade Grid -->
+            <div id="upgradesList" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
         </main>
 
-        <!-- Footer Bar -->
+        <!-- Footer -->
         <footer
-            class="relative z-10 w-full border-t border-surface-border/30 bg-background-dark/90 backdrop-blur-md py-3 px-6 md:px-10">
+            class="relative z-10 w-full border-t border-surface-border/30 bg-background-dark/90 backdrop-blur-md py-3 px-6 mt-auto">
             <div
                 class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-text-muted">
                 <div class="flex items-center gap-4">
@@ -523,12 +368,10 @@
                         </span>
                         RASE GAMES
                     </span>
-                    <span class="hidden md:inline text-surface-border">|</span>
-                    <a href="/index.html" class="hidden md:inline hover:text-white transition-colors">ALL GAMES</a>
                 </div>
                 <div class="flex gap-6">
-                    <span class="cursor-pointer hover:text-white transition-colors">v.2.0</span>
-                    <a href="/about.html" class="cursor-pointer hover:text-white transition-colors">ABOUT</a>
+                    <span>v2.0</span>
+                    <a href="/about.html" class="hover:text-white transition-colors">ABOUT</a>
                 </div>
             </div>
         </footer>

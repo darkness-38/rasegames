@@ -48,16 +48,16 @@ const BASE_GAME_SPEED = 5;
 const GROUND_HEIGHT = 80;
 
 const COLORS = {
-    sky1: '#0a0a12',
-    sky2: '#1a0a2e',
-    ground: '#1a1a3a',
-    groundLine: '#00f0ff',
-    player: '#00f0ff',
-    playerAccent: '#ff00aa',
-    obstacle: '#ff00aa',
-    obstacleAlt: '#ff6600',
-    coin: '#ffff00',
-    particle: '#00f0ff'
+    sky1: '#0a0f1a',
+    sky2: '#111827',
+    ground: '#1e293b',
+    groundLine: '#3b82f6',
+    player: '#3b82f6',
+    playerAccent: '#f472b6',
+    obstacle: '#ef4444',
+    obstacleAlt: '#f97316',
+    coin: '#fbbf24',
+    particle: '#60a5fa'
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════

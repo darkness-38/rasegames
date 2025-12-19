@@ -1280,29 +1280,30 @@ function startPingMeasurement() {
 function measurePing() {
     const startTime = performance.now();
 
-    // Use fetch to measure round-trip time to server
-    fetch(window.location.origin + '/index.html', {
-        method: 'HEAD',
-        cache: 'no-store'
-    })
-        .then(() => {
+    // Create a small request to measure round-trip time
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', window.location.href + '?ping=' + Date.now(), true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
             const endTime = performance.now();
             currentPing = Math.round(endTime - startTime);
             updatePingDisplay(currentPing);
-        })
-        .catch(() => {
-            // If fetch fails, try with an image
-            const img = new Image();
-            const imgStartTime = performance.now();
+        }
+    };
 
-            img.onload = img.onerror = () => {
-                const endTime = performance.now();
-                currentPing = Math.round(endTime - imgStartTime);
+    xhr.onerror = function () {
+        // Fallback: measure using performance API if available
+        if (performance.getEntriesByType) {
+            const entries = performance.getEntriesByType('navigation');
+            if (entries.length > 0) {
+                currentPing = Math.round(entries[0].responseStart - entries[0].requestStart);
                 updatePingDisplay(currentPing);
-            };
+            }
+        }
+    };
 
-            img.src = window.location.origin + '/favicon.ico?' + Date.now();
-        });
+    xhr.send();
 }
 
 function updatePingDisplay(ping) {

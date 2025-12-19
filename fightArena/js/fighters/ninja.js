@@ -202,7 +202,7 @@ class Ninja extends Character {
     }
 
     drawNinjaBody(ctx, isClone) {
-        const bob = isClone ? 0 : Math.sin(this.animTimer * 0.15) * 2;
+        const bob = 0; // Disabled breathing/bobbing animation
         const isAttacking = this.state.startsWith('attack_');
         const legOffset = isClone ? 0 : Math.sin(this.animTimer * 0.2) * (this.state === 'walk' ? 8 : 0);
 

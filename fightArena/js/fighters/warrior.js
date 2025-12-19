@@ -156,7 +156,7 @@ class Warrior extends Character {
 
     drawWarriorIdle(ctx) {
         const bob = Math.sin(this.animTimer * 0.08) * 2;
-        const breathe = Math.sin(this.animTimer * 0.06) * 1.5;
+        const breathe = 0; // Disabled breathing animation
 
         // === CAPE ===
         ctx.save();

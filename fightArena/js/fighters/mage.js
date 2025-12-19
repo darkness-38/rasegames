@@ -261,7 +261,7 @@ class Mage extends Character {
 
     drawMageBody(ctx) {
         const bob = Math.sin(this.animTimer * 0.1) * 3;
-        const breathe = Math.sin(this.animTimer * 0.08) * 1.5;
+        const breathe = 0; // Disabled breathing animation
         const isAttacking = this.state.startsWith('attack_');
         const floatOffset = Math.sin(this.animTimer * 0.05) * 5; // Floating effect
 

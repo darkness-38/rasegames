@@ -14,8 +14,18 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
+// Serve static files with extensions option to enable clean URLs
+app.use(express.static(path.join(__dirname), {
+    extensions: ['html']
+}));
 
-app.use(express.static(path.join(__dirname)));
+// Fallback: serve index.html for directory paths
+app.get('*', (req, res, next) => {
+    const filePath = path.join(__dirname, req.path, 'index.html');
+    res.sendFile(filePath, (err) => {
+        if (err) next();
+    });
+});
 
 
 

@@ -44,7 +44,7 @@ const gameState = {
     opponentInput: null,
     lastSentInput: null,
     lastSyncTime: 0,
-    syncInterval: 50 // Sync every 50ms (20Hz) instead of every frame
+    syncInterval: 100 // Sync every 100ms (10Hz) instead of every frame
 };
 
 

@@ -11,13 +11,13 @@ class Warrior extends Character {
             speed: 5,
             jumpForce: -14,
             maxHealth: 1200,
-            defense: 0.9, 
+            defense: 0.9,
             color: '#ff6b35',
             secondaryColor: '#8b2500',
             ...options
         });
 
-        
+
         this.attacks = {
             light: {
                 damage: 35,
@@ -59,7 +59,7 @@ class Warrior extends Character {
             }
         };
 
-        
+
         this.armorActive = false;
         this.armorTimer = 0;
     }
@@ -67,7 +67,7 @@ class Warrior extends Character {
     startAttack(type) {
         super.startAttack(type);
 
-        
+
         if (type === 'special') {
             this.armorActive = true;
             this.armorTimer = 30;
@@ -77,7 +77,7 @@ class Warrior extends Character {
     update(input, opponent) {
         super.update(input, opponent);
 
-        
+
         if (this.armorActive) {
             this.armorTimer--;
             if (this.armorTimer <= 0) {
@@ -87,7 +87,7 @@ class Warrior extends Character {
     }
 
     takeDamage(damage, knockback, attacker) {
-        
+
         if (this.armorActive) {
             damage = Math.floor(damage * 0.5);
             knockback = Math.floor(knockback * 0.3);
@@ -105,20 +105,20 @@ class Warrior extends Character {
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        
+
         const shadowScale = this.isGrounded ? 1 : 0.5;
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, (this.width / 2 + 5) * shadowScale, 12 * shadowScale, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         if (this.armorActive) {
             ctx.shadowColor = '#ffaa00';
             ctx.shadowBlur = 30;
         }
 
-        
+
         switch (this.state) {
             case 'hitstun':
                 this.drawWarriorHit(ctx);
@@ -155,281 +155,279 @@ class Warrior extends Character {
     }
 
     drawWarriorIdle(ctx) {
-        const bob = Math.sin(this.animTimer * 0.08) * 2;
-        const breathe = 0; 
 
-        
+
         ctx.save();
         const capeWave = Math.sin(this.animTimer * 0.05) * 5;
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
-        ctx.moveTo(-30, -30 + bob);
-        ctx.quadraticCurveTo(-45 + capeWave, 20 + bob, -35 + capeWave * 0.5, 70);
+        ctx.moveTo(-30, -30);
+        ctx.quadraticCurveTo(-45 + capeWave, 20, -35 + capeWave * 0.5, 70);
         ctx.lineTo(-25, 70);
-        ctx.quadraticCurveTo(-30, 20 + bob, -25, -25 + bob);
+        ctx.quadraticCurveTo(-30, 20, -25, -25);
         ctx.closePath();
         ctx.fill();
-        
+
         ctx.fillStyle = '#a52a2a';
         ctx.beginPath();
-        ctx.moveTo(-28, -28 + bob);
-        ctx.quadraticCurveTo(-38 + capeWave, 10 + bob, -32 + capeWave * 0.5, 50);
+        ctx.moveTo(-28, -28);
+        ctx.quadraticCurveTo(-38 + capeWave, 10, -32 + capeWave * 0.5, 50);
         ctx.lineTo(-30, 50);
-        ctx.quadraticCurveTo(-32, 10 + bob, -26, -26 + bob);
+        ctx.quadraticCurveTo(-32, 10, -26, -26);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
 
-        
-        
+
+
         ctx.fillStyle = '#3d2914';
         ctx.beginPath();
-        ctx.roundRect(-22, 28 + bob, 20, 52, 6);
+        ctx.roundRect(-22, 28, 20, 52, 6);
         ctx.fill();
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
-        ctx.roundRect(-20, 30 + bob, 16, 25, 4);
+        ctx.roundRect(-20, 30, 16, 25, 4);
         ctx.fill();
-        
+
         ctx.fillStyle = '#ff7733';
         ctx.beginPath();
-        ctx.roundRect(-18, 32 + bob, 6, 20, 2);
+        ctx.roundRect(-18, 32, 6, 20, 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#993300';
         ctx.beginPath();
-        ctx.roundRect(-8, 32 + bob, 4, 20, 2);
+        ctx.roundRect(-8, 32, 4, 20, 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#dd6600';
         ctx.beginPath();
-        ctx.ellipse(-12, 55 + bob, 12, 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(-12, 55, 12, 8, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#ffaa44';
         ctx.beginPath();
-        ctx.ellipse(-14, 53 + bob, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(-14, 53, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#3d2914';
         ctx.beginPath();
-        ctx.roundRect(2, 28 + bob, 20, 52, 6);
+        ctx.roundRect(2, 28, 20, 52, 6);
         ctx.fill();
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
-        ctx.roundRect(4, 30 + bob, 16, 25, 4);
+        ctx.roundRect(4, 30, 16, 25, 4);
         ctx.fill();
         ctx.fillStyle = '#ff7733';
         ctx.beginPath();
-        ctx.roundRect(6, 32 + bob, 6, 20, 2);
+        ctx.roundRect(6, 32, 6, 20, 2);
         ctx.fill();
         ctx.fillStyle = '#993300';
         ctx.beginPath();
-        ctx.roundRect(16, 32 + bob, 4, 20, 2);
+        ctx.roundRect(16, 32, 4, 20, 2);
         ctx.fill();
         ctx.fillStyle = '#dd6600';
         ctx.beginPath();
-        ctx.ellipse(12, 55 + bob, 12, 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(12, 55, 12, 8, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#ffaa44';
         ctx.beginPath();
-        ctx.ellipse(10, 53 + bob, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(10, 53, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#2a1a0a';
         ctx.beginPath();
-        ctx.roundRect(-24, 72 + bob, 24, 12, 4);
+        ctx.roundRect(-24, 72, 24, 12, 4);
         ctx.fill();
         ctx.beginPath();
-        ctx.roundRect(0, 72 + bob, 24, 12, 4);
+        ctx.roundRect(0, 72, 24, 12, 4);
         ctx.fill();
-        
+
         ctx.fillStyle = '#888888';
         ctx.beginPath();
-        ctx.roundRect(-22, 70 + bob, 20, 3, 1);
+        ctx.roundRect(-22, 70, 20, 3, 1);
         ctx.fill();
         ctx.beginPath();
-        ctx.roundRect(2, 70 + bob, 20, 3, 1);
+        ctx.roundRect(2, 70, 20, 3, 1);
         ctx.fill();
 
-        
-        
+
+
         ctx.fillStyle = '#1a1a1a';
         ctx.beginPath();
-        ctx.roundRect(-38, -42 + bob + breathe, 76, 75, 14);
+        ctx.roundRect(-38, -42, 76, 75, 14);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.roundRect(-35, -38 + bob + breathe, 70, 68, 12);
+        ctx.roundRect(-35, -38, 70, 68, 12);
         ctx.fill();
 
-        
-        const chestGrad = ctx.createLinearGradient(-35, -38 + bob, 35, 30 + bob);
+
+        const chestGrad = ctx.createLinearGradient(-35, -38, 35, 30);
         chestGrad.addColorStop(0, 'rgba(255, 200, 150, 0.3)');
         chestGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
         chestGrad.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
         ctx.fillStyle = chestGrad;
         ctx.beginPath();
-        ctx.roundRect(-35, -38 + bob + breathe, 70, 68, 12);
+        ctx.roundRect(-35, -38, 70, 68, 12);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = this.secondaryColor;
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(0, -30 + bob + breathe);
-        ctx.lineTo(0, 15 + bob + breathe);
+        ctx.moveTo(0, -30);
+        ctx.lineTo(0, 15);
         ctx.stroke();
         ctx.beginPath();
-        ctx.arc(-15, -15 + bob + breathe, 12, 0.5, 2.5);
+        ctx.arc(-15, -15, 12, 0.5, 2.5);
         ctx.stroke();
         ctx.beginPath();
-        ctx.arc(15, -15 + bob + breathe, 12, 0.6, 2.6);
+        ctx.arc(15, -15, 12, 0.6, 2.6);
         ctx.stroke();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         for (let i = 0; i < 3; i++) {
             ctx.beginPath();
-            ctx.roundRect(-12, 2 + i * 12 + bob + breathe, 10, 8, 2);
+            ctx.roundRect(-12, 2 + i * 12, 10, 8, 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.roundRect(2, 2 + i * 12 + bob + breathe, 10, 8, 2);
+            ctx.roundRect(2, 2 + i * 12, 10, 8, 2);
             ctx.fill();
         }
 
-        
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
-        ctx.roundRect(-38, 22 + bob, 76, 12, 3);
+        ctx.roundRect(-38, 22, 76, 12, 3);
         ctx.fill();
-        
+
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
-        ctx.roundRect(-8, 23 + bob, 16, 10, 2);
+        ctx.roundRect(-8, 23, 16, 10, 2);
         ctx.fill();
         ctx.fillStyle = '#ffee88';
         ctx.beginPath();
-        ctx.roundRect(-5, 25 + bob, 10, 6, 1);
+        ctx.roundRect(-5, 25, 10, 6, 1);
         ctx.fill();
-        
+
         ctx.fillStyle = '#c0c0c0';
         for (let i = 0; i < 4; i++) {
             ctx.beginPath();
-            ctx.arc(-30 + i * 12, 28 + bob, 3, 0, Math.PI * 2);
+            ctx.arc(-30 + i * 12, 28, 3, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(18 + i * 5, 28 + bob, 3, 0, Math.PI * 2);
+            ctx.arc(18 + i * 5, 28, 3, 0, Math.PI * 2);
             ctx.fill();
         }
 
-        
-        
+
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
-        ctx.ellipse(-40, -28 + bob, 18, 14, -0.2, 0, Math.PI * 2);
+        ctx.ellipse(-40, -28, 18, 14, -0.2, 0, Math.PI * 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#cc4400';
         ctx.beginPath();
-        ctx.ellipse(-40, -24 + bob, 16, 10, -0.2, 0, Math.PI);
+        ctx.ellipse(-40, -24, 16, 10, -0.2, 0, Math.PI);
         ctx.fill();
         ctx.fillStyle = '#bb3300';
         ctx.beginPath();
-        ctx.ellipse(-40, -20 + bob, 14, 8, -0.2, 0, Math.PI);
-        ctx.fill();
-        
-        ctx.fillStyle = '#888888';
-        ctx.beginPath();
-        ctx.moveTo(-40, -42 + bob);
-        ctx.lineTo(-44, -30 + bob);
-        ctx.lineTo(-36, -30 + bob);
-        ctx.closePath();
-        ctx.fill();
-        
-        ctx.fillStyle = '#ff8844';
-        ctx.beginPath();
-        ctx.ellipse(-44, -32 + bob, 5, 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(-40, -20, 14, 8, -0.2, 0, Math.PI);
         ctx.fill();
 
-        
+        ctx.fillStyle = '#888888';
+        ctx.beginPath();
+        ctx.moveTo(-40, -42);
+        ctx.lineTo(-44, -30);
+        ctx.lineTo(-36, -30);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#ff8844';
+        ctx.beginPath();
+        ctx.ellipse(-44, -32, 5, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
-        ctx.ellipse(40, -28 + bob, 18, 14, 0.2, 0, Math.PI * 2);
+        ctx.ellipse(40, -28, 18, 14, 0.2, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#cc4400';
         ctx.beginPath();
-        ctx.ellipse(40, -24 + bob, 16, 10, 0.2, 0, Math.PI);
+        ctx.ellipse(40, -24, 16, 10, 0.2, 0, Math.PI);
         ctx.fill();
         ctx.fillStyle = '#bb3300';
         ctx.beginPath();
-        ctx.ellipse(40, -20 + bob, 14, 8, 0.2, 0, Math.PI);
+        ctx.ellipse(40, -20, 14, 8, 0.2, 0, Math.PI);
         ctx.fill();
         ctx.fillStyle = '#888888';
         ctx.beginPath();
-        ctx.moveTo(40, -42 + bob);
-        ctx.lineTo(36, -30 + bob);
-        ctx.lineTo(44, -30 + bob);
+        ctx.moveTo(40, -42);
+        ctx.lineTo(36, -30);
+        ctx.lineTo(44, -30);
         ctx.closePath();
         ctx.fill();
         ctx.fillStyle = '#ff8844';
         ctx.beginPath();
-        ctx.ellipse(44, -32 + bob, 5, 4, 0, 0, Math.PI * 2);
+        ctx.ellipse(44, -32, 5, 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
-        
+
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
-        ctx.roundRect(-45, -15 + bob, 14, 35, 6);
+        ctx.roundRect(-45, -15, 14, 35, 6);
         ctx.fill();
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
-        ctx.roundRect(-44, -10 + bob, 12, 20, 4);
+        ctx.roundRect(-44, -10, 12, 20, 4);
         ctx.fill();
-        
+
         ctx.fillStyle = '#888888';
         ctx.beginPath();
-        ctx.roundRect(-46, 18 + bob, 16, 14, 4);
+        ctx.roundRect(-46, 18, 16, 14, 4);
         ctx.fill();
         ctx.fillStyle = '#aaaaaa';
         ctx.beginPath();
-        ctx.roundRect(-44, 20 + bob, 5, 10, 2);
+        ctx.roundRect(-44, 20, 5, 10, 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
-        ctx.roundRect(31, -15 + bob, 14, 35, 6);
+        ctx.roundRect(31, -15, 14, 35, 6);
         ctx.fill();
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
-        ctx.roundRect(32, -10 + bob, 12, 20, 4);
+        ctx.roundRect(32, -10, 12, 20, 4);
         ctx.fill();
         ctx.fillStyle = '#888888';
         ctx.beginPath();
-        ctx.roundRect(30, 18 + bob, 16, 14, 4);
+        ctx.roundRect(30, 18, 16, 14, 4);
         ctx.fill();
         ctx.fillStyle = '#aaaaaa';
         ctx.beginPath();
-        ctx.roundRect(38, 20 + bob, 5, 10, 2);
+        ctx.roundRect(38, 20, 5, 10, 2);
         ctx.fill();
 
-        
+
         ctx.save();
-        ctx.translate(42, 30 + bob);
+        ctx.translate(42, 30);
         ctx.rotate(0.3);
-        
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-3, 0, 6, 25, 2);
         ctx.fill();
-        
+
         ctx.strokeStyle = '#2a1a0a';
         ctx.lineWidth = 2;
         for (let i = 0; i < 5; i++) {
@@ -438,7 +436,7 @@ class Warrior extends Character {
             ctx.lineTo(3, 5 + i * 5);
             ctx.stroke();
         }
-        
+
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.arc(0, 27, 5, 0, Math.PI * 2);
@@ -447,7 +445,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.arc(0, 27, 2, 0, Math.PI * 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(-12, -3, 24, 6, 2);
@@ -459,7 +457,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.arc(10, 0, 3, 0, Math.PI * 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#e0e0e0';
         ctx.beginPath();
         ctx.moveTo(-4, -5);
@@ -467,7 +465,7 @@ class Warrior extends Character {
         ctx.lineTo(4, -5);
         ctx.closePath();
         ctx.fill();
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.moveTo(-2, -8);
@@ -475,7 +473,7 @@ class Warrior extends Character {
         ctx.lineTo(0, -8);
         ctx.closePath();
         ctx.fill();
-        
+
         ctx.strokeStyle = '#ff6600';
         ctx.lineWidth = 1;
         ctx.shadowColor = '#ff6600';
@@ -490,78 +488,78 @@ class Warrior extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        
-        
+
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
-        ctx.roundRect(-8, -48 + bob, 16, 12, 4);
+        ctx.roundRect(-8, -48, 16, 12, 4);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
-        ctx.arc(0, -60 + bob, 22, 0, Math.PI * 2);
+        ctx.arc(0, -60, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#e6b888';
         ctx.beginPath();
-        ctx.arc(3, -58 + bob, 18, 0, Math.PI);
+        ctx.arc(3, -58, 18, 0, Math.PI);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.arc(0, -62 + bob, 24, Math.PI, 0);
+        ctx.arc(0, -62, 24, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
-        ctx.moveTo(0, -88 + bob);
-        ctx.lineTo(-5, -62 + bob);
-        ctx.lineTo(5, -62 + bob);
+        ctx.moveTo(0, -88);
+        ctx.lineTo(-5, -62);
+        ctx.lineTo(5, -62);
         ctx.closePath();
         ctx.fill();
         ctx.fillStyle = '#cc3300';
         ctx.beginPath();
-        ctx.moveTo(0, -85 + bob);
-        ctx.lineTo(-2, -65 + bob);
-        ctx.lineTo(2, -65 + bob);
+        ctx.moveTo(0, -85);
+        ctx.lineTo(-2, -65);
+        ctx.lineTo(2, -65);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#1a1a1a';
         ctx.beginPath();
-        ctx.roundRect(-15, -65 + bob, 30, 10, 3);
+        ctx.roundRect(-15, -65, 30, 10, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.ellipse(-6, -60 + bob, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(-6, -60, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(6, -60 + bob, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(6, -60, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.roundRect(-22, -55 + bob, 8, 18, 3);
+        ctx.roundRect(-22, -55, 8, 18, 3);
         ctx.fill();
         ctx.beginPath();
-        ctx.roundRect(14, -55 + bob, 8, 18, 3);
+        ctx.roundRect(14, -55, 8, 18, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#888888';
         ctx.beginPath();
-        ctx.roundRect(-10, -42 + bob, 20, 6, 2);
+        ctx.roundRect(-10, -42, 20, 6, 2);
         ctx.fill();
     }
 
@@ -571,7 +569,7 @@ class Warrior extends Character {
         const swing = Math.sin(progress * Math.PI);
         const intensity = this.currentAttack === 'ultimate' ? 2 : 1;
 
-        
+
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-30, -30);
@@ -581,18 +579,18 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#3d2914';
-        
+
         ctx.beginPath();
         ctx.roundRect(-25 - swing * 10, 25, 20, 52, 6);
         ctx.fill();
-        
+
         ctx.beginPath();
         ctx.roundRect(5 + swing * 15, 20, 20, 55, 6);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-23 - swing * 10, 30, 16, 25, 4);
@@ -601,17 +599,17 @@ class Warrior extends Character {
         ctx.roundRect(7 + swing * 15, 25, 16, 25, 4);
         ctx.fill();
 
-        
+
         ctx.save();
         ctx.rotate(-0.15 - swing * 0.25);
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -42, 76, 75, 14);
         ctx.fill();
 
-        
+
         const chestGrad = ctx.createLinearGradient(-38, -42, 38, 33);
         chestGrad.addColorStop(0, 'rgba(255, 200, 150, 0.3)');
         chestGrad.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
@@ -620,7 +618,7 @@ class Warrior extends Character {
         ctx.roundRect(-38, -42, 76, 75, 14);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-40, -28, 18, 14, -0.4, 0, Math.PI * 2);
@@ -628,42 +626,42 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.rotate(swing * Math.PI * 0.7 * intensity - 0.6);
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(15, -18, 55, 24, 10);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(18, -15, 25, 18, 5);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(45, -16, 18, 20, 6);
         ctx.fill();
 
-        
-        
+
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(62, -8, 25, 12, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.roundRect(60, -14, 6, 24, 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#e0e0e0';
         ctx.beginPath();
         ctx.moveTo(88, -10);
@@ -672,7 +670,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.moveTo(90, -8);
@@ -681,7 +679,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 15 * intensity;
         ctx.strokeStyle = '#ff6600';
@@ -694,19 +692,19 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -58, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -62, 24, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -88);
@@ -715,13 +713,13 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#1a1a1a';
         ctx.beginPath();
         ctx.roundRect(-15, -65, 30, 10, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ff3300';
         ctx.shadowColor = '#ff3300';
         ctx.shadowBlur = 20;
@@ -733,12 +731,12 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         if (swing > 0.2) {
             ctx.save();
             ctx.globalAlpha = swing * 0.6;
 
-            
+
             for (let i = 0; i < 3; i++) {
                 ctx.strokeStyle = i === 0 ? '#ffffff' : this.color;
                 ctx.lineWidth = 10 - i * 3;
@@ -747,7 +745,7 @@ class Warrior extends Character {
                 ctx.stroke();
             }
 
-            
+
             ctx.fillStyle = '#ffff00';
             for (let i = 0; i < 5; i++) {
                 const sparkAngle = swing * Math.PI * 0.3 + i * 0.2;
@@ -760,7 +758,7 @@ class Warrior extends Character {
             ctx.restore();
         }
 
-        
+
         if (this.currentAttack === 'ultimate' && swing > 0.3) {
             ctx.save();
             ctx.globalAlpha = swing * 0.4;
@@ -775,7 +773,7 @@ class Warrior extends Character {
     }
 
     drawWarriorBlock(ctx) {
-        
+
         ctx.fillStyle = '#4a1000';
         ctx.beginPath();
         ctx.roundRect(-18, 30, 16, 45, 5);
@@ -784,13 +782,13 @@ class Warrior extends Character {
         ctx.roundRect(2, 30, 16, 45, 5);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-30, -20, 60, 55, 12);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#8b4513';
         ctx.strokeStyle = '#ffd700';
         ctx.lineWidth = 4;
@@ -805,7 +803,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.stroke();
 
-        
+
         ctx.shadowColor = '#ffd700';
         ctx.shadowBlur = 20;
         ctx.strokeStyle = '#ffffff';
@@ -813,13 +811,13 @@ class Warrior extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(-5, -35, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(-5, -38, 20, Math.PI, 0);
@@ -835,7 +833,7 @@ class Warrior extends Character {
         ctx.translate(shake, 0);
         ctx.rotate(0.2 + Math.sin(this.animTimer * 0.3) * 0.1);
 
-        
+
         ctx.fillStyle = flash ? '#ffaaaa' : '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-25, -25);
@@ -845,7 +843,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = flash ? '#ffcccc' : '#3d2914';
         ctx.beginPath();
         ctx.roundRect(-25 - recoil * 5, 25, 20, 50, 6);
@@ -854,7 +852,7 @@ class Warrior extends Character {
         ctx.roundRect(5 + recoil * 10, 30, 20, 48, 6);
         ctx.fill();
 
-        
+
         ctx.fillStyle = flash ? '#ffaa88' : '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-23 - recoil * 5, 30, 16, 22, 4);
@@ -863,13 +861,13 @@ class Warrior extends Character {
         ctx.roundRect(7 + recoil * 10, 35, 16, 22, 4);
         ctx.fill();
 
-        
+
         ctx.fillStyle = flash ? '#ffffff' : this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -40, 76, 72, 14);
         ctx.fill();
 
-        
+
         if (!flash) {
             ctx.strokeStyle = '#aa3300';
             ctx.lineWidth = 3;
@@ -883,13 +881,13 @@ class Warrior extends Character {
             ctx.stroke();
         }
 
-        
+
         ctx.fillStyle = flash ? '#ffaa88' : '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-38, -25, 16, 12, 0.3, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = flash ? '#ffddcc' : '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(-50, -10, 14, 35, 6);
@@ -900,7 +898,7 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.translate(-10 + shake, -52);
         ctx.rotate(-0.2);
@@ -910,23 +908,23 @@ class Warrior extends Character {
         ctx.arc(0, 0, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = flash ? '#ffcccc' : this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -4, 24, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2;
-        
+
         ctx.beginPath();
         ctx.moveTo(-10, -2);
         ctx.lineTo(-4, 4);
         ctx.moveTo(-4, -2);
         ctx.lineTo(-10, 4);
         ctx.stroke();
-        
+
         ctx.beginPath();
         ctx.moveTo(4, -2);
         ctx.lineTo(10, 4);
@@ -934,7 +932,7 @@ class Warrior extends Character {
         ctx.lineTo(4, 4);
         ctx.stroke();
 
-        
+
         ctx.fillStyle = '#330000';
         ctx.beginPath();
         ctx.ellipse(0, 12, 8, 5, 0, 0, Math.PI * 2);
@@ -942,8 +940,8 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        
-        
+
+
         ctx.save();
         ctx.translate(20, -20);
         for (let i = 0; i < 6; i++) {
@@ -959,7 +957,7 @@ class Warrior extends Character {
         }
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ff3333';
         for (let i = 0; i < 4; i++) {
             const px = 15 + Math.sin(this.animTimer * 0.2 + i * 2) * 20;
@@ -978,7 +976,7 @@ class Warrior extends Character {
         const armSwing = Math.sin(cycle) * 0.3;
         const bodyBob = Math.abs(Math.sin(cycle)) * 4;
 
-        
+
         const capeWave = Math.sin(cycle * 0.8) * 8;
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
@@ -989,28 +987,28 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#3d2914';
-        
+
         ctx.save();
         ctx.translate(-12, 28 + bodyBob);
         ctx.rotate(legSwing * 0.02);
         ctx.beginPath();
         ctx.roundRect(-10, 0, 20, 50, 6);
         ctx.fill();
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-8, 5, 16, 22, 4);
         ctx.fill();
-        
+
         ctx.fillStyle = '#2a1a0a';
         ctx.beginPath();
         ctx.roundRect(-12, 45, 24, 12, 4);
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#3d2914';
         ctx.save();
         ctx.translate(12, 28 + bodyBob);
@@ -1028,7 +1026,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.translate(0, bodyBob);
         ctx.rotate(armSwing * 0.1);
@@ -1038,7 +1036,7 @@ class Warrior extends Character {
         ctx.roundRect(-36, -40, 72, 72, 14);
         ctx.fill();
 
-        
+
         const grad = ctx.createLinearGradient(-36, -40, 36, 32);
         grad.addColorStop(0, 'rgba(255, 200, 150, 0.25)');
         grad.addColorStop(1, 'rgba(0, 0, 0, 0.25)');
@@ -1047,7 +1045,7 @@ class Warrior extends Character {
         ctx.roundRect(-36, -40, 72, 72, 14);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-36, 24, 72, 10, 3);
@@ -1055,7 +1053,7 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-38, -26 + bodyBob, 16, 12, armSwing, 0, Math.PI * 2);
@@ -1064,7 +1062,7 @@ class Warrior extends Character {
         ctx.ellipse(38, -26 + bodyBob, 16, 12, -armSwing, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.save();
         ctx.translate(-42, -18 + bodyBob);
         ctx.rotate(armSwing);
@@ -1091,19 +1089,19 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -58 + bodyBob, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -62 + bodyBob, 24, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -88 + bodyBob);
@@ -1112,7 +1110,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 8;
@@ -1124,7 +1122,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = 'rgba(150, 120, 90, 0.5)';
         for (let i = 0; i < 3; i++) {
             const dustX = Math.sin(cycle + i) * 20;
@@ -1138,7 +1136,7 @@ class Warrior extends Character {
     drawWarriorJump(ctx) {
         const rise = Math.min(this.animTimer * 0.1, 1);
 
-        
+
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-25, -25);
@@ -1148,7 +1146,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#3d2914';
         ctx.save();
         ctx.rotate(-0.3);
@@ -1163,7 +1161,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.save();
         ctx.rotate(-0.3);
@@ -1178,13 +1176,13 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-36, -45, 72, 70, 14);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-42, -35, 18, 14, -0.3, 0, Math.PI * 2);
@@ -1193,7 +1191,7 @@ class Warrior extends Character {
         ctx.ellipse(42, -35, 18, 14, 0.3, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.save();
         ctx.translate(-40, -30);
@@ -1210,21 +1208,21 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.translate(55, -50);
         ctx.rotate(0.5);
-        
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-3, 0, 6, 22, 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.roundRect(-10, -2, 20, 5, 2);
         ctx.fill();
-        
+
         ctx.fillStyle = '#e0e0e0';
         ctx.beginPath();
         ctx.moveTo(-3, -5);
@@ -1232,7 +1230,7 @@ class Warrior extends Character {
         ctx.lineTo(3, -5);
         ctx.closePath();
         ctx.fill();
-        
+
         ctx.strokeStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 10;
@@ -1244,7 +1242,7 @@ class Warrior extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -62, 22, 0, Math.PI * 2);
@@ -1255,7 +1253,7 @@ class Warrior extends Character {
         ctx.arc(0, -66, 24, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -92);
@@ -1264,7 +1262,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 12;
@@ -1276,7 +1274,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.globalAlpha = 0.3;
         ctx.strokeStyle = '#ffaa00';
         ctx.lineWidth = 4;
@@ -1288,7 +1286,7 @@ class Warrior extends Character {
     }
 
     drawWarriorFall(ctx) {
-        
+
         const wave = Math.sin(this.animTimer * 0.2) * 5;
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
@@ -1299,7 +1297,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#3d2914';
         ctx.save();
         ctx.rotate(-0.4);
@@ -1314,13 +1312,13 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -38, 76, 65, 14);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-40, -25, 18, 14, 0, 0, Math.PI * 2);
@@ -1329,7 +1327,7 @@ class Warrior extends Character {
         ctx.ellipse(40, -25, 18, 14, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.save();
         ctx.translate(-42, -18);
@@ -1346,7 +1344,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.rotate(0.1);
         ctx.fillStyle = '#ffcc99';
@@ -1359,7 +1357,7 @@ class Warrior extends Character {
         ctx.arc(0, -59, 24, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -85);
@@ -1368,7 +1366,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ff6600';
         ctx.beginPath();
         ctx.ellipse(-6, -53, 4, 3, 0.2, 0, Math.PI * 2);
@@ -1378,7 +1376,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.lineWidth = 2;
         for (let i = 0; i < 4; i++) {
@@ -1390,7 +1388,7 @@ class Warrior extends Character {
     }
 
     drawWarriorCrouch(ctx) {
-        
+
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-22, -5);
@@ -1400,7 +1398,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#3d2914';
         ctx.beginPath();
         ctx.roundRect(-25, 15, 22, 35, 6);
@@ -1409,7 +1407,7 @@ class Warrior extends Character {
         ctx.roundRect(5, 15, 22, 35, 6);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.ellipse(-14, 35, 12, 10, 0, 0, Math.PI * 2);
@@ -1418,19 +1416,19 @@ class Warrior extends Character {
         ctx.ellipse(16, 35, 12, 10, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-34, -20, 68, 55, 12);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-34, 25, 68, 10, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-35, -10, 15, 12, 0, 0, Math.PI * 2);
@@ -1439,7 +1437,7 @@ class Warrior extends Character {
         ctx.ellipse(35, -10, 15, 12, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(-42, -5, 12, 30, 5);
@@ -1448,7 +1446,7 @@ class Warrior extends Character {
         ctx.roundRect(30, -5, 12, 30, 5);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -35, 20, 0, Math.PI * 2);
@@ -1459,7 +1457,7 @@ class Warrior extends Character {
         ctx.arc(0, -38, 22, Math.PI, 0);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 8;

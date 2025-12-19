@@ -17,7 +17,7 @@ class Mage extends Character {
             ...options
         });
 
-        
+
         this.attacks = {
             light: {
                 damage: 28,
@@ -60,7 +60,7 @@ class Mage extends Character {
             }
         };
 
-        
+
         this.orbitalParticles = [];
         this.ultimateActive = false;
         this.ultimateTimer = 0;
@@ -70,7 +70,7 @@ class Mage extends Character {
     update(input, opponent) {
         super.update(input, opponent);
 
-        
+
         if (this.orbitalParticles.length < 3 && Math.random() < 0.02) {
             this.orbitalParticles.push({
                 angle: Math.random() * Math.PI * 2,
@@ -84,10 +84,10 @@ class Mage extends Character {
             particle.angle += particle.speed;
         }
 
-        
+
         this.magicCircle.rotation += 0.02;
 
-        
+
         if (this.ultimateActive) {
             this.ultimateTimer--;
             if (this.ultimateTimer <= 0) {
@@ -98,7 +98,7 @@ class Mage extends Character {
 
     startAttack(type) {
         if (type === 'special') {
-            
+
             this.fireProjectile({
                 width: 35,
                 height: 35,
@@ -129,14 +129,14 @@ class Mage extends Character {
     }
 
     getHitbox() {
-        
+
         if (this.ultimateActive && this.ultimateTimer > 20) {
             return {
                 x: this.direction === 1 ? this.x + this.width : this.x - 300,
                 y: this.y - 50,
                 width: 300,
                 height: 150,
-                damage: 8, 
+                damage: 8,
                 knockback: 2,
                 energyGain: 0
             };
@@ -154,20 +154,20 @@ class Mage extends Character {
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        
+
         this.drawMagicCircle(ctx);
 
-        
+
         const shadowScale = this.isGrounded ? 1 : 0.3;
         ctx.fillStyle = 'rgba(58, 134, 255, 0.3)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, (this.width / 2 + 10) * shadowScale, 15 * shadowScale, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         this.drawOrbitalParticles(ctx);
 
-        
+
         switch (this.state) {
             case 'hitstun':
                 this.drawMageHit(ctx);
@@ -198,7 +198,7 @@ class Mage extends Character {
                 this.drawMageBody(ctx);
         }
 
-        
+
         if (this.ultimateActive) {
             this.drawUltimateBeam(ctx);
         }
@@ -217,17 +217,17 @@ class Mage extends Character {
         ctx.lineWidth = 2;
         ctx.globalAlpha = 0.3;
 
-        
+
         ctx.beginPath();
         ctx.arc(0, 0, 60, 0, Math.PI * 2);
         ctx.stroke();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, 0, 45, 0, Math.PI * 2);
         ctx.stroke();
 
-        
+
         for (let i = 0; i < 6; i++) {
             ctx.save();
             ctx.rotate(i * Math.PI / 3);
@@ -260,12 +260,9 @@ class Mage extends Character {
     }
 
     drawMageBody(ctx) {
-        const bob = Math.sin(this.animTimer * 0.1) * 3;
-        const breathe = 0; 
         const isAttacking = this.state.startsWith('attack_');
-        const floatOffset = Math.sin(this.animTimer * 0.05) * 5; 
 
-        
+
         ctx.save();
         ctx.globalAlpha = 0.3 + Math.sin(this.animTimer * 0.1) * 0.1;
         const auraGrad = ctx.createRadialGradient(0, 0, 20, 0, 0, 80);
@@ -277,36 +274,36 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        
-        
+
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.moveTo(-32, 78 + floatOffset);
-        ctx.lineTo(-38, 25 + bob + floatOffset);
-        ctx.quadraticCurveTo(-35, -15 + bob + floatOffset, -22, -42 + bob + floatOffset);
-        ctx.lineTo(22, -42 + bob + floatOffset);
-        ctx.quadraticCurveTo(35, -15 + bob + floatOffset, 38, 25 + bob + floatOffset);
-        ctx.lineTo(32, 78 + floatOffset);
+        ctx.moveTo(-32, 78);
+        ctx.lineTo(-38, 25);
+        ctx.quadraticCurveTo(-35, -15, -22, -42);
+        ctx.lineTo(22, -42);
+        ctx.quadraticCurveTo(35, -15, 38, 25);
+        ctx.lineTo(32, 78);
         ctx.closePath();
         ctx.fill();
 
-        
-        const robeGrad = ctx.createLinearGradient(-35, -40 + bob, 35, 75);
+
+        const robeGrad = ctx.createLinearGradient(-35, -40, 35, 75);
         robeGrad.addColorStop(0, 'rgba(100, 180, 255, 0.2)');
         robeGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
         robeGrad.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
         ctx.fillStyle = robeGrad;
         ctx.beginPath();
-        ctx.moveTo(-32, 78 + floatOffset);
-        ctx.lineTo(-38, 25 + bob + floatOffset);
-        ctx.quadraticCurveTo(-35, -15 + bob + floatOffset, -22, -42 + bob + floatOffset);
-        ctx.lineTo(22, -42 + bob + floatOffset);
-        ctx.quadraticCurveTo(35, -15 + bob + floatOffset, 38, 25 + bob + floatOffset);
-        ctx.lineTo(32, 78 + floatOffset);
+        ctx.moveTo(-32, 78);
+        ctx.lineTo(-38, 25);
+        ctx.quadraticCurveTo(-35, -15, -22, -42);
+        ctx.lineTo(22, -42);
+        ctx.quadraticCurveTo(35, -15, 38, 25);
+        ctx.lineTo(32, 78);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#4cc9f0';
         ctx.lineWidth = 3;
         ctx.shadowColor = '#4cc9f0';
@@ -314,152 +311,152 @@ class Mage extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.strokeStyle = '#5a9fff';
         ctx.lineWidth = 1;
         ctx.globalAlpha = 0.5;
         for (let i = 0; i < 4; i++) {
             ctx.beginPath();
-            ctx.arc(-15 + i * 10, 40 + bob + floatOffset, 5, 0, Math.PI * 2);
+            ctx.arc(-15 + i * 10, 40, 5, 0, Math.PI * 2);
             ctx.stroke();
         }
         ctx.globalAlpha = 1;
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.moveTo(-22, 78 + floatOffset);
-        ctx.lineTo(-18, 5 + bob + floatOffset);
-        ctx.lineTo(18, 5 + bob + floatOffset);
-        ctx.lineTo(22, 78 + floatOffset);
+        ctx.moveTo(-22, 78);
+        ctx.lineTo(-18, 5);
+        ctx.lineTo(18, 5);
+        ctx.lineTo(22, 78);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#5a9fff';
         ctx.beginPath();
-        ctx.moveTo(-18, 78 + floatOffset);
-        ctx.lineTo(-14, 10 + bob + floatOffset);
-        ctx.lineTo(-5, 10 + bob + floatOffset);
-        ctx.lineTo(-8, 78 + floatOffset);
+        ctx.moveTo(-18, 78);
+        ctx.lineTo(-14, 10);
+        ctx.lineTo(-5, 10);
+        ctx.lineTo(-8, 78);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#7209b7';
         ctx.beginPath();
-        ctx.roundRect(-28, 18 + bob + floatOffset, 56, 14, 4);
+        ctx.roundRect(-28, 18, 56, 14, 4);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#9d4edd';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(-25, 25 + bob + floatOffset);
-        ctx.lineTo(25, 25 + bob + floatOffset);
+        ctx.moveTo(-25, 25);
+        ctx.lineTo(25, 25);
         ctx.stroke();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 15;
         ctx.beginPath();
-        ctx.arc(0, 25 + bob + floatOffset, 8, 0, Math.PI * 2);
+        ctx.arc(0, 25, 8, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(-2, 23 + bob + floatOffset, 3, 0, Math.PI * 2);
+        ctx.arc(-2, 23, 3, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = '#ff00ff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 8;
         ctx.beginPath();
-        ctx.arc(-18, 25 + bob + floatOffset, 4, 0, Math.PI * 2);
+        ctx.arc(-18, 25, 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(18, 25 + bob + floatOffset, 4, 0, Math.PI * 2);
+        ctx.arc(18, 25, 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
-        
+
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.ellipse(-30, -30 + bob + floatOffset, 14, 10, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(-30, -30, 14, 10, -0.3, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#4cc9f0';
         ctx.beginPath();
-        ctx.arc(-30, -30 + bob + floatOffset, 5, 0, Math.PI * 2);
+        ctx.arc(-30, -30, 5, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.ellipse(30, -30 + bob + floatOffset, 14, 10, 0.3, 0, Math.PI * 2);
+        ctx.ellipse(30, -30, 14, 10, 0.3, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = '#4cc9f0';
         ctx.beginPath();
-        ctx.arc(30, -30 + bob + floatOffset, 5, 0, Math.PI * 2);
+        ctx.arc(30, -30, 5, 0, Math.PI * 2);
         ctx.fill();
 
-        
-        
+
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.roundRect(-42, -25 + bob + floatOffset, 15, 45, 6);
-        ctx.fill();
-        
-        ctx.beginPath();
-        ctx.moveTo(-45, 15 + bob + floatOffset);
-        ctx.lineTo(-50, 35 + bob + floatOffset);
-        ctx.lineTo(-35, 35 + bob + floatOffset);
-        ctx.lineTo(-30, 15 + bob + floatOffset);
-        ctx.closePath();
-        ctx.fill();
-        
-        ctx.fillStyle = '#ffd6a5';
-        ctx.beginPath();
-        ctx.roundRect(-44, 30 + bob + floatOffset, 12, 14, 5);
+        ctx.roundRect(-42, -25, 15, 45, 6);
         ctx.fill();
 
-        
+        ctx.beginPath();
+        ctx.moveTo(-45, 15);
+        ctx.lineTo(-50, 35);
+        ctx.lineTo(-35, 35);
+        ctx.lineTo(-30, 15);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#ffd6a5';
+        ctx.beginPath();
+        ctx.roundRect(-44, 30, 12, 14, 5);
+        ctx.fill();
+
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.roundRect(27, -25 + bob + floatOffset, 15, 45, 6);
+        ctx.roundRect(27, -25, 15, 45, 6);
         ctx.fill();
         ctx.beginPath();
-        ctx.moveTo(25, 15 + bob + floatOffset);
-        ctx.lineTo(20, 35 + bob + floatOffset);
-        ctx.lineTo(35, 35 + bob + floatOffset);
-        ctx.lineTo(40, 15 + bob + floatOffset);
+        ctx.moveTo(25, 15);
+        ctx.lineTo(20, 35);
+        ctx.lineTo(35, 35);
+        ctx.lineTo(40, 15);
         ctx.closePath();
         ctx.fill();
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
-        ctx.roundRect(28, 30 + bob + floatOffset, 12, 14, 5);
+        ctx.roundRect(28, 30, 12, 14, 5);
         ctx.fill();
 
-        
+
         ctx.save();
-        ctx.translate(38, 35 + bob + floatOffset);
+        ctx.translate(38, 35);
         if (isAttacking) {
             ctx.rotate(-0.4);
         } else {
             ctx.rotate(0.1);
         }
 
-        
+
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-4, -120, 8, 130, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#6b4423';
         for (let i = 0; i < 5; i++) {
             ctx.beginPath();
@@ -467,7 +464,7 @@ class Mage extends Character {
             ctx.fill();
         }
 
-        
+
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.moveTo(-15, -125);
@@ -479,7 +476,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         const orbPulse = Math.sin(this.animTimer * 0.15) * 3;
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
@@ -488,7 +485,7 @@ class Mage extends Character {
         ctx.arc(0, -135, 12 + orbPulse, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#88ffff';
         ctx.beginPath();
         ctx.arc(0, -135, 8, 0, Math.PI * 2);
@@ -498,7 +495,7 @@ class Mage extends Character {
         ctx.arc(-2, -137, 4, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 2;
         for (let i = 0; i < 6; i++) {
@@ -515,101 +512,101 @@ class Mage extends Character {
 
         ctx.restore();
 
-        
-        
+
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
-        ctx.roundRect(-6, -50 + bob + floatOffset, 12, 12, 4);
+        ctx.roundRect(-6, -50, 12, 12, 4);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
-        ctx.arc(0, -60 + bob + floatOffset, 20, 0, Math.PI * 2);
+        ctx.arc(0, -60, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#e6c090';
         ctx.beginPath();
-        ctx.arc(3, -58 + bob + floatOffset, 16, 0, Math.PI);
+        ctx.arc(3, -58, 16, 0, Math.PI);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.arc(0, -62 + bob + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
-        ctx.lineTo(28, -45 + bob + floatOffset);
-        ctx.quadraticCurveTo(22, -55 + bob + floatOffset, 18, -85 + bob + floatOffset);
-        ctx.lineTo(-18, -85 + bob + floatOffset);
-        ctx.quadraticCurveTo(-22, -55 + bob + floatOffset, -28, -45 + bob + floatOffset);
+        ctx.arc(0, -62, 24, Math.PI * 0.75, Math.PI * 0.25);
+        ctx.lineTo(28, -45);
+        ctx.quadraticCurveTo(22, -55, 18, -85);
+        ctx.lineTo(-18, -85);
+        ctx.quadraticCurveTo(-22, -55, -28, -45);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#034078';
         ctx.beginPath();
-        ctx.moveTo(-15, -82 + bob + floatOffset);
-        ctx.quadraticCurveTo(-18, -60 + bob + floatOffset, -24, -48 + bob + floatOffset);
-        ctx.lineTo(-20, -50 + bob + floatOffset);
-        ctx.quadraticCurveTo(-15, -65 + bob + floatOffset, -12, -80 + bob + floatOffset);
+        ctx.moveTo(-15, -82);
+        ctx.quadraticCurveTo(-18, -60, -24, -48);
+        ctx.lineTo(-20, -50);
+        ctx.quadraticCurveTo(-15, -65, -12, -80);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#4cc9f0';
         ctx.lineWidth = 2;
         ctx.shadowColor = '#4cc9f0';
         ctx.shadowBlur = 8;
         ctx.beginPath();
-        ctx.arc(0, -62 + bob + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
+        ctx.arc(0, -62, 24, Math.PI * 0.75, Math.PI * 0.25);
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = isAttacking ? 30 : 15;
         ctx.beginPath();
-        ctx.ellipse(-6, -60 + bob + floatOffset, 5, 4, -0.1, 0, Math.PI * 2);
+        ctx.ellipse(-6, -60, 5, 4, -0.1, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(6, -60 + bob + floatOffset, 5, 4, 0.1, 0, Math.PI * 2);
+        ctx.ellipse(6, -60, 5, 4, 0.1, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.beginPath();
-        ctx.arc(-6, -60 + bob + floatOffset, 2.5, 0, Math.PI * 2);
+        ctx.arc(-6, -60, 2.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(6, -60 + bob + floatOffset, 2.5, 0, Math.PI * 2);
+        ctx.arc(6, -60, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.shadowBlur = 0;
         ctx.beginPath();
-        ctx.arc(-7, -61 + bob + floatOffset, 1, 0, Math.PI * 2);
+        ctx.arc(-7, -61, 1, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(5, -61 + bob + floatOffset, 1, 0, Math.PI * 2);
+        ctx.arc(5, -61, 1, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         if (isAttacking) {
-            
+
             ctx.fillStyle = '#ffd6a5';
             ctx.shadowColor = this.color;
             ctx.shadowBlur = 25;
             ctx.beginPath();
-            ctx.roundRect(-50, -25 + bob + floatOffset, 55, 16, 8);
+            ctx.roundRect(-50, -25, 55, 16, 8);
             ctx.fill();
 
-            
+
             for (let i = 0; i < 3; i++) {
                 const orbAngle = this.animTimer * 0.2 + i * Math.PI * 2 / 3;
                 const orbX = -75 + Math.cos(orbAngle) * 15;
-                const orbY = -17 + bob + floatOffset + Math.sin(orbAngle) * 8;
+                const orbY = -17 + Math.sin(orbAngle) * 8;
 
                 ctx.fillStyle = this.color;
                 ctx.globalAlpha = 0.6 + Math.sin(this.animTimer * 0.3 + i) * 0.3;
@@ -619,28 +616,28 @@ class Mage extends Character {
             }
             ctx.globalAlpha = 1;
 
-            
+
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
-            ctx.arc(-75, -17 + bob + floatOffset, 12, 0, Math.PI * 2);
+            ctx.arc(-75, -17, 12, 0, Math.PI * 2);
             ctx.fill();
             ctx.fillStyle = this.color;
             ctx.beginPath();
-            ctx.arc(-75, -17 + bob + floatOffset, 8, 0, Math.PI * 2);
+            ctx.arc(-75, -17, 8, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
         }
 
-        
+
         if (this.state === 'hitstun') {
             const flash = Math.floor(this.animTimer / 3) % 2 === 0;
             if (flash) {
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                 ctx.beginPath();
-                ctx.ellipse(0, 0 + floatOffset, 50, 80, 0, 0, Math.PI * 2);
+                ctx.ellipse(0, 0, 50, 80, 0, 0, Math.PI * 2);
                 ctx.fill();
             }
-            
+
             ctx.translate(Math.sin(this.animTimer * 0.8) * 3, 0);
         }
     }
@@ -653,7 +650,7 @@ class Mage extends Character {
         ctx.save();
         ctx.translate(40, -10);
 
-        
+
         for (let i = 3; i >= 0; i--) {
             const width = beamWidth * (1 + i * 0.3);
             ctx.fillStyle = i === 0 ? '#ffffff' : this.color;
@@ -663,20 +660,20 @@ class Mage extends Character {
             ctx.fill();
         }
 
-        
+
         ctx.globalAlpha = intensity;
         ctx.fillStyle = '#00f5d4';
         ctx.beginPath();
         ctx.ellipse(beamLength / 2, 0, beamLength / 2, 30, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.ellipse(beamLength / 2, 0, beamLength / 2, 10, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.globalAlpha = 1;
         for (let i = 0; i < 10; i++) {
             const px = Math.random() * beamLength;
@@ -695,30 +692,30 @@ class Mage extends Character {
             ctx.save();
             ctx.translate(proj.x + proj.width / 2, proj.y + proj.height / 2);
 
-            
+
             ctx.shadowColor = proj.color;
             ctx.shadowBlur = 25;
 
-            
+
             ctx.fillStyle = proj.color;
             ctx.globalAlpha = 0.5;
             ctx.beginPath();
             ctx.arc(0, 0, proj.width / 2 + 10, 0, Math.PI * 2);
             ctx.fill();
 
-            
+
             ctx.globalAlpha = 1;
             ctx.beginPath();
             ctx.arc(0, 0, proj.width / 2, 0, Math.PI * 2);
             ctx.fill();
 
-            
+
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(0, 0, proj.width / 4, 0, Math.PI * 2);
             ctx.fill();
 
-            
+
             for (let i = 0; i < 3; i++) {
                 ctx.fillStyle = proj.color;
                 ctx.globalAlpha = 0.5 - i * 0.15;
@@ -737,61 +734,61 @@ class Mage extends Character {
         const floatOffset = Math.sin(this.animTimer * 0.05) * 3;
         const robeSwing = Math.sin(cycle) * 0.05;
 
-        
+
         ctx.save();
         ctx.globalAlpha = 0.3;
         for (let i = 0; i < 4; i++) {
             ctx.fillStyle = this.color;
             ctx.beginPath();
-            ctx.arc(-20 - i * 15, 50 + i * 5 + floatOffset, 8 - i * 2, 0, Math.PI * 2);
+            ctx.arc(-20 - i * 15, 50 + i * 5, 8 - i * 2, 0, Math.PI * 2);
             ctx.fill();
         }
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.rotate(robeSwing);
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.moveTo(-30, 78 + bob + floatOffset);
-        ctx.lineTo(-36, 25 + bob + floatOffset);
-        ctx.quadraticCurveTo(-33, -15 + bob + floatOffset, -20, -40 + bob + floatOffset);
-        ctx.lineTo(20, -40 + bob + floatOffset);
-        ctx.quadraticCurveTo(33, -15 + bob + floatOffset, 36, 25 + bob + floatOffset);
-        ctx.lineTo(30, 78 + bob + floatOffset);
+        ctx.moveTo(-30, 78);
+        ctx.lineTo(-36, 25);
+        ctx.quadraticCurveTo(-33, -15, -20, -40);
+        ctx.lineTo(20, -40);
+        ctx.quadraticCurveTo(33, -15, 36, 25);
+        ctx.lineTo(30, 78);
         ctx.closePath();
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.moveTo(-20, 78 + bob + floatOffset);
-        ctx.lineTo(-16, 5 + bob + floatOffset);
-        ctx.lineTo(16, 5 + bob + floatOffset);
-        ctx.lineTo(20, 78 + bob + floatOffset);
+        ctx.moveTo(-20, 78);
+        ctx.lineTo(-16, 5);
+        ctx.lineTo(16, 5);
+        ctx.lineTo(20, 78);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#7209b7';
         ctx.beginPath();
-        ctx.roundRect(-26, 18 + bob + floatOffset, 52, 12, 4);
+        ctx.roundRect(-26, 18, 52, 12, 4);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 12;
         ctx.beginPath();
-        ctx.arc(0, 24 + bob + floatOffset, 7, 0, Math.PI * 2);
+        ctx.arc(0, 24, 7, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.save();
-        ctx.translate(-32, -18 + bob + floatOffset);
+        ctx.translate(-32, -18);
         ctx.rotate(Math.sin(cycle) * 0.3);
         ctx.beginPath();
         ctx.roundRect(-7, 0, 14, 40, 6);
@@ -799,52 +796,52 @@ class Mage extends Character {
         ctx.restore();
 
         ctx.save();
-        ctx.translate(32, -18 + bob + floatOffset);
+        ctx.translate(32, -18);
         ctx.rotate(-Math.sin(cycle) * 0.3);
         ctx.beginPath();
         ctx.roundRect(-7, 0, 14, 40, 6);
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
-        ctx.arc(0, -58 + bob + floatOffset, 20, 0, Math.PI * 2);
+        ctx.arc(0, -58, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.arc(0, -60 + bob + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
-        ctx.lineTo(26, -45 + bob + floatOffset);
-        ctx.quadraticCurveTo(20, -55 + bob + floatOffset, 16, -83 + bob + floatOffset);
-        ctx.lineTo(-16, -83 + bob + floatOffset);
-        ctx.quadraticCurveTo(-20, -55 + bob + floatOffset, -26, -45 + bob + floatOffset);
+        ctx.arc(0, -60, 24, Math.PI * 0.75, Math.PI * 0.25);
+        ctx.lineTo(26, -45);
+        ctx.quadraticCurveTo(20, -55, 16, -83);
+        ctx.lineTo(-16, -83);
+        ctx.quadraticCurveTo(-20, -55, -26, -45);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 12;
         ctx.beginPath();
-        ctx.ellipse(-6, -58 + bob + floatOffset, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(-6, -58, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(6, -58 + bob + floatOffset, 4, 3, 0, 0, Math.PI * 2);
+        ctx.ellipse(6, -58, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.save();
-        ctx.translate(38, 35 + bob + floatOffset);
+        ctx.translate(38, 35);
         ctx.rotate(0.1 + Math.sin(cycle) * 0.1);
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-4, -120, 8, 130, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 20;
@@ -858,7 +855,7 @@ class Mage extends Character {
     drawMageJump(ctx) {
         const rise = Math.min(this.animTimer * 0.08, 1);
 
-        
+
         ctx.save();
         ctx.globalAlpha = 0.4;
         for (let i = 0; i < 6; i++) {
@@ -871,7 +868,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-35, 85);
@@ -883,7 +880,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-25, 85);
@@ -893,13 +890,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-28, -35, 56, 50, 10);
         ctx.fill();
 
-        
+
         ctx.save();
         ctx.translate(-35, -25);
         ctx.rotate(-0.8);
@@ -917,13 +914,13 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -55, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -58, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -934,7 +931,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 18;
@@ -946,7 +943,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.save();
         ctx.translate(0, -20);
         ctx.rotate(-0.3);
@@ -955,7 +952,7 @@ class Mage extends Character {
         ctx.roundRect(-60, -4, 120, 8, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 25;
@@ -965,7 +962,7 @@ class Mage extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        
+
         ctx.strokeStyle = '#00f5d4';
         ctx.lineWidth = 3;
         ctx.globalAlpha = 0.3;
@@ -979,7 +976,7 @@ class Mage extends Character {
     drawMageFall(ctx) {
         const wave = Math.sin(this.animTimer * 0.2) * 5;
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-38, -20);
@@ -997,13 +994,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-30, -30, 60, 55, 10);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-18, 25);
@@ -1013,7 +1010,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.save();
         ctx.translate(-32, -15);
@@ -1031,7 +1028,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.rotate(0.1);
         ctx.fillStyle = '#ffd6a5';
@@ -1039,7 +1036,7 @@ class Mage extends Character {
         ctx.arc(0, -45, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -48, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -1050,7 +1047,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 12;
@@ -1063,7 +1060,7 @@ class Mage extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        
+
         ctx.strokeStyle = 'rgba(0, 245, 212, 0.3)';
         ctx.lineWidth = 2;
         for (let i = 0; i < 4; i++) {
@@ -1082,7 +1079,7 @@ class Mage extends Character {
         ctx.translate(shake, 0);
         ctx.rotate(0.2);
 
-        
+
         ctx.fillStyle = flash ? '#aaccff' : this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-32, 75);
@@ -1096,7 +1093,7 @@ class Mage extends Character {
 
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.translate(-10 + shake, -50);
         ctx.rotate(-0.25);
@@ -1106,7 +1103,7 @@ class Mage extends Character {
         ctx.arc(0, 0, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = flash ? '#aaccff' : this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -3, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -1117,7 +1114,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.strokeStyle = flash ? '#00f5d4' : '#333';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1133,7 +1130,7 @@ class Mage extends Character {
         ctx.lineTo(3, 3);
         ctx.stroke();
 
-        
+
         ctx.fillStyle = '#660000';
         ctx.beginPath();
         ctx.ellipse(0, 10, 6, 4, 0, 0, Math.PI * 2);
@@ -1141,7 +1138,7 @@ class Mage extends Character {
 
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.translate(15, -20);
         for (let i = 0; i < 8; i++) {
@@ -1155,7 +1152,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        
+
         ctx.save();
         ctx.translate(40, 30);
         ctx.rotate(0.8 + shake * 0.02);
@@ -1175,7 +1172,7 @@ class Mage extends Character {
     drawMageBlock(ctx) {
         const pulse = Math.sin(this.animTimer * 0.15) * 0.2;
 
-        
+
         ctx.save();
         ctx.globalAlpha = 0.6 + pulse * 0.3;
         ctx.strokeStyle = '#00f5d4';
@@ -1186,7 +1183,7 @@ class Mage extends Character {
         ctx.arc(15, -10, 50, -0.8, 0.8);
         ctx.stroke();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         for (let i = 0; i < 5; i++) {
             const a = -0.6 + i * 0.3;
@@ -1196,7 +1193,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-28, 60);
@@ -1208,13 +1205,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-5, -22, 45, 16, 7);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(42, -14, 10, 0, Math.PI * 2);
@@ -1227,13 +1224,13 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -45, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -48, 22, Math.PI * 0.75, Math.PI * 0.25);
@@ -1244,7 +1241,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 15;
@@ -1260,75 +1257,75 @@ class Mage extends Character {
     drawMageCrouch(ctx) {
         const floatOffset = Math.sin(this.animTimer * 0.08) * 2;
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.moveTo(-35, 45 + floatOffset);
-        ctx.lineTo(-30, 5 + floatOffset);
-        ctx.quadraticCurveTo(-25, -12 + floatOffset, -15, -22 + floatOffset);
-        ctx.lineTo(15, -22 + floatOffset);
-        ctx.quadraticCurveTo(25, -12 + floatOffset, 30, 5 + floatOffset);
-        ctx.lineTo(35, 45 + floatOffset);
+        ctx.moveTo(-35, 45);
+        ctx.lineTo(-30, 5);
+        ctx.quadraticCurveTo(-25, -12, -15, -22);
+        ctx.lineTo(15, -22);
+        ctx.quadraticCurveTo(25, -12, 30, 5);
+        ctx.lineTo(35, 45);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.moveTo(-18, 45 + floatOffset);
-        ctx.lineTo(-14, 5 + floatOffset);
-        ctx.lineTo(14, 5 + floatOffset);
-        ctx.lineTo(18, 45 + floatOffset);
+        ctx.moveTo(-18, 45);
+        ctx.lineTo(-14, 5);
+        ctx.lineTo(14, 5);
+        ctx.lineTo(18, 45);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#7209b7';
         ctx.beginPath();
-        ctx.roundRect(-22, 8 + floatOffset, 44, 10, 3);
+        ctx.roundRect(-22, 8, 44, 10, 3);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.roundRect(-35, -10 + floatOffset, 12, 30, 5);
+        ctx.roundRect(-35, -10, 12, 30, 5);
         ctx.fill();
         ctx.beginPath();
-        ctx.roundRect(23, -10 + floatOffset, 12, 30, 5);
+        ctx.roundRect(23, -10, 12, 30, 5);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
-        ctx.arc(0, -32 + floatOffset, 16, 0, Math.PI * 2);
+        ctx.arc(0, -32, 16, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.arc(0, -35 + floatOffset, 20, Math.PI * 0.7, Math.PI * 0.3);
-        ctx.lineTo(22, -22 + floatOffset);
-        ctx.quadraticCurveTo(16, -30 + floatOffset, 12, -55 + floatOffset);
-        ctx.lineTo(-12, -55 + floatOffset);
-        ctx.quadraticCurveTo(-16, -30 + floatOffset, -22, -22 + floatOffset);
+        ctx.arc(0, -35, 20, Math.PI * 0.7, Math.PI * 0.3);
+        ctx.lineTo(22, -22);
+        ctx.quadraticCurveTo(16, -30, 12, -55);
+        ctx.lineTo(-12, -55);
+        ctx.quadraticCurveTo(-16, -30, -22, -22);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.ellipse(-4, -32 + floatOffset, 3, 2, 0, 0, Math.PI * 2);
+        ctx.ellipse(-4, -32, 3, 2, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(4, -32 + floatOffset, 3, 2, 0, 0, Math.PI * 2);
+        ctx.ellipse(4, -32, 3, 2, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.save();
-        ctx.translate(35, 20 + floatOffset);
+        ctx.translate(35, 20);
         ctx.rotate(0.4);
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
@@ -1350,7 +1347,7 @@ class Mage extends Character {
         const castPower = Math.sin(progress * Math.PI);
         const floatOffset = Math.sin(this.animTimer * 0.05) * 5;
 
-        
+
         ctx.save();
         ctx.globalAlpha = 0.4 + castPower * 0.3;
         const auraGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, 80 + castPower * 30);
@@ -1362,19 +1359,19 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.moveTo(-32, 80 + floatOffset);
-        ctx.lineTo(-40 - castPower * 5, 25 + floatOffset);
-        ctx.quadraticCurveTo(-38, -15 + floatOffset, -22, -42 + floatOffset);
-        ctx.lineTo(22, -42 + floatOffset);
-        ctx.quadraticCurveTo(38, -15 + floatOffset, 40 + castPower * 5, 25 + floatOffset);
-        ctx.lineTo(32, 80 + floatOffset);
+        ctx.moveTo(-32, 80);
+        ctx.lineTo(-40 - castPower * 5, 25);
+        ctx.quadraticCurveTo(-38, -15, -22, -42);
+        ctx.lineTo(22, -42);
+        ctx.quadraticCurveTo(38, -15, 40 + castPower * 5, 25);
+        ctx.lineTo(32, 80);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#4cc9f0';
         ctx.lineWidth = 3;
         ctx.shadowColor = '#4cc9f0';
@@ -1382,10 +1379,10 @@ class Mage extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.save();
-        ctx.translate(-35, -20 + floatOffset);
+        ctx.translate(-35, -20);
         ctx.rotate(-0.8 - castPower * 0.4);
         ctx.beginPath();
         ctx.roundRect(-6, 0, 14, 45, 6);
@@ -1396,23 +1393,23 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        
+
         ctx.save();
-        ctx.translate(35, -20 + floatOffset);
+        ctx.translate(35, -20);
         ctx.rotate(0.5 + castPower * 0.5);
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-7, 0, 14, 45, 6);
         ctx.fill();
 
-        
+
         ctx.translate(0, 48);
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-4, -30, 8, 100, 3);
         ctx.fill();
 
-        
+
         const orbSize = 14 + castPower * 8;
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
@@ -1421,13 +1418,13 @@ class Mage extends Character {
         ctx.arc(0, -38, orbSize, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.arc(0, -38, orbSize * 0.5, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 2;
         for (let i = 0; i < 8; i++) {
@@ -1442,39 +1439,39 @@ class Mage extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        
+
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
-        ctx.arc(0, -60 + floatOffset, 20, 0, Math.PI * 2);
+        ctx.arc(0, -60, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.arc(0, -63 + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
-        ctx.lineTo(28, -48 + floatOffset);
-        ctx.quadraticCurveTo(22, -58 + floatOffset, 18, -88 + floatOffset);
-        ctx.lineTo(-18, -88 + floatOffset);
-        ctx.quadraticCurveTo(-22, -58 + floatOffset, -28, -48 + floatOffset);
+        ctx.arc(0, -63, 24, Math.PI * 0.75, Math.PI * 0.25);
+        ctx.lineTo(28, -48);
+        ctx.quadraticCurveTo(22, -58, 18, -88);
+        ctx.lineTo(-18, -88);
+        ctx.quadraticCurveTo(-22, -58, -28, -48);
         ctx.closePath();
         ctx.fill();
 
-        
+
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 25 + castPower * 15;
         ctx.beginPath();
-        ctx.ellipse(-6, -60 + floatOffset, 5 + castPower * 2, 4 + castPower, 0, 0, Math.PI * 2);
+        ctx.ellipse(-6, -60, 5 + castPower * 2, 4 + castPower, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(6, -60 + floatOffset, 5 + castPower * 2, 4 + castPower, 0, 0, Math.PI * 2);
+        ctx.ellipse(6, -60, 5 + castPower * 2, 4 + castPower, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        
+
         if (castPower > 0.3) {
             ctx.save();
-            ctx.translate(-55 - castPower * 20, 10 + floatOffset);
+            ctx.translate(-55 - castPower * 20, 10);
             for (let i = 0; i < 5; i++) {
                 const orbAngle = this.animTimer * 0.25 + i * Math.PI * 2 / 5;
                 const orbDist = 15 + Math.sin(this.animTimer * 0.3 + i) * 5;

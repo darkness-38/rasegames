@@ -202,7 +202,6 @@ class Ninja extends Character {
     }
 
     drawNinjaBody(ctx, isClone) {
-        const bob = 0; 
         const isAttacking = this.state.startsWith('attack_');
         const legOffset = isClone ? 0 : Math.sin(this.animTimer * 0.2) * (this.state === 'walk' ? 8 : 0);
 
@@ -214,32 +213,32 @@ class Ninja extends Character {
             
             ctx.fillStyle = '#9d4edd';
             ctx.beginPath();
-            ctx.moveTo(-12, -48 + bob);
-            ctx.quadraticCurveTo(-35 + scarfWave1 * 15, -35 + bob, -55 + scarfWave1 * 20, -20 + bob);
-            ctx.quadraticCurveTo(-60 + scarfWave2 * 25, 0 + bob, -50 + scarfWave1 * 15, 20 + bob);
-            ctx.lineTo(-45 + scarfWave1 * 12, 15 + bob);
-            ctx.quadraticCurveTo(-50 + scarfWave2 * 20, -5 + bob, -45 + scarfWave1 * 15, -25 + bob);
-            ctx.quadraticCurveTo(-30 + scarfWave1 * 10, -38 + bob, -15, -45 + bob);
+            ctx.moveTo(-12, -48);
+            ctx.quadraticCurveTo(-35 + scarfWave1 * 15, -35, -55 + scarfWave1 * 20, -20);
+            ctx.quadraticCurveTo(-60 + scarfWave2 * 25, 0, -50 + scarfWave1 * 15, 20);
+            ctx.lineTo(-45 + scarfWave1 * 12, 15);
+            ctx.quadraticCurveTo(-50 + scarfWave2 * 20, -5, -45 + scarfWave1 * 15, -25);
+            ctx.quadraticCurveTo(-30 + scarfWave1 * 10, -38, -15, -45);
             ctx.closePath();
             ctx.fill();
 
             
             ctx.fillStyle = '#b366e6';
             ctx.beginPath();
-            ctx.moveTo(-14, -46 + bob);
-            ctx.quadraticCurveTo(-32 + scarfWave1 * 12, -33 + bob, -48 + scarfWave1 * 18, -18 + bob);
-            ctx.lineTo(-50 + scarfWave1 * 16, -22 + bob);
-            ctx.quadraticCurveTo(-34 + scarfWave1 * 10, -36 + bob, -16, -44 + bob);
+            ctx.moveTo(-14, -46);
+            ctx.quadraticCurveTo(-32 + scarfWave1 * 12, -33, -48 + scarfWave1 * 18, -18);
+            ctx.lineTo(-50 + scarfWave1 * 16, -22);
+            ctx.quadraticCurveTo(-34 + scarfWave1 * 10, -36, -16, -44);
             ctx.closePath();
             ctx.fill();
 
             
             ctx.fillStyle = '#7a29b8';
             ctx.beginPath();
-            ctx.moveTo(-50 + scarfWave1 * 18, -15 + bob);
-            ctx.quadraticCurveTo(-55 + scarfWave2 * 22, 5 + bob, -48 + scarfWave1 * 14, 18 + bob);
-            ctx.lineTo(-46 + scarfWave1 * 12, 12 + bob);
-            ctx.quadraticCurveTo(-50 + scarfWave2 * 18, 0 + bob, -47 + scarfWave1 * 15, -12 + bob);
+            ctx.moveTo(-50 + scarfWave1 * 18, -15);
+            ctx.quadraticCurveTo(-55 + scarfWave2 * 22, 5, -48 + scarfWave1 * 14, 18);
+            ctx.lineTo(-46 + scarfWave1 * 12, 12);
+            ctx.quadraticCurveTo(-50 + scarfWave2 * 18, 0, -47 + scarfWave1 * 15, -12);
             ctx.closePath();
             ctx.fill();
         }
@@ -248,109 +247,109 @@ class Ninja extends Character {
         
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
-        ctx.roundRect(-16 + legOffset, 26 + bob, 14, 50, 5);
+        ctx.roundRect(-16 + legOffset, 26, 14, 50, 5);
         ctx.fill();
         
         ctx.strokeStyle = '#2a0844';
         ctx.lineWidth = 2;
         for (let i = 0; i < 6; i++) {
             ctx.beginPath();
-            ctx.moveTo(-16 + legOffset, 32 + i * 8 + bob);
-            ctx.lineTo(-2 + legOffset, 34 + i * 8 + bob);
+            ctx.moveTo(-16 + legOffset, 32 + i * 8);
+            ctx.lineTo(-2 + legOffset, 34 + i * 8);
             ctx.stroke();
         }
         
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
-        ctx.roundRect(-14 + legOffset, 45 + bob, 10, 18, 3);
+        ctx.roundRect(-14 + legOffset, 45, 10, 18, 3);
         ctx.fill();
         ctx.fillStyle = '#5a1cc3';
         ctx.beginPath();
-        ctx.roundRect(-12 + legOffset, 47 + bob, 4, 14, 2);
+        ctx.roundRect(-12 + legOffset, 47, 4, 14, 2);
         ctx.fill();
 
         
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
-        ctx.roundRect(2 - legOffset, 26 + bob, 14, 50, 5);
+        ctx.roundRect(2 - legOffset, 26, 14, 50, 5);
         ctx.fill();
         ctx.strokeStyle = '#2a0844';
         for (let i = 0; i < 6; i++) {
             ctx.beginPath();
-            ctx.moveTo(2 - legOffset, 32 + i * 8 + bob);
-            ctx.lineTo(16 - legOffset, 34 + i * 8 + bob);
+            ctx.moveTo(2 - legOffset, 32 + i * 8);
+            ctx.lineTo(16 - legOffset, 34 + i * 8);
             ctx.stroke();
         }
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
-        ctx.roundRect(4 - legOffset, 45 + bob, 10, 18, 3);
+        ctx.roundRect(4 - legOffset, 45, 10, 18, 3);
         ctx.fill();
         ctx.fillStyle = '#5a1cc3';
         ctx.beginPath();
-        ctx.roundRect(6 - legOffset, 47 + bob, 4, 14, 2);
+        ctx.roundRect(6 - legOffset, 47, 4, 14, 2);
         ctx.fill();
 
         
         ctx.fillStyle = '#0a0015';
         ctx.beginPath();
-        ctx.roundRect(-18 + legOffset, 70 + bob, 18, 10, 3);
+        ctx.roundRect(-18 + legOffset, 70, 18, 10, 3);
         ctx.fill();
         ctx.beginPath();
-        ctx.roundRect(0 - legOffset, 70 + bob, 18, 10, 3);
+        ctx.roundRect(0 - legOffset, 70, 18, 10, 3);
         ctx.fill();
         
         ctx.strokeStyle = '#1a0533';
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(-9 + legOffset, 70 + bob);
-        ctx.lineTo(-9 + legOffset, 80 + bob);
+        ctx.moveTo(-9 + legOffset, 70);
+        ctx.lineTo(-9 + legOffset, 80);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(9 - legOffset, 70 + bob);
-        ctx.lineTo(9 - legOffset, 80 + bob);
+        ctx.moveTo(9 - legOffset, 70);
+        ctx.lineTo(9 - legOffset, 80);
         ctx.stroke();
 
         
         
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
-        ctx.roundRect(-27, -38 + bob, 54, 68, 10);
+        ctx.roundRect(-27, -38, 54, 68, 10);
         ctx.fill();
 
         
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.roundRect(-24, -35 + bob, 48, 62, 8);
+        ctx.roundRect(-24, -35, 48, 62, 8);
         ctx.fill();
 
         
-        const giGrad = ctx.createLinearGradient(-24, -35 + bob, 24, 27 + bob);
+        const giGrad = ctx.createLinearGradient(-24, -35, 24, 27);
         giGrad.addColorStop(0, 'rgba(180, 100, 255, 0.2)');
         giGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
         giGrad.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
         ctx.fillStyle = giGrad;
         ctx.beginPath();
-        ctx.roundRect(-24, -35 + bob, 48, 62, 8);
+        ctx.roundRect(-24, -35, 48, 62, 8);
         ctx.fill();
 
         
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
-        ctx.moveTo(-18, -30 + bob);
-        ctx.lineTo(0, -18 + bob);
-        ctx.lineTo(18, -30 + bob);
-        ctx.lineTo(18, 18 + bob);
-        ctx.lineTo(-18, 18 + bob);
+        ctx.moveTo(-18, -30);
+        ctx.lineTo(0, -18);
+        ctx.lineTo(18, -30);
+        ctx.lineTo(18, 18);
+        ctx.lineTo(-18, 18);
         ctx.closePath();
         ctx.fill();
 
         
         ctx.fillStyle = '#4a1cb3';
         ctx.beginPath();
-        ctx.moveTo(-15, -27 + bob);
-        ctx.lineTo(-5, -20 + bob);
-        ctx.lineTo(-5, 15 + bob);
-        ctx.lineTo(-15, 15 + bob);
+        ctx.moveTo(-15, -27);
+        ctx.lineTo(-5, -20);
+        ctx.lineTo(-5, 15);
+        ctx.lineTo(-15, 15);
         ctx.closePath();
         ctx.fill();
 
@@ -358,40 +357,40 @@ class Ninja extends Character {
         ctx.strokeStyle = '#5a0ca3';
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(-20, -25 + bob);
-        ctx.lineTo(20, 5 + bob);
+        ctx.moveTo(-20, -25);
+        ctx.lineTo(20, 5);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(20, -25 + bob);
-        ctx.lineTo(-20, 5 + bob);
+        ctx.moveTo(20, -25);
+        ctx.lineTo(-20, 5);
         ctx.stroke();
 
         
         ctx.fillStyle = '#2a0844';
         ctx.beginPath();
-        ctx.roundRect(-25, 18 + bob, 50, 10, 3);
+        ctx.roundRect(-25, 18, 50, 10, 3);
         ctx.fill();
 
         
         ctx.fillStyle = '#c0c0c0';
         ctx.beginPath();
-        ctx.roundRect(-6, 19 + bob, 12, 8, 2);
+        ctx.roundRect(-6, 19, 12, 8, 2);
         ctx.fill();
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
-        ctx.arc(0, 23 + bob, 3, 0, Math.PI * 2);
+        ctx.arc(0, 23, 3, 0, Math.PI * 2);
         ctx.fill();
 
         
         for (let i = 0; i < 3; i++) {
             ctx.fillStyle = '#1a0533';
             ctx.beginPath();
-            ctx.roundRect(-22 + i * 8, 20 + bob, 5, 6, 1);
+            ctx.roundRect(-22 + i * 8, 20, 5, 6, 1);
             ctx.fill();
             
             ctx.fillStyle = '#4a3520';
             ctx.beginPath();
-            ctx.roundRect(-21 + i * 8, 21 + bob, 3, 4, 1);
+            ctx.roundRect(-21 + i * 8, 21, 3, 4, 1);
             ctx.fill();
         }
 
@@ -399,51 +398,51 @@ class Ninja extends Character {
         
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.roundRect(-35, -20 + bob, 12, 38, 5);
+        ctx.roundRect(-35, -20, 12, 38, 5);
         ctx.fill();
         
         ctx.strokeStyle = '#1a0533';
         ctx.lineWidth = 2;
         for (let i = 0; i < 5; i++) {
             ctx.beginPath();
-            ctx.moveTo(-35, -15 + i * 7 + bob);
-            ctx.lineTo(-23, -13 + i * 7 + bob);
+            ctx.moveTo(-35, -15 + i * 7);
+            ctx.lineTo(-23, -13 + i * 7);
             ctx.stroke();
         }
         
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
-        ctx.roundRect(-34, -5 + bob, 10, 15, 3);
+        ctx.roundRect(-34, -5, 10, 15, 3);
         ctx.fill();
         
         ctx.fillStyle = '#e6c8a0';
         ctx.beginPath();
-        ctx.roundRect(-34, 16 + bob, 10, 10, 4);
+        ctx.roundRect(-34, 16, 10, 10, 4);
         ctx.fill();
 
         
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.roundRect(23, -20 + bob, 12, 38, 5);
+        ctx.roundRect(23, -20, 12, 38, 5);
         ctx.fill();
         for (let i = 0; i < 5; i++) {
             ctx.beginPath();
-            ctx.moveTo(23, -15 + i * 7 + bob);
-            ctx.lineTo(35, -13 + i * 7 + bob);
+            ctx.moveTo(23, -15 + i * 7);
+            ctx.lineTo(35, -13 + i * 7);
             ctx.stroke();
         }
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
-        ctx.roundRect(24, -5 + bob, 10, 15, 3);
+        ctx.roundRect(24, -5, 10, 15, 3);
         ctx.fill();
         ctx.fillStyle = '#e6c8a0';
         ctx.beginPath();
-        ctx.roundRect(24, 16 + bob, 10, 10, 4);
+        ctx.roundRect(24, 16, 10, 10, 4);
         ctx.fill();
 
         
         ctx.save();
-        ctx.translate(-5, -10 + bob);
+        ctx.translate(-5, -10);
         ctx.rotate(-0.4);
         
         ctx.fillStyle = '#1a0533';
@@ -483,32 +482,32 @@ class Ninja extends Character {
         
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
-        ctx.arc(0, -52 + bob, 20, 0, Math.PI * 2);
+        ctx.arc(0, -52, 20, 0, Math.PI * 2);
         ctx.fill();
 
         
         ctx.fillStyle = '#2a0844';
         ctx.beginPath();
-        ctx.arc(0, -52 + bob, 17, 0, Math.PI * 2);
+        ctx.arc(0, -52, 17, 0, Math.PI * 2);
         ctx.fill();
 
         
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
-        ctx.roundRect(-16, -68 + bob, 32, 10, 3);
+        ctx.roundRect(-16, -68, 32, 10, 3);
         ctx.fill();
         
         ctx.fillStyle = '#888888';
         ctx.beginPath();
-        ctx.roundRect(-12, -66 + bob, 24, 6, 2);
+        ctx.roundRect(-12, -66, 24, 6, 2);
         ctx.fill();
         
         ctx.strokeStyle = '#1a0533';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(-4, -63 + bob);
-        ctx.lineTo(0, -66 + bob);
-        ctx.lineTo(4, -63 + bob);
+        ctx.moveTo(-4, -63);
+        ctx.lineTo(0, -66);
+        ctx.lineTo(4, -63);
         ctx.stroke();
 
         
@@ -516,29 +515,29 @@ class Ninja extends Character {
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = isAttacking ? 25 : 15;
         ctx.beginPath();
-        ctx.ellipse(-7, -54 + bob, 6, 4, -0.15, 0, Math.PI * 2);
+        ctx.ellipse(-7, -54, 6, 4, -0.15, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(7, -54 + bob, 6, 4, 0.15, 0, Math.PI * 2);
+        ctx.ellipse(7, -54, 6, 4, 0.15, 0, Math.PI * 2);
         ctx.fill();
 
         
         ctx.fillStyle = '#ff00ff';
         ctx.beginPath();
-        ctx.arc(-7, -54 + bob, 2.5, 0, Math.PI * 2);
+        ctx.arc(-7, -54, 2.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(7, -54 + bob, 2.5, 0, Math.PI * 2);
+        ctx.arc(7, -54, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
         
         ctx.fillStyle = '#ffffff';
         ctx.shadowBlur = 0;
         ctx.beginPath();
-        ctx.arc(-8, -55 + bob, 1, 0, Math.PI * 2);
+        ctx.arc(-8, -55, 1, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(6, -55 + bob, 1, 0, Math.PI * 2);
+        ctx.arc(6, -55, 1, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.shadowBlur = 0;

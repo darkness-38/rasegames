@@ -1,4 +1,4 @@
-// 2048 Game - Rase Games
+
 const tilesContainer = document.getElementById('tilesContainer');
 const scoreEl = document.getElementById('score');
 const bestScoreEl = document.getElementById('bestScore');
@@ -67,7 +67,7 @@ function renderTiles(newTile = null, mergedTiles = []) {
             const tileClass = value > 2048 ? 'tile-super' : `tile-${value}`;
             tile.className = `tile ${tileClass}`;
 
-            // Animation classes
+            
             if (newTile && newTile.x === x && newTile.y === y) {
                 tile.classList.add('new');
             }
@@ -86,12 +86,12 @@ function renderTiles(newTile = null, mergedTiles = []) {
 }
 
 function slideAndMerge(arr) {
-    // Remove zeros and slide
+    
     let filtered = arr.filter(v => v !== 0);
     let merged = [];
     let mergeScore = 0;
 
-    // Merge adjacent equal values
+    
     let i = 0;
     while (i < filtered.length) {
         if (i < filtered.length - 1 && filtered[i] === filtered[i + 1]) {
@@ -104,7 +104,7 @@ function slideAndMerge(arr) {
         }
     }
 
-    // Pad with zeros
+    
     while (merged.length < SIZE) {
         merged.push(0);
     }
@@ -152,7 +152,7 @@ function move(direction) {
         }
     }
 
-    // Check if grid changed
+    
     let moved = false;
     for (let y = 0; y < SIZE; y++) {
         for (let x = 0; x < SIZE; x++) {
@@ -181,14 +181,14 @@ function move(direction) {
 }
 
 function checkGameOver() {
-    // Check for empty cells
+    
     for (let y = 0; y < SIZE; y++) {
         for (let x = 0; x < SIZE; x++) {
             if (grid[y][x] === 0) return false;
         }
     }
 
-    // Check for possible merges
+    
     for (let y = 0; y < SIZE; y++) {
         for (let x = 0; x < SIZE; x++) {
             const value = grid[y][x];
@@ -234,7 +234,7 @@ function initGame() {
     gameOverScreen.classList.add('hidden');
 }
 
-// Keyboard controls
+
 document.addEventListener('keydown', (e) => {
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         e.preventDefault();
@@ -243,7 +243,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Touch/swipe controls
+
 let touchStartX = 0, touchStartY = 0;
 
 document.addEventListener('touchstart', (e) => {
@@ -257,7 +257,7 @@ document.addEventListener('touchend', (e) => {
     const absDx = Math.abs(dx);
     const absDy = Math.abs(dy);
 
-    if (Math.max(absDx, absDy) < 30) return; // Too small
+    if (Math.max(absDx, absDy) < 30) return; 
 
     if (absDx > absDy) {
         move(dx > 0 ? 'right' : 'left');
@@ -269,5 +269,5 @@ document.addEventListener('touchend', (e) => {
 restartBtn.addEventListener('click', initGame);
 playAgainBtn.addEventListener('click', initGame);
 
-// Start game
+
 initGame();

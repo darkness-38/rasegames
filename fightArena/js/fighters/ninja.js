@@ -1,7 +1,7 @@
-// ===================================
-// NINJA CHARACTER
-// Speed-focused with teleportation and shurikens
-// ===================================
+
+
+
+
 
 class Ninja extends Character {
     constructor(options = {}) {
@@ -11,13 +11,13 @@ class Ninja extends Character {
             speed: 8,
             jumpForce: -16,
             maxHealth: 900,
-            defense: 1.2, // Takes more damage but very fast
+            defense: 1.2, 
             color: '#7209b7',
             secondaryColor: '#3a0ca3',
             ...options
         });
 
-        // Ninja-specific attacks
+        
         this.attacks = {
             light: {
                 damage: 25,
@@ -60,14 +60,14 @@ class Ninja extends Character {
             }
         };
 
-        // Teleport ability
+        
         this.canTeleport = true;
         this.teleportCooldown = 0;
         this.shadowClones = [];
     }
 
     handleInput(input, opponent) {
-        // Double tap for teleport
+        
         if (this.teleportCooldown > 0) this.teleportCooldown--;
 
         super.handleInput(input, opponent);
@@ -75,7 +75,7 @@ class Ninja extends Character {
 
     startAttack(type) {
         if (type === 'special') {
-            // Throw shuriken
+            
             this.fireProjectile({
                 width: 25,
                 height: 25,
@@ -91,7 +91,7 @@ class Ninja extends Character {
         }
 
         if (type === 'ultimate') {
-            // Shadow clone ultimate
+            
             this.startShadowCloneAttack();
             return;
         }
@@ -108,7 +108,7 @@ class Ninja extends Character {
         this.attackTimer = 50;
         this.attackCooldown = 90;
 
-        // Create shadow clones
+        
         this.shadowClones = [
             { x: this.x - 100, y: this.y - 50, alpha: 0.7, delay: 0 },
             { x: this.x + 100, y: this.y - 50, alpha: 0.5, delay: 5 },
@@ -119,7 +119,7 @@ class Ninja extends Character {
     update(input, opponent) {
         super.update(input, opponent);
 
-        // Update shadow clones
+        
         for (let i = this.shadowClones.length - 1; i >= 0; i--) {
             const clone = this.shadowClones[i];
             clone.delay--;
@@ -129,7 +129,7 @@ class Ninja extends Character {
                 clone.y += (opponent.y - clone.y) * 0.3;
                 clone.alpha -= 0.05;
 
-                // Check hit
+                
                 if (Math.abs(clone.x - opponent.x) < 50 && Math.abs(clone.y - opponent.y) < 50) {
                     opponent.takeDamage(60, 10, this);
                     this.shadowClones.splice(i, 1);
@@ -141,7 +141,7 @@ class Ninja extends Character {
     }
 
     draw(ctx) {
-        // Draw shadow clones first
+        
         for (const clone of this.shadowClones) {
             ctx.save();
             ctx.globalAlpha = clone.alpha;
@@ -158,14 +158,14 @@ class Ninja extends Character {
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        // Shadow (shrinks when jumping)
+        
         const shadowScale = this.isGrounded ? 1 : 0.4;
         ctx.fillStyle = 'rgba(114, 9, 183, 0.3)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, this.width / 2 * shadowScale, 10 * shadowScale, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Draw based on state
+        
         switch (this.state) {
             case 'hitstun':
                 this.drawNinjaHit(ctx);
@@ -202,16 +202,16 @@ class Ninja extends Character {
     }
 
     drawNinjaBody(ctx, isClone) {
-        const bob = 0; // Disabled breathing/bobbing animation
+        const bob = 0; 
         const isAttacking = this.state.startsWith('attack_');
         const legOffset = isClone ? 0 : Math.sin(this.animTimer * 0.2) * (this.state === 'walk' ? 8 : 0);
 
-        // === SCARF (behind body) ===
+        
         if (!isClone) {
             const scarfWave1 = Math.sin(this.animTimer * 0.08);
             const scarfWave2 = Math.sin(this.animTimer * 0.12 + 1);
 
-            // Main scarf flow
+            
             ctx.fillStyle = '#9d4edd';
             ctx.beginPath();
             ctx.moveTo(-12, -48 + bob);
@@ -223,7 +223,7 @@ class Ninja extends Character {
             ctx.closePath();
             ctx.fill();
 
-            // Scarf highlight
+            
             ctx.fillStyle = '#b366e6';
             ctx.beginPath();
             ctx.moveTo(-14, -46 + bob);
@@ -233,7 +233,7 @@ class Ninja extends Character {
             ctx.closePath();
             ctx.fill();
 
-            // Scarf shadow
+            
             ctx.fillStyle = '#7a29b8';
             ctx.beginPath();
             ctx.moveTo(-50 + scarfWave1 * 18, -15 + bob);
@@ -244,13 +244,13 @@ class Ninja extends Character {
             ctx.fill();
         }
 
-        // === LEGS ===
-        // Left leg
+        
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-16 + legOffset, 26 + bob, 14, 50, 5);
         ctx.fill();
-        // Leg wrappings
+        
         ctx.strokeStyle = '#2a0844';
         ctx.lineWidth = 2;
         for (let i = 0; i < 6; i++) {
@@ -259,7 +259,7 @@ class Ninja extends Character {
             ctx.lineTo(-2 + legOffset, 34 + i * 8 + bob);
             ctx.stroke();
         }
-        // Shin guard
+        
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
         ctx.roundRect(-14 + legOffset, 45 + bob, 10, 18, 3);
@@ -269,7 +269,7 @@ class Ninja extends Character {
         ctx.roundRect(-12 + legOffset, 47 + bob, 4, 14, 2);
         ctx.fill();
 
-        // Right leg
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(2 - legOffset, 26 + bob, 14, 50, 5);
@@ -290,7 +290,7 @@ class Ninja extends Character {
         ctx.roundRect(6 - legOffset, 47 + bob, 4, 14, 2);
         ctx.fill();
 
-        // Tabi boots
+        
         ctx.fillStyle = '#0a0015';
         ctx.beginPath();
         ctx.roundRect(-18 + legOffset, 70 + bob, 18, 10, 3);
@@ -298,7 +298,7 @@ class Ninja extends Character {
         ctx.beginPath();
         ctx.roundRect(0 - legOffset, 70 + bob, 18, 10, 3);
         ctx.fill();
-        // Split toe detail
+        
         ctx.strokeStyle = '#1a0533';
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -310,20 +310,20 @@ class Ninja extends Character {
         ctx.lineTo(9 - legOffset, 80 + bob);
         ctx.stroke();
 
-        // === TORSO ===
-        // Base body
+        
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-27, -38 + bob, 54, 68, 10);
         ctx.fill();
 
-        // Ninja gi (outfit)
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-24, -35 + bob, 48, 62, 8);
         ctx.fill();
 
-        // Gi gradient
+        
         const giGrad = ctx.createLinearGradient(-24, -35 + bob, 24, 27 + bob);
         giGrad.addColorStop(0, 'rgba(180, 100, 255, 0.2)');
         giGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
@@ -333,7 +333,7 @@ class Ninja extends Character {
         ctx.roundRect(-24, -35 + bob, 48, 62, 8);
         ctx.fill();
 
-        // Vest/armor
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-18, -30 + bob);
@@ -344,7 +344,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Vest highlights
+        
         ctx.fillStyle = '#4a1cb3';
         ctx.beginPath();
         ctx.moveTo(-15, -27 + bob);
@@ -354,7 +354,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Chest straps
+        
         ctx.strokeStyle = '#5a0ca3';
         ctx.lineWidth = 3;
         ctx.beginPath();
@@ -366,13 +366,13 @@ class Ninja extends Character {
         ctx.lineTo(-20, 5 + bob);
         ctx.stroke();
 
-        // Belt
+        
         ctx.fillStyle = '#2a0844';
         ctx.beginPath();
         ctx.roundRect(-25, 18 + bob, 50, 10, 3);
         ctx.fill();
 
-        // Belt buckle
+        
         ctx.fillStyle = '#c0c0c0';
         ctx.beginPath();
         ctx.roundRect(-6, 19 + bob, 12, 8, 2);
@@ -382,26 +382,26 @@ class Ninja extends Character {
         ctx.arc(0, 23 + bob, 3, 0, Math.PI * 2);
         ctx.fill();
 
-        // Kunai holders on belt
+        
         for (let i = 0; i < 3; i++) {
             ctx.fillStyle = '#1a0533';
             ctx.beginPath();
             ctx.roundRect(-22 + i * 8, 20 + bob, 5, 6, 1);
             ctx.fill();
-            // Kunai handles
+            
             ctx.fillStyle = '#4a3520';
             ctx.beginPath();
             ctx.roundRect(-21 + i * 8, 21 + bob, 3, 4, 1);
             ctx.fill();
         }
 
-        // === ARMS ===
-        // Left arm
+        
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-35, -20 + bob, 12, 38, 5);
         ctx.fill();
-        // Arm wrappings
+        
         ctx.strokeStyle = '#1a0533';
         ctx.lineWidth = 2;
         for (let i = 0; i < 5; i++) {
@@ -410,18 +410,18 @@ class Ninja extends Character {
             ctx.lineTo(-23, -13 + i * 7 + bob);
             ctx.stroke();
         }
-        // Arm guard
+        
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
         ctx.roundRect(-34, -5 + bob, 10, 15, 3);
         ctx.fill();
-        // Hand
+        
         ctx.fillStyle = '#e6c8a0';
         ctx.beginPath();
         ctx.roundRect(-34, 16 + bob, 10, 10, 4);
         ctx.fill();
 
-        // Right arm
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(23, -20 + bob, 12, 38, 5);
@@ -441,16 +441,16 @@ class Ninja extends Character {
         ctx.roundRect(24, 16 + bob, 10, 10, 4);
         ctx.fill();
 
-        // === KATANA ON BACK ===
+        
         ctx.save();
         ctx.translate(-5, -10 + bob);
         ctx.rotate(-0.4);
-        // Scabbard
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-4, -50, 8, 70, 3);
         ctx.fill();
-        // Scabbard decoration
+        
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
         ctx.roundRect(-3, -45, 6, 3, 1);
@@ -458,12 +458,12 @@ class Ninja extends Character {
         ctx.beginPath();
         ctx.roundRect(-3, -30, 6, 3, 1);
         ctx.fill();
-        // Handle
+        
         ctx.fillStyle = '#2a1a0a';
         ctx.beginPath();
         ctx.roundRect(-3, -65, 6, 18, 2);
         ctx.fill();
-        // Handle wrap
+        
         ctx.strokeStyle = '#9d4edd';
         ctx.lineWidth = 1;
         for (let i = 0; i < 4; i++) {
@@ -472,37 +472,37 @@ class Ninja extends Character {
             ctx.lineTo(3, -60 + i * 4);
             ctx.stroke();
         }
-        // Guard (tsuba)
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.ellipse(0, -48, 6, 3, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        // === HEAD ===
-        // Head/mask base
+        
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.arc(0, -52 + bob, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Mask detail layers
+        
         ctx.fillStyle = '#2a0844';
         ctx.beginPath();
         ctx.arc(0, -52 + bob, 17, 0, Math.PI * 2);
         ctx.fill();
 
-        // Forehead protector
+        
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
         ctx.roundRect(-16, -68 + bob, 32, 10, 3);
         ctx.fill();
-        // Metal plate
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(-12, -66 + bob, 24, 6, 2);
         ctx.fill();
-        // Symbol on plate
+        
         ctx.strokeStyle = '#1a0533';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -511,7 +511,7 @@ class Ninja extends Character {
         ctx.lineTo(4, -63 + bob);
         ctx.stroke();
 
-        // Eyes
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = isAttacking ? 25 : 15;
@@ -522,7 +522,7 @@ class Ninja extends Character {
         ctx.ellipse(7, -54 + bob, 6, 4, 0.15, 0, Math.PI * 2);
         ctx.fill();
 
-        // Glowing pupils
+        
         ctx.fillStyle = '#ff00ff';
         ctx.beginPath();
         ctx.arc(-7, -54 + bob, 2.5, 0, Math.PI * 2);
@@ -531,7 +531,7 @@ class Ninja extends Character {
         ctx.arc(7, -54 + bob, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Eye highlight
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowBlur = 0;
         ctx.beginPath();
@@ -543,13 +543,13 @@ class Ninja extends Character {
 
         ctx.shadowBlur = 0;
 
-        // Attack effects
+        
         if (isAttacking && !isClone) {
             const attack = this.attacks[this.currentAttack];
             const progress = 1 - (this.attackTimer / attack?.duration || 0);
             const slashAngle = progress * Math.PI * 1.5;
 
-            // Slash trail
+            
             ctx.strokeStyle = '#ff00ff';
             ctx.lineWidth = 4;
             ctx.shadowColor = '#ff00ff';
@@ -562,7 +562,7 @@ class Ninja extends Character {
             ctx.shadowBlur = 0;
         }
 
-        // Hit state
+        
         if (this.state === 'hitstun' && !isClone) {
             ctx.strokeStyle = '#ff4444';
             ctx.lineWidth = 3;
@@ -579,14 +579,14 @@ class Ninja extends Character {
             ctx.save();
             ctx.translate(proj.x + proj.width / 2, proj.y + proj.height / 2);
 
-            // Spinning shuriken
+            
             ctx.rotate(this.animTimer * 0.3);
 
             ctx.fillStyle = '#c0c0c0';
             ctx.shadowColor = proj.color;
             ctx.shadowBlur = 15;
 
-            // 4-pointed shuriken
+            
             for (let i = 0; i < 4; i++) {
                 ctx.save();
                 ctx.rotate(i * Math.PI / 2);
@@ -600,7 +600,7 @@ class Ninja extends Character {
                 ctx.restore();
             }
 
-            // Center
+            
             ctx.fillStyle = '#333';
             ctx.beginPath();
             ctx.arc(0, 0, 4, 0, Math.PI * 2);
@@ -616,7 +616,7 @@ class Ninja extends Character {
         const armSwing = Math.sin(cycle) * 0.4;
         const bodyBob = Math.abs(Math.sin(cycle)) * 3;
 
-        // Scarf flowing
+        
         const scarfWave = Math.sin(cycle * 0.6) * 12;
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
@@ -629,7 +629,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Legs running
+        
         ctx.fillStyle = '#1a0533';
         ctx.save();
         ctx.translate(-8, 28 + bodyBob);
@@ -656,13 +656,13 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Body
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-24, -35 + bodyBob, 48, 62, 8);
         ctx.fill();
 
-        // Vest
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-18, -30 + bodyBob);
@@ -673,7 +673,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Arms swinging
+        
         ctx.fillStyle = this.color;
         ctx.save();
         ctx.translate(-28, -18 + bodyBob);
@@ -691,13 +691,13 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Head
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.arc(0, -50 + bodyBob, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // Eyes
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 12;
@@ -709,7 +709,7 @@ class Ninja extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Speed lines
+        
         ctx.strokeStyle = 'rgba(157, 78, 221, 0.4)';
         ctx.lineWidth = 2;
         for (let i = 0; i < 3; i++) {
@@ -721,7 +721,7 @@ class Ninja extends Character {
     }
 
     drawNinjaJump(ctx) {
-        // Scarf flying up
+        
         const wave = Math.sin(this.animTimer * 0.15) * 8;
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
@@ -732,7 +732,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Legs tucked
+        
         ctx.fillStyle = '#1a0533';
         ctx.save();
         ctx.rotate(-0.4);
@@ -747,13 +747,13 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Body stretched
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-22, -40, 44, 58, 8);
         ctx.fill();
 
-        // Vest
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-16, -35);
@@ -764,7 +764,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Arms up
+        
         ctx.fillStyle = this.color;
         ctx.save();
         ctx.translate(-25, -30);
@@ -781,13 +781,13 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Head
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.arc(0, -55, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // Eyes focused
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 15;
@@ -799,7 +799,7 @@ class Ninja extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Jump trail
+        
         ctx.globalAlpha = 0.3;
         ctx.strokeStyle = '#9d4edd';
         ctx.lineWidth = 4;
@@ -813,7 +813,7 @@ class Ninja extends Character {
     drawNinjaFall(ctx) {
         const wave = Math.sin(this.animTimer * 0.2) * 5;
 
-        // Scarf billowing up
+        
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
         ctx.moveTo(-12, -42);
@@ -823,7 +823,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Legs spread
+        
         ctx.fillStyle = '#1a0533';
         ctx.save();
         ctx.rotate(-0.5);
@@ -838,13 +838,13 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Body
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-22, -35, 44, 55, 8);
         ctx.fill();
 
-        // Arms out
+        
         ctx.save();
         ctx.translate(-25, -15);
         ctx.rotate(-0.6);
@@ -861,7 +861,7 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Head looking down
+        
         ctx.save();
         ctx.rotate(0.15);
         ctx.fillStyle = '#1a0533';
@@ -881,7 +881,7 @@ class Ninja extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // Wind lines
+        
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.lineWidth = 2;
         for (let i = 0; i < 4; i++) {
@@ -900,7 +900,7 @@ class Ninja extends Character {
         ctx.translate(shake, 0);
         ctx.rotate(0.25);
 
-        // Scarf whipping
+        
         ctx.fillStyle = flash ? '#ffaaff' : '#9d4edd';
         ctx.beginPath();
         ctx.moveTo(-10, -40);
@@ -910,13 +910,13 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Body recoiling
+        
         ctx.fillStyle = flash ? '#ffffff' : this.color;
         ctx.beginPath();
         ctx.roundRect(-25, -32, 50, 60, 8);
         ctx.fill();
 
-        // Legs stumbling
+        
         ctx.fillStyle = flash ? '#aaaaaa' : '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-20, 25, 14, 45, 5);
@@ -925,7 +925,7 @@ class Ninja extends Character {
         ctx.roundRect(8, 30, 14, 42, 5);
         ctx.fill();
 
-        // Arms flailing
+        
         ctx.fillStyle = flash ? '#ffffff' : this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -5, 12, 32, 5);
@@ -936,7 +936,7 @@ class Ninja extends Character {
 
         ctx.restore();
 
-        // Head thrown back
+        
         ctx.save();
         ctx.translate(-8 + shake, -48);
         ctx.rotate(-0.3);
@@ -946,7 +946,7 @@ class Ninja extends Character {
         ctx.arc(0, 0, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // X eyes
+        
         ctx.strokeStyle = flash ? '#ff00ff' : '#ffffff';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -964,7 +964,7 @@ class Ninja extends Character {
 
         ctx.restore();
 
-        // Impact effects
+        
         ctx.save();
         ctx.translate(15, -15);
         for (let i = 0; i < 5; i++) {
@@ -979,7 +979,7 @@ class Ninja extends Character {
     }
 
     drawNinjaBlock(ctx) {
-        // Defensive stance
+        
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
         ctx.moveTo(-10, -35);
@@ -989,7 +989,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Legs bent
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-18, 18, 14, 38, 5);
@@ -998,13 +998,13 @@ class Ninja extends Character {
         ctx.roundRect(4, 18, 14, 38, 5);
         ctx.fill();
 
-        // Body crouched
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-22, -25, 44, 50, 8);
         ctx.fill();
 
-        // Arms crossed in front
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-5, -20, 35, 14, 6);
@@ -1013,7 +1013,7 @@ class Ninja extends Character {
         ctx.roundRect(-30, -15, 35, 14, 6);
         ctx.fill();
 
-        // Arm guards visible
+        
         ctx.fillStyle = '#3a0ca3';
         ctx.beginPath();
         ctx.roundRect(10, -18, 15, 10, 3);
@@ -1022,13 +1022,13 @@ class Ninja extends Character {
         ctx.roundRect(-25, -13, 15, 10, 3);
         ctx.fill();
 
-        // Head lowered
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.arc(0, -38, 16, 0, Math.PI * 2);
         ctx.fill();
 
-        // Alert eyes
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 12;
@@ -1040,7 +1040,7 @@ class Ninja extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Block energy shield effect
+        
         ctx.strokeStyle = '#9d4edd';
         ctx.lineWidth = 3;
         ctx.globalAlpha = 0.5 + Math.sin(this.animTimer * 0.2) * 0.3;
@@ -1051,7 +1051,7 @@ class Ninja extends Character {
     }
 
     drawNinjaCrouch(ctx) {
-        // Scarf low
+        
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
         ctx.moveTo(-10, -20);
@@ -1061,7 +1061,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Legs very bent
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-20, 5, 14, 32, 5);
@@ -1070,13 +1070,13 @@ class Ninja extends Character {
         ctx.roundRect(6, 5, 14, 32, 5);
         ctx.fill();
 
-        // Body low
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-20, -18, 40, 35, 8);
         ctx.fill();
 
-        // Vest
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-14, -14);
@@ -1087,7 +1087,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Arms ready
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-30, -8, 12, 25, 5);
@@ -1096,13 +1096,13 @@ class Ninja extends Character {
         ctx.roundRect(18, -8, 12, 25, 5);
         ctx.fill();
 
-        // Head
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.arc(0, -28, 15, 0, Math.PI * 2);
         ctx.fill();
 
-        // Eyes
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 10;
@@ -1120,7 +1120,7 @@ class Ninja extends Character {
         const progress = 1 - (this.attackTimer / attack?.duration || 0);
         const swing = Math.sin(progress * Math.PI);
 
-        // Scarf whipping with attack
+        
         ctx.fillStyle = '#9d4edd';
         ctx.beginPath();
         ctx.moveTo(-12, -45);
@@ -1130,7 +1130,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Legs lunging
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.roundRect(-22 - swing * 8, 22, 14, 48, 5);
@@ -1139,7 +1139,7 @@ class Ninja extends Character {
         ctx.roundRect(8 + swing * 12, 18, 14, 50, 5);
         ctx.fill();
 
-        // Body leaning forward
+        
         ctx.save();
         ctx.rotate(-0.1 - swing * 0.2);
         ctx.fillStyle = this.color;
@@ -1147,7 +1147,7 @@ class Ninja extends Character {
         ctx.roundRect(-24, -38, 48, 62, 8);
         ctx.fill();
 
-        // Vest
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-18, -32);
@@ -1159,7 +1159,7 @@ class Ninja extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Attack arm with kunai
+        
         ctx.save();
         ctx.translate(28, -20);
         ctx.rotate(swing * Math.PI * 0.8 - 0.3);
@@ -1169,7 +1169,7 @@ class Ninja extends Character {
         ctx.roundRect(-6, 0, 14, 40, 5);
         ctx.fill();
 
-        // Kunai
+        
         ctx.fillStyle = '#c0c0c0';
         ctx.beginPath();
         ctx.moveTo(0, 38);
@@ -1179,7 +1179,7 @@ class Ninja extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Kunai glow
+        
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 10;
         ctx.strokeStyle = '#ff00ff';
@@ -1189,19 +1189,19 @@ class Ninja extends Character {
 
         ctx.restore();
 
-        // Other arm
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-35, -15, 12, 35, 5);
         ctx.fill();
 
-        // Head
+        
         ctx.fillStyle = '#1a0533';
         ctx.beginPath();
         ctx.arc(0, -52, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // Intense eyes
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 20;
@@ -1213,7 +1213,7 @@ class Ninja extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Slash trail
+        
         if (swing > 0.2) {
             ctx.save();
             ctx.globalAlpha = swing * 0.7;

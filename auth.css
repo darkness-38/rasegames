@@ -1,6 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════════════
-   AUTH MODAL STYLES
-   ═══════════════════════════════════════════════════════════════════════════════ */
+
 
 .auth-modal {
     position: fixed;
@@ -200,7 +198,7 @@
     display: none;
 }
 
-/* User Display in Navbar */
+
 #user-display {
     display: flex;
     align-items: center;
@@ -245,7 +243,7 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Notifications */
+
 .auth-notif {
     position: fixed;
     top: 20px;
@@ -282,7 +280,7 @@
     }
 }
 
-/* Mobile */
+
 @media (max-width: 480px) {
     .auth-container {
         padding: 25px;

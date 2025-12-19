@@ -1,7 +1,7 @@
-// ===================================
-// COMBAT SYSTEM
-// Handles hit detection, combos, damage calculation
-// ===================================
+
+
+
+
 
 class CombatSystem {
     constructor() {
@@ -11,19 +11,19 @@ class CombatSystem {
     }
 
     update(player1, player2) {
-        // Check player 1 attacking player 2
+        
         this.checkAttack(player1, player2, 1);
 
-        // Check player 2 attacking player 1
+        
         this.checkAttack(player2, player1, 2);
 
-        // Push characters apart if overlapping
+        
         physics.pushApart(player1, player2);
 
-        // Update effects
+        
         this.updateEffects();
 
-        // Update combo timers
+        
         if (this.comboTimers.p1 > 0) this.comboTimers.p1--;
         if (this.comboTimers.p2 > 0) this.comboTimers.p2--;
     }
@@ -33,17 +33,17 @@ class CombatSystem {
 
         if (hitbox && !attacker.hasHit) {
             if (physics.checkHitboxCollision(hitbox, defender)) {
-                // Hit confirmed
+                
                 const result = defender.takeDamage(hitbox.damage, hitbox.knockback, attacker);
                 attacker.hasHit = true;
 
-                // Add energy to attacker
+                
                 attacker.addEnergy(hitbox.energyGain || 0);
 
-                // Combo tracking
+                
                 const comboCount = attacker.addCombo();
 
-                // Create hit effect
+                
                 this.createHitEffect(
                     defender.x + defender.width / 2,
                     defender.y + defender.height / 2,
@@ -51,7 +51,7 @@ class CombatSystem {
                     hitbox.damage
                 );
 
-                // Create damage number
+                
                 this.createDamageNumber(
                     defender.x + defender.width / 2,
                     defender.y,
@@ -60,9 +60,9 @@ class CombatSystem {
                     comboCount
                 );
 
-                // Update combo timer
+                
                 const comboKey = attackerNum === 1 ? 'p1' : 'p2';
-                this.comboTimers[comboKey] = 120; // 2 seconds at 60fps
+                this.comboTimers[comboKey] = 120; 
 
                 return true;
             }
@@ -82,7 +82,7 @@ class CombatSystem {
             particles: []
         };
 
-        // Create particles
+        
         const particleCount = blocked ? 5 : 10 + Math.floor(damage / 20);
         for (let i = 0; i < particleCount; i++) {
             effect.particles.push({
@@ -112,7 +112,7 @@ class CombatSystem {
     }
 
     updateEffects() {
-        // Update hit effects
+        
         for (let i = this.hitEffects.length - 1; i >= 0; i--) {
             const effect = this.hitEffects[i];
             effect.life--;
@@ -120,7 +120,7 @@ class CombatSystem {
             for (const particle of effect.particles) {
                 particle.x += particle.vx;
                 particle.y += particle.vy;
-                particle.vy += 0.3; // gravity
+                particle.vy += 0.3; 
                 particle.size *= 0.95;
             }
 
@@ -129,7 +129,7 @@ class CombatSystem {
             }
         }
 
-        // Update damage numbers
+        
         for (let i = this.damageNumbers.length - 1; i >= 0; i--) {
             const num = this.damageNumbers[i];
             num.life--;
@@ -143,7 +143,7 @@ class CombatSystem {
     }
 
     draw(ctx) {
-        // Draw hit effects
+        
         for (const effect of this.hitEffects) {
             const alpha = effect.life / effect.maxLife;
 
@@ -151,7 +151,7 @@ class CombatSystem {
             ctx.translate(effect.x, effect.y);
             ctx.globalAlpha = alpha;
 
-            // Draw particles
+            
             for (const particle of effect.particles) {
                 ctx.fillStyle = particle.color;
                 ctx.shadowColor = particle.color;
@@ -161,7 +161,7 @@ class CombatSystem {
                 ctx.fill();
             }
 
-            // Impact flash
+            
             if (effect.life > effect.maxLife - 5) {
                 ctx.fillStyle = effect.blocked ? 'rgba(0, 255, 136, 0.5)' : 'rgba(255, 255, 255, 0.8)';
                 ctx.beginPath();
@@ -172,7 +172,7 @@ class CombatSystem {
             ctx.restore();
         }
 
-        // Draw damage numbers
+        
         for (const num of this.damageNumbers) {
             const alpha = Math.min(1, num.life / 30);
             const scale = 1 + (1 - num.life / num.maxLife) * 0.5;
@@ -182,16 +182,16 @@ class CombatSystem {
             ctx.scale(scale, scale);
             ctx.globalAlpha = alpha;
 
-            // Text style
+            
             ctx.font = 'bold 28px Orbitron';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            // Shadow
+            
             ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.fillText(num.damage, 2, 2);
 
-            // Main text
+            
             if (num.blocked) {
                 ctx.fillStyle = '#00ff88';
                 ctx.fillText('BLOCKED', 0, 0);
@@ -201,7 +201,7 @@ class CombatSystem {
                 ctx.shadowBlur = 10;
                 ctx.fillText(num.damage, 0, 0);
 
-                // Combo display
+                
                 if (num.combo > 1) {
                     ctx.font = 'bold 18px Orbitron';
                     ctx.fillStyle = '#ffaa00';
@@ -225,5 +225,5 @@ class CombatSystem {
     }
 }
 
-// Global combat system instance
+
 const combatSystem = new CombatSystem();

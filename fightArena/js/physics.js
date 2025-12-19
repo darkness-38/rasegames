@@ -1,13 +1,13 @@
-// ===================================
-// PHYSICS ENGINE
-// Gravity, collision, and movement
-// ===================================
+
+
+
+
 
 class Physics {
     constructor() {
         this.gravity = 0.6;
         this.friction = 0.85;
-        this.groundLevel = 0; // Will be set by game
+        this.groundLevel = 0; 
         this.platformHeight = 50;
         this.stageWidth = 0;
         this.stageHeight = 0;
@@ -17,7 +17,7 @@ class Physics {
     setStageSize(width, height) {
         this.stageWidth = width;
         this.stageHeight = height;
-        this.groundLevel = height - 100; // Ground 100px from bottom
+        this.groundLevel = height - 100; 
     }
 
     applyGravity(entity) {
@@ -27,16 +27,16 @@ class Physics {
     }
 
     applyMovement(entity) {
-        // Apply velocity
+        
         entity.x += entity.velocityX;
         entity.y += entity.velocityY;
 
-        // Apply friction when grounded
+        
         if (entity.isGrounded) {
             entity.velocityX *= this.friction;
         }
 
-        // Check ground collision
+        
         if (entity.y + entity.height >= this.groundLevel) {
             entity.y = this.groundLevel - entity.height;
             entity.velocityY = 0;
@@ -46,7 +46,7 @@ class Physics {
             entity.isGrounded = false;
         }
 
-        // Stage boundaries
+        
         if (entity.x < this.stagePadding) {
             entity.x = this.stagePadding;
             entity.velocityX = 0;
@@ -56,7 +56,7 @@ class Physics {
             entity.velocityX = 0;
         }
 
-        // Ceiling
+        
         if (entity.y < 0) {
             entity.y = 0;
             entity.velocityY = 0;
@@ -64,8 +64,8 @@ class Physics {
     }
 
     checkHitboxCollision(hitbox, target) {
-        // hitbox = {x, y, width, height}
-        // target = entity with x, y, width, height
+        
+        
 
         return (
             hitbox.x < target.x + target.width &&
@@ -91,7 +91,7 @@ class Physics {
     }
 
     pushApart(entity1, entity2) {
-        // Prevent characters from overlapping
+        
         const overlap = (entity1.x + entity1.width) - entity2.x;
 
         if (entity1.x < entity2.x && overlap > 0 && overlap < entity1.width) {
@@ -109,5 +109,5 @@ class Physics {
     }
 }
 
-// Global physics instance
+
 const physics = new Physics();

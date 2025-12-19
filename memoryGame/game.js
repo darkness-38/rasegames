@@ -1,4 +1,4 @@
-// Memory Game - Rase Games
+
 const gameBoard = document.getElementById('gameBoard');
 const movesEl = document.getElementById('moves');
 const pairsEl = document.getElementById('pairs');
@@ -69,7 +69,7 @@ function handleCardClick(index) {
 
     if (isLocked || card.isFlipped || card.isMatched) return;
 
-    // Start timer on first click
+    
     if (moves === 0 && flippedCards.length === 0 && !timerInterval) {
         startTimer();
     }
@@ -93,7 +93,7 @@ function checkMatch() {
     isLocked = true;
 
     if (card1.emoji === card2.emoji) {
-        // Match!
+        
         card1.isMatched = true;
         card2.isMatched = true;
         matchedPairs++;
@@ -107,7 +107,7 @@ function checkMatch() {
             gameOver();
         }
     } else {
-        // No match
+        
         setTimeout(() => {
             card1.isFlipped = false;
             card2.isFlipped = false;
@@ -132,7 +132,7 @@ function stopTimer() {
 }
 
 function calculateScore() {
-    // Score formula: base score - penalty for moves and time
+    
     const baseScore = 1000;
     const movePenalty = moves * 5;
     const timePenalty = timer * 2;
@@ -183,5 +183,5 @@ function initGame() {
 restartBtn.addEventListener('click', initGame);
 playAgainBtn.addEventListener('click', initGame);
 
-// Start game
+
 initGame();

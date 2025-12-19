@@ -1,7 +1,7 @@
-// ===================================
-// INPUT HANDLER
-// Keyboard input management with buffer
-// ===================================
+
+
+
+
 
 class InputHandler {
     constructor() {
@@ -10,9 +10,9 @@ class InputHandler {
             p1: [],
             p2: []
         };
-        this.bufferTimeout = 300; // ms for combo detection
+        this.bufferTimeout = 300; 
         
-        // Player 1 controls
+        
         this.p1Controls = {
             left: 'KeyA',
             right: 'KeyD',
@@ -24,7 +24,7 @@ class InputHandler {
             block: 'Space'
         };
         
-        // Player 2 controls
+        
         this.p2Controls = {
             left: 'ArrowLeft',
             right: 'ArrowRight',
@@ -50,7 +50,7 @@ class InputHandler {
             this.addToBuffer(e.code);
         }
         
-        // Prevent default for game keys
+        
         if (this.isGameKey(e.code)) {
             e.preventDefault();
         }
@@ -68,7 +68,7 @@ class InputHandler {
     addToBuffer(code) {
         const timestamp = Date.now();
         
-        // Check which player this key belongs to
+        
         if (Object.values(this.p1Controls).includes(code)) {
             this.keyBuffer.p1.push({ code, timestamp });
             this.cleanBuffer('p1');
@@ -86,7 +86,7 @@ class InputHandler {
             entry => now - entry.timestamp < this.bufferTimeout
         );
         
-        // Keep only last 5 inputs
+        
         if (this.keyBuffer[player].length > 5) {
             this.keyBuffer[player] = this.keyBuffer[player].slice(-5);
         }
@@ -128,5 +128,5 @@ class InputHandler {
     }
 }
 
-// Global input handler instance
+
 const inputHandler = new InputHandler();

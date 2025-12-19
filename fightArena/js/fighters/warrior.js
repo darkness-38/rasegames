@@ -1,7 +1,7 @@
-// ===================================
-// WARRIOR CHARACTER
-// Melee-focused with high damage and defense
-// ===================================
+
+
+
+
 
 class Warrior extends Character {
     constructor(options = {}) {
@@ -11,13 +11,13 @@ class Warrior extends Character {
             speed: 5,
             jumpForce: -14,
             maxHealth: 1200,
-            defense: 0.9, // Takes less damage
+            defense: 0.9, 
             color: '#ff6b35',
             secondaryColor: '#8b2500',
             ...options
         });
 
-        // Warrior-specific attacks
+        
         this.attacks = {
             light: {
                 damage: 35,
@@ -59,7 +59,7 @@ class Warrior extends Character {
             }
         };
 
-        // Armor ability
+        
         this.armorActive = false;
         this.armorTimer = 0;
     }
@@ -67,7 +67,7 @@ class Warrior extends Character {
     startAttack(type) {
         super.startAttack(type);
 
-        // Warrior special activates armor
+        
         if (type === 'special') {
             this.armorActive = true;
             this.armorTimer = 30;
@@ -77,7 +77,7 @@ class Warrior extends Character {
     update(input, opponent) {
         super.update(input, opponent);
 
-        // Update armor
+        
         if (this.armorActive) {
             this.armorTimer--;
             if (this.armorTimer <= 0) {
@@ -87,7 +87,7 @@ class Warrior extends Character {
     }
 
     takeDamage(damage, knockback, attacker) {
-        // Armor reduces damage and knockback
+        
         if (this.armorActive) {
             damage = Math.floor(damage * 0.5);
             knockback = Math.floor(knockback * 0.3);
@@ -105,20 +105,20 @@ class Warrior extends Character {
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        // Shadow (smaller when jumping)
+        
         const shadowScale = this.isGrounded ? 1 : 0.5;
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, (this.width / 2 + 5) * shadowScale, 12 * shadowScale, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Armor glow when active
+        
         if (this.armorActive) {
             ctx.shadowColor = '#ffaa00';
             ctx.shadowBlur = 30;
         }
 
-        // Draw based on state
+        
         switch (this.state) {
             case 'hitstun':
                 this.drawWarriorHit(ctx);
@@ -156,9 +156,9 @@ class Warrior extends Character {
 
     drawWarriorIdle(ctx) {
         const bob = Math.sin(this.animTimer * 0.08) * 2;
-        const breathe = 0; // Disabled breathing animation
+        const breathe = 0; 
 
-        // === CAPE ===
+        
         ctx.save();
         const capeWave = Math.sin(this.animTimer * 0.05) * 5;
         ctx.fillStyle = '#8b0000';
@@ -169,7 +169,7 @@ class Warrior extends Character {
         ctx.quadraticCurveTo(-30, 20 + bob, -25, -25 + bob);
         ctx.closePath();
         ctx.fill();
-        // Cape highlight
+        
         ctx.fillStyle = '#a52a2a';
         ctx.beginPath();
         ctx.moveTo(-28, -28 + bob);
@@ -180,28 +180,28 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === LEGS WITH ARMOR ===
-        // Left leg
+        
+        
         ctx.fillStyle = '#3d2914';
         ctx.beginPath();
         ctx.roundRect(-22, 28 + bob, 20, 52, 6);
         ctx.fill();
-        // Leg armor plate
+        
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-20, 30 + bob, 16, 25, 4);
         ctx.fill();
-        // Leg armor highlight
+        
         ctx.fillStyle = '#ff7733';
         ctx.beginPath();
         ctx.roundRect(-18, 32 + bob, 6, 20, 2);
         ctx.fill();
-        // Leg armor shadow
+        
         ctx.fillStyle = '#993300';
         ctx.beginPath();
         ctx.roundRect(-8, 32 + bob, 4, 20, 2);
         ctx.fill();
-        // Knee guard
+        
         ctx.fillStyle = '#dd6600';
         ctx.beginPath();
         ctx.ellipse(-12, 55 + bob, 12, 8, 0, 0, Math.PI * 2);
@@ -211,7 +211,7 @@ class Warrior extends Character {
         ctx.ellipse(-14, 53 + bob, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Right leg
+        
         ctx.fillStyle = '#3d2914';
         ctx.beginPath();
         ctx.roundRect(2, 28 + bob, 20, 52, 6);
@@ -237,7 +237,7 @@ class Warrior extends Character {
         ctx.ellipse(10, 53 + bob, 4, 3, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Boots
+        
         ctx.fillStyle = '#2a1a0a';
         ctx.beginPath();
         ctx.roundRect(-24, 72 + bob, 24, 12, 4);
@@ -245,7 +245,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.roundRect(0, 72 + bob, 24, 12, 4);
         ctx.fill();
-        // Boot metal trim
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(-22, 70 + bob, 20, 3, 1);
@@ -254,20 +254,20 @@ class Warrior extends Character {
         ctx.roundRect(2, 70 + bob, 20, 3, 1);
         ctx.fill();
 
-        // === TORSO - DETAILED ARMOR ===
-        // Base body
+        
+        
         ctx.fillStyle = '#1a1a1a';
         ctx.beginPath();
         ctx.roundRect(-38, -42 + bob + breathe, 76, 75, 14);
         ctx.fill();
 
-        // Main chest plate
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-35, -38 + bob + breathe, 70, 68, 12);
         ctx.fill();
 
-        // Chest plate gradient overlay
+        
         const chestGrad = ctx.createLinearGradient(-35, -38 + bob, 35, 30 + bob);
         chestGrad.addColorStop(0, 'rgba(255, 200, 150, 0.3)');
         chestGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
@@ -277,7 +277,7 @@ class Warrior extends Character {
         ctx.roundRect(-35, -38 + bob + breathe, 70, 68, 12);
         ctx.fill();
 
-        // Chest muscle definition
+        
         ctx.strokeStyle = this.secondaryColor;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -291,7 +291,7 @@ class Warrior extends Character {
         ctx.arc(15, -15 + bob + breathe, 12, 0.6, 2.6);
         ctx.stroke();
 
-        // Abs definition
+        
         ctx.fillStyle = this.secondaryColor;
         for (let i = 0; i < 3; i++) {
             ctx.beginPath();
@@ -302,12 +302,12 @@ class Warrior extends Character {
             ctx.fill();
         }
 
-        // Belt
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-38, 22 + bob, 76, 12, 3);
         ctx.fill();
-        // Belt buckle
+        
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.roundRect(-8, 23 + bob, 16, 10, 2);
@@ -316,7 +316,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.roundRect(-5, 25 + bob, 10, 6, 1);
         ctx.fill();
-        // Belt studs
+        
         ctx.fillStyle = '#c0c0c0';
         for (let i = 0; i < 4; i++) {
             ctx.beginPath();
@@ -327,13 +327,13 @@ class Warrior extends Character {
             ctx.fill();
         }
 
-        // === SHOULDER ARMOR (PAULDRONS) ===
-        // Left pauldron
+        
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-40, -28 + bob, 18, 14, -0.2, 0, Math.PI * 2);
         ctx.fill();
-        // Pauldron layers
+        
         ctx.fillStyle = '#cc4400';
         ctx.beginPath();
         ctx.ellipse(-40, -24 + bob, 16, 10, -0.2, 0, Math.PI);
@@ -342,7 +342,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.ellipse(-40, -20 + bob, 14, 8, -0.2, 0, Math.PI);
         ctx.fill();
-        // Pauldron spike
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.moveTo(-40, -42 + bob);
@@ -350,13 +350,13 @@ class Warrior extends Character {
         ctx.lineTo(-36, -30 + bob);
         ctx.closePath();
         ctx.fill();
-        // Pauldron highlight
+        
         ctx.fillStyle = '#ff8844';
         ctx.beginPath();
         ctx.ellipse(-44, -32 + bob, 5, 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Right pauldron
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(40, -28 + bob, 18, 14, 0.2, 0, Math.PI * 2);
@@ -381,18 +381,18 @@ class Warrior extends Character {
         ctx.ellipse(44, -32 + bob, 5, 4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS ===
-        // Left arm (behind)
+        
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(-45, -15 + bob, 14, 35, 6);
         ctx.fill();
-        // Arm armor
+        
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-44, -10 + bob, 12, 20, 4);
         ctx.fill();
-        // Gauntlet
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(-46, 18 + bob, 16, 14, 4);
@@ -402,7 +402,7 @@ class Warrior extends Character {
         ctx.roundRect(-44, 20 + bob, 5, 10, 2);
         ctx.fill();
 
-        // Right arm (sword arm)
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(31, -15 + bob, 14, 35, 6);
@@ -420,16 +420,16 @@ class Warrior extends Character {
         ctx.roundRect(38, 20 + bob, 5, 10, 2);
         ctx.fill();
 
-        // === SWORD (at rest) ===
+        
         ctx.save();
         ctx.translate(42, 30 + bob);
         ctx.rotate(0.3);
-        // Sword handle
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-3, 0, 6, 25, 2);
         ctx.fill();
-        // Handle wrap
+        
         ctx.strokeStyle = '#2a1a0a';
         ctx.lineWidth = 2;
         for (let i = 0; i < 5; i++) {
@@ -438,7 +438,7 @@ class Warrior extends Character {
             ctx.lineTo(3, 5 + i * 5);
             ctx.stroke();
         }
-        // Pommel
+        
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.arc(0, 27, 5, 0, Math.PI * 2);
@@ -447,7 +447,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.arc(0, 27, 2, 0, Math.PI * 2);
         ctx.fill();
-        // Guard
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(-12, -3, 24, 6, 2);
@@ -459,7 +459,7 @@ class Warrior extends Character {
         ctx.beginPath();
         ctx.arc(10, 0, 3, 0, Math.PI * 2);
         ctx.fill();
-        // Blade
+        
         ctx.fillStyle = '#e0e0e0';
         ctx.beginPath();
         ctx.moveTo(-4, -5);
@@ -467,7 +467,7 @@ class Warrior extends Character {
         ctx.lineTo(4, -5);
         ctx.closePath();
         ctx.fill();
-        // Blade edge highlight
+        
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.moveTo(-2, -8);
@@ -475,7 +475,7 @@ class Warrior extends Character {
         ctx.lineTo(0, -8);
         ctx.closePath();
         ctx.fill();
-        // Blade runes
+        
         ctx.strokeStyle = '#ff6600';
         ctx.lineWidth = 1;
         ctx.shadowColor = '#ff6600';
@@ -490,32 +490,32 @@ class Warrior extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // === HEAD AND HELMET ===
-        // Neck
+        
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(-8, -48 + bob, 16, 12, 4);
         ctx.fill();
 
-        // Head base
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -60 + bob, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        // Face shadow
+        
         ctx.fillStyle = '#e6b888';
         ctx.beginPath();
         ctx.arc(3, -58 + bob, 18, 0, Math.PI);
         ctx.fill();
 
-        // Helmet base
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -62 + bob, 24, Math.PI, 0);
         ctx.fill();
 
-        // Helmet crest
+        
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -88 + bob);
@@ -531,13 +531,13 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Helmet visor
+        
         ctx.fillStyle = '#1a1a1a';
         ctx.beginPath();
         ctx.roundRect(-15, -65 + bob, 30, 10, 3);
         ctx.fill();
 
-        // Eyes through visor
+        
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 10;
@@ -549,7 +549,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Helmet cheek guards
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-22, -55 + bob, 8, 18, 3);
@@ -558,7 +558,7 @@ class Warrior extends Character {
         ctx.roundRect(14, -55 + bob, 8, 18, 3);
         ctx.fill();
 
-        // Chin guard
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(-10, -42 + bob, 20, 6, 2);
@@ -571,7 +571,7 @@ class Warrior extends Character {
         const swing = Math.sin(progress * Math.PI);
         const intensity = this.currentAttack === 'ultimate' ? 2 : 1;
 
-        // === CAPE FLYING BACK ===
+        
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-30, -30);
@@ -581,18 +581,18 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === LEGS - lunging stance ===
+        
         ctx.fillStyle = '#3d2914';
-        // Back leg
+        
         ctx.beginPath();
         ctx.roundRect(-25 - swing * 10, 25, 20, 52, 6);
         ctx.fill();
-        // Front leg
+        
         ctx.beginPath();
         ctx.roundRect(5 + swing * 15, 20, 20, 55, 6);
         ctx.fill();
 
-        // Leg armor
+        
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-23 - swing * 10, 30, 16, 25, 4);
@@ -601,17 +601,17 @@ class Warrior extends Character {
         ctx.roundRect(7 + swing * 15, 25, 16, 25, 4);
         ctx.fill();
 
-        // === BODY leaning forward ===
+        
         ctx.save();
         ctx.rotate(-0.15 - swing * 0.25);
 
-        // Torso
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -42, 76, 75, 14);
         ctx.fill();
 
-        // Chest plate gradient
+        
         const chestGrad = ctx.createLinearGradient(-38, -42, 38, 33);
         chestGrad.addColorStop(0, 'rgba(255, 200, 150, 0.3)');
         chestGrad.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
@@ -620,7 +620,7 @@ class Warrior extends Character {
         ctx.roundRect(-38, -42, 76, 75, 14);
         ctx.fill();
 
-        // Shoulder pad
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-40, -28, 18, 14, -0.4, 0, Math.PI * 2);
@@ -628,42 +628,42 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        // === SWORD ARM with swing ===
+        
         ctx.save();
         ctx.rotate(swing * Math.PI * 0.7 * intensity - 0.6);
 
-        // Upper arm
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(15, -18, 55, 24, 10);
         ctx.fill();
 
-        // Arm armor
+        
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(18, -15, 25, 18, 5);
         ctx.fill();
 
-        // Gauntlet
+        
         ctx.fillStyle = '#888888';
         ctx.beginPath();
         ctx.roundRect(45, -16, 18, 20, 6);
         ctx.fill();
 
-        // === SWORD ===
-        // Handle
+        
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(62, -8, 25, 12, 3);
         ctx.fill();
 
-        // Guard
+        
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.roundRect(60, -14, 6, 24, 2);
         ctx.fill();
 
-        // Blade
+        
         ctx.fillStyle = '#e0e0e0';
         ctx.beginPath();
         ctx.moveTo(88, -10);
@@ -672,7 +672,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Blade edge highlight
+        
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.moveTo(90, -8);
@@ -681,7 +681,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Blade glow
+        
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 15 * intensity;
         ctx.strokeStyle = '#ff6600';
@@ -694,19 +694,19 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        // === HEAD ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -58, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        // Helmet
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -62, 24, Math.PI, 0);
         ctx.fill();
 
-        // Helmet crest
+        
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -88);
@@ -715,13 +715,13 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Helmet visor
+        
         ctx.fillStyle = '#1a1a1a';
         ctx.beginPath();
         ctx.roundRect(-15, -65, 30, 10, 3);
         ctx.fill();
 
-        // Fierce eyes
+        
         ctx.fillStyle = '#ff3300';
         ctx.shadowColor = '#ff3300';
         ctx.shadowBlur = 20;
@@ -733,12 +733,12 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // === ATTACK TRAIL ===
+        
         if (swing > 0.2) {
             ctx.save();
             ctx.globalAlpha = swing * 0.6;
 
-            // Multiple slash trails
+            
             for (let i = 0; i < 3; i++) {
                 ctx.strokeStyle = i === 0 ? '#ffffff' : this.color;
                 ctx.lineWidth = 10 - i * 3;
@@ -747,7 +747,7 @@ class Warrior extends Character {
                 ctx.stroke();
             }
 
-            // Sparks
+            
             ctx.fillStyle = '#ffff00';
             for (let i = 0; i < 5; i++) {
                 const sparkAngle = swing * Math.PI * 0.3 + i * 0.2;
@@ -760,7 +760,7 @@ class Warrior extends Character {
             ctx.restore();
         }
 
-        // Ultimate attack extra effects
+        
         if (this.currentAttack === 'ultimate' && swing > 0.3) {
             ctx.save();
             ctx.globalAlpha = swing * 0.4;
@@ -775,7 +775,7 @@ class Warrior extends Character {
     }
 
     drawWarriorBlock(ctx) {
-        // Compact blocking stance
+        
         ctx.fillStyle = '#4a1000';
         ctx.beginPath();
         ctx.roundRect(-18, 30, 16, 45, 5);
@@ -784,13 +784,13 @@ class Warrior extends Character {
         ctx.roundRect(2, 30, 16, 45, 5);
         ctx.fill();
 
-        // Body crouched
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-30, -20, 60, 55, 12);
         ctx.fill();
 
-        // Shield
+        
         ctx.fillStyle = '#8b4513';
         ctx.strokeStyle = '#ffd700';
         ctx.lineWidth = 4;
@@ -805,7 +805,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.stroke();
 
-        // Shield glow
+        
         ctx.shadowColor = '#ffd700';
         ctx.shadowBlur = 20;
         ctx.strokeStyle = '#ffffff';
@@ -813,13 +813,13 @@ class Warrior extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Head tucked
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(-5, -35, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // Helmet visible
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(-5, -38, 20, Math.PI, 0);
@@ -835,7 +835,7 @@ class Warrior extends Character {
         ctx.translate(shake, 0);
         ctx.rotate(0.2 + Math.sin(this.animTimer * 0.3) * 0.1);
 
-        // === CAPE crumpled ===
+        
         ctx.fillStyle = flash ? '#ffaaaa' : '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-25, -25);
@@ -845,7 +845,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === LEGS stumbling ===
+        
         ctx.fillStyle = flash ? '#ffcccc' : '#3d2914';
         ctx.beginPath();
         ctx.roundRect(-25 - recoil * 5, 25, 20, 50, 6);
@@ -854,7 +854,7 @@ class Warrior extends Character {
         ctx.roundRect(5 + recoil * 10, 30, 20, 48, 6);
         ctx.fill();
 
-        // Leg armor
+        
         ctx.fillStyle = flash ? '#ffaa88' : '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-23 - recoil * 5, 30, 16, 22, 4);
@@ -863,13 +863,13 @@ class Warrior extends Character {
         ctx.roundRect(7 + recoil * 10, 35, 16, 22, 4);
         ctx.fill();
 
-        // === BODY recoiling ===
+        
         ctx.fillStyle = flash ? '#ffffff' : this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -40, 76, 72, 14);
         ctx.fill();
 
-        // Chest damage marks
+        
         if (!flash) {
             ctx.strokeStyle = '#aa3300';
             ctx.lineWidth = 3;
@@ -883,13 +883,13 @@ class Warrior extends Character {
             ctx.stroke();
         }
 
-        // Shoulder (one drooping)
+        
         ctx.fillStyle = flash ? '#ffaa88' : '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-38, -25, 16, 12, 0.3, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS flailing ===
+        
         ctx.fillStyle = flash ? '#ffddcc' : '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(-50, -10, 14, 35, 6);
@@ -900,7 +900,7 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        // === HEAD thrown back ===
+        
         ctx.save();
         ctx.translate(-10 + shake, -52);
         ctx.rotate(-0.2);
@@ -910,23 +910,23 @@ class Warrior extends Character {
         ctx.arc(0, 0, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        // Helmet
+        
         ctx.fillStyle = flash ? '#ffcccc' : this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -4, 24, Math.PI, 0);
         ctx.fill();
 
-        // Pained expression (X eyes)
+        
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2;
-        // Left X
+        
         ctx.beginPath();
         ctx.moveTo(-10, -2);
         ctx.lineTo(-4, 4);
         ctx.moveTo(-4, -2);
         ctx.lineTo(-10, 4);
         ctx.stroke();
-        // Right X
+        
         ctx.beginPath();
         ctx.moveTo(4, -2);
         ctx.lineTo(10, 4);
@@ -934,7 +934,7 @@ class Warrior extends Character {
         ctx.lineTo(4, 4);
         ctx.stroke();
 
-        // Open mouth
+        
         ctx.fillStyle = '#330000';
         ctx.beginPath();
         ctx.ellipse(0, 12, 8, 5, 0, 0, Math.PI * 2);
@@ -942,8 +942,8 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        // === HIT EFFECTS ===
-        // Impact stars
+        
+        
         ctx.save();
         ctx.translate(20, -20);
         for (let i = 0; i < 6; i++) {
@@ -959,7 +959,7 @@ class Warrior extends Character {
         }
         ctx.restore();
 
-        // Blood/damage particles
+        
         ctx.fillStyle = '#ff3333';
         for (let i = 0; i < 4; i++) {
             const px = 15 + Math.sin(this.animTimer * 0.2 + i * 2) * 20;
@@ -978,7 +978,7 @@ class Warrior extends Character {
         const armSwing = Math.sin(cycle) * 0.3;
         const bodyBob = Math.abs(Math.sin(cycle)) * 4;
 
-        // === CAPE flowing ===
+        
         const capeWave = Math.sin(cycle * 0.8) * 8;
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
@@ -989,28 +989,28 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === LEGS walking cycle ===
+        
         ctx.fillStyle = '#3d2914';
-        // Left leg
+        
         ctx.save();
         ctx.translate(-12, 28 + bodyBob);
         ctx.rotate(legSwing * 0.02);
         ctx.beginPath();
         ctx.roundRect(-10, 0, 20, 50, 6);
         ctx.fill();
-        // Leg armor
+        
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.roundRect(-8, 5, 16, 22, 4);
         ctx.fill();
-        // Boot
+        
         ctx.fillStyle = '#2a1a0a';
         ctx.beginPath();
         ctx.roundRect(-12, 45, 24, 12, 4);
         ctx.fill();
         ctx.restore();
 
-        // Right leg
+        
         ctx.fillStyle = '#3d2914';
         ctx.save();
         ctx.translate(12, 28 + bodyBob);
@@ -1028,7 +1028,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === TORSO ===
+        
         ctx.save();
         ctx.translate(0, bodyBob);
         ctx.rotate(armSwing * 0.1);
@@ -1038,7 +1038,7 @@ class Warrior extends Character {
         ctx.roundRect(-36, -40, 72, 72, 14);
         ctx.fill();
 
-        // Chest gradient
+        
         const grad = ctx.createLinearGradient(-36, -40, 36, 32);
         grad.addColorStop(0, 'rgba(255, 200, 150, 0.25)');
         grad.addColorStop(1, 'rgba(0, 0, 0, 0.25)');
@@ -1047,7 +1047,7 @@ class Warrior extends Character {
         ctx.roundRect(-36, -40, 72, 72, 14);
         ctx.fill();
 
-        // Belt
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-36, 24, 72, 10, 3);
@@ -1055,7 +1055,7 @@ class Warrior extends Character {
 
         ctx.restore();
 
-        // === SHOULDERS ===
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-38, -26 + bodyBob, 16, 12, armSwing, 0, Math.PI * 2);
@@ -1064,7 +1064,7 @@ class Warrior extends Character {
         ctx.ellipse(38, -26 + bodyBob, 16, 12, -armSwing, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS swinging ===
+        
         ctx.save();
         ctx.translate(-42, -18 + bodyBob);
         ctx.rotate(armSwing);
@@ -1091,19 +1091,19 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === HEAD ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -58 + bodyBob, 22, 0, Math.PI * 2);
         ctx.fill();
 
-        // Helmet
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -62 + bodyBob, 24, Math.PI, 0);
         ctx.fill();
 
-        // Helmet crest
+        
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -88 + bodyBob);
@@ -1112,7 +1112,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Eyes forward
+        
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 8;
@@ -1124,7 +1124,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Dust particles at feet
+        
         ctx.fillStyle = 'rgba(150, 120, 90, 0.5)';
         for (let i = 0; i < 3; i++) {
             const dustX = Math.sin(cycle + i) * 20;
@@ -1138,7 +1138,7 @@ class Warrior extends Character {
     drawWarriorJump(ctx) {
         const rise = Math.min(this.animTimer * 0.1, 1);
 
-        // === CAPE flying up ===
+        
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-25, -25);
@@ -1148,7 +1148,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === LEGS tucked ===
+        
         ctx.fillStyle = '#3d2914';
         ctx.save();
         ctx.rotate(-0.3);
@@ -1163,7 +1163,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Leg armor
+        
         ctx.fillStyle = '#cc5500';
         ctx.save();
         ctx.rotate(-0.3);
@@ -1178,13 +1178,13 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === BODY stretched up ===
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-36, -45, 72, 70, 14);
         ctx.fill();
 
-        // Shoulder pads raised
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-42, -35, 18, 14, -0.3, 0, Math.PI * 2);
@@ -1193,7 +1193,7 @@ class Warrior extends Character {
         ctx.ellipse(42, -35, 18, 14, 0.3, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS up ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.save();
         ctx.translate(-40, -30);
@@ -1210,21 +1210,21 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === SWORD held high ===
+        
         ctx.save();
         ctx.translate(55, -50);
         ctx.rotate(0.5);
-        // Handle
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-3, 0, 6, 22, 2);
         ctx.fill();
-        // Guard
+        
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.roundRect(-10, -2, 20, 5, 2);
         ctx.fill();
-        // Blade
+        
         ctx.fillStyle = '#e0e0e0';
         ctx.beginPath();
         ctx.moveTo(-3, -5);
@@ -1232,7 +1232,7 @@ class Warrior extends Character {
         ctx.lineTo(3, -5);
         ctx.closePath();
         ctx.fill();
-        // Blade glow
+        
         ctx.strokeStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 10;
@@ -1244,7 +1244,7 @@ class Warrior extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // === HEAD looking up ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -62, 22, 0, Math.PI * 2);
@@ -1255,7 +1255,7 @@ class Warrior extends Character {
         ctx.arc(0, -66, 24, Math.PI, 0);
         ctx.fill();
 
-        // Crest
+        
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -92);
@@ -1264,7 +1264,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Determined eyes
+        
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 12;
@@ -1276,7 +1276,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Jump trail
+        
         ctx.globalAlpha = 0.3;
         ctx.strokeStyle = '#ffaa00';
         ctx.lineWidth = 4;
@@ -1288,7 +1288,7 @@ class Warrior extends Character {
     }
 
     drawWarriorFall(ctx) {
-        // === CAPE billowing ===
+        
         const wave = Math.sin(this.animTimer * 0.2) * 5;
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
@@ -1299,7 +1299,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === LEGS spread ===
+        
         ctx.fillStyle = '#3d2914';
         ctx.save();
         ctx.rotate(-0.4);
@@ -1314,13 +1314,13 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === BODY bracing ===
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-38, -38, 76, 65, 14);
         ctx.fill();
 
-        // Shoulders
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-40, -25, 18, 14, 0, 0, Math.PI * 2);
@@ -1329,7 +1329,7 @@ class Warrior extends Character {
         ctx.ellipse(40, -25, 18, 14, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS out for balance ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.save();
         ctx.translate(-42, -18);
@@ -1346,7 +1346,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === HEAD looking down ===
+        
         ctx.save();
         ctx.rotate(0.1);
         ctx.fillStyle = '#ffcc99';
@@ -1359,7 +1359,7 @@ class Warrior extends Character {
         ctx.arc(0, -59, 24, Math.PI, 0);
         ctx.fill();
 
-        // Crest
+        
         ctx.fillStyle = '#aa2200';
         ctx.beginPath();
         ctx.moveTo(0, -85);
@@ -1368,7 +1368,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Focused eyes
+        
         ctx.fillStyle = '#ff6600';
         ctx.beginPath();
         ctx.ellipse(-6, -53, 4, 3, 0.2, 0, Math.PI * 2);
@@ -1378,7 +1378,7 @@ class Warrior extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Wind lines
+        
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.lineWidth = 2;
         for (let i = 0; i < 4; i++) {
@@ -1390,7 +1390,7 @@ class Warrior extends Character {
     }
 
     drawWarriorCrouch(ctx) {
-        // === CAPE pooling ===
+        
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-22, -5);
@@ -1400,7 +1400,7 @@ class Warrior extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === LEGS bent ===
+        
         ctx.fillStyle = '#3d2914';
         ctx.beginPath();
         ctx.roundRect(-25, 15, 22, 35, 6);
@@ -1409,7 +1409,7 @@ class Warrior extends Character {
         ctx.roundRect(5, 15, 22, 35, 6);
         ctx.fill();
 
-        // Knee guards visible
+        
         ctx.fillStyle = '#cc5500';
         ctx.beginPath();
         ctx.ellipse(-14, 35, 12, 10, 0, 0, Math.PI * 2);
@@ -1418,19 +1418,19 @@ class Warrior extends Character {
         ctx.ellipse(16, 35, 12, 10, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // === BODY lowered ===
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-34, -20, 68, 55, 12);
         ctx.fill();
 
-        // Belt
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-34, 25, 68, 10, 3);
         ctx.fill();
 
-        // Shoulders
+        
         ctx.fillStyle = '#dd5500';
         ctx.beginPath();
         ctx.ellipse(-35, -10, 15, 12, 0, 0, Math.PI * 2);
@@ -1439,7 +1439,7 @@ class Warrior extends Character {
         ctx.ellipse(35, -10, 15, 12, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS ready ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.roundRect(-42, -5, 12, 30, 5);
@@ -1448,7 +1448,7 @@ class Warrior extends Character {
         ctx.roundRect(30, -5, 12, 30, 5);
         ctx.fill();
 
-        // === HEAD lowered ===
+        
         ctx.fillStyle = '#ffcc99';
         ctx.beginPath();
         ctx.arc(0, -35, 20, 0, Math.PI * 2);
@@ -1459,7 +1459,7 @@ class Warrior extends Character {
         ctx.arc(0, -38, 22, Math.PI, 0);
         ctx.fill();
 
-        // Eyes alert
+        
         ctx.fillStyle = '#ff6600';
         ctx.shadowColor = '#ff6600';
         ctx.shadowBlur = 8;

@@ -1,7 +1,7 @@
-// ===================================
-// MAGE CHARACTER
-// Magic-focused with ranged attacks
-// ===================================
+
+
+
+
 
 class Mage extends Character {
     constructor(options = {}) {
@@ -17,7 +17,7 @@ class Mage extends Character {
             ...options
         });
 
-        // Mage-specific attacks
+        
         this.attacks = {
             light: {
                 damage: 28,
@@ -60,7 +60,7 @@ class Mage extends Character {
             }
         };
 
-        // Magic effects
+        
         this.orbitalParticles = [];
         this.ultimateActive = false;
         this.ultimateTimer = 0;
@@ -70,7 +70,7 @@ class Mage extends Character {
     update(input, opponent) {
         super.update(input, opponent);
 
-        // Update orbital particles
+        
         if (this.orbitalParticles.length < 3 && Math.random() < 0.02) {
             this.orbitalParticles.push({
                 angle: Math.random() * Math.PI * 2,
@@ -84,10 +84,10 @@ class Mage extends Character {
             particle.angle += particle.speed;
         }
 
-        // Update magic circle
+        
         this.magicCircle.rotation += 0.02;
 
-        // Ultimate beam
+        
         if (this.ultimateActive) {
             this.ultimateTimer--;
             if (this.ultimateTimer <= 0) {
@@ -98,7 +98,7 @@ class Mage extends Character {
 
     startAttack(type) {
         if (type === 'special') {
-            // Fire magic missile
+            
             this.fireProjectile({
                 width: 35,
                 height: 35,
@@ -129,14 +129,14 @@ class Mage extends Character {
     }
 
     getHitbox() {
-        // Ultimate has a beam hitbox
+        
         if (this.ultimateActive && this.ultimateTimer > 20) {
             return {
                 x: this.direction === 1 ? this.x + this.width : this.x - 300,
                 y: this.y - 50,
                 width: 300,
                 height: 150,
-                damage: 8, // Damage per frame
+                damage: 8, 
                 knockback: 2,
                 energyGain: 0
             };
@@ -154,20 +154,20 @@ class Mage extends Character {
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        // Magic circle under feet
+        
         this.drawMagicCircle(ctx);
 
-        // Shadow (smaller when jumping)
+        
         const shadowScale = this.isGrounded ? 1 : 0.3;
         ctx.fillStyle = 'rgba(58, 134, 255, 0.3)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, (this.width / 2 + 10) * shadowScale, 15 * shadowScale, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Orbital particles
+        
         this.drawOrbitalParticles(ctx);
 
-        // Draw based on state
+        
         switch (this.state) {
             case 'hitstun':
                 this.drawMageHit(ctx);
@@ -198,7 +198,7 @@ class Mage extends Character {
                 this.drawMageBody(ctx);
         }
 
-        // Ultimate beam
+        
         if (this.ultimateActive) {
             this.drawUltimateBeam(ctx);
         }
@@ -217,17 +217,17 @@ class Mage extends Character {
         ctx.lineWidth = 2;
         ctx.globalAlpha = 0.3;
 
-        // Outer circle
+        
         ctx.beginPath();
         ctx.arc(0, 0, 60, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Inner patterns
+        
         ctx.beginPath();
         ctx.arc(0, 0, 45, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Runes
+        
         for (let i = 0; i < 6; i++) {
             ctx.save();
             ctx.rotate(i * Math.PI / 3);
@@ -261,11 +261,11 @@ class Mage extends Character {
 
     drawMageBody(ctx) {
         const bob = Math.sin(this.animTimer * 0.1) * 3;
-        const breathe = 0; // Disabled breathing animation
+        const breathe = 0; 
         const isAttacking = this.state.startsWith('attack_');
-        const floatOffset = Math.sin(this.animTimer * 0.05) * 5; // Floating effect
+        const floatOffset = Math.sin(this.animTimer * 0.05) * 5; 
 
-        // === MAGICAL AURA (behind) ===
+        
         ctx.save();
         ctx.globalAlpha = 0.3 + Math.sin(this.animTimer * 0.1) * 0.1;
         const auraGrad = ctx.createRadialGradient(0, 0, 20, 0, 0, 80);
@@ -277,8 +277,8 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // === ROBE BASE ===
-        // Outer robe
+        
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-32, 78 + floatOffset);
@@ -290,7 +290,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Robe gradient overlay
+        
         const robeGrad = ctx.createLinearGradient(-35, -40 + bob, 35, 75);
         robeGrad.addColorStop(0, 'rgba(100, 180, 255, 0.2)');
         robeGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
@@ -306,7 +306,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Robe trim (magical glow)
+        
         ctx.strokeStyle = '#4cc9f0';
         ctx.lineWidth = 3;
         ctx.shadowColor = '#4cc9f0';
@@ -314,7 +314,7 @@ class Mage extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Robe pattern (arcane symbols)
+        
         ctx.strokeStyle = '#5a9fff';
         ctx.lineWidth = 1;
         ctx.globalAlpha = 0.5;
@@ -325,7 +325,7 @@ class Mage extends Character {
         }
         ctx.globalAlpha = 1;
 
-        // Inner robe layer
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-22, 78 + floatOffset);
@@ -335,7 +335,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Inner robe highlight
+        
         ctx.fillStyle = '#5a9fff';
         ctx.beginPath();
         ctx.moveTo(-18, 78 + floatOffset);
@@ -345,13 +345,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // === BELT/SASH ===
+        
         ctx.fillStyle = '#7209b7';
         ctx.beginPath();
         ctx.roundRect(-28, 18 + bob + floatOffset, 56, 14, 4);
         ctx.fill();
 
-        // Belt pattern
+        
         ctx.strokeStyle = '#9d4edd';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -359,7 +359,7 @@ class Mage extends Character {
         ctx.lineTo(25, 25 + bob + floatOffset);
         ctx.stroke();
 
-        // Main gem
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 15;
@@ -367,14 +367,14 @@ class Mage extends Character {
         ctx.arc(0, 25 + bob + floatOffset, 8, 0, Math.PI * 2);
         ctx.fill();
 
-        // Gem inner glow
+        
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.arc(-2, 23 + bob + floatOffset, 3, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Side gems
+        
         ctx.fillStyle = '#ff00ff';
         ctx.shadowColor = '#ff00ff';
         ctx.shadowBlur = 8;
@@ -386,8 +386,8 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // === SHOULDERS ===
-        // Left shoulder pad
+        
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.ellipse(-30, -30 + bob + floatOffset, 14, 10, -0.3, 0, Math.PI * 2);
@@ -397,7 +397,7 @@ class Mage extends Character {
         ctx.arc(-30, -30 + bob + floatOffset, 5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Right shoulder pad
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.ellipse(30, -30 + bob + floatOffset, 14, 10, 0.3, 0, Math.PI * 2);
@@ -407,13 +407,13 @@ class Mage extends Character {
         ctx.arc(30, -30 + bob + floatOffset, 5, 0, Math.PI * 2);
         ctx.fill();
 
-        // === ARMS ===
-        // Left arm (sleeve)
+        
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-42, -25 + bob + floatOffset, 15, 45, 6);
         ctx.fill();
-        // Wide sleeve opening
+        
         ctx.beginPath();
         ctx.moveTo(-45, 15 + bob + floatOffset);
         ctx.lineTo(-50, 35 + bob + floatOffset);
@@ -421,13 +421,13 @@ class Mage extends Character {
         ctx.lineTo(-30, 15 + bob + floatOffset);
         ctx.closePath();
         ctx.fill();
-        // Hand
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.roundRect(-44, 30 + bob + floatOffset, 12, 14, 5);
         ctx.fill();
 
-        // Right arm (staff arm)
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(27, -25 + bob + floatOffset, 15, 45, 6);
@@ -444,7 +444,7 @@ class Mage extends Character {
         ctx.roundRect(28, 30 + bob + floatOffset, 12, 14, 5);
         ctx.fill();
 
-        // === STAFF ===
+        
         ctx.save();
         ctx.translate(38, 35 + bob + floatOffset);
         if (isAttacking) {
@@ -453,13 +453,13 @@ class Mage extends Character {
             ctx.rotate(0.1);
         }
 
-        // Staff pole
+        
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-4, -120, 8, 130, 3);
         ctx.fill();
 
-        // Pole detail bands
+        
         ctx.fillStyle = '#6b4423';
         for (let i = 0; i < 5; i++) {
             ctx.beginPath();
@@ -467,7 +467,7 @@ class Mage extends Character {
             ctx.fill();
         }
 
-        // Staff head frame
+        
         ctx.fillStyle = '#ffd700';
         ctx.beginPath();
         ctx.moveTo(-15, -125);
@@ -479,7 +479,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Staff orb
+        
         const orbPulse = Math.sin(this.animTimer * 0.15) * 3;
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
@@ -488,7 +488,7 @@ class Mage extends Character {
         ctx.arc(0, -135, 12 + orbPulse, 0, Math.PI * 2);
         ctx.fill();
 
-        // Orb inner layers
+        
         ctx.fillStyle = '#88ffff';
         ctx.beginPath();
         ctx.arc(0, -135, 8, 0, Math.PI * 2);
@@ -498,7 +498,7 @@ class Mage extends Character {
         ctx.arc(-2, -137, 4, 0, Math.PI * 2);
         ctx.fill();
 
-        // Orb sparkles (animated)
+        
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 2;
         for (let i = 0; i < 6; i++) {
@@ -515,26 +515,26 @@ class Mage extends Character {
 
         ctx.restore();
 
-        // === HEAD ===
-        // Neck
+        
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.roundRect(-6, -50 + bob + floatOffset, 12, 12, 4);
         ctx.fill();
 
-        // Head
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -60 + bob + floatOffset, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Face shadow
+        
         ctx.fillStyle = '#e6c090';
         ctx.beginPath();
         ctx.arc(3, -58 + bob + floatOffset, 16, 0, Math.PI);
         ctx.fill();
 
-        // Hood
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -62 + bob + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -545,7 +545,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Hood highlight
+        
         ctx.fillStyle = '#034078';
         ctx.beginPath();
         ctx.moveTo(-15, -82 + bob + floatOffset);
@@ -555,7 +555,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Hood edge glow
+        
         ctx.strokeStyle = '#4cc9f0';
         ctx.lineWidth = 2;
         ctx.shadowColor = '#4cc9f0';
@@ -565,7 +565,7 @@ class Mage extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Eyes
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = isAttacking ? 30 : 15;
@@ -576,7 +576,7 @@ class Mage extends Character {
         ctx.ellipse(6, -60 + bob + floatOffset, 5, 4, 0.1, 0, Math.PI * 2);
         ctx.fill();
 
-        // Glowing pupils
+        
         ctx.fillStyle = '#00f5d4';
         ctx.beginPath();
         ctx.arc(-6, -60 + bob + floatOffset, 2.5, 0, Math.PI * 2);
@@ -585,7 +585,7 @@ class Mage extends Character {
         ctx.arc(6, -60 + bob + floatOffset, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Eye highlights
+        
         ctx.fillStyle = '#ffffff';
         ctx.shadowBlur = 0;
         ctx.beginPath();
@@ -595,9 +595,9 @@ class Mage extends Character {
         ctx.arc(5, -61 + bob + floatOffset, 1, 0, Math.PI * 2);
         ctx.fill();
 
-        // === CASTING EFFECTS ===
+        
         if (isAttacking) {
-            // Extended casting arm
+            
             ctx.fillStyle = '#ffd6a5';
             ctx.shadowColor = this.color;
             ctx.shadowBlur = 25;
@@ -605,7 +605,7 @@ class Mage extends Character {
             ctx.roundRect(-50, -25 + bob + floatOffset, 55, 16, 8);
             ctx.fill();
 
-            // Magic gathering orbs
+            
             for (let i = 0; i < 3; i++) {
                 const orbAngle = this.animTimer * 0.2 + i * Math.PI * 2 / 3;
                 const orbX = -75 + Math.cos(orbAngle) * 15;
@@ -619,7 +619,7 @@ class Mage extends Character {
             }
             ctx.globalAlpha = 1;
 
-            // Central casting sphere
+            
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(-75, -17 + bob + floatOffset, 12, 0, Math.PI * 2);
@@ -631,7 +631,7 @@ class Mage extends Character {
             ctx.shadowBlur = 0;
         }
 
-        // === HIT STATE ===
+        
         if (this.state === 'hitstun') {
             const flash = Math.floor(this.animTimer / 3) % 2 === 0;
             if (flash) {
@@ -640,7 +640,7 @@ class Mage extends Character {
                 ctx.ellipse(0, 0 + floatOffset, 50, 80, 0, 0, Math.PI * 2);
                 ctx.fill();
             }
-            // Shake effect
+            
             ctx.translate(Math.sin(this.animTimer * 0.8) * 3, 0);
         }
     }
@@ -653,7 +653,7 @@ class Mage extends Character {
         ctx.save();
         ctx.translate(40, -10);
 
-        // Beam glow layers
+        
         for (let i = 3; i >= 0; i--) {
             const width = beamWidth * (1 + i * 0.3);
             ctx.fillStyle = i === 0 ? '#ffffff' : this.color;
@@ -663,20 +663,20 @@ class Mage extends Character {
             ctx.fill();
         }
 
-        // Core beam
+        
         ctx.globalAlpha = intensity;
         ctx.fillStyle = '#00f5d4';
         ctx.beginPath();
         ctx.ellipse(beamLength / 2, 0, beamLength / 2, 30, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Inner white core
+        
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.ellipse(beamLength / 2, 0, beamLength / 2, 10, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Beam particles
+        
         ctx.globalAlpha = 1;
         for (let i = 0; i < 10; i++) {
             const px = Math.random() * beamLength;
@@ -695,30 +695,30 @@ class Mage extends Character {
             ctx.save();
             ctx.translate(proj.x + proj.width / 2, proj.y + proj.height / 2);
 
-            // Magic missile glow
+            
             ctx.shadowColor = proj.color;
             ctx.shadowBlur = 25;
 
-            // Outer glow
+            
             ctx.fillStyle = proj.color;
             ctx.globalAlpha = 0.5;
             ctx.beginPath();
             ctx.arc(0, 0, proj.width / 2 + 10, 0, Math.PI * 2);
             ctx.fill();
 
-            // Main orb
+            
             ctx.globalAlpha = 1;
             ctx.beginPath();
             ctx.arc(0, 0, proj.width / 2, 0, Math.PI * 2);
             ctx.fill();
 
-            // Inner core
+            
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(0, 0, proj.width / 4, 0, Math.PI * 2);
             ctx.fill();
 
-            // Trailing particles
+            
             for (let i = 0; i < 3; i++) {
                 ctx.fillStyle = proj.color;
                 ctx.globalAlpha = 0.5 - i * 0.15;
@@ -737,7 +737,7 @@ class Mage extends Character {
         const floatOffset = Math.sin(this.animTimer * 0.05) * 3;
         const robeSwing = Math.sin(cycle) * 0.05;
 
-        // Magical trail
+        
         ctx.save();
         ctx.globalAlpha = 0.3;
         for (let i = 0; i < 4; i++) {
@@ -748,7 +748,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        // Robe with movement
+        
         ctx.save();
         ctx.rotate(robeSwing);
         ctx.fillStyle = this.secondaryColor;
@@ -763,7 +763,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Inner robe
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-20, 78 + bob + floatOffset);
@@ -773,13 +773,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Belt
+        
         ctx.fillStyle = '#7209b7';
         ctx.beginPath();
         ctx.roundRect(-26, 18 + bob + floatOffset, 52, 12, 4);
         ctx.fill();
 
-        // Gem
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 12;
@@ -788,7 +788,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Arms swinging
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.save();
         ctx.translate(-32, -18 + bob + floatOffset);
@@ -806,13 +806,13 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Head
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -58 + bob + floatOffset, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -60 + bob + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -823,7 +823,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Eyes
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 12;
@@ -835,7 +835,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Staff bobbing
+        
         ctx.save();
         ctx.translate(38, 35 + bob + floatOffset);
         ctx.rotate(0.1 + Math.sin(cycle) * 0.1);
@@ -844,7 +844,7 @@ class Mage extends Character {
         ctx.roundRect(-4, -120, 8, 130, 3);
         ctx.fill();
 
-        // Staff orb
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 20;
@@ -858,7 +858,7 @@ class Mage extends Character {
     drawMageJump(ctx) {
         const rise = Math.min(this.animTimer * 0.08, 1);
 
-        // Magical updraft
+        
         ctx.save();
         ctx.globalAlpha = 0.4;
         for (let i = 0; i < 6; i++) {
@@ -871,7 +871,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        // Robe billowing
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-35, 85);
@@ -883,7 +883,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Inner robe spread
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-25, 85);
@@ -893,13 +893,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Body
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-28, -35, 56, 50, 10);
         ctx.fill();
 
-        // Arms spread
+        
         ctx.save();
         ctx.translate(-35, -25);
         ctx.rotate(-0.8);
@@ -917,13 +917,13 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Head
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -55, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -58, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -934,7 +934,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Glowing eyes (looking up)
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 18;
@@ -946,7 +946,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Staff held horizontal
+        
         ctx.save();
         ctx.translate(0, -20);
         ctx.rotate(-0.3);
@@ -955,7 +955,7 @@ class Mage extends Character {
         ctx.roundRect(-60, -4, 120, 8, 3);
         ctx.fill();
 
-        // Orb on left
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 25;
@@ -965,7 +965,7 @@ class Mage extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // Jump trail
+        
         ctx.strokeStyle = '#00f5d4';
         ctx.lineWidth = 3;
         ctx.globalAlpha = 0.3;
@@ -979,7 +979,7 @@ class Mage extends Character {
     drawMageFall(ctx) {
         const wave = Math.sin(this.animTimer * 0.2) * 5;
 
-        // Robe flying up
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-38, -20);
@@ -997,13 +997,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Main robe
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-30, -30, 60, 55, 10);
         ctx.fill();
 
-        // Inner robe
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-18, 25);
@@ -1013,7 +1013,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Arms out
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.save();
         ctx.translate(-32, -15);
@@ -1031,7 +1031,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Head looking down
+        
         ctx.save();
         ctx.rotate(0.1);
         ctx.fillStyle = '#ffd6a5';
@@ -1039,7 +1039,7 @@ class Mage extends Character {
         ctx.arc(0, -45, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -48, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -1050,7 +1050,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Eyes looking down
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 12;
@@ -1063,7 +1063,7 @@ class Mage extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // Wind lines
+        
         ctx.strokeStyle = 'rgba(0, 245, 212, 0.3)';
         ctx.lineWidth = 2;
         for (let i = 0; i < 4; i++) {
@@ -1082,7 +1082,7 @@ class Mage extends Character {
         ctx.translate(shake, 0);
         ctx.rotate(0.2);
 
-        // Robe disheveled
+        
         ctx.fillStyle = flash ? '#aaccff' : this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-32, 75);
@@ -1096,7 +1096,7 @@ class Mage extends Character {
 
         ctx.restore();
 
-        // Head thrown back
+        
         ctx.save();
         ctx.translate(-10 + shake, -50);
         ctx.rotate(-0.25);
@@ -1106,7 +1106,7 @@ class Mage extends Character {
         ctx.arc(0, 0, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood askew
+        
         ctx.fillStyle = flash ? '#aaccff' : this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -3, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -1117,7 +1117,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // X eyes
+        
         ctx.strokeStyle = flash ? '#00f5d4' : '#333';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1133,7 +1133,7 @@ class Mage extends Character {
         ctx.lineTo(3, 3);
         ctx.stroke();
 
-        // Mouth open
+        
         ctx.fillStyle = '#660000';
         ctx.beginPath();
         ctx.ellipse(0, 10, 6, 4, 0, 0, Math.PI * 2);
@@ -1141,7 +1141,7 @@ class Mage extends Character {
 
         ctx.restore();
 
-        // Magic disruption particles
+        
         ctx.save();
         ctx.translate(15, -20);
         for (let i = 0; i < 8; i++) {
@@ -1155,7 +1155,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        // Staff dropped
+        
         ctx.save();
         ctx.translate(40, 30);
         ctx.rotate(0.8 + shake * 0.02);
@@ -1175,7 +1175,7 @@ class Mage extends Character {
     drawMageBlock(ctx) {
         const pulse = Math.sin(this.animTimer * 0.15) * 0.2;
 
-        // Magic shield
+        
         ctx.save();
         ctx.globalAlpha = 0.6 + pulse * 0.3;
         ctx.strokeStyle = '#00f5d4';
@@ -1186,7 +1186,7 @@ class Mage extends Character {
         ctx.arc(15, -10, 50, -0.8, 0.8);
         ctx.stroke();
 
-        // Shield runes
+        
         ctx.fillStyle = '#00f5d4';
         for (let i = 0; i < 5; i++) {
             const a = -0.6 + i * 0.3;
@@ -1196,7 +1196,7 @@ class Mage extends Character {
         }
         ctx.restore();
 
-        // Robe compact
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-28, 60);
@@ -1208,13 +1208,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Arms forward casting shield
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-5, -22, 45, 16, 7);
         ctx.fill();
 
-        // Hand glowing
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(42, -14, 10, 0, Math.PI * 2);
@@ -1227,13 +1227,13 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Head
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -45, 18, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -48, 22, Math.PI * 0.75, Math.PI * 0.25);
@@ -1244,7 +1244,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Determined eyes
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 15;
@@ -1260,7 +1260,7 @@ class Mage extends Character {
     drawMageCrouch(ctx) {
         const floatOffset = Math.sin(this.animTimer * 0.08) * 2;
 
-        // Robe pooling
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-35, 45 + floatOffset);
@@ -1272,7 +1272,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Inner robe
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(-18, 45 + floatOffset);
@@ -1282,13 +1282,13 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Belt
+        
         ctx.fillStyle = '#7209b7';
         ctx.beginPath();
         ctx.roundRect(-22, 8 + floatOffset, 44, 10, 3);
         ctx.fill();
 
-        // Arms at sides
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-35, -10 + floatOffset, 12, 30, 5);
@@ -1297,13 +1297,13 @@ class Mage extends Character {
         ctx.roundRect(23, -10 + floatOffset, 12, 30, 5);
         ctx.fill();
 
-        // Head lowered
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -32 + floatOffset, 16, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood covering more
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -35 + floatOffset, 20, Math.PI * 0.7, Math.PI * 0.3);
@@ -1314,7 +1314,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Eyes (alert)
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 10;
@@ -1326,7 +1326,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Staff low
+        
         ctx.save();
         ctx.translate(35, 20 + floatOffset);
         ctx.rotate(0.4);
@@ -1350,7 +1350,7 @@ class Mage extends Character {
         const castPower = Math.sin(progress * Math.PI);
         const floatOffset = Math.sin(this.animTimer * 0.05) * 5;
 
-        // Intense aura
+        
         ctx.save();
         ctx.globalAlpha = 0.4 + castPower * 0.3;
         const auraGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, 80 + castPower * 30);
@@ -1362,7 +1362,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Robe floating
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.moveTo(-32, 80 + floatOffset);
@@ -1374,7 +1374,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Robe trim glowing
+        
         ctx.strokeStyle = '#4cc9f0';
         ctx.lineWidth = 3;
         ctx.shadowColor = '#4cc9f0';
@@ -1382,7 +1382,7 @@ class Mage extends Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Casting arms
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.save();
         ctx.translate(-35, -20 + floatOffset);
@@ -1396,7 +1396,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.restore();
 
-        // Right arm with staff raised
+        
         ctx.save();
         ctx.translate(35, -20 + floatOffset);
         ctx.rotate(0.5 + castPower * 0.5);
@@ -1405,14 +1405,14 @@ class Mage extends Character {
         ctx.roundRect(-7, 0, 14, 45, 6);
         ctx.fill();
 
-        // Staff
+        
         ctx.translate(0, 48);
         ctx.fillStyle = '#4a3520';
         ctx.beginPath();
         ctx.roundRect(-4, -30, 8, 100, 3);
         ctx.fill();
 
-        // Powered orb
+        
         const orbSize = 14 + castPower * 8;
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
@@ -1421,13 +1421,13 @@ class Mage extends Character {
         ctx.arc(0, -38, orbSize, 0, Math.PI * 2);
         ctx.fill();
 
-        // Orb inner
+        
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.arc(0, -38, orbSize * 0.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Energy rays
+        
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 2;
         for (let i = 0; i < 8; i++) {
@@ -1442,13 +1442,13 @@ class Mage extends Character {
         ctx.shadowBlur = 0;
         ctx.restore();
 
-        // Head
+        
         ctx.fillStyle = '#ffd6a5';
         ctx.beginPath();
         ctx.arc(0, -60 + floatOffset, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Hood
+        
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.arc(0, -63 + floatOffset, 24, Math.PI * 0.75, Math.PI * 0.25);
@@ -1459,7 +1459,7 @@ class Mage extends Character {
         ctx.closePath();
         ctx.fill();
 
-        // Intense glowing eyes
+        
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 25 + castPower * 15;
@@ -1471,7 +1471,7 @@ class Mage extends Character {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Magic gathering at casting hand
+        
         if (castPower > 0.3) {
             ctx.save();
             ctx.translate(-55 - castPower * 20, 10 + floatOffset);

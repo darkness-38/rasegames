@@ -1,7 +1,7 @@
-// ===================================
-// ASSET MANAGER
-// Loads and manages game images and sprites
-// ===================================
+
+
+
+
 
 const assets = {
     images: {},
@@ -10,9 +10,9 @@ const assets = {
     onValid: null
 };
 
-// Image paths
+
 const imagePaths = {
-    // Backgrounds
+    
     'bg_dojo': 'assets/backgrounds/dojo.png',
     'bg_cyber': 'assets/backgrounds/cyber.png',
     'bg_volcano': 'assets/backgrounds/volcano.png'
@@ -41,7 +41,7 @@ function loadAssets(callback) {
 
         img.onerror = () => {
             console.error(`Failed to load asset: ${key}`);
-            assets.loaded++; // Count as loaded to avoid hanging
+            assets.loaded++; 
             checkAllLoaded();
         };
     });

@@ -14,12 +14,12 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from root
+
 app.use(express.static(path.join(__dirname)));
 
-// ===================================
-// FIGHT ARENA - GAME ROOMS MANAGEMENT
-// ===================================
+
+
+
 
 const rooms = new Map();
 const playerRooms = new Map();
@@ -95,14 +95,14 @@ function leaveRoom(playerId) {
     }
 }
 
-// ===================================
-// SOCKET.IO EVENTS
-// ===================================
+
+
+
 
 io.on('connection', (socket) => {
     console.log(`Player connected: ${socket.id}`);
 
-    // Create a new room
+    
     socket.on('createRoom', () => {
         const room = createRoom(socket.id);
         socket.join(room.code);
@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
         console.log(`Room created: ${room.code} by ${socket.id}`);
     });
 
-    // Join existing room
+    
     socket.on('joinRoom', (code) => {
         const result = joinRoom(code.toUpperCase(), socket.id);
 
@@ -126,7 +126,7 @@ io.on('connection', (socket) => {
         console.log(`Player ${socket.id} joined room ${code}`);
     });
 
-    // Character selection
+    
     socket.on('selectCharacter', ({ character }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('opponentSelectedCharacter', { character });
     });
 
-    // Arena selection (host only)
+    
     socket.on('selectArena', ({ arena }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -155,7 +155,7 @@ io.on('connection', (socket) => {
         io.to(code).emit('arenaSelected', { arena });
     });
 
-    // Player ready
+    
     socket.on('playerReady', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -181,14 +181,14 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Game input sync
+    
     socket.on('playerInput', (inputData) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
         socket.to(code).emit('opponentInput', inputData);
     });
 
-    // Game state sync
+    
     socket.on('gameStateSync', (state) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -200,14 +200,14 @@ io.on('connection', (socket) => {
         socket.to(code).emit('gameStateUpdate', state);
     });
 
-    // Round end
+    
     socket.on('roundEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
         socket.to(code).emit('roundEnded', data);
     });
 
-    // Match end
+    
     socket.on('matchEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -222,7 +222,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('matchEnded', data);
     });
 
-    // Rematch request
+    
     socket.on('requestRematch', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -246,7 +246,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Chat message
+    
     socket.on('chatMessage', (message) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -257,21 +257,21 @@ io.on('connection', (socket) => {
         });
     });
 
-    // Disconnect
+    
     socket.on('disconnect', () => {
         console.log(`Player disconnected: ${socket.id}`);
         leaveRoom(socket.id);
     });
 
-    // Leave room manually
+    
     socket.on('leaveRoom', () => {
         leaveRoom(socket.id);
     });
 });
 
-// ===================================
-// START SERVER
-// ===================================
+
+
+
 
 server.listen(PORT, () => {
     console.log(`🎮 Rase Games Server running on port ${PORT}`);

@@ -1,7 +1,7 @@
-// ===================================
-// MULTIPLAYER CLIENT
-// Socket.io client for online play
-// ===================================
+
+
+
+
 
 class MultiplayerClient {
     constructor() {
@@ -12,7 +12,7 @@ class MultiplayerClient {
         this.opponentCharacter = null;
         this.opponentReady = false;
 
-        // Callbacks
+        
         this.onConnectionChange = null;
         this.onRoomCreated = null;
         this.onJoinedRoom = null;
@@ -37,7 +37,7 @@ class MultiplayerClient {
     connect() {
         if (this.socket) return;
 
-        // Connect to the server (same origin)
+        
         this.socket = io();
 
         this.socket.on('connect', () => {
@@ -53,7 +53,7 @@ class MultiplayerClient {
             if (this.onConnectionChange) this.onConnectionChange(false);
         });
 
-        // Room events
+        
         this.socket.on('roomCreated', (data) => {
             this.roomCode = data.code;
             this.isHost = true;
@@ -90,7 +90,7 @@ class MultiplayerClient {
             if (this.onGoToCharacterSelect) this.onGoToCharacterSelect();
         });
 
-        // Character selection
+        
         this.socket.on('opponentSelectedCharacter', (data) => {
             this.opponentCharacter = data.character;
             if (this.onOpponentSelectedCharacter) this.onOpponentSelectedCharacter(data.character);
@@ -105,7 +105,7 @@ class MultiplayerClient {
             if (this.onOpponentReady) this.onOpponentReady();
         });
 
-        // Game events
+        
         this.socket.on('startOnlineGame', (data) => {
             if (this.onStartGame) this.onStartGame(data);
         });
@@ -233,5 +233,5 @@ class MultiplayerClient {
     }
 }
 
-// Global multiplayer client instance
+
 const multiplayer = new MultiplayerClient();

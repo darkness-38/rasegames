@@ -1,14 +1,14 @@
-// ===================================
-// MOBILE TOUCH CONTROLS
-// Virtual joystick and buttons for mobile
-// ===================================
+
+
+
+
 
 class MobileControls {
     constructor() {
         this.isEnabled = false;
         this.isMobile = this.detectMobile();
 
-        // Joystick state
+        
         this.joystick = {
             active: false,
             startX: 0,
@@ -18,7 +18,7 @@ class MobileControls {
             direction: { x: 0, y: 0 }
         };
 
-        // Button states
+        
         this.buttons = {
             lightAttack: false,
             heavyAttack: false,
@@ -27,10 +27,10 @@ class MobileControls {
             jump: false
         };
 
-        // Touch tracking
+        
         this.touches = new Map();
 
-        // Elements
+        
         this.container = null;
         this.joystickBase = null;
         this.joystickKnob = null;
@@ -46,7 +46,7 @@ class MobileControls {
     }
 
     createControls() {
-        // Create container
+        
         this.container = document.createElement('div');
         this.container.id = 'mobile-controls';
         this.container.innerHTML = `
@@ -70,17 +70,17 @@ class MobileControls {
             </div>
         `;
 
-        // Add styles
+        
         this.addStyles();
 
-        // Add to body
+        
         document.body.appendChild(this.container);
 
-        // Get elements
+        
         this.joystickBase = document.getElementById('joystick-base');
         this.joystickKnob = document.getElementById('joystick-knob');
 
-        // Setup event listeners
+        
         this.setupEventListeners();
     }
 
@@ -255,7 +255,7 @@ class MobileControls {
     }
 
     setupEventListeners() {
-        // Joystick touch handling
+        
         const joystickContainer = document.getElementById('joystick-container');
 
         joystickContainer.addEventListener('touchstart', (e) => this.onJoystickStart(e), { passive: false });
@@ -263,14 +263,14 @@ class MobileControls {
         joystickContainer.addEventListener('touchend', (e) => this.onJoystickEnd(e), { passive: false });
         joystickContainer.addEventListener('touchcancel', (e) => this.onJoystickEnd(e), { passive: false });
 
-        // Button touch handling
+        
         this.setupButton('mobile-light', 'lightAttack');
         this.setupButton('mobile-heavy', 'heavyAttack');
         this.setupButton('mobile-special', 'special');
         this.setupButton('mobile-block', 'block');
         this.setupButton('mobile-jump', 'jump');
 
-        // Prevent context menu on long press
+        
         this.container.addEventListener('contextmenu', (e) => e.preventDefault());
     }
 
@@ -328,19 +328,19 @@ class MobileControls {
         let deltaX = touchX - this.joystick.startX;
         let deltaY = touchY - this.joystick.startY;
 
-        // Calculate distance
+        
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        // Clamp to max distance
+        
         if (distance > maxDistance) {
             deltaX = (deltaX / distance) * maxDistance;
             deltaY = (deltaY / distance) * maxDistance;
         }
 
-        // Update knob position
+        
         this.joystickKnob.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 
-        // Calculate direction (-1 to 1)
+        
         this.joystick.direction = {
             x: deltaX / maxDistance,
             y: deltaY / maxDistance
@@ -359,7 +359,7 @@ class MobileControls {
         if (this.container) {
             this.container.classList.remove('active');
         }
-        // Reset states
+        
         this.joystick.direction = { x: 0, y: 0 };
         Object.keys(this.buttons).forEach(key => this.buttons[key] = false);
     }
@@ -383,12 +383,12 @@ class MobileControls {
         };
     }
 
-    // Check if we should use mobile controls
+    
     shouldUseMobileControls() {
         return this.isMobile || (window.innerWidth <= 1024 && 'ontouchstart' in window);
     }
 
-    // Vibrate for feedback
+    
     vibrate(duration = 50) {
         if (navigator.vibrate) {
             navigator.vibrate(duration);
@@ -396,5 +396,5 @@ class MobileControls {
     }
 }
 
-// Global mobile controls instance
+
 const mobileControls = new MobileControls();

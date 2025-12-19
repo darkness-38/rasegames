@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <!-- Rase Facts Ticker -->
+    
     <div class="ticker-wrap">
         <div class="ticker">
             <div class="ticker__item" id="fact-text">Initializing System...</div>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="game-container">
-        <!-- Left Panel: Click and Score -->
+        
         <div class="click-section">
             <div class="score-container">
                 <h1 id="score">0</h1>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <!-- Right Panel: Upgrades and Achievements -->
+        
         <div class="right-panel">
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTab('upgrades')">Infrastructure</button>
@@ -47,25 +47,25 @@
 
             <div id="upgrades-section" class="panel-content active">
                 <div id="upgrades-container" class="upgrades-list">
-                    <!-- Passive Upgrades injected via JS -->
+                    
                 </div>
             </div>
 
             <div id="click-upgrades-section" class="panel-content" style="display: none;">
                 <div id="click-upgrades-container" class="upgrades-list">
-                    <!-- Click Upgrades injected via JS -->
+                    
                 </div>
             </div>
 
             <div id="achievements-section" class="panel-content" style="display: none;">
                 <div id="achievements-container" class="achievements-list">
-                    <!-- Achievements injected via JS -->
+                    
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Achievement Notification -->
+    
     <div id="achievement-notification" class="achievement-notification hidden">
         <div class="icon">🏆</div>
         <div class="text">
@@ -74,10 +74,10 @@
         </div>
     </div>
 
-    <!-- Fireflies Container -->
+    
     <div id="fireflies-container"></div>
 
-    <!-- Save Button -->
+    
     <button id="save-btn" class="save-btn" onclick="saveGameManual()">💾 Save System</button>
 
     <script src="/auth.js"></script>

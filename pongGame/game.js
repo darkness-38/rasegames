@@ -1,4 +1,4 @@
-// Pong Game - Rase Games
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const playerScoreEl = document.getElementById('playerScore');
@@ -11,15 +11,15 @@ const finalAiScore = document.getElementById('finalAiScore');
 const startBtn = document.getElementById('startBtn');
 const restartBtn = document.getElementById('restartBtn');
 
-// Game constants
-const PADDLE_HEIGHT = 120;  // Huge paddle for player
-const AI_PADDLE_HEIGHT = 60; // Tiny paddle for AI
+
+const PADDLE_HEIGHT = 120;  
+const AI_PADDLE_HEIGHT = 60; 
 const BALL_SIZE = 12;
 const WINNING_SCORE = 10;
 const BALL_SPEED = 4;
-const AI_SPEED = 1.8;  // Extremely slow AI
+const AI_SPEED = 1.8;  
 
-// Game state
+
 let playerY = canvas.height / 2 - PADDLE_HEIGHT / 2;
 let aiY = canvas.height / 2 - PADDLE_HEIGHT / 2;
 let ball = { x: 0, y: 0, dx: 0, dy: 0 };
@@ -41,7 +41,7 @@ function drawPaddle(x, y, color, height = PADDLE_HEIGHT) {
     ctx.shadowColor = color;
     ctx.fillStyle = color;
 
-    // Rounded paddle
+    
     ctx.beginPath();
     ctx.roundRect(x, y, PADDLE_WIDTH, height, 6);
     ctx.fill();
@@ -70,7 +70,7 @@ function drawCenterLine() {
 }
 
 function draw() {
-    // Clear
+    
     ctx.fillStyle = '#111116';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -84,13 +84,13 @@ function updateBall() {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Top/bottom bounce
+    
     if (ball.y - BALL_SIZE / 2 <= 0 || ball.y + BALL_SIZE / 2 >= canvas.height) {
         ball.dy *= -1;
         ball.y = Math.max(BALL_SIZE / 2, Math.min(canvas.height - BALL_SIZE / 2, ball.y));
     }
 
-    // Player paddle collision
+    
     if (ball.x - BALL_SIZE / 2 <= 20 + PADDLE_WIDTH && ball.x - BALL_SIZE / 2 >= 20) {
         if (ball.y >= playerY && ball.y <= playerY + PADDLE_HEIGHT) {
             const hitPos = (ball.y - playerY) / PADDLE_HEIGHT - 0.5;
@@ -100,17 +100,17 @@ function updateBall() {
         }
     }
 
-    // AI paddle collision
+    
     if (ball.x + BALL_SIZE / 2 >= canvas.width - 20 - PADDLE_WIDTH && ball.x + BALL_SIZE / 2 <= canvas.width - 20) {
         if (ball.y >= aiY && ball.y <= aiY + AI_PADDLE_HEIGHT) {
             const hitPos = (ball.y - aiY) / AI_PADDLE_HEIGHT - 0.5;
-            ball.dx = -Math.abs(ball.dx) * 1.03;  // Less speed increase
+            ball.dx = -Math.abs(ball.dx) * 1.03;  
             ball.dy = hitPos * BALL_SPEED * 1.2;
             ball.x = canvas.width - 20 - PADDLE_WIDTH - BALL_SIZE / 2;
         }
     }
 
-    // Scoring
+    
     if (ball.x < 0) {
         aiScore++;
         aiScoreEl.textContent = aiScore;
@@ -126,11 +126,11 @@ function updateBall() {
 }
 
 function updateAI() {
-    // AI only reacts when ball is coming towards it
-    if (ball.dx < 0) return; // Ball going away, AI relaxes
+    
+    if (ball.dx < 0) return; 
 
-    // Add some randomness/mistakes
-    const reactionChance = 0.65; // 65% chance to react each frame (very clumsy)
+    
+    const reactionChance = 0.65; 
     if (Math.random() > reactionChance) return;
 
     const targetY = ball.y - AI_PADDLE_HEIGHT / 2;
@@ -185,7 +185,7 @@ function gameOver(playerWon) {
     }
 }
 
-// Controls
+
 canvas.addEventListener('mousemove', (e) => {
     if (!isGameRunning) return;
     const rect = canvas.getBoundingClientRect();
@@ -204,7 +204,7 @@ canvas.addEventListener('touchmove', (e) => {
     playerY = Math.max(0, Math.min(canvas.height - PADDLE_HEIGHT, playerY));
 });
 
-// Mobile buttons
+
 let moveInterval = null;
 document.getElementById('upBtn')?.addEventListener('mousedown', () => {
     moveInterval = setInterval(() => {
@@ -231,5 +231,5 @@ document.getElementById('downBtn')?.addEventListener('touchstart', (e) => {
 startBtn.addEventListener('click', initGame);
 restartBtn.addEventListener('click', initGame);
 
-// Initial draw
+
 draw();

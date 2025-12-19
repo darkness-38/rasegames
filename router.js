@@ -11,7 +11,7 @@ const handleLocation = async () => {
 
     let fileToFetch = "index.html";
 
-    // Simple routing logic mapping URL segments to files
+    
     if (path.endsWith("about") || path.endsWith("about.html")) fileToFetch = "about.html";
     if (path.endsWith("community") || path.endsWith("community.html")) fileToFetch = "community.html";
     if (path.endsWith("leaderboard") || path.endsWith("leaderboard.html")) fileToFetch = "leaderboard.html";
@@ -24,7 +24,7 @@ const handleLocation = async () => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
 
-        // Extract content from main tag
+        
         const newMain = doc.querySelector('main');
         if (newMain) {
             document.querySelector('main').innerHTML = newMain.innerHTML;
@@ -32,17 +32,17 @@ const handleLocation = async () => {
             console.warn("No main tag found in fetched page, loading fallback.");
         }
 
-        // Post-load hooks - run after content is loaded
+        
         const runPageScripts = () => {
-            // Always update auth UI on page change
+            
             if (typeof updateAuthUI === 'function') {
                 updateAuthUI();
             }
 
-            // Page-specific initializations
+            
             const isLeaderboard = path.includes('leaderboard');
             if (isLeaderboard && window.loadLeaderboards) {
-                // Retry loading leaderboards in case of DOM delay
+                
                 window.loadLeaderboards();
                 setTimeout(window.loadLeaderboards, 300);
             }
@@ -51,7 +51,7 @@ const handleLocation = async () => {
                 window.initProfile();
             }
 
-            // Re-initialize particles if they exist
+            
             if (typeof createParticles === 'function' && document.querySelector('.particles-container')) {
                 createParticles();
             }
@@ -68,7 +68,7 @@ const handleLocation = async () => {
 window.onpopstate = handleLocation;
 window.route = route;
 
-// Handle initial load
+
 document.addEventListener("DOMContentLoaded", () => {
     handleLocation();
 });

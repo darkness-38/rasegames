@@ -139,7 +139,7 @@ button:active {
     font-size: 0.9rem;
 }
 
-/* Mobile Responsive */
+
 @media (max-width: 500px) {
     .game-container {
         padding: 10px;
@@ -190,7 +190,7 @@ button:active {
     }
 }
 
-/* Mobile Controls D-Pad */
+
 .mobile-controls {
     display: none;
     flex-direction: column;

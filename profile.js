@@ -1,6 +1,6 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// RASE GAMES - Profile Page
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 const AVATARS = ['🎮', '👾', '🕹️', '🎯', '🏆', '⚡', '🔥', '💎', '🌟', '🎪', '🎭', '🎨',
     '🐍', '🏃', '💻', '🚀', '👑', '🎵', '🌈', '💀', '🤖', '👽', '🦊', '🐉'];
@@ -8,12 +8,12 @@ const AVATARS = ['🎮', '👾', '🕹️', '🎯', '🏆', '⚡', '🔥', '💎
 let selectedAvatar = '🎮';
 let userProfile = null;
 
-// Initialize profile page
+
 function initProfile() {
-    // Render avatar grid first
+    
     renderAvatarGrid();
 
-    // Wait for auth to initialize
+    
     let attempts = 0;
     const checkAuth = setInterval(() => {
         attempts++;
@@ -28,7 +28,7 @@ function initProfile() {
             } else {
                 showNotLoggedIn();
             }
-        } else if (attempts > 30) { // 3 seconds max
+        } else if (attempts > 30) { 
             clearInterval(checkAuth);
             showNotLoggedIn();
         }
@@ -65,33 +65,33 @@ async function loadUserProfile() {
     const user = window.currentUser;
     if (!user) return;
 
-    // Display basic info
+    
     document.getElementById('display-name').textContent = user.displayName || 'Player';
     document.getElementById('user-email').textContent = user.email || '';
     document.getElementById('input-username').value = user.displayName || '';
 
-    // Load from database
+    
     try {
         await loadFirebaseDB();
         const db = firebase.database();
 
-        // Load user profile
+        
         const snapshot = await db.ref(`users/${user.uid}`).once('value');
         userProfile = snapshot.val() || {};
 
-        // Set avatar
+        
         if (userProfile.avatar) {
             selectedAvatar = userProfile.avatar;
             document.getElementById('current-avatar').textContent = selectedAvatar;
             renderAvatarGrid();
         }
 
-        // Set join date
+        
         let createdAt = userProfile.createdAt;
         if (!createdAt && user.metadata && user.metadata.creationTime) {
             createdAt = new Date(user.metadata.creationTime).getTime();
 
-            // Save to DB for future faster access if missing
+            
             if (!userProfile.createdAt) {
                 db.ref(`users/${user.uid}/createdAt`).set(createdAt).catch(() => { });
             }
@@ -101,7 +101,7 @@ async function loadUserProfile() {
             document.getElementById('stat-joined').textContent = formatDate(createdAt);
         }
 
-        // Get best ranking from all leaderboards
+        
         const games = ['snake', 'clicker', 'runner'];
         let bestRank = null;
         let totalGames = 0;
@@ -119,10 +119,10 @@ async function loadUserProfile() {
                 });
             });
 
-            // Sort by score descending
+            
             entries.sort((a, b) => b.score - a.score);
 
-            // Find user's rank in this game
+            
             const userIndex = entries.findIndex(e => e.uid === user.uid);
             if (userIndex !== -1) {
                 totalGames++;
@@ -133,7 +133,7 @@ async function loadUserProfile() {
             }
         }
 
-        // Update stats
+        
         document.getElementById('stat-games').textContent = totalGames;
         document.getElementById('stat-best').textContent = bestRank ? `#${bestRank}` : '-';
 
@@ -148,7 +148,7 @@ async function loadFirebaseDB() {
     await loadScriptOnce('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
     await loadScriptOnce('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
 
-    // Wait for firebase.database to be available
+    
     await new Promise((resolve, reject) => {
         let attempts = 0;
         const check = () => {
@@ -203,10 +203,10 @@ async function saveProfile(e) {
 
     try {
         const user = window.currentUser;
-        // Update Firebase Auth profile
+        
         await user.updateProfile({ displayName: username });
 
-        // Update database
+        
         await loadFirebaseDB();
         await firebase.database().ref(`users/${user.uid}`).update({
             username: username,
@@ -214,7 +214,7 @@ async function saveProfile(e) {
             updatedAt: Date.now()
         });
 
-        // Update UI
+        
         document.getElementById('display-name').textContent = username;
 
         showProfileNotification('Profile saved!', 'success');
@@ -248,13 +248,13 @@ function showProfileNotification(message, type) {
     setTimeout(() => notif.remove(), 3000);
 }
 
-// Listen for auth changes
+
 if (typeof window !== 'undefined') {
     const originalUpdateAuthUI = window.updateAuthUI;
     window.updateAuthUI = function () {
         if (originalUpdateAuthUI) originalUpdateAuthUI();
 
-        // Refresh profile if on profile page
+        
         if (document.getElementById('profile-content')) {
             const user = window.currentUser;
             if (user && !user.isAnonymous) {
@@ -267,8 +267,8 @@ if (typeof window !== 'undefined') {
     };
 }
 
-// Initialize on page load
+
 document.addEventListener('DOMContentLoaded', initProfile);
 
-// Export for router
+
 window.initProfile = initProfile;

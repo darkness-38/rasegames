@@ -1,15 +1,15 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// CODE CLICKER - Enhanced Edition
-// ═══════════════════════════════════════════════════════════════════════════════
 
-// Game Variables
+
+
+
+
 let score = 0;
 let clickPower = 1;
 let passiveIncome = 0;
 let totalClicks = 0;
 let totalEarned = 0;
 
-// DOM Elements
+
 const scoreElement = document.getElementById('score');
 const cpsElement = document.getElementById('cps');
 const clickBtn = document.getElementById('click-btn');
@@ -19,9 +19,9 @@ const achievementsContainer = document.getElementById('achievements-container');
 const notification = document.getElementById('achievement-notification');
 const notificationText = document.getElementById('achievement-text');
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// GAME DATA
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 const passiveUpgrades = [
     { id: 'localhost', name: 'Localhost', baseCost: 15, increase: 0.1, count: 0, icon: '💻', desc: 'A humble beginning.' },
@@ -74,9 +74,9 @@ const facts = [
     "Segmentation fault (core dumped)"
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// RANDOM EVENTS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 const randomEvents = [
     { id: 'bug_bounty', name: '🐛 Bug Bounty!', icon: '🐛', reward: () => Math.min(1500, Math.max(100, passiveIncome * 30)), duration: 8000 },
@@ -87,9 +87,9 @@ const randomEvents = [
 
 let eventsCollected = 0;
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// CORE GAME FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function init() {
     loadGame();
@@ -104,8 +104,8 @@ function init() {
 
     clickBtn.addEventListener('click', handleClick);
 
-    // Start random events
-    // Start random events
+    
+    
     scheduleRandomEvent();
     scheduleBitcoinEvent();
 }
@@ -118,7 +118,7 @@ function handleClick(e) {
     checkAchievements();
     updateUI();
 
-    // Play click sound
+    
     if (typeof playSound !== 'undefined') playSound('click');
 }
 
@@ -129,9 +129,9 @@ function gameLoop() {
     updateUI();
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// UPGRADE SYSTEM
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function getUpgradeCost(upgrade) {
     return Math.ceil(upgrade.baseCost * Math.pow(1.15, upgrade.count));
@@ -147,17 +147,17 @@ function buyUpgrade(id) {
         upgrade.count++;
         passiveIncome += upgrade.increase;
 
-        // Check upgrade achievements
+        
         const totalUpgrades = passiveUpgrades.reduce((sum, u) => sum + u.count, 0);
         checkAchievements('upgrades', totalUpgrades);
 
         updateUI();
         renderUpgrades();
 
-        // Visual feedback
+        
         showNotification(`Purchased ${upgrade.name}!`, upgrade.increase + '/s');
 
-        // Play upgrade sound
+        
         if (typeof playSound !== 'undefined') playSound('upgrade');
     }
 }
@@ -178,9 +178,9 @@ function buyClickUpgrade(id) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// UI RENDERING
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function renderUpgrades() {
     upgradesContainer.innerHTML = '';
@@ -224,7 +224,7 @@ function renderClickUpgrades() {
         clickUpgradesContainer.appendChild(item);
     });
 
-    // Show purchased ones grayed out
+    
     clickUpgrades.forEach(u => {
         if (!u.purchased) return;
         const item = document.createElement('div');
@@ -261,7 +261,7 @@ function updateUI() {
     scoreElement.textContent = formatNumber(Math.floor(score));
     cpsElement.textContent = formatNumber(passiveIncome.toFixed(1));
 
-    // Update affordability styling
+    
     renderUpgrades();
     renderClickUpgrades();
 }
@@ -274,9 +274,9 @@ function formatNumber(num) {
     return num.toLocaleString();
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// ACHIEVEMENTS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function checkAchievements(type = null, value = null) {
     achievements.forEach(a => {
@@ -314,16 +314,16 @@ function unlockAchievement(a) {
     showNotification(`🏆 ${a.name}`, `+${formatNumber(a.reward)} LoC`);
     renderAchievements();
 
-    // Play achievement sound
+    
     if (typeof playSound !== 'undefined') playSound('achievement');
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// RANDOM EVENTS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function scheduleRandomEvent() {
-    const delay = Math.random() * 30000 + 20000; // 20-50 seconds
+    const delay = Math.random() * 30000 + 20000; 
     setTimeout(spawnRandomEvent, delay);
 }
 
@@ -334,7 +334,7 @@ function spawnRandomEvent() {
     el.className = 'random-event';
     el.innerHTML = `<span>${event.icon}</span>`;
 
-    // Random position
+    
     const x = Math.random() * (window.innerWidth - 100) + 50;
     const y = Math.random() * (window.innerHeight - 200) + 100;
     el.style.left = x + 'px';
@@ -349,7 +349,7 @@ function spawnRandomEvent() {
         checkAchievements('events', eventsCollected);
         showNotification(event.name, `+${formatNumber(reward)} LoC`);
 
-        // Burst effect
+        
         createBurstEffect(el);
         el.remove();
         updateUI();
@@ -357,7 +357,7 @@ function spawnRandomEvent() {
 
     document.body.appendChild(el);
 
-    // Remove after duration
+    
     setTimeout(() => {
         if (el.parentElement) {
             el.classList.add('fade-out');
@@ -365,16 +365,16 @@ function spawnRandomEvent() {
         }
     }, event.duration);
 
-    // Schedule next
+    
     scheduleRandomEvent();
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// BITCOIN SPECIFIC EVENT
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function scheduleBitcoinEvent() {
-    setTimeout(spawnBitcoinEvent, 300000); // 300 seconds (5 minutes) fixed
+    setTimeout(spawnBitcoinEvent, 300000); 
 }
 
 function spawnBitcoinEvent() {
@@ -382,17 +382,17 @@ function spawnBitcoinEvent() {
     el.className = 'random-event';
     el.innerHTML = `<span>₿</span>`;
 
-    // Random position
+    
     const x = Math.random() * (window.innerWidth - 100) + 50;
     const y = Math.random() * (window.innerHeight - 200) + 100;
     el.style.left = x + 'px';
     el.style.top = y + 'px';
 
-    // Special styling for Bitcoin
+    
     el.style.filter = "drop-shadow(0 0 15px #f7931a)";
 
     el.onclick = () => {
-        // Reward 5000 - 7000
+        
         const reward = Math.floor(Math.random() * (7000 - 5000 + 1)) + 5000;
         score += reward;
         totalEarned += reward;
@@ -401,7 +401,7 @@ function spawnBitcoinEvent() {
         checkAchievements('events', eventsCollected);
         showNotification("₿ Found Bitcoin!", `+${formatNumber(reward)} LoC`);
 
-        // Burst effect
+        
         createBurstEffect(el);
         el.remove();
         updateUI();
@@ -409,7 +409,7 @@ function spawnBitcoinEvent() {
 
     document.body.appendChild(el);
 
-    // Remove after 10 seconds if not clicked
+    
     setTimeout(() => {
         if (el.parentElement) {
             el.classList.add('fade-out');
@@ -417,7 +417,7 @@ function spawnBitcoinEvent() {
         }
     }, 10000);
 
-    // Schedule next
+    
     scheduleBitcoinEvent();
 }
 
@@ -434,9 +434,9 @@ function createBurstEffect(source) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// EFFECTS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function createClickEffect(e) {
     const effect = document.createElement('div');
@@ -475,9 +475,9 @@ function showNotification(title, subtitle) {
     setTimeout(() => notification.classList.add('hidden'), 3000);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// SAVE / LOAD
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function saveGame() {
     const data = {
@@ -489,7 +489,7 @@ function saveGame() {
     };
     localStorage.setItem('codeClickerSave_v2', JSON.stringify(data));
 
-    // Submit to leaderboard
+    
     if (window.Leaderboard && totalEarned > 0) {
         Leaderboard.submit('clicker', Math.floor(totalEarned));
     }
@@ -511,7 +511,7 @@ function loadGame() {
             const u = passiveUpgrades.find(p => p.id === s.id);
             if (u) u.count = s.count;
         });
-        // Recalculate passive income
+        
         passiveIncome = passiveUpgrades.reduce((sum, u) => sum + (u.increase * u.count), 0);
     }
 
@@ -520,7 +520,7 @@ function loadGame() {
             const u = clickUpgrades.find(p => p.id === s.id);
             if (u) u.purchased = s.purchased;
         });
-        // Recalculate click power
+        
         clickPower = 1;
         clickUpgrades.forEach(u => { if (u.purchased) clickPower *= u.multiplier; });
     }
@@ -551,7 +551,7 @@ window.switchTab = function (tabName) {
     event.target.classList.add('active');
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// START
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 init();

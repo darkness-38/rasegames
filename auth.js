@@ -1,18 +1,18 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// RASE GAMES - Authentication System
-// ═══════════════════════════════════════════════════════════════════════════════
 
-// Firebase SDK URLs
+
+
+
+
 const FIREBASE_AUTH = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
 
 let auth = null;
 let currentUser = null;
 
-// Initialize auth after Firebase is loaded
+
 async function initAuth() {
     if (auth) return;
 
-    // Make sure Firebase is loaded
+    
     if (typeof firebase === 'undefined') {
         await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
     }
@@ -29,28 +29,28 @@ async function initAuth() {
 
     auth = firebase.auth();
 
-    // Set persistence to LOCAL (stays logged in until logout)
+    
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-    // Listen for auth state changes
+    
     let authStateChecked = false;
     auth.onAuthStateChanged(user => {
         currentUser = user;
         updateAuthUI();
 
-        // Store in window for other scripts
+        
         window.currentUser = user;
 
-        // Only show modal after first auth check and if not logged in
+        
         if (!authStateChecked) {
             authStateChecked = true;
             window.authStateChecked = true;
             if (!user) {
-                // Force modal open and prevent closing
+                
                 showAuthModal(true);
             }
         } else if (!user) {
-            // If user logs out or session expires, force modal
+            
             showAuthModal(true);
         }
     });
@@ -70,17 +70,17 @@ function loadScript(src) {
     });
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// AUTH FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 async function registerUser(email, password, username) {
     try {
         const result = await auth.createUserWithEmailAndPassword(email, password);
-        // Update profile with username
+        
         await result.user.updateProfile({ displayName: username });
 
-        // Save username to database
+        
         const db = firebase.database();
         await db.ref(`users/${result.user.uid}`).set({
             username: username,
@@ -121,7 +121,7 @@ async function loginWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         const result = await auth.signInWithPopup(provider);
 
-        // Try to save to database (don't fail if this doesn't work)
+        
         try {
             const db = firebase.database();
             const userRef = db.ref(`users/${result.user.uid}`);
@@ -149,13 +149,13 @@ async function logoutUser() {
     try {
         await auth.signOut();
         showNotification('Logged out', 'info');
-        // Immediately show modal and prevent closing
+        
         showAuthModal(true);
     } catch (error) {
         console.error('Logout error:', error);
     }
 }
-// ... [existing code] ...
+
 function createAuthModal() {
     if (document.getElementById('auth-modal')) return;
 
@@ -203,7 +203,7 @@ function showAuthModal(force = false) {
     const modal = document.getElementById('auth-modal');
     modal.classList.remove('hidden');
 
-    // If forced (not logged in), remove close button and overlay click
+    
     const closeBtn = document.getElementById('auth-close-btn');
     const overlay = document.getElementById('auth-overlay');
 
@@ -217,7 +217,7 @@ function showAuthModal(force = false) {
 }
 
 function hideAuthModal() {
-    // Prevent hiding if no user is logged in
+    
     if (!currentUser) return;
 
     const modal = document.getElementById('auth-modal');
@@ -296,12 +296,12 @@ function showNotification(message, type = 'info') {
     setTimeout(() => notif.remove(), 3000);
 }
 
-// Auto-init
+
 document.addEventListener('DOMContentLoaded', () => {
     initAuth();
 });
 
-// Export
+
 window.Auth = {
     login: loginUser,
     register: registerUser,

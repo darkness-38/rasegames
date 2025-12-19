@@ -1,13 +1,13 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// RASE GAMES - Sound System
-// ═══════════════════════════════════════════════════════════════════════════════
-// 
-// Sounds are loaded from /sounds/ folder. If a file doesn't exist,
-// a programmatic fallback is generated using Web Audio API.
-// 
-// To replace sounds: Add .mp3 or .wav files to the sounds folder
-// with the same filename (e.g., "click.mp3", "jump.mp3")
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
+
+
+
+
+
+
+
 
 const SoundSystem = (function () {
     let audioContext = null;
@@ -15,38 +15,38 @@ const SoundSystem = (function () {
     const loadedSounds = {};
     const masterVolume = 0.5;
 
-    // Sound file paths
+    
     const SOUND_FILES = {
-        // General
+        
         click: '/sounds/click.mp3',
         start: '/sounds/start.mp3',
         gameover: '/sounds/gameover.mp3',
 
-        // Snake
+        
         eat: '/sounds/eat.mp3',
 
-        // Clicker
+        
         upgrade: '/sounds/upgrade.mp3',
         achievement: '/sounds/achievement.mp3',
         coin: '/sounds/collect.mp3',
 
-        // Runner
+        
         jump: '/sounds/jump.mp3',
         collect: '/sounds/collect.mp3',
         crash: '/sounds/crash.mp3',
 
-        // Background Music
+        
         cyber_background: '/sounds/cyber_background.mp3'
     };
 
-    // Initialize audio context on first interaction
+    
     function init() {
         if (audioContext) return;
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         preloadSounds();
     }
 
-    // Try to preload sound files
+    
     async function preloadSounds() {
         for (const [name, path] of Object.entries(SOUND_FILES)) {
             try {
@@ -56,12 +56,12 @@ const SoundSystem = (function () {
                     loadedSounds[name] = await audioContext.decodeAudioData(arrayBuffer);
                 }
             } catch (e) {
-                // File doesn't exist, will use synthesized fallback
+                
             }
         }
     }
 
-    // Play a loaded sound buffer
+    
     function playBuffer(buffer, volume = 1) {
         if (!audioContext || isMuted) return;
         const source = audioContext.createBufferSource();
@@ -73,9 +73,9 @@ const SoundSystem = (function () {
         source.start(0);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // SYNTHESIZED FALLBACK SOUNDS
-    // ═══════════════════════════════════════════════════════════════════════════
+    
+    
+    
 
     function synthBeep(freq = 440, duration = 0.1, type = 'square', volume = 0.3) {
         if (!audioContext || isMuted) return;
@@ -109,20 +109,20 @@ const SoundSystem = (function () {
         source.start();
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // PUBLIC SOUND METHODS
-    // ═══════════════════════════════════════════════════════════════════════════
+    
+    
+    
 
     function play(name) {
         init();
 
-        // If we have a loaded file, use it
+        
         if (loadedSounds[name]) {
             playBuffer(loadedSounds[name]);
             return;
         }
 
-        // Otherwise use synthesized fallback
+        
         switch (name) {
             case 'click':
                 synthBeep(800, 0.05, 'square', 0.2);
@@ -180,7 +180,7 @@ const SoundSystem = (function () {
         isMuted = muted;
     }
 
-    // Auto-init on user interaction
+    
     document.addEventListener('click', init, { once: true });
     document.addEventListener('keydown', init, { once: true });
     document.addEventListener('touchstart', init, { once: true });
@@ -193,5 +193,5 @@ const SoundSystem = (function () {
     };
 })();
 
-// Shorthand for easy use
+
 const playSound = SoundSystem.play;

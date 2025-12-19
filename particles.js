@@ -11,7 +11,7 @@ canvas.style.height = '100%';
 
 let particlesArray;
 
-// Resize Canvas
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -21,7 +21,7 @@ window.addEventListener('resize', () => {
     init();
 });
 
-// Mouse interaction
+
 const mouse = {
     x: null,
     y: null,
@@ -38,7 +38,7 @@ window.addEventListener('mouseout', () => {
     mouse.y = null;
 });
 
-// Particle Class
+
 class Particle {
     constructor(x, y, size, color) {
         this.x = x;
@@ -48,12 +48,12 @@ class Particle {
         this.size = size;
         this.color = color;
         this.density = (Math.random() * 30) + 1;
-        // Float speed
+        
         this.speedX = (Math.random() * 0.5) - 0.25;
         this.speedY = (Math.random() * 0.5) - 0.25;
     }
 
-    // Draw particle
+    
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
@@ -62,13 +62,13 @@ class Particle {
         ctx.fill();
     }
 
-    // Update particle position
+    
     update() {
-        // Floating motion
+        
         this.baseX += this.speedX;
         this.baseY += this.speedY;
 
-        // Bounce off screen edges
+        
         if (this.baseX > canvas.width || this.baseX < 0) {
             this.speedX = -this.speedX;
         }
@@ -76,7 +76,7 @@ class Particle {
             this.speedY = -this.speedY;
         }
 
-        // Check collision with mouse
+        
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -88,14 +88,14 @@ class Particle {
         let directionY = forceDirectionY * force * this.density;
 
         if (distance < mouse.radius) {
-            // Repel
+            
             this.x -= directionX;
             this.y -= directionY;
         } else {
-            // Return to base (which is drifting)
+            
             if (this.x !== this.baseX) {
                 let dx = this.x - this.baseX;
-                this.x -= dx / 10; // Smooth return
+                this.x -= dx / 10; 
             }
             if (this.y !== this.baseY) {
                 let dy = this.y - this.baseY;
@@ -107,12 +107,12 @@ class Particle {
     }
 }
 
-// Create particle array
+
 function init() {
     particlesArray = [];
     let numberOfParticles = (canvas.height * canvas.width) / 9000;
 
-    // Antigravity Blue Overlay Colors
+    
     const blueColors = ['#4285F4', '#8AB4F8', '#1967D2', '#D2E3FC'];
 
     for (let i = 0; i < numberOfParticles; i++) {
@@ -125,7 +125,7 @@ function init() {
     }
 }
 
-// Animation Loop
+
 function animate() {
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
@@ -136,7 +136,7 @@ function animate() {
     connect();
 }
 
-// Connect particles with lines
+
 function connect() {
     let opacityValue = 1;
     for (let a = 0; a < particlesArray.length; a++) {
@@ -146,7 +146,7 @@ function connect() {
 
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 opacityValue = 1 - (distance / 20000);
-                // Subtler blue connection
+                
                 ctx.strokeStyle = 'rgba(66, 133, 244,' + (opacityValue * 0.15) + ')';
                 ctx.lineWidth = 1;
                 ctx.beginPath();

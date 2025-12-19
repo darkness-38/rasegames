@@ -1,4 +1,4 @@
-// Minesweeper Game - Rase Games
+
 const gameBoard = document.getElementById('gameBoard');
 const mineCountEl = document.getElementById('mineCount');
 const flagCountEl = document.getElementById('flagCount');
@@ -29,7 +29,7 @@ function createBoard(excludeX = -1, excludeY = -1) {
     revealed = [];
     flagged = [];
 
-    // Initialize empty board
+    
     for (let y = 0; y < gridSize; y++) {
         board[y] = [];
         revealed[y] = [];
@@ -41,13 +41,13 @@ function createBoard(excludeX = -1, excludeY = -1) {
         }
     }
 
-    // Place mines (avoiding first click area)
+    
     let minesPlaced = 0;
     while (minesPlaced < mineCount) {
         const x = Math.floor(Math.random() * gridSize);
         const y = Math.floor(Math.random() * gridSize);
 
-        // Don't place mine on or adjacent to first click
+        
         if (Math.abs(x - excludeX) <= 1 && Math.abs(y - excludeY) <= 1) continue;
         if (board[y][x] === -1) continue;
 
@@ -55,7 +55,7 @@ function createBoard(excludeX = -1, excludeY = -1) {
         minesPlaced++;
     }
 
-    // Calculate numbers
+    
     for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
             if (board[y][x] === -1) continue;
@@ -105,7 +105,7 @@ function renderBoard() {
             cell.addEventListener('click', () => handleClick(x, y));
             cell.addEventListener('contextmenu', (e) => { e.preventDefault(); handleRightClick(x, y); });
 
-            // Long press for mobile
+            
             let pressTimer;
             cell.addEventListener('touchstart', (e) => {
                 pressTimer = setTimeout(() => { e.preventDefault(); handleRightClick(x, y); }, 500);
@@ -152,7 +152,7 @@ function revealCell(x, y) {
         return;
     }
 
-    // Flood fill for empty cells
+    
     if (board[y][x] === 0) {
         for (let dy = -1; dy <= 1; dy++) {
             for (let dx = -1; dx <= 1; dx++) {
@@ -179,7 +179,7 @@ function gameOver(won) {
     isGameOver = true;
     stopTimer();
 
-    // Reveal all mines
+    
     if (!won) {
         for (let y = 0; y < gridSize; y++) {
             for (let x = 0; x < gridSize; x++) {
@@ -212,7 +212,7 @@ function gameOver(won) {
 }
 
 function calculateScore() {
-    // Score based on difficulty and time (higher is better)
+    
     const difficultyMultiplier = mineCount * 10;
     const timeBonus = Math.max(0, 300 - timer);
     return difficultyMultiplier + timeBonus;
@@ -246,7 +246,7 @@ function initGame() {
     gameOverScreen.classList.add('hidden');
 }
 
-// Difficulty buttons
+
 diffBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         diffBtns.forEach(b => b.classList.remove('active'));
@@ -259,5 +259,5 @@ diffBtns.forEach(btn => {
 
 restartBtn.addEventListener('click', initGame);
 
-// Start game
+
 initGame();

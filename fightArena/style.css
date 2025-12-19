@@ -1,9 +1,6 @@
-/* ===================================
-   SHADOW FIGHTERS - MAIN STYLES
-   Premium Dark Theme with Neon Effects
-   =================================== */
 
-/* CSS Variables */
+
+
 :root {
     --primary-color: #46ec13;
     --secondary-color: #36b80f;
@@ -25,7 +22,7 @@
     --mage-color: #3a86ff;
 }
 
-/* Glitch Text Effect */
+
 .glitch-text {
     position: relative;
 }
@@ -107,7 +104,7 @@
     }
 }
 
-/* Reset & Base */
+
 * {
     margin: 0;
     padding: 0;
@@ -124,7 +121,7 @@ body {
     color: var(--text-primary);
 }
 
-/* Background Effects */
+
 .bg-effects {
     position: fixed;
     top: 0;
@@ -196,7 +193,7 @@ body {
     }
 }
 
-/* Screen Management */
+
 .screen {
     position: absolute;
     top: 0;
@@ -213,9 +210,7 @@ body {
     display: flex;
 }
 
-/* ===================================
-   MAIN MENU
-   =================================== */
+
 
 .menu-container {
     text-align: center;
@@ -307,9 +302,7 @@ body {
     display: block;
 }
 
-/* ===================================
-   CHARACTER SELECT
-   =================================== */
+
 
 .select-container {
     width: 95%;
@@ -503,7 +496,7 @@ body {
     border-radius: 3px;
 }
 
-/* Arena Select */
+
 .arena-select {
     margin-bottom: 2rem;
 }
@@ -565,7 +558,7 @@ body {
     font-weight: 600;
 }
 
-/* Select Actions */
+
 .select-actions {
     display: flex;
     justify-content: center;
@@ -610,9 +603,7 @@ body {
     cursor: not-allowed;
 }
 
-/* ===================================
-   CONTROLS SCREEN
-   =================================== */
+
 
 .controls-container {
     width: 90%;
@@ -728,9 +719,7 @@ body {
     font-size: 0.85rem;
 }
 
-/* ===================================
-   GAME SCREEN
-   =================================== */
+
 
 #game-screen {
     flex-direction: column;
@@ -742,7 +731,7 @@ body {
     display: block;
 }
 
-/* Game HUD */
+
 .game-hud {
     position: absolute;
     top: 0;
@@ -918,7 +907,7 @@ body {
     }
 }
 
-/* Announcer */
+
 .announcer {
     position: absolute;
     top: 50%;
@@ -954,7 +943,7 @@ body {
     }
 }
 
-/* Pause Menu */
+
 .pause-menu {
     position: absolute;
     top: 50%;
@@ -999,9 +988,7 @@ body {
     }
 }
 
-/* ===================================
-   RESULT SCREEN
-   =================================== */
+
 
 .result-container {
     text-align: center;
@@ -1044,9 +1031,7 @@ body {
     justify-content: center;
 }
 
-/* ===================================
-   ONLINE MENU
-   =================================== */
+
 
 .online-container {
     text-align: center;
@@ -1131,9 +1116,7 @@ body {
     color: var(--health-damage);
 }
 
-/* ===================================
-   RESPONSIVE
-   =================================== */
+
 
 @media (max-width: 1200px) {
     .players-selection {
@@ -1307,7 +1290,7 @@ body {
     }
 }
 
-/* Extra small devices */
+
 @media (max-width: 480px) {
     .game-title {
         font-size: 2rem;
@@ -1338,7 +1321,7 @@ body {
     }
 }
 
-/* Landscape mobile */
+
 @media (max-height: 500px) and (orientation: landscape) {
     .game-hud {
         padding: 0.3rem 1rem;
@@ -1388,7 +1371,7 @@ body {
     }
 }
 
-/* Touch-friendly improvements */
+
 @media (pointer: coarse) {
 
     .menu-btn,
@@ -1407,7 +1390,7 @@ body {
     }
 }
 
-/* Prevent text selection on game elements */
+
 .game-hud,
 #game-canvas,
 .announcer,
@@ -1417,7 +1400,7 @@ body {
     -webkit-touch-callout: none;
 }
 
-/* Safe area for notched phones */
+
 @supports (padding: max(0px)) {
     .game-hud {
         padding-left: max(1rem, env(safe-area-inset-left));
@@ -1430,7 +1413,7 @@ body {
     }
 }
 
-/* Character and Arena Selection - Updated Theme */
+
 #p1-cards .char-card.selected {
     border-color: var(--primary-color) !important;
     box-shadow: 0 0 20px rgba(70, 236, 19, 0.4), 0 0 40px rgba(70, 236, 19, 0.2);

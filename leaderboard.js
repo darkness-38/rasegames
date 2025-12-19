@@ -1,8 +1,8 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// RASE GAMES - Global Leaderboard System
-// ═══════════════════════════════════════════════════════════════════════════════
 
-// Firebase Configuration
+
+
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyBigRK1QV1nO-qTmMMLUcnCtXtW0e_sXnQ",
     authDomain: "rasegames-9934f.firebaseapp.com",
@@ -13,37 +13,37 @@ const firebaseConfig = {
     appId: "1:762399445136:web:7dea2f9064963fc03dc815"
 };
 
-// Firebase SDK (using compat version for simplicity)
+
 const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
 const FIREBASE_DB = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
 
 let db = null;
 let firebaseReady = false;
-let firebaseLoading = null; // Loading lock
+let firebaseLoading = null; 
 
-// Load Firebase SDK
+
 async function loadFirebase() {
     if (firebaseReady && db) {
         return true;
     }
 
-    // If already loading, wait for that to complete
+    
     if (firebaseLoading) {
         return firebaseLoading;
     }
 
     firebaseLoading = (async () => {
         try {
-            // Load Firebase App first
+            
             await loadScript(FIREBASE_SDK);
 
-            // Wait for firebase to be available
+            
             await waitForGlobal('firebase', 3000);
 
-            // Load Database
+            
             await loadScript(FIREBASE_DB);
 
-            // Wait for firebase.database to be a function
+            
             await new Promise((resolve, reject) => {
                 let attempts = 0;
                 const check = () => {
@@ -58,7 +58,7 @@ async function loadFirebase() {
                 check();
             });
 
-            // Initialize
+            
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
             }
@@ -106,17 +106,17 @@ function waitForGlobal(name, timeout = 2000) {
     });
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// LEADERBOARD FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════════
 
-// Get player name (stored in cookie or prompt)
+
+
+
+
 function getPlayerName() {
     let name = getCookieLB('playerName');
     if (!name) {
         name = prompt('Enter your name for the leaderboard:', 'Player');
         if (name && name.trim()) {
-            name = name.trim().substring(0, 20); // Max 20 chars
+            name = name.trim().substring(0, 20); 
             setCookieLB('playerName', name);
         } else {
             name = 'Anonymous';
@@ -134,9 +134,9 @@ function getCookieLB(name) {
     return match ? decodeURIComponent(match[2]) : null;
 }
 
-// Submit score to leaderboard (only for registered users)
+
 async function submitScore(game, score) {
-    // Check if user is registered (not anonymous)
+    
     const user = window.currentUser;
     if (!user || user.isAnonymous) {
         console.log('Leaderboard: Only registered users can submit scores');
@@ -153,14 +153,14 @@ async function submitScore(game, score) {
     const ref = db.ref(`leaderboards/${game}`);
 
     try {
-        // Check if user already has scores (by uid)
+        
         const snapshot = await ref.orderByChild('uid').equalTo(uid).once('value');
         const existing = snapshot.val();
 
         if (existing) {
             const keys = Object.keys(existing);
 
-            // Find highest existing score
+            
             let highestKey = keys[0];
             let highestScore = existing[keys[0]].score;
 
@@ -171,14 +171,14 @@ async function submitScore(game, score) {
                 }
             }
 
-            // Delete all duplicate entries except the one with highest score
+            
             for (const key of keys) {
                 if (key !== highestKey) {
                     await ref.child(key).remove();
                 }
             }
 
-            // Update the remaining entry if new score is higher
+            
             if (score > highestScore) {
                 await ref.child(highestKey).update({
                     score: score,
@@ -187,7 +187,7 @@ async function submitScore(game, score) {
                 });
             }
         } else {
-            // Add new entry
+            
             await ref.push({
                 uid: uid,
                 name: name,
@@ -203,7 +203,7 @@ async function submitScore(game, score) {
     }
 }
 
-// Get top scores for a game
+
 async function getLeaderboard(game, limit = 10) {
     if (!await loadFirebase()) {
         return [];
@@ -224,7 +224,7 @@ async function getLeaderboard(game, limit = 10) {
             });
         });
 
-        // Sort descending
+        
         entries.sort((a, b) => b.score - a.score);
         console.log(`Leaderboard ${game}: ${entries.length} entries`);
         return entries;
@@ -234,7 +234,7 @@ async function getLeaderboard(game, limit = 10) {
     }
 }
 
-// Render leaderboard to table
+
 function renderLeaderboard(elementId, entries) {
     const tbody = document.getElementById(elementId);
     if (!tbody) return;
@@ -265,9 +265,9 @@ function formatNumber(num) {
     return num.toString();
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// LOAD LEADERBOARDS ON PAGE
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 async function loadAllLeaderboards() {
     const [snake, clicker, runner, tetris, flappy, pong, minesweeper, memory, game2048, tictactoe] = await Promise.all([
@@ -295,7 +295,7 @@ async function loadAllLeaderboards() {
     renderLeaderboard('tictactoe-leaderboard', tictactoe);
 }
 
-// Auto-load if on leaderboard page
+
 async function tryLoadLeaderboards() {
     const el = document.getElementById('snake-leaderboard');
     if (el) {
@@ -307,24 +307,24 @@ async function tryLoadLeaderboards() {
     return false;
 }
 
-// Try loading with multiple attempts
+
 async function initLeaderboards() {
     if (await tryLoadLeaderboards()) return;
 
-    // Retry after short delays (for SPA routing)
+    
     setTimeout(tryLoadLeaderboards, 300);
     setTimeout(tryLoadLeaderboards, 800);
     setTimeout(tryLoadLeaderboards, 1500);
 }
 
-// Initialize
+
 initLeaderboards();
 document.addEventListener('DOMContentLoaded', initLeaderboards);
 
-// Also expose for manual trigger
+
 window.loadLeaderboards = loadAllLeaderboards;
 
-// Export for games to use
+
 window.Leaderboard = {
     submit: submitScore,
     get: getLeaderboard,

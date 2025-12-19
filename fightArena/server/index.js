@@ -14,16 +14,16 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
-// Serve static files
+
 app.use(express.static(path.join(__dirname, '../')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// ===================================
-// GAME ROOMS MANAGEMENT
-// ===================================
+
+
+
 
 const rooms = new Map();
 const playerRooms = new Map();
@@ -50,7 +50,7 @@ function createRoom(hostId) {
         hostCharacter: null,
         guestCharacter: null,
         arena: 'dojo',
-        state: 'waiting', // waiting, selecting, playing, finished
+        state: 'waiting', 
         gameState: null,
         hostReady: false,
         guestReady: false
@@ -85,14 +85,14 @@ function leaveRoom(playerId) {
     playerRooms.delete(playerId);
 
     if (room.host === playerId) {
-        // Host left - notify guest and destroy room
+        
         if (room.guest) {
             io.to(room.guest).emit('roomClosed', { reason: 'Host odadan ayrıldı' });
             playerRooms.delete(room.guest);
         }
         rooms.delete(code);
     } else if (room.guest === playerId) {
-        // Guest left
+        
         room.guest = null;
         room.guestCharacter = null;
         room.guestReady = false;
@@ -101,14 +101,14 @@ function leaveRoom(playerId) {
     }
 }
 
-// ===================================
-// SOCKET.IO EVENTS
-// ===================================
+
+
+
 
 io.on('connection', (socket) => {
     console.log(`Player connected: ${socket.id}`);
 
-    // Create a new room
+    
     socket.on('createRoom', () => {
         const room = createRoom(socket.id);
         socket.join(room.code);
@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
         console.log(`Room created: ${room.code} by ${socket.id}`);
     });
 
-    // Join existing room
+    
     socket.on('joinRoom', (code) => {
         const result = joinRoom(code.toUpperCase(), socket.id);
 
@@ -128,16 +128,16 @@ io.on('connection', (socket) => {
         socket.join(code);
         socket.emit('joinedRoom', { code, isHost: false });
 
-        // Notify host
+        
         io.to(result.room.host).emit('guestJoined', { guestId: socket.id });
 
-        // Both players go to character select
+        
         io.to(code).emit('goToCharacterSelect');
 
         console.log(`Player ${socket.id} joined room ${code}`);
     });
 
-    // Character selection
+    
     socket.on('selectCharacter', ({ character }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -151,11 +151,11 @@ io.on('connection', (socket) => {
             room.guestCharacter = character;
         }
 
-        // Notify other player
+        
         socket.to(code).emit('opponentSelectedCharacter', { character });
     });
 
-    // Arena selection (host only)
+    
     socket.on('selectArena', ({ arena }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -167,7 +167,7 @@ io.on('connection', (socket) => {
         io.to(code).emit('arenaSelected', { arena });
     });
 
-    // Player ready
+    
     socket.on('playerReady', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -183,7 +183,7 @@ io.on('connection', (socket) => {
 
         socket.to(code).emit('opponentReady');
 
-        // Both ready - start game
+        
         if (room.hostReady && room.guestReady && room.hostCharacter && room.guestCharacter) {
             room.state = 'playing';
             io.to(code).emit('startOnlineGame', {
@@ -194,16 +194,16 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Game input sync
+    
     socket.on('playerInput', (inputData) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
 
-        // Send to opponent
+        
         socket.to(code).emit('opponentInput', inputData);
     });
 
-    // Game state sync (host sends authoritative state)
+    
     socket.on('gameStateSync', (state) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -215,7 +215,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('gameStateUpdate', state);
     });
 
-    // Round end
+    
     socket.on('roundEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -223,7 +223,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('roundEnded', data);
     });
 
-    // Match end
+    
     socket.on('matchEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -238,7 +238,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('matchEnded', data);
     });
 
-    // Rematch request
+    
     socket.on('requestRematch', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -254,7 +254,7 @@ io.on('connection', (socket) => {
 
         socket.to(code).emit('rematchRequested');
 
-        // Both want rematch
+        
         if (room.hostReady && room.guestReady) {
             room.state = 'playing';
             room.hostReady = false;
@@ -263,32 +263,32 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Chat message
+    
     socket.on('chatMessage', (message) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
 
         socket.to(code).emit('chatMessage', {
             from: socket.id,
-            message: message.substring(0, 100) // Limit message length
+            message: message.substring(0, 100) 
         });
     });
 
-    // Disconnect
+    
     socket.on('disconnect', () => {
         console.log(`Player disconnected: ${socket.id}`);
         leaveRoom(socket.id);
     });
 
-    // Leave room manually
+    
     socket.on('leaveRoom', () => {
         leaveRoom(socket.id);
     });
 });
 
-// ===================================
-// START SERVER
-// ===================================
+
+
+
 
 server.listen(PORT, () => {
     console.log(`🎮 Shadow Fighters Server running on port ${PORT}`);

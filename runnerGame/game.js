@@ -1,17 +1,17 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// CYBER RUNNER - Enhanced Edition
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Screens
+
 const mainMenu = document.getElementById('mainMenu');
 const gameScreen = document.getElementById('gameScreen');
 const gameOverScreen = document.getElementById('gameOverScreen');
 const shopScreen = document.getElementById('shopScreen');
 
-// HUD Elements
+
 const scoreEl = document.getElementById('score');
 const coinsEl = document.getElementById('coins');
 const highScoreEl = document.getElementById('highScore');
@@ -23,9 +23,9 @@ const headerBestEl = document.getElementById('headerBest');
 const mobileCoinsEl = document.getElementById('mobileCoins');
 const mobileBestEl = document.getElementById('mobileBest');
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// COOKIE HELPERS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function setCookie(name, value, days = 365) {
     const d = new Date();
@@ -38,9 +38,9 @@ function getCookie(name) {
     return match ? match[2] : null;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// GAME CONSTANTS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 const GRAVITY = 0.55;
 const BASE_JUMP_FORCE = -13;
@@ -60,9 +60,9 @@ const COLORS = {
     particle: '#60a5fa'
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// GAME STATE
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 let gameRunning = false;
 let score = 0;
@@ -74,7 +74,7 @@ let animationId = null;
 let frameCount = 0;
 let bgMusic = null;
 
-// Player
+
 let player = {
     x: 80,
     y: 0,
@@ -85,14 +85,14 @@ let player = {
     jumpCount: 0
 };
 
-// Game Objects
+
 let obstacles = [];
 let coinItems = [];
 let particles = [];
 let stars = [];
 let buildings = [];
 
-// Upgrades
+
 let upgrades = {
     doubleJump: { level: 0, maxLevel: 1, baseCost: 100, name: 'Double Jump', icon: '⬆️', desc: 'Jump again mid-air' },
     magnet: { level: 0, maxLevel: 3, baseCost: 50, name: 'Coin Magnet', icon: '🧲', desc: 'Attract nearby coins' },
@@ -100,7 +100,7 @@ let upgrades = {
     jumpHeight: { level: 0, maxLevel: 3, baseCost: 120, name: 'Jump Boost', icon: '🚀', desc: 'Jump 15% higher' }
 };
 
-// Load saved upgrades
+
 const savedUpgrades = getCookie('crUpgrades');
 if (savedUpgrades) {
     try {
@@ -109,9 +109,9 @@ if (savedUpgrades) {
     } catch (e) { }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// CANVAS SETUP
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -127,7 +127,7 @@ function initBackground() {
     stars = [];
     buildings = [];
 
-    // Stars (fewer for performance)
+    
     for (let i = 0; i < 50; i++) {
         stars.push({
             x: Math.random() * canvas.width,
@@ -137,7 +137,7 @@ function initBackground() {
         });
     }
 
-    // Buildings
+    
     for (let i = 0; i < 10; i++) {
         buildings.push({
             x: i * 180,
@@ -148,16 +148,16 @@ function initBackground() {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// DRAW FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function drawBackground() {
-    // Sky
+    
     ctx.fillStyle = COLORS.sky1;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Stars
+    
     ctx.fillStyle = 'rgba(255,255,255,0.6)';
     stars.forEach(s => {
         ctx.beginPath();
@@ -169,13 +169,13 @@ function drawBackground() {
         }
     });
 
-    // Buildings (simplified)
+    
     buildings.forEach(b => {
         const y = canvas.height - GROUND_HEIGHT - b.height;
         ctx.fillStyle = 'rgba(20,10,35,0.7)';
         ctx.fillRect(b.x, y, b.width, b.height);
 
-        // Windows (simplified grid)
+        
         ctx.fillStyle = 'rgba(0,240,255,0.2)';
         for (let wy = y + 15; wy < canvas.height - GROUND_HEIGHT - 20; wy += 25) {
             for (let wx = b.x + 8; wx < b.x + b.width - 10; wx += 15) {
@@ -192,11 +192,11 @@ function drawBackground() {
         }
     });
 
-    // Ground
+    
     ctx.fillStyle = COLORS.ground;
     ctx.fillRect(0, canvas.height - GROUND_HEIGHT, canvas.width, GROUND_HEIGHT);
 
-    // Ground line with glow
+    
     ctx.strokeStyle = COLORS.groundLine;
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -212,62 +212,62 @@ function drawPlayer() {
 
     ctx.save();
 
-    // Glow
+    
     ctx.shadowColor = COLORS.player;
     ctx.shadowBlur = 15;
 
-    // === CYBER NINJA DESIGN ===
+    
 
-    // Head (helmet)
+    
     ctx.fillStyle = COLORS.player;
     ctx.beginPath();
     ctx.roundRect(px + 8, py, 20, 18, 5);
     ctx.fill();
 
-    // Visor
+    
     ctx.fillStyle = '#000';
     ctx.fillRect(px + 10, py + 5, 16, 7);
     ctx.fillStyle = COLORS.playerAccent;
     ctx.fillRect(px + 11, py + 6, 14, 5);
 
-    // Body armor
+    
     ctx.fillStyle = '#0a0a15';
     ctx.beginPath();
     ctx.roundRect(px + 5, py + 19, 26, 18, 3);
     ctx.fill();
 
-    // Body highlight
+    
     ctx.fillStyle = COLORS.player;
     ctx.fillRect(px + 7, py + 20, 22, 2);
     ctx.fillRect(px + 15, py + 22, 3, 14);
 
-    // Arms
+    
     ctx.fillStyle = COLORS.player;
     const armSwing = Math.sin(frameCount * 0.3) * 3;
     ctx.fillRect(px + 2, py + 20 + armSwing, 5, 12);
     ctx.fillRect(px + 28, py + 20 - armSwing, 5, 12);
 
-    // Legs (animated)
+    
     ctx.fillStyle = '#0a0a15';
     if (player.isJumping) {
-        // Tucked legs when jumping
+        
         ctx.fillRect(px + 8, py + 38, 7, 10);
         ctx.fillRect(px + 20, py + 38, 7, 10);
     } else {
-        // Running animation
+        
         const legOffset1 = Math.sin(runFrame * 1.5) * 6;
         const legOffset2 = Math.sin(runFrame * 1.5 + Math.PI) * 6;
         ctx.fillRect(px + 8, py + 38, 7, 10 + legOffset1);
         ctx.fillRect(px + 20, py + 38, 7, 10 + legOffset2);
     }
 
-    // Jetpack
+    
     ctx.fillStyle = '#333';
     ctx.fillRect(px + 10, py + 25, 15, 12);
     ctx.fillStyle = COLORS.playerAccent;
     ctx.fillRect(px + 12, py + 27, 11, 3);
 
-    // Jetpack flame
+    
     if (player.isJumping) {
         const flameH = 10 + Math.random() * 10;
         const gradient = ctx.createLinearGradient(0, py + 37, 0, py + 37 + flameH);
@@ -286,9 +286,9 @@ function drawPlayer() {
     ctx.restore();
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// OBSTACLE TYPES
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 const OBSTACLE_TYPES = [
     { name: 'spike', width: 25, height: 40 },
@@ -318,7 +318,7 @@ function drawObstacles() {
 
         switch (obs.type) {
             case 'spike':
-                // Triangle spike
+                
                 ctx.fillStyle = COLORS.obstacle;
                 ctx.shadowColor = COLORS.obstacle;
                 ctx.shadowBlur = 10;
@@ -331,12 +331,12 @@ function drawObstacles() {
                 break;
 
             case 'barrier':
-                // Horizontal barrier
+                
                 ctx.fillStyle = COLORS.obstacleAlt;
                 ctx.shadowColor = COLORS.obstacleAlt;
                 ctx.shadowBlur = 8;
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                // Stripes
+                
                 ctx.fillStyle = '#000';
                 for (let i = 0; i < obs.width; i += 10) {
                     ctx.fillRect(obs.x + i, obs.y, 5, obs.height);
@@ -344,13 +344,13 @@ function drawObstacles() {
                 break;
 
             case 'crate':
-                // Box crate
+                
                 ctx.fillStyle = '#444';
                 ctx.strokeStyle = COLORS.obstacle;
                 ctx.lineWidth = 2;
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
                 ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
-                // X pattern
+                
                 ctx.beginPath();
                 ctx.moveTo(obs.x, obs.y);
                 ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
@@ -360,29 +360,29 @@ function drawObstacles() {
                 break;
 
             case 'laser':
-                // Vertical laser beam
+                
                 const laserPulse = 0.5 + Math.sin(frameCount * 0.2 + obs.animOffset) * 0.5;
                 ctx.fillStyle = `rgba(255,0,100,${laserPulse})`;
                 ctx.shadowColor = COLORS.obstacle;
                 ctx.shadowBlur = 15 * laserPulse;
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                // Core
+                
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(obs.x + 5, obs.y, 5, obs.height);
                 break;
 
             case 'drone':
-                // Flying drone
+                
                 const bob = Math.sin(frameCount * 0.1 + obs.animOffset) * 5;
                 ctx.fillStyle = '#333';
                 ctx.shadowColor = COLORS.playerAccent;
                 ctx.shadowBlur = 10;
                 ctx.fillRect(obs.x, obs.y + bob, obs.width, obs.height - 10);
-                // Propellers
+                
                 ctx.fillStyle = COLORS.playerAccent;
                 ctx.fillRect(obs.x - 5, obs.y + bob - 3, 15, 4);
                 ctx.fillRect(obs.x + obs.width - 10, obs.y + bob - 3, 15, 4);
-                // Eye
+                
                 ctx.fillStyle = '#f00';
                 ctx.beginPath();
                 ctx.arc(obs.x + obs.width / 2, obs.y + bob + 8, 4, 0, Math.PI * 2);
@@ -399,9 +399,9 @@ function updateObstacles() {
     obstacles = obstacles.filter(obs => obs.x + obs.width > -50);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// COINS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function spawnCoin() {
     const heights = [0, 40, 80, 120];
@@ -423,7 +423,7 @@ function drawCoins() {
         ctx.shadowColor = COLORS.coin;
         ctx.shadowBlur = 12;
 
-        // Diamond
+        
         ctx.beginPath();
         ctx.moveTo(0, -coin.size / 2);
         ctx.lineTo(coin.size / 2, 0);
@@ -458,10 +458,10 @@ function updateCoins() {
             coinsEl.textContent = coins;
             coin.collected = true;
 
-            // Play collect sound
+            
             if (typeof playSound !== 'undefined') playSound('collect');
 
-            // Particles
+            
             for (let i = 0; i < 5; i++) {
                 particles.push({
                     x: coin.x, y: coin.y,
@@ -476,9 +476,9 @@ function updateCoins() {
     coinItems = coinItems.filter(c => !c.collected && c.x > -30);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// PARTICLES (optimized)
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function updateParticles() {
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -501,9 +501,9 @@ function drawParticles() {
     ctx.globalAlpha = 1;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// PLAYER PHYSICS
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function updatePlayer() {
     player.vy += GRAVITY;
@@ -527,10 +527,10 @@ function jump() {
         player.isJumping = true;
         player.jumpCount++;
 
-        // Play jump sound
+        
         if (typeof playSound !== 'undefined') playSound('jump');
 
-        // Jump particles
+        
         for (let i = 0; i < 3; i++) {
             particles.push({
                 x: player.x + player.width / 2,
@@ -543,9 +543,9 @@ function jump() {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// COLLISION
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function checkCollisions() {
     const px = player.x + 5;
@@ -554,7 +554,7 @@ function checkCollisions() {
     const ph = player.height - 10;
 
     for (const obs of obstacles) {
-        // Adjust hitbox for spikes (triangular)
+        
         let ox = obs.x, oy = obs.y, ow = obs.width, oh = obs.height;
         if (obs.type === 'spike') {
             ox += 5; ow -= 10;
@@ -567,9 +567,9 @@ function checkCollisions() {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// GAME LOOP
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 let lastObstacleTime = 0;
 let lastCoinTime = 0;
@@ -585,7 +585,7 @@ function gameLoop(timestamp) {
     updateParticles();
     checkCollisions();
 
-    // Spawn
+    
     if (timestamp - lastObstacleTime > 1400 - Math.min(score / 2, 600)) {
         spawnObstacle();
         lastObstacleTime = timestamp;
@@ -595,14 +595,14 @@ function gameLoop(timestamp) {
         lastCoinTime = timestamp;
     }
 
-    // Difficulty
+    
     if (frameCount % 500 === 0) gameSpeed = Math.min(gameSpeed + 0.3, 12);
 
-    // Score
+    
     score++;
     scoreEl.textContent = Math.floor(score / 10);
 
-    // Draw
+    
     drawBackground();
     drawObstacles();
     drawCoins();
@@ -612,9 +612,9 @@ function gameLoop(timestamp) {
     animationId = requestAnimationFrame(gameLoop);
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// GAME CONTROL
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 function startGame() {
     score = 0;
@@ -642,10 +642,10 @@ function startGame() {
     gameRunning = true;
     requestAnimationFrame(gameLoop);
 
-    // Play start sound
+    
     if (typeof playSound !== 'undefined') playSound('start');
 
-    // Start background music
+    
     if (!bgMusic) {
         bgMusic = new Audio('/sounds/cyber_background.mp3');
         bgMusic.loop = true;
@@ -675,15 +675,15 @@ function gameOver() {
     gameScreen.classList.remove('active');
     gameOverScreen.classList.add('active');
 
-    // Stop background music
+    
     if (bgMusic) {
         bgMusic.pause();
     }
 
-    // Play crash sound
+    
     if (typeof playSound !== 'undefined') playSound('crash');
 
-    // Submit to leaderboard
+    
     if (window.Leaderboard && finalScore > 0) {
         Leaderboard.submit('runner', finalScore);
     }
@@ -710,7 +710,7 @@ function updateDisplays() {
     if (mobileBestEl) mobileBestEl.textContent = 'BEST: ' + highScore;
     if (shopCoinsEl) shopCoinsEl.textContent = totalCoins;
 
-    // Update stat bars
+    
     const speedBar = document.getElementById('speedBar');
     const jumpBar = document.getElementById('jumpBar');
     const luckBar = document.getElementById('luckBar');
@@ -720,7 +720,7 @@ function updateDisplays() {
     if (luckBar) luckBar.style.width = (50 + upgrades.coinBonus.level * 10) + '%';
 }
 
-// Upgrade images for the new design
+
 const upgradeImages = {
     doubleJump: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCil3Ug9u9WoHHWIjHDZ_K8aM5HO-F_CBAc3a83WFKmzdaHiuR8MyCJe3nSx5PCSkVSnyFmXWSFQw5uCKPxXmzgaQDJbl_lFczHisgsIKgdScKdAPPPw_qWHvEcfi-rWBbBtBhg-WUjO6cKtmiYJBDpnHORBAcx3kYMqsVHJDg7hHw-Kxh_6jyuuBLXcn13GXGHOO4tfVwGbvZoL5lDBVnCskPQi4icRUqjYw4N0lN6Mx7aymp3f4T3kCPEg2sAGDJaB1jtESc9-Q',
     magnet: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAjA64oY_3OT28mvHAiPNdX6Xvacsl1WpV3aZ14vHoPgZqMf2nyzi_-ruZt_vMRaNKNd07f9e3ojiKty8RaI9MRUIPa7CTx_3Od1AXIrKS4aVc9n7eBSkvChJFx0eIggESZBzhIpaaSv4CuFeRcvc9LOdmCsU4UIxVzn3oajnwBVP9-izlK_sLLJNNcZs28pySkYNgM8OEaDRxnv8_cNkj7wJ_EUk7JctNHbA_4I1TDhaGl5iPmYj4g5xG4PA_oaRBBIR6VFUEkkg',
@@ -770,11 +770,11 @@ function renderUpgrades() {
         list.appendChild(card);
     });
 
-    // Update detail panel on initial render
+    
     if (selectedUpgrade) {
         updateDetailPanel(selectedUpgrade);
     } else if (Object.keys(upgrades).length > 0) {
-        // Auto-select first upgrade
+        
         selectUpgrade(Object.keys(upgrades)[0]);
     }
 }
@@ -793,7 +793,7 @@ function updateDetailPanel(key) {
     const maxed = upg.level >= upg.maxLevel;
     const canBuy = totalCoins >= cost && !maxed;
 
-    // Update panel elements
+    
     const panel = document.getElementById('upgradeDetailPanel');
     if (panel) panel.classList.remove('hidden');
 
@@ -814,7 +814,7 @@ function updateDetailPanel(key) {
     if (subtitleEl) subtitleEl.textContent = 'CYBER ENHANCEMENT // MK-' + (upg.level + 1);
     if (descEl) descEl.textContent = upg.desc;
 
-    // Calculate bonus based on upgrade type
+    
     let bonusText = '+0%';
     let powerPercent = 0;
     if (key === 'doubleJump') {
@@ -840,7 +840,7 @@ function updateDetailPanel(key) {
     if (imageEl) imageEl.style.backgroundImage = `url('${upgradeImages[key] || upgradeImages.magnet}')`;
     if (badgeEl) badgeEl.textContent = key === 'doubleJump' ? 'LOCOMOTION' : key === 'magnet' ? 'PASSIVE' : key === 'coinBonus' ? 'ECONOMY' : 'LOCOMOTION';
 
-    // Update level bars
+    
     for (let i = 1; i <= 5; i++) {
         const bar = document.getElementById('levelBar' + i);
         if (bar) {
@@ -885,9 +885,9 @@ function buyUpgrade(key) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// INPUT
-// ═══════════════════════════════════════════════════════════════════════════════
+
+
+
 
 document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'ArrowUp') {
@@ -896,7 +896,7 @@ document.addEventListener('keydown', e => {
     }
 });
 
-// Mobile - touch anywhere on game screen
+
 gameScreen?.addEventListener('touchstart', e => {
     e.preventDefault();
     if (gameRunning) jump();
@@ -913,5 +913,5 @@ document.getElementById('playBtn')?.addEventListener('click', startGame);
 document.getElementById('retryBtn')?.addEventListener('click', startGame);
 document.getElementById('menuBtn')?.addEventListener('click', showMenu);
 
-// Init
+
 updateDisplays();

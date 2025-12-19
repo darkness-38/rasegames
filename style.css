@@ -24,7 +24,7 @@ body {
     min-height: 100vh;
 }
 
-/* Background Effects */
+
 .background-effects {
     position: fixed;
     top: 0;
@@ -57,7 +57,7 @@ body {
     z-index: 1;
 }
 
-/* Ensure content is above canvas */
+
 .navbar,
 .hero,
 main {
@@ -65,7 +65,7 @@ main {
     z-index: 10;
 }
 
-/* Navbar */
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -115,7 +115,7 @@ main {
     transform: scale(1.05);
 }
 
-/* Hero Section */
+
 .hero {
     display: flex;
     flex-direction: column;
@@ -161,7 +161,7 @@ main {
     margin-right: auto;
 }
 
-/* Game Grid */
+
 .game-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -237,11 +237,9 @@ main {
     background: var(--card-bg);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   MOBILE RESPONSIVE DESIGN
-   ═══════════════════════════════════════════════════════════════════════════════ */
 
-/* Tablet */
+
+
 @media (max-width: 1024px) {
     .navbar {
         padding: 1.2rem 2rem;
@@ -258,7 +256,7 @@ main {
     }
 }
 
-/* Mobile */
+
 @media (max-width: 768px) {
     .navbar {
         padding: 1rem 1.5rem;
@@ -321,7 +319,7 @@ main {
     }
 }
 
-/* Small Mobile */
+
 @media (max-width: 480px) {
     .navbar {
         padding: 0.8rem 1rem;
@@ -361,9 +359,7 @@ main {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   LEADERBOARD STYLES
-   ═══════════════════════════════════════════════════════════════════════════════ */
+
 
 .leaderboard-container {
     display: flex;
@@ -470,9 +466,7 @@ main {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   PROFILE STYLES
-   ═══════════════════════════════════════════════════════════════════════════════ */
+
 
 .profile-container {
     max-width: 600px;

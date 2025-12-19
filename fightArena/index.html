@@ -189,12 +189,11 @@
             <!-- Footer Info -->
             <footer class="py-4 md:py-6 text-center px-4">
                 <div
-                    class="inline-flex items-center gap-6 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
-                    <span>v2.1.0 Beta</span>
-                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
-                    <span>Ping: 24ms</span>
-                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
-                    <span>Copyright 2024</span>
+                    class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
+                    <span class="flex items-center gap-2">
+                        <span id="ping-indicator" class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span id="ping-display">Ping: --ms</span>
+                    </span>
                 </div>
             </footer>
         </div>
@@ -1049,12 +1048,11 @@
             </main>
             <footer class="py-4 md:py-6 text-center px-4">
                 <div
-                    class="inline-flex items-center gap-6 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
-                    <span>v2.1.0 Beta</span>
-                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
-                    <span>Server: EU-West</span>
-                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
-                    <span>Ping: 24ms</span>
+                    class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
+                    <span class="flex items-center gap-2">
+                        <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="ping-display">Ping: --ms</span>
+                    </span>
                 </div>
             </footer>
         </div>

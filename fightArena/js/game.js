@@ -1256,5 +1256,92 @@ document.addEventListener('DOMContentLoaded', () => {
                 localBtn.querySelector('.btn-desc').textContent = 'Dokunmatik Kontroller';
             }
         }
+
+        // Start ping measurement
+        startPingMeasurement();
     });
 });
+
+// ===================================
+// REAL-TIME PING MEASUREMENT
+// ===================================
+
+let pingInterval = null;
+let currentPing = 0;
+
+function startPingMeasurement() {
+    // Initial measurement
+    measurePing();
+
+    // Update every second
+    pingInterval = setInterval(measurePing, 1000);
+}
+
+function measurePing() {
+    const startTime = performance.now();
+
+    // Use fetch to measure round-trip time to server
+    fetch(window.location.origin + '/index.html', {
+        method: 'HEAD',
+        cache: 'no-store'
+    })
+        .then(() => {
+            const endTime = performance.now();
+            currentPing = Math.round(endTime - startTime);
+            updatePingDisplay(currentPing);
+        })
+        .catch(() => {
+            // If fetch fails, try with an image
+            const img = new Image();
+            const imgStartTime = performance.now();
+
+            img.onload = img.onerror = () => {
+                const endTime = performance.now();
+                currentPing = Math.round(endTime - imgStartTime);
+                updatePingDisplay(currentPing);
+            };
+
+            img.src = window.location.origin + '/favicon.ico?' + Date.now();
+        });
+}
+
+function updatePingDisplay(ping) {
+    // Update all ping displays on the page
+    const pingDisplays = document.querySelectorAll('#ping-display, .ping-display');
+    const pingIndicators = document.querySelectorAll('#ping-indicator, .ping-indicator');
+
+    pingDisplays.forEach(display => {
+        display.textContent = `Ping: ${ping}ms`;
+    });
+
+    // Update indicator color based on ping quality
+    let indicatorColor = 'bg-green-500'; // Good: < 50ms
+    let indicatorClass = 'animate-pulse';
+
+    if (ping > 150) {
+        indicatorColor = 'bg-red-500'; // Bad: > 150ms
+    } else if (ping > 80) {
+        indicatorColor = 'bg-yellow-500'; // Medium: 80-150ms
+    }
+
+    pingIndicators.forEach(indicator => {
+        // Remove old color classes
+        indicator.className = indicator.className
+            .replace(/bg-green-500|bg-yellow-500|bg-red-500/g, '')
+            .trim();
+        // Add new color class
+        indicator.classList.add(indicatorColor, 'w-2', 'h-2', 'rounded-full', indicatorClass);
+    });
+}
+
+function stopPingMeasurement() {
+    if (pingInterval) {
+        clearInterval(pingInterval);
+        pingInterval = null;
+    }
+}
+
+function getPing() {
+    return currentPing;
+}
+

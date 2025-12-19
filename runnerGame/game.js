@@ -909,11 +909,9 @@ document.getElementById('jumpBtn')?.addEventListener('touchstart', e => {
     if (gameRunning) jump();
 }, { passive: false });
 
-document.getElementById('playBtn').addEventListener('click', startGame);
-document.getElementById('shopBtn').addEventListener('click', showShop);
-document.getElementById('retryBtn').addEventListener('click', startGame);
-document.getElementById('menuBtn').addEventListener('click', showMenu);
-document.getElementById('backBtn').addEventListener('click', showMenu);
+document.getElementById('playBtn')?.addEventListener('click', startGame);
+document.getElementById('retryBtn')?.addEventListener('click', startGame);
+document.getElementById('menuBtn')?.addEventListener('click', showMenu);
 
 // Init
 updateDisplays();

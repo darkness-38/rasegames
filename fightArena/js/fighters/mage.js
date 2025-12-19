@@ -264,13 +264,13 @@ class Mage extends Character {
 
 
         ctx.save();
-        ctx.globalAlpha = 0.3 + Math.sin(this.animTimer * 0.1) * 0.1;
+        ctx.globalAlpha = 0.3; // Static alpha
         const auraGrad = ctx.createRadialGradient(0, 0, 20, 0, 0, 80);
         auraGrad.addColorStop(0, this.color);
         auraGrad.addColorStop(1, 'transparent');
         ctx.fillStyle = auraGrad;
         ctx.beginPath();
-        ctx.ellipse(0, 0, 60 + Math.sin(this.animTimer * 0.15) * 10, 70, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, 60, 70, 0, 0, Math.PI * 2); // Static size
         ctx.fill();
         ctx.restore();
 

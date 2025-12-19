@@ -158,7 +158,7 @@ class Warrior extends Character {
 
 
         ctx.save();
-        const capeWave = Math.sin(this.animTimer * 0.05) * 5;
+        const capeWave = 0; // Disabled cape animation
         ctx.fillStyle = '#8b0000';
         ctx.beginPath();
         ctx.moveTo(-30, -30);

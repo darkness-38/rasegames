@@ -1,0 +1,13 @@
+{
+    "name": "rasegames",
+    "version": "1.0.0",
+    "description": "Rase Games - Micro Games Collection",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^5.2.1",
+        "socket.io": "^4.8.1"
+    }
+}

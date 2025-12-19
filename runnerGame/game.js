@@ -732,6 +732,7 @@ let selectedUpgrade = null;
 
 function renderUpgrades() {
     const list = document.getElementById('upgradesList');
+    if (!list) return;
     list.innerHTML = '';
 
     Object.entries(upgrades).forEach(([key, upg]) => {
@@ -741,7 +742,7 @@ function renderUpgrades() {
         const isSelected = selectedUpgrade === key;
 
         const card = document.createElement('div');
-        card.className = `group relative bg-surface-dark border ${isSelected ? 'border-primary shadow-[0_0_15px_rgba(54,226,123,0.15)]' : 'border-surface-border hover:border-text-muted'} rounded-xl overflow-hidden cursor-pointer transition-all hover:-translate-y-1 ${maxed ? 'opacity-75' : ''}`;
+        card.className = `group relative bg-surface-dark border ${isSelected ? 'border-primary shadow-[0_0_15px_rgba(59,130,246,0.15)]' : 'border-surface-border hover:border-text-muted'} rounded-xl overflow-hidden cursor-pointer transition-all hover:-translate-y-1 ${maxed ? 'opacity-75' : ''}`;
 
         const levelBars = Array(upg.maxLevel).fill(0).map((_, i) =>
             `<div class="h-1.5 flex-1 rounded-full ${i < upg.level ? 'bg-primary' : 'bg-surface-border'}"></div>`
@@ -753,12 +754,14 @@ function renderUpgrades() {
                 ${maxed ? '<div class="absolute top-2 right-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span></div>' : ''}
                 <div class="absolute bottom-3 left-3 right-3">
                     <div class="flex justify-between items-end">
-                        <p class="text-${isSelected || maxed ? 'white' : 'text-muted'} group-hover:text-white text-base font-bold leading-tight transition-colors">${upg.name}</p>
+                        <p class="${isSelected || maxed ? 'text-white' : 'text-text-muted'} group-hover:text-white text-base font-bold leading-tight transition-colors">${upg.name}</p>
                         ${!maxed ? `<span class="text-xs text-primary font-bold">${upg.icon}</span>` : ''}
                     </div>
+                    <p class="text-xs text-text-muted mt-1 truncate">${upg.desc}</p>
                     <div class="flex gap-1 mt-2">
                         ${levelBars}
                     </div>
+                    ${!maxed ? `<div class="flex items-center gap-1 mt-2 text-xs"><span class="material-symbols-outlined text-primary text-sm">diamond</span><span class="text-primary font-bold">${cost}</span></div>` : '<div class="text-xs text-primary font-bold mt-2">MAX LEVEL</div>'}
                 </div>
             </div>
         `;
@@ -770,6 +773,9 @@ function renderUpgrades() {
     // Update detail panel on initial render
     if (selectedUpgrade) {
         updateDetailPanel(selectedUpgrade);
+    } else if (Object.keys(upgrades).length > 0) {
+        // Auto-select first upgrade
+        selectUpgrade(Object.keys(upgrades)[0]);
     }
 }
 

@@ -15,10 +15,13 @@ const shopScreen = document.getElementById('shopScreen');
 const scoreEl = document.getElementById('score');
 const coinsEl = document.getElementById('coins');
 const highScoreEl = document.getElementById('highScore');
-const totalCoinsEl = document.getElementById('totalCoins');
 const shopCoinsEl = document.getElementById('shopCoins');
 const finalScoreEl = document.getElementById('finalScore');
 const earnedCoinsEl = document.getElementById('earnedCoins');
+const headerCoinsEl = document.getElementById('headerCoins');
+const headerBestEl = document.getElementById('headerBest');
+const mobileCoinsEl = document.getElementById('mobileCoins');
+const mobileBestEl = document.getElementById('mobileBest');
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COOKIE HELPERS
@@ -631,10 +634,10 @@ function startGame() {
     coinsEl.textContent = '0';
     highScoreEl.textContent = highScore;
 
-    mainMenu.classList.add('hidden');
-    shopScreen.classList.add('hidden');
-    gameOverScreen.classList.add('hidden');
-    gameScreen.classList.remove('hidden');
+    mainMenu.classList.remove('active');
+    shopScreen.classList.remove('active');
+    gameOverScreen.classList.remove('active');
+    gameScreen.classList.add('active');
 
     gameRunning = true;
     requestAnimationFrame(gameLoop);
@@ -669,8 +672,8 @@ function gameOver() {
     finalScoreEl.textContent = finalScore;
     earnedCoinsEl.textContent = coins;
 
-    gameScreen.classList.add('hidden');
-    gameOverScreen.classList.remove('hidden');
+    gameScreen.classList.remove('active');
+    gameOverScreen.classList.add('active');
 
     // Stop background music
     if (bgMusic) {
@@ -687,18 +690,45 @@ function gameOver() {
 }
 
 function showMenu() {
-    gameOverScreen.classList.add('hidden');
-    shopScreen.classList.add('hidden');
-    mainMenu.classList.remove('hidden');
-    totalCoinsEl.textContent = totalCoins;
+    gameOverScreen.classList.remove('active');
+    shopScreen.classList.remove('active');
+    mainMenu.classList.add('active');
+    updateDisplays();
 }
 
 function showShop() {
-    mainMenu.classList.add('hidden');
-    shopScreen.classList.remove('hidden');
+    mainMenu.classList.remove('active');
+    shopScreen.classList.add('active');
     shopCoinsEl.textContent = totalCoins;
     renderUpgrades();
 }
+
+function updateDisplays() {
+    if (headerCoinsEl) headerCoinsEl.textContent = totalCoins;
+    if (headerBestEl) headerBestEl.textContent = 'BEST: ' + highScore;
+    if (mobileCoinsEl) mobileCoinsEl.textContent = totalCoins;
+    if (mobileBestEl) mobileBestEl.textContent = 'BEST: ' + highScore;
+    if (shopCoinsEl) shopCoinsEl.textContent = totalCoins;
+
+    // Update stat bars
+    const speedBar = document.getElementById('speedBar');
+    const jumpBar = document.getElementById('jumpBar');
+    const luckBar = document.getElementById('luckBar');
+
+    if (speedBar) speedBar.style.width = (50 + upgrades.jumpHeight.level * 15) + '%';
+    if (jumpBar) jumpBar.style.width = (50 + (upgrades.doubleJump.level * 50)) + '%';
+    if (luckBar) luckBar.style.width = (50 + upgrades.coinBonus.level * 10) + '%';
+}
+
+// Upgrade images for the new design
+const upgradeImages = {
+    doubleJump: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCil3Ug9u9WoHHWIjHDZ_K8aM5HO-F_CBAc3a83WFKmzdaHiuR8MyCJe3nSx5PCSkVSnyFmXWSFQw5uCKPxXmzgaQDJbl_lFczHisgsIKgdScKdAPPPw_qWHvEcfi-rWBbBtBhg-WUjO6cKtmiYJBDpnHORBAcx3kYMqsVHJDg7hHw-Kxh_6jyuuBLXcn13GXGHOO4tfVwGbvZoL5lDBVnCskPQi4icRUqjYw4N0lN6Mx7aymp3f4T3kCPEg2sAGDJaB1jtESc9-Q',
+    magnet: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAjA64oY_3OT28mvHAiPNdX6Xvacsl1WpV3aZ14vHoPgZqMf2nyzi_-ruZt_vMRaNKNd07f9e3ojiKty8RaI9MRUIPa7CTx_3Od1AXIrKS4aVc9n7eBSkvChJFx0eIggESZBzhIpaaSv4CuFeRcvc9LOdmCsU4UIxVzn3oajnwBVP9-izlK_sLLJNNcZs28pySkYNgM8OEaDRxnv8_cNkj7wJ_EUk7JctNHbA_4I1TDhaGl5iPmYj4g5xG4PA_oaRBBIR6VFUEkkg',
+    coinBonus: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1VaIToDzjxGe6mYAdWM6exwKzKFBzEyLpJPGiB-Yp-CIuv0aXe6mju6bA02UqeJZZEbCwPMOJGEMEgVKQV2mD40fOJZICEVpg6joXSoF3TigoG32N_0KL0IVNGQwcOha_Nm6Ec79VFDxhRCtcZ1WkRW6OGtDdV4Q4Y6EVIV9y2l_Btt1E8sta1RutfeMDDnsodAQw5NxP1s50RlWRg97bS6LMIhxUELxTZoS7QlY8AYBGMAcA6UXlMxTBgIQrEFjM_zhL2OLUMQ',
+    jumpHeight: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAzFzRDn2ZRAQocVpJ8XHekD4_yjWmz8gmQFYHN82hQsfyiNpYFy4Szs8MzGKBakX6ATtEjYYirdJkpioLxoJb7DMuIxe8JFDAzsSLJds44grGu8iy7EnMWtxTrMA4yJ3JjTSD9n8Laaq-yQs4WNt3ZjV7Pvg3NWPNrB5zSyQlkgAKq9t7I2xTIYUYMQ55ymmu5Nd0C3AZMbE7OecATSrVu850cB_uQmlA5n7oUw25XOGKLFZ2hIQe6PVg_Zn1_h9aeKhbM1kmhAQ'
+};
+
+let selectedUpgrade = null;
 
 function renderUpgrades() {
     const list = document.getElementById('upgradesList');
@@ -707,24 +737,126 @@ function renderUpgrades() {
     Object.entries(upgrades).forEach(([key, upg]) => {
         const cost = upg.baseCost * (upg.level + 1);
         const maxed = upg.level >= upg.maxLevel;
+        const canBuy = totalCoins >= cost && !maxed;
+        const isSelected = selectedUpgrade === key;
 
         const card = document.createElement('div');
-        card.className = `upgrade-card ${maxed ? 'maxed' : ''}`;
+        card.className = `group relative bg-surface-dark border ${isSelected ? 'border-primary shadow-[0_0_15px_rgba(54,226,123,0.15)]' : 'border-surface-border hover:border-text-muted'} rounded-xl overflow-hidden cursor-pointer transition-all hover:-translate-y-1 ${maxed ? 'opacity-75' : ''}`;
+
+        const levelBars = Array(upg.maxLevel).fill(0).map((_, i) =>
+            `<div class="h-1.5 flex-1 rounded-full ${i < upg.level ? 'bg-primary' : 'bg-surface-border'}"></div>`
+        ).join('');
+
         card.innerHTML = `
-            <div class="upgrade-icon">${upg.icon}</div>
-            <div class="upgrade-info">
-                <h4>${upg.name} ${maxed ? '(MAX)' : `Lv.${upg.level + 1}`}</h4>
-                <p>${upg.desc}</p>
+            <div class="aspect-square w-full bg-cover bg-center relative" style="background-image: url('${upgradeImages[key] || upgradeImages.magnet}');">
+                <div class="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-90"></div>
+                ${maxed ? '<div class="absolute top-2 right-2"><span class="material-symbols-outlined text-primary text-lg">check_circle</span></div>' : ''}
+                <div class="absolute bottom-3 left-3 right-3">
+                    <div class="flex justify-between items-end">
+                        <p class="text-${isSelected || maxed ? 'white' : 'text-muted'} group-hover:text-white text-base font-bold leading-tight transition-colors">${upg.name}</p>
+                        ${!maxed ? `<span class="text-xs text-primary font-bold">${upg.icon}</span>` : ''}
+                    </div>
+                    <div class="flex gap-1 mt-2">
+                        ${levelBars}
+                    </div>
+                </div>
             </div>
-            <div class="upgrade-cost">${maxed ? '✓' : `💎${cost}`}</div>
         `;
 
-        if (!maxed && totalCoins >= cost) {
-            card.onclick = () => buyUpgrade(key);
-        }
-
+        card.onclick = () => selectUpgrade(key);
         list.appendChild(card);
     });
+
+    // Update detail panel on initial render
+    if (selectedUpgrade) {
+        updateDetailPanel(selectedUpgrade);
+    }
+}
+
+function selectUpgrade(key) {
+    selectedUpgrade = key;
+    renderUpgrades();
+    updateDetailPanel(key);
+}
+
+function updateDetailPanel(key) {
+    const upg = upgrades[key];
+    if (!upg) return;
+
+    const cost = upg.baseCost * (upg.level + 1);
+    const maxed = upg.level >= upg.maxLevel;
+    const canBuy = totalCoins >= cost && !maxed;
+
+    // Update panel elements
+    const panel = document.getElementById('upgradeDetailPanel');
+    if (panel) panel.classList.remove('hidden');
+
+    const titleEl = document.getElementById('upgradeTitle');
+    const subtitleEl = document.getElementById('upgradeSubtitle');
+    const descEl = document.getElementById('upgradeDesc');
+    const bonusEl = document.getElementById('upgradeBonus');
+    const powerBarEl = document.getElementById('upgradePowerBar');
+    const levelEl = document.getElementById('upgradeLevel');
+    const maxLevelEl = document.getElementById('upgradeMaxLevel');
+    const costEl = document.getElementById('upgradeCost');
+    const balanceEl = document.getElementById('detailBalance');
+    const purchaseBtn = document.getElementById('purchaseBtn');
+    const imageEl = document.getElementById('upgradeImage');
+    const badgeEl = document.getElementById('upgradeBadge');
+
+    if (titleEl) titleEl.textContent = upg.name;
+    if (subtitleEl) subtitleEl.textContent = 'CYBER ENHANCEMENT // MK-' + (upg.level + 1);
+    if (descEl) descEl.textContent = upg.desc;
+
+    // Calculate bonus based on upgrade type
+    let bonusText = '+0%';
+    let powerPercent = 0;
+    if (key === 'doubleJump') {
+        bonusText = upg.level > 0 ? 'ACTIVE' : 'INACTIVE';
+        powerPercent = upg.level * 100;
+    } else if (key === 'magnet') {
+        bonusText = '+' + (upg.level * 35) + ' range';
+        powerPercent = (upg.level / upg.maxLevel) * 100;
+    } else if (key === 'coinBonus') {
+        bonusText = '+' + (upg.level * 50) + '% coins';
+        powerPercent = (upg.level / upg.maxLevel) * 100;
+    } else if (key === 'jumpHeight') {
+        bonusText = '+' + (upg.level * 15) + '% height';
+        powerPercent = (upg.level / upg.maxLevel) * 100;
+    }
+
+    if (bonusEl) bonusEl.textContent = bonusText;
+    if (powerBarEl) powerBarEl.style.width = powerPercent + '%';
+    if (levelEl) levelEl.textContent = upg.level;
+    if (maxLevelEl) maxLevelEl.textContent = '/ ' + upg.maxLevel;
+    if (costEl) costEl.textContent = maxed ? 'MAX' : cost;
+    if (balanceEl) balanceEl.textContent = totalCoins;
+    if (imageEl) imageEl.style.backgroundImage = `url('${upgradeImages[key] || upgradeImages.magnet}')`;
+    if (badgeEl) badgeEl.textContent = key === 'doubleJump' ? 'LOCOMOTION' : key === 'magnet' ? 'PASSIVE' : key === 'coinBonus' ? 'ECONOMY' : 'LOCOMOTION';
+
+    // Update level bars
+    for (let i = 1; i <= 5; i++) {
+        const bar = document.getElementById('levelBar' + i);
+        if (bar) {
+            bar.className = `h-1.5 flex-1 rounded-full ${i <= upg.level ? 'bg-primary' : 'bg-surface-border'}`;
+        }
+    }
+
+    if (purchaseBtn) {
+        purchaseBtn.disabled = !canBuy;
+        purchaseBtn.onclick = maxed ? null : () => buyUpgrade(key);
+        if (maxed) {
+            purchaseBtn.innerHTML = '<span class="uppercase tracking-wider">MAX LEVEL</span><span class="material-symbols-outlined">check_circle</span>';
+        } else {
+            purchaseBtn.innerHTML = `
+                <span class="uppercase tracking-wider">Purchase</span>
+                <div class="flex items-center gap-1 bg-background-dark/20 px-3 py-1 rounded">
+                    <span>${cost}</span>
+                    <span class="material-symbols-outlined text-[18px]">diamond</span>
+                </div>
+            `;
+        }
+    }
 }
 
 function buyUpgrade(key) {
@@ -742,6 +874,8 @@ function buyUpgrade(key) {
 
         shopCoinsEl.textContent = totalCoins;
         renderUpgrades();
+        updateDetailPanel(key);
+        updateDisplays();
     }
 }
 
@@ -776,4 +910,4 @@ document.getElementById('menuBtn').addEventListener('click', showMenu);
 document.getElementById('backBtn').addEventListener('click', showMenu);
 
 // Init
-totalCoinsEl.textContent = totalCoins;
+updateDisplays();

@@ -877,6 +877,16 @@ body {
     text-shadow: 0 0 10px var(--accent-color);
 }
 
+.round-indicator::after,
+.round-indicator::before,
+.timer::before,
+.timer::after,
+.center-hud::before,
+.center-hud::after {
+    display: none !important;
+    content: none !important;
+}
+
 .timer {
     font-family: 'Orbitron', sans-serif;
     font-size: 3rem;

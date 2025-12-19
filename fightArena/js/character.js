@@ -5,29 +5,29 @@
 
 class Character {
     constructor(options = {}) {
-        
+
         this.x = options.x || 200;
         this.y = options.y || 400;
         this.width = options.width || 80;
         this.height = options.height || 150;
 
-        
+
         this.velocityX = 0;
         this.velocityY = 0;
         this.speed = options.speed || 6;
         this.jumpForce = options.jumpForce || -15;
         this.isGrounded = false;
         this.canDoubleJump = true;
-        this.direction = options.direction || 1; 
+        this.direction = options.direction || 1;
 
-        
+
         this.maxHealth = options.maxHealth || 1000;
         this.health = this.maxHealth;
         this.maxEnergy = 100;
         this.energy = 0;
         this.defense = options.defense || 1.0;
 
-        
+
         this.isBlocking = false;
         this.isCrouching = false;
         this.isAttacking = false;
@@ -36,20 +36,20 @@ class Character {
         this.comboCount = 0;
         this.lastComboTime = 0;
 
-        
+
         this.state = 'idle';
         this.stateTime = 0;
         this.attackCooldown = 0;
         this.hitStun = 0;
         this.blockStun = 0;
 
-        
+
         this.name = options.name || 'Fighter';
         this.type = options.type || 'warrior';
         this.color = options.color || '#00f0ff';
         this.secondaryColor = options.secondaryColor || '#0088aa';
 
-        
+
         this.attacks = {
             light: {
                 damage: 30,
@@ -91,23 +91,23 @@ class Character {
             }
         };
 
-        
+
         this.animFrame = 0;
         this.animTimer = 0;
 
-        
+
         this.projectiles = [];
     }
 
     update(input, opponent) {
-        
+
         if (this.attackCooldown > 0) this.attackCooldown--;
         if (this.hitStun > 0) this.hitStun--;
         if (this.blockStun > 0) this.blockStun--;
         this.stateTime++;
         this.animTimer++;
 
-        
+
         if (this.hitStun > 0) {
             this.state = 'hitstun';
             physics.applyGravity(this);
@@ -115,7 +115,7 @@ class Character {
             return;
         }
 
-        
+
         if (this.blockStun > 0) {
             this.state = 'blockstun';
             physics.applyGravity(this);
@@ -123,20 +123,20 @@ class Character {
             return;
         }
 
-        
+
         this.handleInput(input, opponent);
 
-        
+
         physics.applyGravity(this);
         physics.applyMovement(this);
 
-        
+
         this.updateState();
 
-        
+
         this.updateProjectiles(opponent);
 
-        
+
         if (opponent && !this.isAttacking) {
             this.direction = opponent.x > this.x ? 1 : -1;
         }
@@ -145,13 +145,13 @@ class Character {
     handleInput(input, opponent) {
         if (!input) return;
 
-        
+
         this.isBlocking = input.block && this.isGrounded && !this.isAttacking;
 
-        
+
         this.isCrouching = input.crouch && this.isGrounded && !this.isAttacking;
 
-        
+
         if (!this.isAttacking && !this.isBlocking) {
             if (input.left) {
                 this.velocityX = -this.speed;
@@ -159,7 +159,7 @@ class Character {
                 this.velocityX = this.speed;
             }
 
-            
+
             if (input.jump) {
                 if (this.isGrounded) {
                     this.velocityY = this.jumpForce;
@@ -171,7 +171,7 @@ class Character {
             }
         }
 
-        
+
         if (this.attackCooldown <= 0 && !this.isBlocking) {
             if (input.lightAttack) {
                 this.startAttack('light');
@@ -191,7 +191,7 @@ class Character {
         const attack = this.attacks[type];
         if (!attack) return;
 
-        
+
         if (attack.energyCost && this.energy < attack.energyCost) return;
 
         this.isAttacking = true;
@@ -200,7 +200,7 @@ class Character {
         this.attackCooldown = attack.cooldown;
         this.hasHit = false;
 
-        
+
         if (attack.energyCost) {
             this.energy -= attack.energyCost;
         }
@@ -210,7 +210,7 @@ class Character {
     }
 
     updateState() {
-        
+
         if (this.isAttacking) {
             this.attackTimer--;
             if (this.attackTimer <= 0) {
@@ -219,7 +219,7 @@ class Character {
             }
         }
 
-        
+
         if (this.hitStun > 0) {
             this.state = 'hitstun';
         } else if (this.blockStun > 0) {
@@ -238,7 +238,7 @@ class Character {
             this.state = 'idle';
         }
 
-        
+
         if (this.animTimer >= 6) {
             this.animTimer = 0;
             this.animFrame++;
@@ -251,7 +251,7 @@ class Character {
         const attack = this.attacks[this.currentAttack];
         if (!attack) return null;
 
-        
+
         const progress = 1 - (this.attackTimer / attack.duration);
         if (progress < 0.2 || progress > 0.6) return null;
 
@@ -271,36 +271,36 @@ class Character {
     }
 
     takeDamage(damage, knockback, attacker) {
-        
+
         if (this.isBlocking) {
-            
+
             const blockedDamage = Math.floor(damage * 0.1);
             this.health -= blockedDamage;
             this.blockStun = 10;
 
-            
+
             this.energy = Math.min(this.maxEnergy, this.energy + 3);
 
             return { blocked: true, damage: blockedDamage };
         }
 
-        
+
         const finalDamage = Math.floor(damage / this.defense);
         this.health -= finalDamage;
         this.hitStun = Math.floor(20 + knockback);
 
-        
+
         const knockbackDir = attacker.x < this.x ? 1 : -1;
         physics.applyKnockback(this, knockbackDir, knockback, -knockback * 0.4);
 
-        
+
         this.isAttacking = false;
         this.currentAttack = null;
 
-        
+
         this.energy = Math.min(this.maxEnergy, this.energy + 5);
 
-        
+
         this.comboCount = 0;
 
         return { blocked: false, damage: finalDamage };
@@ -351,7 +351,7 @@ class Character {
             proj.x += proj.velocityX;
             proj.life--;
 
-            
+
             if (physics.checkHitboxCollision(proj, opponent)) {
                 opponent.takeDamage(proj.damage, proj.knockback, this);
                 this.addEnergy(proj.energyGain || 5);
@@ -360,7 +360,7 @@ class Character {
                 continue;
             }
 
-            
+
             if (proj.life <= 0 || proj.x < 0 || proj.x > physics.stageWidth) {
                 this.projectiles.splice(i, 1);
             }
@@ -383,36 +383,36 @@ class Character {
     }
 
     draw(ctx) {
-        
+
         const sprite = getImage('sprite_' + this.type);
         if (sprite) {
             this.drawSprite(ctx, sprite);
         } else {
-            
+
             this.drawDefault(ctx);
         }
 
-        
+
         this.drawProjectiles(ctx);
     }
 
     drawSprite(ctx, sprite) {
         ctx.save();
 
-        
+
         const centerX = this.x + this.width / 2;
         const centerY = this.y + this.height / 2;
 
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        
+
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, this.width / 2 + 10, 12, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         let scaleX = 1;
         let scaleY = 1;
         let offsetY = 0;
@@ -420,12 +420,12 @@ class Character {
 
         switch (this.state) {
             case 'idle':
-                
+
                 scaleY = 1 + Math.sin(this.animTimer * 0.08) * 0.02;
                 offsetY = Math.sin(this.animTimer * 0.08) * 2;
                 break;
             case 'walk':
-                
+
                 offsetY = Math.abs(Math.sin(this.animTimer * 0.2)) * 5;
                 scaleX = 1 + Math.sin(this.animTimer * 0.2) * 0.03;
                 break;
@@ -433,30 +433,30 @@ class Character {
             case 'attack_heavy':
             case 'attack_special':
             case 'attack_ultimate':
-                
+
                 const attackProgress = 1 - (this.attackTimer / (this.attacks[this.currentAttack]?.duration || 15));
                 scaleX = 1 + Math.sin(attackProgress * Math.PI) * 0.15;
                 rotation = Math.sin(attackProgress * Math.PI) * 0.1;
                 break;
             case 'jump':
-                
+
                 scaleY = 1.1;
                 scaleX = 0.95;
                 break;
             case 'fall':
-                
+
                 scaleY = 0.95;
                 scaleX = 1.05;
                 break;
             case 'block':
             case 'blockstun':
-                
+
                 scaleY = 0.85;
                 scaleX = 1.1;
                 offsetY = 10;
                 break;
             case 'hitstun':
-                
+
                 if (Math.floor(this.animTimer / 3) % 2 === 0) {
                     ctx.filter = 'brightness(2) saturate(0)';
                 }
@@ -469,11 +469,11 @@ class Character {
                 break;
         }
 
-        
+
         ctx.rotate(rotation);
         ctx.scale(scaleX, scaleY);
 
-        
+
         const drawHeight = this.height * 1.8;
         const aspectRatio = sprite.width / sprite.height;
         const drawWidth = drawHeight * aspectRatio;
@@ -484,7 +484,7 @@ class Character {
             drawWidth, drawHeight
         );
 
-        
+
         ctx.filter = 'none';
 
         ctx.restore();
@@ -493,21 +493,21 @@ class Character {
     drawDefault(ctx) {
         ctx.save();
 
-        
+
         const centerX = this.x + this.width / 2;
         const centerY = this.y + this.height / 2;
 
-        
+
         ctx.translate(centerX, centerY);
         ctx.scale(this.direction, 1);
 
-        
+
         ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
         ctx.beginPath();
         ctx.ellipse(0, this.height / 2 + 5, this.width / 2, 10, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         switch (this.state) {
             case 'hitstun':
                 this.drawHitState(ctx);
@@ -540,21 +540,21 @@ class Character {
     }
 
     drawIdleState(ctx) {
-        
+
         const bobY = Math.sin(this.animTimer * 0.1) * 3;
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-this.width / 2 + 10, -this.height / 2 + bobY + 15, this.width - 20, this.height - 30, 10);
         ctx.fill();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, -this.height / 2 + bobY + 5, 25, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.shadowColor = this.color;
         ctx.shadowBlur = 15;
         ctx.strokeStyle = this.secondaryColor;
@@ -566,7 +566,7 @@ class Character {
     drawWalkState(ctx) {
         const walkCycle = Math.sin(this.animTimer * 0.3) * 10;
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(-15 + walkCycle, 20, 15, 55, 5);
@@ -575,13 +575,13 @@ class Character {
         ctx.roundRect(0 - walkCycle, 20, 15, 55, 5);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-this.width / 2 + 10, -this.height / 2 + 15, this.width - 20, this.height - 50, 10);
         ctx.fill();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, -this.height / 2 + 5, 25, 0, Math.PI * 2);
         ctx.fill();
@@ -590,18 +590,18 @@ class Character {
     drawAirState(ctx) {
         const stretch = this.velocityY < 0 ? -5 : 5;
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-this.width / 2 + 10, -this.height / 2 + 15 - stretch, this.width - 20, this.height - 30 + stretch * 2, 10);
         ctx.fill();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, -this.height / 2 + 5 - stretch, 25, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.shadowColor = this.color;
         ctx.shadowBlur = 20;
         ctx.strokeStyle = this.secondaryColor;
@@ -614,30 +614,30 @@ class Character {
         const attackProgress = 1 - (this.attackTimer / this.attacks[this.currentAttack]?.duration || 0);
         const punchExtend = Math.sin(attackProgress * Math.PI) * 40;
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.roundRect(-this.width / 2 + 10, -this.height / 2 + 15, this.width - 20, this.height - 30, 10);
         ctx.fill();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, -this.height / 2 + 5, 25, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.fillStyle = this.secondaryColor;
         ctx.beginPath();
         ctx.roundRect(this.width / 2 - 10, -10, 20 + punchExtend, 20, 10);
         ctx.fill();
 
-        
+
         if (punchExtend > 20) {
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 3;
             ctx.globalAlpha = 0.8;
 
-            
+
             for (let i = 0; i < 3; i++) {
                 ctx.beginPath();
                 ctx.moveTo(30 + punchExtend - 20 - i * 10, -5 + i * 5);
@@ -647,13 +647,13 @@ class Character {
             ctx.globalAlpha = 1;
         }
 
-        
+
         ctx.shadowColor = '#ffffff';
         ctx.shadowBlur = 25;
     }
 
     drawHitState(ctx) {
-        
+
         const flash = Math.floor(this.animTimer / 2) % 2 === 0;
 
         ctx.fillStyle = flash ? '#ffffff' : this.color;
@@ -661,12 +661,12 @@ class Character {
         ctx.roundRect(-this.width / 2 + 10, -this.height / 2 + 20, this.width - 20, this.height - 30, 10);
         ctx.fill();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, -this.height / 2 + 10, 25, 0, Math.PI * 2);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#ff4444';
         ctx.lineWidth = 4;
         ctx.shadowColor = '#ff4444';
@@ -675,15 +675,15 @@ class Character {
     }
 
     drawBlockState(ctx) {
-        
+
         ctx.fillStyle = this.secondaryColor;
 
-        
+
         ctx.beginPath();
         ctx.roundRect(-this.width / 2 + 5, -this.height / 2 + 25, this.width - 10, this.height - 40, 10);
         ctx.fill();
 
-        
+
         ctx.strokeStyle = '#00ff88';
         ctx.lineWidth = 4;
         ctx.shadowColor = '#00ff88';
@@ -693,7 +693,7 @@ class Character {
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        
+
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(-5, -this.height / 2 + 20, 22, 0, Math.PI * 2);
@@ -701,15 +701,15 @@ class Character {
     }
 
     drawCrouchState(ctx) {
-        
+
         ctx.fillStyle = this.color;
 
-        
+
         ctx.beginPath();
         ctx.roundRect(-this.width / 2 + 10, 0, this.width - 20, this.height / 2 - 10, 10);
         ctx.fill();
 
-        
+
         ctx.beginPath();
         ctx.arc(0, -15, 25, 0, Math.PI * 2);
         ctx.fill();
@@ -720,7 +720,7 @@ class Character {
             ctx.save();
             ctx.translate(proj.x + proj.width / 2, proj.y + proj.height / 2);
 
-            
+
             ctx.shadowColor = proj.color;
             ctx.shadowBlur = 20;
 
@@ -729,7 +729,7 @@ class Character {
             ctx.ellipse(0, 0, proj.width / 2, proj.height / 2, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            
+
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.ellipse(0, 0, proj.width / 4, proj.height / 4, 0, 0, Math.PI * 2);

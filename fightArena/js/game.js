@@ -44,7 +44,7 @@ const gameState = {
     opponentInput: null,
     lastSentInput: null,
     lastSyncTime: 0,
-    syncInterval: 100 // Sync every 100ms (10Hz) instead of every frame
+    syncInterval: 40 // Sync every 40ms (25Hz)
 };
 
 
@@ -358,10 +358,14 @@ function update() {
     // Throttle sync to reduce network traffic
     const now = Date.now();
     if (gameState.isOnline) {
-        if (gameState.isHost && now - gameState.lastSyncTime >= gameState.syncInterval) {
+        // If a hit occurred, force sync immediately to update knockback positions
+        const shouldSyncHost = (now - gameState.lastSyncTime >= gameState.syncInterval) || gameState.forceSync;
+        const shouldSyncGuest = (now - (gameState.lastGuestSyncTime || 0) >= gameState.syncInterval) || gameState.forceSync;
+
+        if (gameState.isHost && shouldSyncHost) {
             syncGameState();
             gameState.lastSyncTime = now;
-        } else if (!gameState.isHost && now - (gameState.lastGuestSyncTime || 0) >= gameState.syncInterval) {
+        } else if (!gameState.isHost && shouldSyncGuest) {
             // Guest sends their own position (Client Authority)
             multiplayer.sendPosition({
                 x: gameState.player2.x,
@@ -369,11 +373,13 @@ function update() {
             });
             gameState.lastGuestSyncTime = now;
         }
+
+        // Reset force flag after syncing
+        if (gameState.forceSync) gameState.forceSync = false;
     }
 }
 
 function syncGameState() {
-
     multiplayer.sendGameState({
         p1: {
             x: gameState.player1.x,
@@ -1284,6 +1290,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAssets(() => {
 
         initGame();
+
+        // Hook combat system hits to networking sync to prevent teleportation
+        if (typeof combatSystem !== 'undefined') {
+            combatSystem.onHit = (attacker, defender) => {
+                if (gameState.isOnline) {
+                    gameState.forceSync = true;
+                }
+            };
+        }
 
 
         if (mobileControls.isMobile) {

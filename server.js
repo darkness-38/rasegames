@@ -202,6 +202,12 @@ io.on('connection', (socket) => {
         socket.to(code).emit('opponentInput', inputData);
     });
 
+    socket.on('playerPosition', (posData) => {
+        const code = playerRooms.get(socket.id);
+        if (!code) return;
+        socket.to(code).emit('opponentPosition', posData);
+    });
+
 
     socket.on('gameStateSync', (state) => {
         const code = playerRooms.get(socket.id);

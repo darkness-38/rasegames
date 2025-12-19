@@ -357,9 +357,18 @@ function update() {
 
     // Throttle sync to reduce network traffic
     const now = Date.now();
-    if (gameState.isOnline && gameState.isHost && now - gameState.lastSyncTime >= gameState.syncInterval) {
-        syncGameState();
-        gameState.lastSyncTime = now;
+    if (gameState.isOnline) {
+        if (gameState.isHost && now - gameState.lastSyncTime >= gameState.syncInterval) {
+            syncGameState();
+            gameState.lastSyncTime = now;
+        } else if (!gameState.isHost && now - (gameState.lastGuestSyncTime || 0) >= gameState.syncInterval) {
+            // Guest sends their own position (Client Authority)
+            multiplayer.sendPosition({
+                x: gameState.player2.x,
+                y: gameState.player2.y
+            });
+            gameState.lastGuestSyncTime = now;
+        }
     }
 }
 
@@ -898,6 +907,14 @@ function setupMultiplayerCallbacks() {
 
     multiplayer.onOpponentInput = (input) => {
         gameState.opponentInput = input;
+    };
+
+    multiplayer.onOpponentPosition = (pos) => {
+        // If we are Host, we receive P2's position from Guest (Client Authority)
+        if (gameState.isHost && gameState.player2) {
+            gameState.player2.x = pos.x;
+            gameState.player2.y = pos.y;
+        }
     };
 
 

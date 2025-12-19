@@ -26,6 +26,7 @@ class MultiplayerClient {
         this.onOpponentReady = null;
         this.onStartGame = null;
         this.onOpponentInput = null;
+        this.onOpponentPosition = null;
         this.onGameStateUpdate = null;
         this.onRoundEnded = null;
         this.onMatchEnded = null;
@@ -118,6 +119,10 @@ class MultiplayerClient {
             if (this.onOpponentInput) this.onOpponentInput(data);
         });
 
+        this.socket.on('opponentPosition', (data) => {
+            if (this.onOpponentPosition) this.onOpponentPosition(data);
+        });
+
         this.socket.on('gameStateUpdate', (data) => {
             if (this.onGameStateUpdate) this.onGameStateUpdate(data);
         });
@@ -203,6 +208,12 @@ class MultiplayerClient {
     sendInput(inputData) {
         if (this.socket) {
             this.socket.emit('playerInput', inputData);
+        }
+    }
+
+    sendPosition(posData) {
+        if (this.socket) {
+            this.socket.emit('playerPosition', posData);
         }
     }
 

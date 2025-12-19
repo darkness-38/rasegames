@@ -9,7 +9,11 @@ const io = new Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    }
+    },
+    transports: ['websocket'], // Force WebSocket only (disable polling for speed)
+    pingTimeout: 60000,
+    pingInterval: 25000,
+    perMessageDeflate: false // Disable compression for lower CPU/latency
 });
 
 const PORT = process.env.PORT || 3000;
@@ -20,7 +24,7 @@ app.use(express.static(path.join(__dirname), {
 }));
 
 // Fallback: serve index.html for directory paths
-app.get('/(.*)', (req, res, next) => {
+app.get(/^(.*)$/, (req, res, next) => {
     const filePath = path.join(__dirname, req.path, 'index.html');
     res.sendFile(filePath, (err) => {
         if (err) next();

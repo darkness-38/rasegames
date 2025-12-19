@@ -12,7 +12,7 @@ class MultiplayerClient {
         this.opponentCharacter = null;
         this.opponentReady = false;
 
-        
+
         this.onConnectionChange = null;
         this.onRoomCreated = null;
         this.onJoinedRoom = null;
@@ -37,8 +37,12 @@ class MultiplayerClient {
     connect() {
         if (this.socket) return;
 
-        
-        this.socket = io();
+
+        // Connect to the server with WebSocket only
+        this.socket = io({
+            transports: ['websocket'],
+            upgrade: false
+        });
 
         this.socket.on('connect', () => {
             console.log('Connected to server');
@@ -53,7 +57,7 @@ class MultiplayerClient {
             if (this.onConnectionChange) this.onConnectionChange(false);
         });
 
-        
+
         this.socket.on('roomCreated', (data) => {
             this.roomCode = data.code;
             this.isHost = true;
@@ -90,7 +94,7 @@ class MultiplayerClient {
             if (this.onGoToCharacterSelect) this.onGoToCharacterSelect();
         });
 
-        
+
         this.socket.on('opponentSelectedCharacter', (data) => {
             this.opponentCharacter = data.character;
             if (this.onOpponentSelectedCharacter) this.onOpponentSelectedCharacter(data.character);
@@ -105,7 +109,7 @@ class MultiplayerClient {
             if (this.onOpponentReady) this.onOpponentReady();
         });
 
-        
+
         this.socket.on('startOnlineGame', (data) => {
             if (this.onStartGame) this.onStartGame(data);
         });

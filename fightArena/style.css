@@ -1,6 +1,3 @@
-
-
-
 :root {
     --primary-color: #46ec13;
     --secondary-color: #36b80f;
@@ -867,7 +864,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0;
+}
+
+.center-hud>*:not(.round-indicator):not(.timer):not(#round-indicator):not(#game-timer) {
+    display: none !important;
 }
 
 .round-indicator {

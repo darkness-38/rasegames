@@ -192,13 +192,13 @@ function createCharacter(type, playerNum) {
 
     switch (type) {
         case 'warrior':
-            return new Warrior({ x, direction });
+            return new Warrior({ x, direction, playerNum });
         case 'ninja':
-            return new Ninja({ x, direction });
+            return new Ninja({ x, direction, playerNum });
         case 'mage':
-            return new Mage({ x, direction });
+            return new Mage({ x, direction, playerNum });
         default:
-            return new Character({ x, direction });
+            return new Character({ x, direction, playerNum });
     }
 }
 

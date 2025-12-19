@@ -828,25 +828,112 @@
                                     <h2 class="text-xl font-bold text-white tracking-wide">COMBOS</h2>
                                     <div class="h-[1px] bg-white/10 flex-1 ml-4"></div>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div
-                                        class="rounded-xl border border-white/10 bg-surface-dark p-4 hover:border-primary/30 transition-colors">
-                                        <h4 class="font-bold text-white mb-2">Quick Combo</h4>
-                                        <p class="text-sm text-primary font-mono">Light → Light → Heavy</p>
+
+                                <!-- Base Combos -->
+                                <div class="mb-4">
+                                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 px-2">All Characters</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div class="rounded-xl border border-white/10 bg-surface-dark p-4 hover:border-primary/30 transition-colors">
+                                            <h4 class="font-bold text-white mb-1">Quick Strike</h4>
+                                            <p class="text-sm text-primary font-mono mb-1">F → F → G</p>
+                                            <span class="text-xs text-gray-500">80 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-white/10 bg-surface-dark p-4 hover:border-primary/30 transition-colors">
+                                            <h4 class="font-bold text-white mb-1">Launcher</h4>
+                                            <p class="text-sm text-primary font-mono mb-1">G → W</p>
+                                            <span class="text-xs text-gray-500">50 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-white/10 bg-surface-dark p-4 hover:border-primary/30 transition-colors">
+                                            <h4 class="font-bold text-white mb-1">Power Slam</h4>
+                                            <p class="text-sm text-primary font-mono mb-1">S → G</p>
+                                            <span class="text-xs text-gray-500">90 Damage</span>
+                                        </div>
                                     </div>
-                                    <div
-                                        class="rounded-xl border border-white/10 bg-surface-dark p-4 hover:border-primary/30 transition-colors">
-                                        <h4 class="font-bold text-white mb-2">Air Combo</h4>
-                                        <p class="text-sm text-primary font-mono">Jump → Light → Heavy</p>
+                                </div>
+
+                                <!-- Warrior Combos -->
+                                <div class="mb-4">
+                                    <h3 class="text-sm font-bold text-orange-400 uppercase tracking-wider mb-3 px-2 flex items-center gap-2">
+                                        <span>⚔️</span> Warrior
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div class="rounded-xl border border-orange-500/20 bg-surface-dark p-4 hover:border-orange-500/50 transition-colors">
+                                            <h4 class="font-bold text-orange-300 mb-1">Berserker Rush</h4>
+                                            <p class="text-sm text-orange-400 font-mono mb-1">F → F → F → G</p>
+                                            <span class="text-xs text-gray-500">150 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-orange-500/20 bg-surface-dark p-4 hover:border-orange-500/50 transition-colors">
+                                            <h4 class="font-bold text-orange-300 mb-1">Shield Bash</h4>
+                                            <p class="text-sm text-orange-400 font-mono mb-1">SPACE → G</p>
+                                            <span class="text-xs text-gray-500">80 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-orange-500/20 bg-surface-dark p-4 hover:border-orange-500/50 transition-colors">
+                                            <h4 class="font-bold text-orange-300 mb-1">Ground Pound</h4>
+                                            <p class="text-sm text-orange-400 font-mono mb-1">W → S → G</p>
+                                            <span class="text-xs text-gray-500">120 Damage</span>
+                                        </div>
                                     </div>
-                                    <div
-                                        class="rounded-xl border border-white/10 bg-surface-dark p-4 hover:border-primary/30 transition-colors">
-                                        <h4 class="font-bold text-white mb-2 flex items-center gap-2">
+                                </div>
+
+                                <!-- Ninja Combos -->
+                                <div class="mb-4">
+                                    <h3 class="text-sm font-bold text-purple-400 uppercase tracking-wider mb-3 px-2 flex items-center gap-2">
+                                        <span>🥷</span> Ninja
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div class="rounded-xl border border-purple-500/20 bg-surface-dark p-4 hover:border-purple-500/50 transition-colors">
+                                            <h4 class="font-bold text-purple-300 mb-1">Shadow Dance</h4>
+                                            <p class="text-sm text-purple-400 font-mono mb-1">F → F → H</p>
+                                            <span class="text-xs text-gray-500">100 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-purple-500/20 bg-surface-dark p-4 hover:border-purple-500/50 transition-colors">
+                                            <h4 class="font-bold text-purple-300 mb-1">Kunai Storm</h4>
+                                            <p class="text-sm text-purple-400 font-mono mb-1">W → F → F</p>
+                                            <span class="text-xs text-gray-500">90 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-purple-500/20 bg-surface-dark p-4 hover:border-purple-500/50 transition-colors">
+                                            <h4 class="font-bold text-purple-300 mb-1">Vanish Strike</h4>
+                                            <p class="text-sm text-purple-400 font-mono mb-1">S → H</p>
+                                            <span class="text-xs text-gray-500">85 Damage</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mage Combos -->
+                                <div class="mb-4">
+                                    <h3 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-3 px-2 flex items-center gap-2">
+                                        <span>🧙</span> Mage
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div class="rounded-xl border border-blue-500/20 bg-surface-dark p-4 hover:border-blue-500/50 transition-colors">
+                                            <h4 class="font-bold text-blue-300 mb-1">Arcane Blast</h4>
+                                            <p class="text-sm text-blue-400 font-mono mb-1">F → H → G</p>
+                                            <span class="text-xs text-gray-500">130 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-blue-500/20 bg-surface-dark p-4 hover:border-blue-500/50 transition-colors">
+                                            <h4 class="font-bold text-blue-300 mb-1">Frost Chain</h4>
+                                            <p class="text-sm text-blue-400 font-mono mb-1">F → F → H</p>
+                                            <span class="text-xs text-gray-500">95 Damage</span>
+                                        </div>
+                                        <div class="rounded-xl border border-blue-500/20 bg-surface-dark p-4 hover:border-blue-500/50 transition-colors">
+                                            <h4 class="font-bold text-blue-300 mb-1">Thunder Strike</h4>
+                                            <p class="text-sm text-blue-400 font-mono mb-1">W → G → H</p>
+                                            <span class="text-xs text-gray-500">140 Damage</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ultimate -->
+                                <div>
+                                    <h3 class="text-sm font-bold text-red-400 uppercase tracking-wider mb-3 px-2 flex items-center gap-2">
+                                        <span class="animate-pulse">💥</span> Ultimate Attack
+                                    </h3>
+                                    <div class="rounded-xl border border-red-500/30 bg-gradient-to-r from-red-900/20 to-surface-dark p-4 hover:border-red-500/50 transition-colors">
+                                        <h4 class="font-bold text-red-300 mb-1 flex items-center gap-2">
                                             Ultimate
-                                            <span
-                                                class="px-2 py-0.5 rounded-full bg-red-900 text-red-200 text-[10px] font-bold animate-pulse">!</span>
+                                            <span class="px-2 py-0.5 rounded-full bg-red-900 text-red-200 text-[10px] font-bold animate-pulse">100% ENERGY</span>
                                         </h4>
-                                        <p class="text-sm text-primary font-mono">Crouch → Special (100% Energy)</p>
+                                        <p class="text-sm text-red-400 font-mono">S → H (while crouching with full energy)</p>
                                     </div>
                                 </div>
                             </div>

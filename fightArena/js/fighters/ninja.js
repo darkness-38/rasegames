@@ -64,6 +64,60 @@ class Ninja extends Character {
         this.canTeleport = true;
         this.teleportCooldown = 0;
         this.shadowClones = [];
+
+        // Ninja-specific combos (extend base combos)
+        this.combos = {
+            ...this.combos,
+            shadowDance: {
+                pattern: ['lightAttack', 'lightAttack', 'special'],
+                attack: 'combo_shadowDance',
+                name: 'SHADOW DANCE'
+            },
+            kunaiStorm: {
+                pattern: ['jump', 'lightAttack', 'lightAttack'],
+                attack: 'combo_kunaiStorm',
+                name: 'KUNAI STORM'
+            },
+            vanishStrike: {
+                pattern: ['crouch', 'special'],
+                attack: 'combo_vanishStrike',
+                name: 'VANISH STRIKE'
+            }
+        };
+
+        // Ninja combo attacks
+        this.attacks.combo_shadowDance = {
+            damage: 100,
+            knockback: 12,
+            duration: 35,
+            cooldown: 45,
+            hitboxWidth: 100,
+            hitboxHeight: 80,
+            energyGain: 15,
+            isCombo: true
+        };
+
+        this.attacks.combo_kunaiStorm = {
+            damage: 90,
+            knockback: 8,
+            duration: 30,
+            cooldown: 40,
+            hitboxWidth: 120,
+            hitboxHeight: 100,
+            energyGain: 18,
+            isCombo: true
+        };
+
+        this.attacks.combo_vanishStrike = {
+            damage: 85,
+            knockback: 15,
+            duration: 28,
+            cooldown: 38,
+            hitboxWidth: 90,
+            hitboxHeight: 70,
+            energyGain: 12,
+            isCombo: true
+        };
     }
 
     handleInput(input, opponent) {

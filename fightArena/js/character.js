@@ -97,6 +97,67 @@ class Character {
 
 
         this.projectiles = [];
+
+        // Player number for combo input checking
+        this.playerNum = options.playerNum || 1;
+
+        // Combo definitions - can be overridden by subclasses
+        this.combos = {
+            quickStrike: {
+                pattern: ['lightAttack', 'lightAttack', 'heavyAttack'],
+                attack: 'combo_quickStrike',
+                name: 'QUICK STRIKE'
+            },
+            launcher: {
+                pattern: ['heavyAttack', 'jump'],
+                attack: 'combo_launcher',
+                name: 'LAUNCHER'
+            },
+            powerSlam: {
+                pattern: ['crouch', 'heavyAttack'],
+                attack: 'combo_powerSlam',
+                name: 'POWER SLAM'
+            }
+        };
+
+        // Combo attack definitions
+        this.attacks.combo_quickStrike = {
+            damage: 80,
+            knockback: 10,
+            duration: 30,
+            cooldown: 40,
+            hitboxWidth: 100,
+            hitboxHeight: 60,
+            energyGain: 15,
+            isCombo: true
+        };
+
+        this.attacks.combo_launcher = {
+            damage: 50,
+            knockback: 20,
+            duration: 20,
+            cooldown: 35,
+            hitboxWidth: 80,
+            hitboxHeight: 80,
+            energyGain: 10,
+            isCombo: true,
+            launchEnemy: true
+        };
+
+        this.attacks.combo_powerSlam = {
+            damage: 90,
+            knockback: 15,
+            duration: 35,
+            cooldown: 50,
+            hitboxWidth: 120,
+            hitboxHeight: 50,
+            energyGain: 12,
+            isCombo: true
+        };
+
+        // Track last executed combo for display
+        this.lastComboName = null;
+        this.comboDisplayTime = 0;
     }
 
     update(input, opponent) {
@@ -173,18 +234,58 @@ class Character {
 
 
         if (this.attackCooldown <= 0 && !this.isBlocking) {
-            if (input.lightAttack) {
-                this.startAttack('light');
-            } else if (input.heavyAttack) {
-                this.startAttack('heavy');
-            } else if (input.special) {
-                if (this.energy >= 100 && this.isCrouching) {
-                    this.startAttack('ultimate');
-                } else if (this.energy >= (this.attacks.special.energyCost || 0)) {
-                    this.startAttack('special');
+            // Check for combos first (longer patterns have priority)
+            const executedCombo = this.checkAndExecuteCombo();
+
+            if (!executedCombo) {
+                // Regular attacks if no combo matched
+                if (input.lightAttack) {
+                    this.startAttack('light');
+                } else if (input.heavyAttack) {
+                    this.startAttack('heavy');
+                } else if (input.special) {
+                    if (this.energy >= 100 && this.isCrouching) {
+                        this.startAttack('ultimate');
+                    } else if (this.energy >= (this.attacks.special.energyCost || 0)) {
+                        this.startAttack('special');
+                    }
                 }
             }
         }
+
+        // Update combo display timer
+        if (this.comboDisplayTime > 0) {
+            this.comboDisplayTime--;
+        }
+    }
+
+    checkAndExecuteCombo() {
+        // Sort combos by pattern length (longest first for priority)
+        const sortedCombos = Object.values(this.combos).sort(
+            (a, b) => b.pattern.length - a.pattern.length
+        );
+
+        for (const combo of sortedCombos) {
+            if (inputHandler.checkCombo(this.playerNum, combo.pattern)) {
+                this.startAttack(combo.attack);
+                this.lastComboName = combo.name;
+                this.comboDisplayTime = 60; // Show for 1 second
+                inputHandler.clearBuffer(this.playerNum);
+
+                // Show combo name on screen
+                if (typeof combatSystem !== 'undefined') {
+                    combatSystem.createComboName(
+                        this.x + this.width / 2,
+                        this.y - 50,
+                        combo.name,
+                        this.color
+                    );
+                }
+
+                return true;
+            }
+        }
+        return false;
     }
 
     startAttack(type) {

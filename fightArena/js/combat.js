@@ -7,6 +7,7 @@ class CombatSystem {
     constructor() {
         this.hitEffects = [];
         this.damageNumbers = [];
+        this.comboNames = []; // Track combo name displays
         this.comboTimers = { p1: 0, p2: 0 };
     }
 
@@ -116,6 +117,18 @@ class CombatSystem {
         });
     }
 
+    createComboName(x, y, name, color) {
+        this.comboNames.push({
+            x,
+            y,
+            name,
+            color: color || '#ffff00',
+            life: 90,
+            maxLife: 90,
+            scale: 0.5
+        });
+    }
+
     updateEffects() {
 
         for (let i = this.hitEffects.length - 1; i >= 0; i--) {
@@ -143,6 +156,22 @@ class CombatSystem {
 
             if (num.life <= 0) {
                 this.damageNumbers.splice(i, 1);
+            }
+        }
+
+        // Update combo names
+        for (let i = this.comboNames.length - 1; i >= 0; i--) {
+            const combo = this.comboNames[i];
+            combo.life--;
+            combo.y -= 0.5; // Float up slowly
+
+            // Scale animation
+            if (combo.scale < 1) {
+                combo.scale += 0.1;
+            }
+
+            if (combo.life <= 0) {
+                this.comboNames.splice(i, 1);
             }
         }
     }
@@ -216,11 +245,47 @@ class CombatSystem {
 
             ctx.restore();
         }
+
+        // Draw combo names
+        for (const combo of this.comboNames) {
+            const alpha = Math.min(1, combo.life / 30);
+            const pulseScale = 1 + Math.sin(combo.life * 0.2) * 0.1;
+
+            ctx.save();
+            ctx.translate(combo.x, combo.y);
+            ctx.scale(combo.scale * pulseScale, combo.scale * pulseScale);
+            ctx.globalAlpha = alpha;
+
+            ctx.font = 'bold 36px Orbitron';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Glow effect
+            ctx.shadowColor = combo.color;
+            ctx.shadowBlur = 20;
+
+            // Outline
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 4;
+            ctx.strokeText(combo.name, 0, 0);
+
+            // Fill
+            ctx.fillStyle = combo.color;
+            ctx.fillText(combo.name, 0, 0);
+
+            // Inner highlight
+            ctx.fillStyle = '#ffffff';
+            ctx.globalAlpha = alpha * 0.5;
+            ctx.fillText(combo.name, -1, -1);
+
+            ctx.restore();
+        }
     }
 
     reset() {
         this.hitEffects = [];
         this.damageNumbers = [];
+        this.comboNames = [];
         this.comboTimers = { p1: 0, p2: 0 };
     }
 

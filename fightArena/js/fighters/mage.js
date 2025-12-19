@@ -65,6 +65,60 @@ class Mage extends Character {
         this.ultimateActive = false;
         this.ultimateTimer = 0;
         this.magicCircle = { radius: 0, rotation: 0 };
+
+        // Mage-specific combos (extend base combos)
+        this.combos = {
+            ...this.combos,
+            arcaneBlast: {
+                pattern: ['lightAttack', 'special', 'heavyAttack'],
+                attack: 'combo_arcaneBlast',
+                name: 'ARCANE BLAST'
+            },
+            frostChain: {
+                pattern: ['lightAttack', 'lightAttack', 'special'],
+                attack: 'combo_frostChain',
+                name: 'FROST CHAIN'
+            },
+            thunderStrike: {
+                pattern: ['jump', 'heavyAttack', 'special'],
+                attack: 'combo_thunderStrike',
+                name: 'THUNDER STRIKE'
+            }
+        };
+
+        // Mage combo attacks
+        this.attacks.combo_arcaneBlast = {
+            damage: 130,
+            knockback: 20,
+            duration: 40,
+            cooldown: 55,
+            hitboxWidth: 140,
+            hitboxHeight: 100,
+            energyGain: 18,
+            isCombo: true
+        };
+
+        this.attacks.combo_frostChain = {
+            damage: 95,
+            knockback: 10,
+            duration: 35,
+            cooldown: 45,
+            hitboxWidth: 110,
+            hitboxHeight: 80,
+            energyGain: 15,
+            isCombo: true
+        };
+
+        this.attacks.combo_thunderStrike = {
+            damage: 140,
+            knockback: 25,
+            duration: 45,
+            cooldown: 60,
+            hitboxWidth: 130,
+            hitboxHeight: 120,
+            energyGain: 20,
+            isCombo: true
+        };
     }
 
     update(input, opponent) {

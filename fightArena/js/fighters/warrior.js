@@ -62,6 +62,60 @@ class Warrior extends Character {
 
         this.armorActive = false;
         this.armorTimer = 0;
+
+        // Warrior-specific combos (extend base combos)
+        this.combos = {
+            ...this.combos,
+            berserkerRush: {
+                pattern: ['lightAttack', 'lightAttack', 'lightAttack', 'heavyAttack'],
+                attack: 'combo_berserkerRush',
+                name: 'BERSERKER RUSH'
+            },
+            shieldBash: {
+                pattern: ['block', 'heavyAttack'],
+                attack: 'combo_shieldBash',
+                name: 'SHIELD BASH'
+            },
+            groundPound: {
+                pattern: ['jump', 'crouch', 'heavyAttack'],
+                attack: 'combo_groundPound',
+                name: 'GROUND POUND'
+            }
+        };
+
+        // Warrior combo attacks
+        this.attacks.combo_berserkerRush = {
+            damage: 150,
+            knockback: 18,
+            duration: 45,
+            cooldown: 60,
+            hitboxWidth: 120,
+            hitboxHeight: 70,
+            energyGain: 20,
+            isCombo: true
+        };
+
+        this.attacks.combo_shieldBash = {
+            damage: 80,
+            knockback: 25,
+            duration: 25,
+            cooldown: 40,
+            hitboxWidth: 80,
+            hitboxHeight: 80,
+            energyGain: 15,
+            isCombo: true
+        };
+
+        this.attacks.combo_groundPound = {
+            damage: 120,
+            knockback: 30,
+            duration: 40,
+            cooldown: 55,
+            hitboxWidth: 150,
+            hitboxHeight: 60,
+            energyGain: 18,
+            isCombo: true
+        };
     }
 
     startAttack(type) {

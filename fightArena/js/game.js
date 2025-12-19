@@ -367,11 +367,18 @@ function update() {
             gameState.lastSyncTime = now;
         } else if (!gameState.isHost && shouldSyncGuest) {
             // Guest sends their own position (Client Authority)
+            // Plus P1 position if Guest hit Host (Authority Switching)
             multiplayer.sendPosition({
                 x: gameState.player2.x,
-                y: gameState.player2.y
+                y: gameState.player2.y,
+                p1: gameState.guestHitHost ? {
+                    x: gameState.player1.x,
+                    y: gameState.player1.y
+                } : null,
+                forceP1: gameState.guestHitHost
             });
             gameState.lastGuestSyncTime = now;
+            gameState.guestHitHost = false; // Reset flag
         }
 
         // Reset force flag after syncing
@@ -395,8 +402,10 @@ function syncGameState() {
             energy: gameState.player2.energy,
             state: gameState.player2.state
         },
-        timer: gameState.timer
+        timer: gameState.timer,
+        forceP2: gameState.hostHitGuest // Host overrides Guest pos if hit
     });
+    gameState.hostHitGuest = false; // Reset flag
 }
 
 function draw() {
@@ -920,6 +929,12 @@ function setupMultiplayerCallbacks() {
         if (gameState.isHost && gameState.player2) {
             gameState.player2.x = pos.x;
             gameState.player2.y = pos.y;
+
+            // Authority Switching: If Guest hit us (Host/P1), we accept their position for P1
+            if (pos.forceP1 && pos.p1 && gameState.player1) {
+                gameState.player1.x = pos.p1.x;
+                gameState.player1.y = pos.p1.y;
+            }
         }
     };
 
@@ -933,10 +948,14 @@ function setupMultiplayerCallbacks() {
             gameState.player1.health = state.p1.health;
             gameState.player1.energy = state.p1.energy;
 
-            // Update self (Guest/P2) ONLY stats, NOT position
-            // This prevents rubber-banding/lag by trusting local movement
-            // gameState.player2.x = state.p2.x; // DON'T OVERWRITE LOCAL POS
-            // gameState.player2.y = state.p2.y; // DON'T OVERWRITE LOCAL POS
+            // Update self (Guest/P2) ONLY stats, NOT position usually
+            // but if Host hit us (forceP2), we accept their position (Authority Switching)
+            if (state.forceP2) {
+                gameState.player2.x = state.p2.x;
+                gameState.player2.y = state.p2.y;
+            }
+            // gameState.player2.x = state.p2.x; // DON'T OVERWRITE LOCAL POS NORMALLY
+            // gameState.player2.y = state.p2.y; // DON'T OVERWRITE LOCAL POS NORMALLY
             gameState.player2.health = state.p2.health;
             gameState.player2.energy = state.p2.energy;
         }
@@ -1296,6 +1315,13 @@ document.addEventListener('DOMContentLoaded', () => {
             combatSystem.onHit = (attacker, defender) => {
                 if (gameState.isOnline) {
                     gameState.forceSync = true;
+
+                    // Identify who attacked whom to enforce position (Authority Switching)
+                    if (gameState.isHost && attacker === gameState.player1) {
+                        gameState.hostHitGuest = true;
+                    } else if (!gameState.isHost && attacker === gameState.player2) {
+                        gameState.guestHitHost = true;
+                    }
                 }
             };
         }

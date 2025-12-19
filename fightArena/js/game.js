@@ -904,13 +904,16 @@ function setupMultiplayerCallbacks() {
     multiplayer.onGameStateUpdate = (state) => {
         if (!gameState.isHost && gameState.player1 && gameState.player2) {
 
+            // Update opponent (Host/P1) completely
             gameState.player1.x = state.p1.x;
             gameState.player1.y = state.p1.y;
             gameState.player1.health = state.p1.health;
             gameState.player1.energy = state.p1.energy;
 
-            gameState.player2.x = state.p2.x;
-            gameState.player2.y = state.p2.y;
+            // Update self (Guest/P2) ONLY stats, NOT position
+            // This prevents rubber-banding/lag by trusting local movement
+            // gameState.player2.x = state.p2.x; // DON'T OVERWRITE LOCAL POS
+            // gameState.player2.y = state.p2.y; // DON'T OVERWRITE LOCAL POS
             gameState.player2.health = state.p2.health;
             gameState.player2.energy = state.p2.energy;
         }

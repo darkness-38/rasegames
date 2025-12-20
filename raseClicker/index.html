@@ -1,84 +1,460 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Clicker | Rase Games</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Race Clicker | Rase Games</title>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1a2230",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "mono": ["Fira Code", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .click-pulse:active {
+            animation: pulse-ring 0.3s ease-out;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(15, 73, 189, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 20px rgba(15, 73, 189, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(15, 73, 189, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .float-text {
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        /* Click effect - floating +1 text */
+        .click-effect {
+            position: fixed;
+            color: #0f49bd;
+            font-size: 1.5rem;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 1000;
+            animation: floatUp 0.8s ease-out forwards;
+            text-shadow: 0 0 10px rgba(15, 73, 189, 0.5);
+        }
+
+        /* Code typing effect - background code snippets */
+        .code-typing-effect {
+            position: fixed;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+            z-index: 1;
+            white-space: pre;
+            animation: codeFade 5s ease-in-out forwards;
+        }
+
+        @keyframes codeFade {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            70% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Matrix particles - falling 0s and 1s */
+        .matrix-particle {
+            position: absolute;
+            color: rgba(15, 73, 189, 0.3);
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            animation: matrixFall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes matrixFall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Random events - floating icons */
+        .random-event {
+            position: fixed;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 100;
+            animation: eventFloat 2s ease-in-out infinite, eventGlow 1s ease-in-out infinite;
+            transition: transform 0.2s;
+            pointer-events: auto;
+        }
+
+        .random-event:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes eventFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes eventGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 10px rgba(15, 73, 189, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px rgba(15, 73, 189, 0.8));
+            }
+        }
+
+        .random-event.fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        /* Burst particles */
+        .burst-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #0f49bd;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: burst 0.6s ease-out forwards;
+        }
+
+        @keyframes burst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(calc(cos(var(--angle)) * 60px), calc(sin(var(--angle)) * 60px)) scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 
-<body>
-    
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <div class="ticker__item" id="fact-text">Initializing System...</div>
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden h-screen flex flex-col">
+
+    <!-- Top Navigation / Header -->
+    <header
+        class="h-16 border-b border-slate-200 dark:border-slate-800 bg-surface-light dark:bg-surface-dark flex items-center justify-between px-4 sm:px-6 shrink-0 z-20 shadow-sm">
+        <div class="flex items-center gap-3">
+            <a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/20 text-primary">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+                </div>
+                <h1 class="text-lg font-bold tracking-tight hidden sm:block">Race Clicker</h1>
+            </a>
+        </div>
+
+        <!-- Global Stats Display -->
+        <div class="flex items-center gap-4 sm:gap-8">
+            <div class="flex flex-col items-center">
+                <span
+                    class="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Current
+                    LOC</span>
+                <span id="score" class="text-lg sm:text-xl font-bold font-mono text-primary">0</span>
+            </div>
+            <div class="w-px h-8 bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
+            <div class="flex flex-col items-center hidden sm:flex">
+                <span
+                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rate</span>
+                <span class="text-base font-bold text-slate-700 dark:text-slate-200"><span id="cps">0</span>
+                    LOC/s</span>
+            </div>
+        </div>
+
+        <button id="save-btn"
+            class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-slate-500 dark:text-slate-400 flex items-center gap-2">
+            <span class="material-symbols-outlined">save</span>
+            <span class="hidden sm:inline text-sm font-medium">Save</span>
+        </button>
+    </header>
+
+    <!-- Ticker -->
+    <div
+        class="h-8 bg-slate-100 dark:bg-[#111318] border-b border-slate-200 dark:border-slate-800 flex items-center overflow-hidden">
+        <div class="flex items-center gap-2 px-4 text-xs text-slate-500 dark:text-slate-400 animate-pulse">
+            <span class="material-symbols-outlined text-sm text-primary">info</span>
+            <span id="fact-text">Initializing System...</span>
         </div>
     </div>
 
-    <div class="game-container">
-        
-        <div class="click-section">
-            <div class="score-container">
-                <h1 id="score">0</h1>
-                <p>Lines of Code</p>
-                <p class="cps-display">LoC/s: <span id="cps">0</span></p>
+    <!-- Main Content Area -->
+    <div class="flex flex-1 overflow-hidden flex-col lg:flex-row">
+
+        <!-- Left: Gameplay Area -->
+        <main class="flex-1 flex flex-col items-center justify-center relative p-4 sm:p-8 min-h-[50vh] lg:min-h-0">
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 opacity-5 pointer-events-none overflow-hidden hidden sm:block">
+                <div class="absolute top-10 left-10 font-mono text-sm">const race = new Game();</div>
+                <div class="absolute bottom-20 right-20 font-mono text-sm">while(alive) { code(); }</div>
+                <div class="absolute top-1/3 left-1/4 font-mono text-sm text-primary">git commit -m "fix bug"</div>
             </div>
 
-            <div class="click-area">
-                <button id="click-btn" class="terminal-btn">
-                    <div class="terminal-icon">>_</div>
-                </button>
+            <div class="flex flex-col items-center z-10 gap-6 w-full max-w-md">
+
+                <!-- Main Action Button -->
+                <div class="relative group" id="click-area">
+                    <div
+                        class="absolute -inset-1 bg-primary/30 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-500">
+                    </div>
+                    <button id="click-btn"
+                        class="click-pulse relative w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-surface-light dark:bg-surface-dark border-4 border-slate-200 dark:border-slate-700 shadow-xl flex flex-col items-center justify-center gap-2 active:scale-95 transition-all duration-100 hover:border-primary group-hover:shadow-[0_0_30px_-5px_rgba(15,73,189,0.3)]">
+                        <span class="material-symbols-outlined text-5xl sm:text-6xl text-primary"
+                            style="font-variation-settings: 'FILL' 1;">code</span>
+                        <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400">CLICK TO
+                            CODE</span>
+                    </button>
+                </div>
+
+                <!-- Quick Actions / Mini Buffs -->
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <button id="coffee-btn"
+                        class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-orange-500/50 transition-colors shadow-sm text-left relative overflow-hidden">
+                        <div
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0">
+                            <span class="material-symbols-outlined text-lg sm:text-2xl">coffee</span>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">Coffee
+                                Break</div>
+                            <div id="coffee-status" class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">2x
+                                Speed - 15s</div>
+                        </div>
+                        <div id="coffee-cooldown" class="absolute inset-0 bg-orange-500/20 hidden"
+                            style="transform-origin: left;"></div>
+                    </button>
+                    <button id="debug-btn"
+                        class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-purple-500/50 transition-colors shadow-sm text-left relative overflow-hidden">
+                        <div
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 shrink-0">
+                            <span class="material-symbols-outlined text-lg sm:text-2xl">bug_report</span>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">Debug Mode
+                            </div>
+                            <div id="debug-status" class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">
+                                Auto-click 10s</div>
+                        </div>
+                        <div id="debug-cooldown" class="absolute inset-0 bg-purple-500/20 hidden"
+                            style="transform-origin: left;"></div>
+                    </button>
+                </div>
             </div>
+        </main>
+
+        <!-- Right: Sidebar Panel -->
+        <aside
+            class="w-full lg:w-96 bg-surface-light dark:bg-surface-dark border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 flex flex-col shrink-0 shadow-xl z-10 max-h-[50vh] lg:max-h-none">
+            <!-- Sidebar Tabs -->
+            <div class="p-3 sm:p-4 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex p-1 bg-slate-100 dark:bg-[#111318] rounded-lg">
+                    <button
+                        class="tab-btn flex-1 py-1.5 text-xs font-medium rounded-md bg-white dark:bg-[#282e39] text-slate-900 dark:text-white shadow-sm transition-all"
+                        data-tab="upgrades">Upgrades</button>
+                    <button
+                        class="tab-btn flex-1 py-1.5 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
+                        data-tab="click-upgrades">Tools</button>
+                    <button
+                        class="tab-btn flex-1 py-1.5 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
+                        data-tab="achievements">Awards</button>
+                </div>
+            </div>
+
+            <!-- Scrollable List Area -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-4 space-y-3">
+                <!-- Upgrades Section -->
+                <div id="upgrades-section" class="panel-content space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3
+                            class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Infrastructure</h3>
+                    </div>
+                    <div id="upgrades-container" class="space-y-3">
+                        <!-- Upgrades will be rendered here by JS -->
+                    </div>
+                </div>
+
+                <!-- Click Upgrades Section -->
+                <div id="click-upgrades-section" class="panel-content space-y-3" style="display: none;">
+                    <div class="flex items-center justify-between">
+                        <h3
+                            class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Tools</h3>
+                    </div>
+                    <div id="click-upgrades-container" class="space-y-3">
+                        <!-- Click upgrades will be rendered here by JS -->
+                    </div>
+                </div>
+
+                <!-- Achievements Section -->
+                <div id="achievements-section" class="panel-content space-y-3" style="display: none;">
+                    <div class="flex items-center justify-between">
+                        <h3
+                            class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                            Certifications</h3>
+                    </div>
+                    <div id="achievements-container" class="space-y-3">
+                        <!-- Achievements will be rendered here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Footer Stats -->
+            <div
+                class="p-3 sm:p-4 bg-slate-100 dark:bg-[#111318] border-t border-slate-200 dark:border-slate-800 text-xs text-center text-slate-500 dark:text-slate-400">
+                <span id="next-achievement-text">Keep coding to unlock achievements!</span>
+                <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-2 overflow-hidden">
+                    <div id="achievement-progress" class="h-full bg-primary rounded-full transition-all duration-500"
+                        style="width: 0%"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Achievement Notification -->
+    <div id="achievement-notification"
+        class="fixed bottom-4 right-4 bg-surface-dark border border-primary/50 rounded-xl p-4 shadow-2xl hidden flex items-center gap-3 z-50 animate-slideIn">
+        <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl"
+                style="font-variation-settings: 'FILL' 1;">emoji_events</span>
         </div>
-
-        
-        <div class="right-panel">
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('upgrades')">Infrastructure</button>
-                <button class="tab-btn" onclick="switchTab('click-upgrades')">Tools</button>
-                <button class="tab-btn" onclick="switchTab('achievements')">Certifications</button>
-            </div>
-
-            <div id="upgrades-section" class="panel-content active">
-                <div id="upgrades-container" class="upgrades-list">
-                    
-                </div>
-            </div>
-
-            <div id="click-upgrades-section" class="panel-content" style="display: none;">
-                <div id="click-upgrades-container" class="upgrades-list">
-                    
-                </div>
-            </div>
-
-            <div id="achievements-section" class="panel-content" style="display: none;">
-                <div id="achievements-container" class="achievements-list">
-                    
-                </div>
-            </div>
+        <div>
+            <h4 class="text-sm font-bold text-white">Certification Unlocked!</h4>
+            <p id="achievement-text" class="text-xs text-slate-400">Example Achievement</p>
         </div>
     </div>
 
-    
-    <div id="achievement-notification" class="achievement-notification hidden">
-        <div class="icon">🏆</div>
-        <div class="text">
-            <h4>Certification Unlocked!</h4>
-            <p id="achievement-text">Example Achievement</p>
-        </div>
-    </div>
-
-    
-    <div id="fireflies-container"></div>
-
-    
-    <button id="save-btn" class="save-btn" onclick="saveGameManual()">💾 Save System</button>
+    <!-- Random Event Container -->
+    <div id="fireflies-container" class="fixed inset-0 pointer-events-none z-40"></div>
 
     <script src="/auth.js"></script>
     <script src="/leaderboard.js"></script>

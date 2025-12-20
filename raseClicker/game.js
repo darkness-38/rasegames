@@ -680,8 +680,8 @@ let codeLineIndex = 0;
 function highlightCode(code) {
     // Full color - no gray!
     const keywords = ['const', 'let', 'var', 'function', 'class', 'if', 'else', 'return', 'import', 'from', 'export', 'this', 'new', 'static', 'async', 'await', 'for', 'while', 'switch', 'case', 'break', 'try', 'catch', 'throw', 'typeof', 'instanceof'];
-    const builtins = ['console', 'document', 'window', 'Math', 'JSON', 'app', 'res', 'req', 'io', 'room', 'rooms', 'socket', 'playerRooms', 'data', 'error', 'result', 'options', 'config'];
-    const variables = ['type', 'cost', 'name', 'score', 'clickPower', 'passiveIncome', 'upgrades', 'save', 'load', 'push', 'pop', 'map', 'filter', 'forEach', 'reduce', 'find', 'includes', 'length', 'value', 'key', 'index', 'item', 'el', 'element', 'obj', 'arr', 'str', 'num', 'id', 'code', 'host', 'guest', 'player', 'user', 'message', 'status', 'state', 'emit', 'on', 'off', 'get', 'set', 'has', 'delete', 'stringify', 'parse'];
+    const builtins = ['console', 'document', 'window', 'Math', 'JSON', 'app', 'res', 'req', 'io', 'room', 'rooms', 'socket', 'playerRooms', 'data', 'error', 'result', 'options', 'config', 'express', 'Map', 'Set', 'Array', 'Object', 'String', 'Number', 'Boolean', 'Promise', 'Upgrade', 'Player', 'Game', 'Server', 'Client'];
+    const variables = ['type', 'cost', 'name', 'score', 'clickPower', 'passiveIncome', 'upgrades', 'save', 'load', 'push', 'pop', 'map', 'filter', 'forEach', 'reduce', 'find', 'includes', 'length', 'value', 'key', 'index', 'item', 'el', 'element', 'obj', 'arr', 'str', 'num', 'id', 'code', 'host', 'guest', 'player', 'user', 'message', 'status', 'state', 'emit', 'on', 'off', 'get', 'set', 'has', 'delete', 'stringify', 'parse', 'players', 'playerId', 'newScore', 'click', 'body', 'params', 'json', 'use', 'post', 'api', 'p', 'i', 'j', 'k', 'x', 'y', 'z', 'a', 'b', 'c', 'n', 'm', 'cb', 'fn', 'err', 'msg', 'txt', 'url', 'path', 'file', 'dir'];
     const booleans = ['true', 'false', 'null', 'undefined'];
 
     let result = code;

@@ -684,32 +684,44 @@ function highlightCode(code) {
 
     let result = code;
 
-    // Comments (bright green)
-    result = result.replace(/(\/\/.*)/g, '<span style="color:#98C379;">$1</span>');
+    // Comments (green)
+    result = result.replace(/(\/\/.*)/g, '<span style="color:#6A9955;">$1</span>');
 
-    // Strings (orange/peach)
-    result = result.replace(/("[^"]*")/g, '<span style="color:#E5C07B;">$1</span>');
+    // Strings (orange)
+    result = result.replace(/("[^"]*")/g, '<span style="color:#CE9178;">$1</span>');
 
-    // Numbers (cyan)
-    result = result.replace(/\b(\d+)\b/g, '<span style="color:#56B6C2;">$1</span>');
+    // Numbers (light green instead of cyan)
+    result = result.replace(/\b(\d+)\b/g, '<span style="color:#B5CEA8;">$1</span>');
 
-    // Keywords (magenta/pink)
+    // Keywords (pink/purple)
     keywords.forEach(kw => {
         const regex = new RegExp(`\\b(${kw})\\b`, 'g');
-        result = result.replace(regex, '<span style="color:#E06C75;">$1</span>');
+        result = result.replace(regex, '<span style="color:#C586C0;">$1</span>');
     });
 
-    // Builtins (white)
+    // Builtins (yellow)
     builtins.forEach(bi => {
         const regex = new RegExp(`\\b(${bi})\\b`, 'g');
-        result = result.replace(regex, '<span style="color:#ABB2BF;">$1</span>');
+        result = result.replace(regex, '<span style="color:#DCDCAA;">$1</span>');
     });
 
     // Function calls (yellow)
     result = result.replace(/\.(\w+)\(/g, '.<span style="color:#E5C07B;">$1</span>(');
 
-    // Arrow functions (magenta)
-    result = result.replace(/(=&gt;|=>)/g, '<span style="color:#E06C75;">$1</span>');
+    // Arrow functions (pink)
+    result = result.replace(/(=&gt;|=>)/g, '<span style="color:#C586C0;">$1</span>');
+
+    // Properties after dots (light cyan)
+    result = result.replace(/\\.([a-zA-Z_][a-zA-Z0-9_]*)/g, '.<span style="color:#9CDCFE;">$1</span>');
+
+    // Operators (light orange)
+    result = result.replace(/(===|!==|==|!=|&&|\\|\\|)/g, '<span style="color:#D19A66;">$1</span>');
+
+    // Brackets and parentheses (golden)
+    result = result.replace(/(\\(|\\)|\\{|\\}|\\[|\\])/g, '<span style="color:#FFD700;">$1</span>');
+
+    // Colons and semicolons (light purple)  
+    result = result.replace(/(:|;|,)/g, '<span style="color:#D4BFFF;">$1</span>');
 
     return result;
 }

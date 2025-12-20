@@ -1,263 +1,346 @@
+/**
+ * Bomb Squad - Minesweeper Game Logic
+ * Premium minesweeper with flood-fill and leaderboard integration
+ */
 
-const gameBoard = document.getElementById('gameBoard');
-const mineCountEl = document.getElementById('mineCount');
-const flagCountEl = document.getElementById('flagCount');
-const timerEl = document.getElementById('timer');
-const bestTimeEl = document.getElementById('bestTime');
-const gameOverScreen = document.getElementById('gameOverScreen');
-const resultText = document.getElementById('resultText');
-const resultMessage = document.getElementById('resultMessage');
-const restartBtn = document.getElementById('restartBtn');
-const diffBtns = document.querySelectorAll('.diff-btn');
+class BombSquad {
+    constructor() {
+        this.gridSize = 9;
+        this.mineCount = 10;
+        this.grid = [];
+        this.revealed = [];
+        this.flagged = [];
+        this.gameOver = false;
+        this.gameWon = false;
+        this.firstClick = true;
+        this.timer = 0;
+        this.timerInterval = null;
+        this.flagsPlaced = 0;
 
-let gridSize = 9;
-let mineCount = 10;
-let board = [];
-let revealed = [];
-let flagged = [];
-let isGameOver = false;
-let isFirstClick = true;
-let timer = 0;
-let timerInterval = null;
-let flagsPlaced = 0;
+        this.bestTimes = {
+            9: parseInt(localStorage.getItem('bestMine9') || '999'),
+            12: parseInt(localStorage.getItem('bestMine12') || '999'),
+            16: parseInt(localStorage.getItem('bestMine16') || '999')
+        };
 
-let bestTime = parseInt(localStorage.getItem('minesweeperBest')) || null;
-if (bestTime) bestTimeEl.textContent = bestTime + 's';
-
-function createBoard(excludeX = -1, excludeY = -1) {
-    board = [];
-    revealed = [];
-    flagged = [];
-
-    
-    for (let y = 0; y < gridSize; y++) {
-        board[y] = [];
-        revealed[y] = [];
-        flagged[y] = [];
-        for (let x = 0; x < gridSize; x++) {
-            board[y][x] = 0;
-            revealed[y][x] = false;
-            flagged[y][x] = false;
-        }
+        this.init();
     }
 
-    
-    let minesPlaced = 0;
-    while (minesPlaced < mineCount) {
-        const x = Math.floor(Math.random() * gridSize);
-        const y = Math.floor(Math.random() * gridSize);
-
-        
-        if (Math.abs(x - excludeX) <= 1 && Math.abs(y - excludeY) <= 1) continue;
-        if (board[y][x] === -1) continue;
-
-        board[y][x] = -1;
-        minesPlaced++;
+    init() {
+        this.setupEventListeners();
+        this.updateBestTime();
+        this.newGame();
     }
 
-    
-    for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++) {
-            if (board[y][x] === -1) continue;
-            board[y][x] = countAdjacentMines(x, y);
-        }
-    }
-}
-
-function countAdjacentMines(x, y) {
-    let count = 0;
-    for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
-            const nx = x + dx, ny = y + dy;
-            if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
-                if (board[ny][nx] === -1) count++;
-            }
-        }
-    }
-    return count;
-}
-
-function renderBoard() {
-    gameBoard.innerHTML = '';
-    gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 32px)`;
-
-    for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
-            cell.dataset.x = x;
-            cell.dataset.y = y;
-
-            if (revealed[y][x]) {
-                cell.classList.add('revealed');
-                if (board[y][x] === -1) {
-                    cell.classList.add('mine');
-                    cell.textContent = '💣';
-                } else if (board[y][x] > 0) {
-                    cell.textContent = board[y][x];
-                    cell.dataset.value = board[y][x];
-                }
-            } else if (flagged[y][x]) {
-                cell.classList.add('flagged');
-                cell.textContent = '🚩';
-            }
-
-            cell.addEventListener('click', () => handleClick(x, y));
-            cell.addEventListener('contextmenu', (e) => { e.preventDefault(); handleRightClick(x, y); });
-
-            
-            let pressTimer;
-            cell.addEventListener('touchstart', (e) => {
-                pressTimer = setTimeout(() => { e.preventDefault(); handleRightClick(x, y); }, 500);
+    setupEventListeners() {
+        // Difficulty buttons
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.gridSize = parseInt(e.target.dataset.size);
+                this.mineCount = parseInt(e.target.dataset.mines);
+                document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.updateBestTime();
+                this.newGame();
             });
-            cell.addEventListener('touchend', () => clearTimeout(pressTimer));
-            cell.addEventListener('touchmove', () => clearTimeout(pressTimer));
+        });
 
-            gameBoard.appendChild(cell);
+        // Restart button
+        document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
+    }
+
+    newGame() {
+        this.grid = [];
+        this.revealed = [];
+        this.flagged = [];
+        this.gameOver = false;
+        this.gameWon = false;
+        this.firstClick = true;
+        this.flagsPlaced = 0;
+
+        this.stopTimer();
+        this.timer = 0;
+        this.updateTimer();
+        this.updateStats();
+        this.hideOverlay();
+
+        // Initialize empty grid
+        for (let r = 0; r < this.gridSize; r++) {
+            this.grid[r] = [];
+            this.revealed[r] = [];
+            this.flagged[r] = [];
+            for (let c = 0; c < this.gridSize; c++) {
+                this.grid[r][c] = 0;
+                this.revealed[r][c] = false;
+                this.flagged[r][c] = false;
+            }
         }
-    }
-}
 
-function handleClick(x, y) {
-    if (isGameOver || flagged[y][x] || revealed[y][x]) return;
-
-    if (isFirstClick) {
-        isFirstClick = false;
-        createBoard(x, y);
-        startTimer();
+        this.renderBoard();
     }
 
-    revealCell(x, y);
-    renderBoard();
-    checkWin();
-}
+    placeMines(excludeRow, excludeCol) {
+        let placed = 0;
+        while (placed < this.mineCount) {
+            const r = Math.floor(Math.random() * this.gridSize);
+            const c = Math.floor(Math.random() * this.gridSize);
 
-function handleRightClick(x, y) {
-    if (isGameOver || revealed[y][x]) return;
+            // Don't place on first click or adjacent cells
+            if (Math.abs(r - excludeRow) <= 1 && Math.abs(c - excludeCol) <= 1) continue;
+            if (this.grid[r][c] === -1) continue;
 
-    flagged[y][x] = !flagged[y][x];
-    flagsPlaced += flagged[y][x] ? 1 : -1;
-    flagCountEl.textContent = flagsPlaced;
-    renderBoard();
-}
+            this.grid[r][c] = -1;
+            placed++;
+        }
 
-function revealCell(x, y) {
-    if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) return;
-    if (revealed[y][x] || flagged[y][x]) return;
-
-    revealed[y][x] = true;
-
-    if (board[y][x] === -1) {
-        gameOver(false);
-        return;
-    }
-
-    
-    if (board[y][x] === 0) {
-        for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-                revealCell(x + dx, y + dy);
+        // Calculate numbers
+        for (let r = 0; r < this.gridSize; r++) {
+            for (let c = 0; c < this.gridSize; c++) {
+                if (this.grid[r][c] === -1) continue;
+                this.grid[r][c] = this.countAdjacentMines(r, c);
             }
         }
     }
-}
 
-function checkWin() {
-    let revealedCount = 0;
-    for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++) {
-            if (revealed[y][x]) revealedCount++;
-        }
-    }
-
-    if (revealedCount === gridSize * gridSize - mineCount) {
-        gameOver(true);
-    }
-}
-
-function gameOver(won) {
-    isGameOver = true;
-    stopTimer();
-
-    
-    if (!won) {
-        for (let y = 0; y < gridSize; y++) {
-            for (let x = 0; x < gridSize; x++) {
-                if (board[y][x] === -1) revealed[y][x] = true;
+    countAdjacentMines(row, col) {
+        let count = 0;
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                if (dr === 0 && dc === 0) continue;
+                const nr = row + dr;
+                const nc = col + dc;
+                if (nr >= 0 && nr < this.gridSize && nc >= 0 && nc < this.gridSize) {
+                    if (this.grid[nr][nc] === -1) count++;
+                }
             }
         }
-        renderBoard();
+        return count;
     }
 
-    resultText.textContent = won ? '🎉 You Win!' : '💥 Game Over';
+    renderBoard() {
+        const board = document.getElementById('gameBoard');
+        board.innerHTML = '';
+        board.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
 
-    if (won) {
-        const score = calculateScore();
-        resultMessage.textContent = `Time: ${timer}s • Score: ${score}`;
+        // Calculate cell size
+        const maxBoardWidth = Math.min(window.innerWidth - 50, 450);
+        const cellSize = Math.floor((maxBoardWidth - (this.gridSize + 1) * 3) / this.gridSize);
+        board.style.width = `${cellSize * this.gridSize + (this.gridSize + 1) * 3 + 16}px`;
 
-        if (!bestTime || timer < bestTime) {
-            bestTime = timer;
-            bestTimeEl.textContent = timer + 's';
-            localStorage.setItem('minesweeperBest', timer);
+        for (let r = 0; r < this.gridSize; r++) {
+            for (let c = 0; c < this.gridSize; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'mine-cell';
+                cell.dataset.row = r;
+                cell.dataset.col = c;
+                cell.style.width = `${cellSize}px`;
+                cell.style.height = `${cellSize}px`;
+                cell.style.fontSize = `${Math.max(cellSize * 0.5, 12)}px`;
+
+                // Click to reveal
+                cell.addEventListener('click', () => this.revealCell(r, c));
+
+                // Right click or long press to flag
+                cell.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    this.toggleFlag(r, c);
+                });
+
+                // Long press for mobile
+                let pressTimer;
+                cell.addEventListener('touchstart', (e) => {
+                    pressTimer = setTimeout(() => {
+                        e.preventDefault();
+                        this.toggleFlag(r, c);
+                    }, 500);
+                });
+                cell.addEventListener('touchend', () => clearTimeout(pressTimer));
+                cell.addEventListener('touchmove', () => clearTimeout(pressTimer));
+
+                board.appendChild(cell);
+            }
         }
-
-        if (window.Leaderboard && score > 0) {
-            Leaderboard.submit('minesweeper', score);
-        }
-    } else {
-        resultMessage.textContent = 'Better luck next time!';
     }
 
-    gameOverScreen.classList.remove('hidden');
+    revealCell(row, col) {
+        if (this.gameOver) return;
+        if (this.revealed[row][col] || this.flagged[row][col]) return;
+
+        // First click - place mines
+        if (this.firstClick) {
+            this.firstClick = false;
+            this.placeMines(row, col);
+            this.startTimer();
+        }
+
+        this.revealed[row][col] = true;
+
+        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        cell.classList.add('revealed');
+
+        const value = this.grid[row][col];
+
+        if (value === -1) {
+            // Hit a mine
+            cell.classList.add('mine', 'exploded');
+            cell.textContent = '💣';
+            this.endGame(false);
+            return;
+        }
+
+        if (value > 0) {
+            cell.textContent = value;
+            cell.classList.add(`n${value}`);
+        } else {
+            // Flood fill empty cells
+            this.floodFill(row, col);
+        }
+
+        // Check win
+        if (this.checkWin()) {
+            this.endGame(true);
+        }
+    }
+
+    floodFill(row, col) {
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                const nr = row + dr;
+                const nc = col + dc;
+                if (nr >= 0 && nr < this.gridSize && nc >= 0 && nc < this.gridSize) {
+                    if (!this.revealed[nr][nc] && !this.flagged[nr][nc]) {
+                        this.revealCell(nr, nc);
+                    }
+                }
+            }
+        }
+    }
+
+    toggleFlag(row, col) {
+        if (this.gameOver) return;
+        if (this.revealed[row][col]) return;
+
+        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
+        if (this.flagged[row][col]) {
+            this.flagged[row][col] = false;
+            this.flagsPlaced--;
+            cell.classList.remove('flagged');
+            cell.textContent = '';
+        } else {
+            this.flagged[row][col] = true;
+            this.flagsPlaced++;
+            cell.classList.add('flagged');
+            cell.textContent = '🚩';
+        }
+
+        this.updateStats();
+    }
+
+    checkWin() {
+        let unrevealedSafe = 0;
+        for (let r = 0; r < this.gridSize; r++) {
+            for (let c = 0; c < this.gridSize; c++) {
+                if (!this.revealed[r][c] && this.grid[r][c] !== -1) {
+                    unrevealedSafe++;
+                }
+            }
+        }
+        return unrevealedSafe === 0;
+    }
+
+    endGame(won) {
+        this.gameOver = true;
+        this.gameWon = won;
+        this.stopTimer();
+
+        // Reveal all mines
+        if (!won) {
+            for (let r = 0; r < this.gridSize; r++) {
+                for (let c = 0; c < this.gridSize; c++) {
+                    if (this.grid[r][c] === -1) {
+                        const cell = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+                        cell.classList.add('revealed', 'mine');
+                        cell.textContent = '💣';
+                    }
+                }
+            }
+        }
+
+        const titleEl = document.getElementById('resultText');
+        const messageEl = document.getElementById('resultMessage');
+
+        if (won) {
+            titleEl.textContent = '🎉 Victory!';
+            titleEl.className = 'overlay-title win';
+
+            // Calculate score (lower time = higher score)
+            const score = Math.max(0, 10000 - this.timer * 10);
+            messageEl.textContent = `Cleared in ${this.formatTime(this.timer)}! Score: ${score}`;
+
+            // Update best time
+            if (this.timer < this.bestTimes[this.gridSize]) {
+                this.bestTimes[this.gridSize] = this.timer;
+                localStorage.setItem(`bestMine${this.gridSize}`, this.timer);
+                this.updateBestTime();
+            }
+
+            // Submit to leaderboard
+            if (typeof Leaderboard !== 'undefined') {
+                Leaderboard.submit('minesweeper', score);
+            }
+        } else {
+            titleEl.textContent = '💥 Boom!';
+            titleEl.className = 'overlay-title lose';
+            messageEl.textContent = 'You hit a mine! Try again.';
+        }
+
+        setTimeout(() => {
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+        }, 500);
+    }
+
+    startTimer() {
+        this.timerInterval = setInterval(() => {
+            this.timer++;
+            this.updateTimer();
+        }, 1000);
+    }
+
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+
+    updateTimer() {
+        document.getElementById('timer').textContent = this.formatTime(this.timer);
+    }
+
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    updateStats() {
+        document.getElementById('mineCount').textContent = this.mineCount;
+        document.getElementById('flagCount').textContent = this.flagsPlaced;
+    }
+
+    updateBestTime() {
+        const best = this.bestTimes[this.gridSize];
+        document.getElementById('bestTime').textContent =
+            best < 999 ? this.formatTime(best) : '--';
+    }
+
+    hideOverlay() {
+        document.getElementById('gameOverScreen').classList.add('hidden');
+    }
 }
 
-function calculateScore() {
-    
-    const difficultyMultiplier = mineCount * 10;
-    const timeBonus = Math.max(0, 300 - timer);
-    return difficultyMultiplier + timeBonus;
-}
-
-function startTimer() {
-    timer = 0;
-    timerInterval = setInterval(() => {
-        timer++;
-        timerEl.textContent = timer;
-    }, 1000);
-}
-
-function stopTimer() {
-    clearInterval(timerInterval);
-}
-
-function initGame() {
-    isGameOver = false;
-    isFirstClick = true;
-    flagsPlaced = 0;
-    timer = 0;
-
-    stopTimer();
-    timerEl.textContent = 0;
-    flagCountEl.textContent = 0;
-    mineCountEl.textContent = mineCount;
-
-    createBoard();
-    renderBoard();
-    gameOverScreen.classList.add('hidden');
-}
-
-
-diffBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        diffBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        gridSize = parseInt(btn.dataset.size);
-        mineCount = parseInt(btn.dataset.mines);
-        initGame();
-    });
+// Initialize game
+document.addEventListener('DOMContentLoaded', () => {
+    new BombSquad();
 });
-
-restartBtn.addEventListener('click', initGame);
-
-
-initGame();

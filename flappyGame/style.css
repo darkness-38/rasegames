@@ -1,67 +1,32 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* Pixel Bird - Premium Design */
 
-body {
-    font-family: 'Outfit', sans-serif;
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
-    min-height: 100vh;
-    color: #fff;
-    overflow: hidden;
+/* Game Wrapper */
+.game-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 80px);
 }
 
 .game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
     max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
 }
 
-.game-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.back-btn {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    font-size: 0.9rem;
-    padding: 8px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-}
-
-.game-title {
-    font-size: 1.8rem;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.game-area {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
+/* Score Display */
 .score-display {
     display: flex;
-    gap: 40px;
-    margin-bottom: 15px;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem 2rem;
+    backdrop-filter: blur(10px);
 }
 
 .current-score,
@@ -69,64 +34,88 @@ body {
     text-align: center;
 }
 
-.label {
+.score-label {
     display: block;
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 5px;
+    margin-bottom: 0.25rem;
 }
 
-.value {
+.score-value {
+    font-family: 'Clash Display', sans-serif;
     font-size: 2rem;
     font-weight: 700;
-    color: #ffd93d;
-    text-shadow: 0 0 15px rgba(255, 217, 61, 0.5);
+}
+
+.current-score .score-value {
+    color: #00d4ff;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.high-score .score-value {
+    background: linear-gradient(90deg, #00d4ff, #7b68ee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Canvas Container */
+.canvas-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+        0 0 50px rgba(0, 212, 255, 0.15),
+        0 0 100px rgba(123, 104, 238, 0.1);
 }
 
 #gameCanvas {
-    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    border-radius: 16px;
-    border: 2px solid rgba(255, 107, 107, 0.3);
-    box-shadow: 0 0 40px rgba(255, 107, 107, 0.2);
+    display: block;
+    background: linear-gradient(180deg, #0a0a15 0%, #1a1a2e 100%);
+    border-radius: 20px;
     cursor: pointer;
 }
 
+/* Overlays */
 .overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(10, 10, 15, 0.95);
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 10;
-    min-width: 280px;
+    border-radius: 20px;
 }
 
 .overlay.hidden {
     display: none;
 }
 
-.overlay h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.overlay-content {
+    text-align: center;
+    padding: 2rem;
 }
 
-.overlay p {
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 10px;
+.overlay-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(90deg, #00d4ff, #7b68ee);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .bird-preview {
     font-size: 4rem;
-    margin: 20px 0;
+    margin: 1rem 0;
     animation: float 1.5s ease-in-out infinite;
 }
 
@@ -142,37 +131,131 @@ body {
     }
 }
 
-.hint {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.4);
+.overlay-desc {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
 }
 
-.neon-btn {
-    margin-top: 20px;
-    padding: 12px 30px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+.overlay-hint {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.final-score-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem 3rem;
+    margin-bottom: 1rem;
+}
+
+.final-label {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.final-value {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #00d4ff;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+}
+
+.new-best {
+    color: #ffd700;
+    font-size: 1.2rem;
     font-weight: 600;
-    color: #0a0a0f;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
-    border: none;
-    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    animation: bounce 0.5s ease infinite;
+}
+
+.new-best.hidden {
+    display: none;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Neon Button */
+.neon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 3rem;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(123, 104, 238, 0.2));
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .neon-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(123, 104, 238, 0.3));
+    border-color: rgba(0, 212, 255, 0.8);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
 }
 
-@media (max-width: 450px) {
+.neon-btn.pulse {
+    animation: btnPulse 2s ease-in-out infinite;
+}
+
+@keyframes btnPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
     #gameCanvas {
         width: 100%;
         height: auto;
+        max-width: 360px;
     }
 
-    .game-container {
-        padding: 10px;
+    .score-display {
+        gap: 1.5rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .score-value {
+        font-size: 1.5rem;
+    }
+
+    .overlay-title {
+        font-size: 2rem;
+    }
+
+    .final-value {
+        font-size: 2.5rem;
+    }
+
+    .bird-preview {
+        font-size: 3rem;
     }
 }

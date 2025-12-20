@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel Bird - Rase Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../auth.css">
     <link rel="stylesheet" href="style.css">
@@ -13,6 +17,10 @@
 </head>
 
 <body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">
             <a href="/" style="text-decoration: none; color: inherit;">
@@ -28,37 +36,50 @@
         </div>
     </nav>
 
-    <div class="game-container">
-
-        <div class="game-area">
+    <main class="game-wrapper">
+        <div class="game-container">
             <div class="score-display">
                 <div class="current-score">
-                    <span class="label">SCORE</span>
-                    <span id="score" class="value">0</span>
+                    <span class="score-label">SCORE</span>
+                    <span id="score" class="score-value">0</span>
                 </div>
                 <div class="high-score">
-                    <span class="label">BEST</span>
-                    <span id="highScore" class="value">0</span>
+                    <span class="score-label">BEST</span>
+                    <span id="highScore" class="score-value">0</span>
                 </div>
             </div>
 
-            <canvas id="gameCanvas" width="400" height="600"></canvas>
+            <div class="canvas-container">
+                <canvas id="gameCanvas" width="400" height="600"></canvas>
 
-            <div id="startScreen" class="overlay">
-                <h2>Pixel Bird</h2>
-                <p>Tap or press Space to fly!</p>
-                <div class="bird-preview">🐦</div>
-                <p class="hint">Avoid the neon pipes</p>
-            </div>
+                <!-- Start Screen -->
+                <div id="startScreen" class="overlay">
+                    <div class="overlay-content">
+                        <h2 class="overlay-title">Pixel Bird</h2>
+                        <div class="bird-preview">🐦</div>
+                        <p class="overlay-desc">Tap or press Space to fly!</p>
+                        <p class="overlay-hint">Avoid the neon pipes</p>
+                        <button id="startBtn" class="neon-btn pulse">Play</button>
+                    </div>
+                </div>
 
-            <div id="gameOverScreen" class="overlay hidden">
-                <h2>Game Over</h2>
-                <p>Score: <span id="finalScore">0</span></p>
-                <button id="restartBtn" class="neon-btn">Try Again</button>
+                <!-- Game Over Screen -->
+                <div id="gameOverScreen" class="overlay hidden">
+                    <div class="overlay-content">
+                        <h2 class="overlay-title">Game Over</h2>
+                        <div class="final-score-box">
+                            <span class="final-label">Score</span>
+                            <span id="finalScore" class="final-value">0</span>
+                        </div>
+                        <div id="newBest" class="new-best hidden">🎉 New Best!</div>
+                        <button id="restartBtn" class="neon-btn pulse">Try Again</button>
+                    </div>
+                </div>
             </div>
         </div>
+    </main>
 
-        <script src="game.js"></script>
+    <script src="game.js"></script>
 </body>
 
 </html>

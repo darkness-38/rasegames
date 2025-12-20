@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mind Match - Rase Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../auth.css">
     <link rel="stylesheet" href="style.css">
@@ -13,6 +17,10 @@
 </head>
 
 <body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">
             <a href="/" style="text-decoration: none; color: inherit;">
@@ -28,43 +36,82 @@
         </div>
     </nav>
 
-    <div class="game-container">
-        <div class="game-header">
-            <h1 class="game-title">Mind Match</h1>
-        </div>
-    </div>
+    <main class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1 class="game-title">Mind <span class="text-gradient">Match</span></h1>
+                <p class="game-subtitle">Find all matching pairs!</p>
+            </div>
 
-    <div class="game-info">
-        <div class="info-box">
-            <span class="label">MOVES</span>
-            <span id="moves" class="value">0</span>
-        </div>
-        <div class="info-box">
-            <span class="label">PAIRS</span>
-            <span id="pairs" class="value">0/8</span>
-        </div>
-        <div class="info-box">
-            <span class="label">TIME</span>
-            <span id="timer" class="value">0</span>
-        </div>
-        <div class="info-box">
-            <span class="label">BEST</span>
-            <span id="bestScore" class="value">--</span>
-        </div>
-    </div>
+            <div class="stats-panel">
+                <div class="stat-box">
+                    <span class="stat-icon">🎯</span>
+                    <div class="stat-info">
+                        <span class="stat-label">MOVES</span>
+                        <span id="moves" class="stat-value">0</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-icon">🧩</span>
+                    <div class="stat-info">
+                        <span class="stat-label">PAIRS</span>
+                        <span id="pairs" class="stat-value">0/8</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-icon">⏱️</span>
+                    <div class="stat-info">
+                        <span class="stat-label">TIME</span>
+                        <span id="timer" class="stat-value">0:00</span>
+                    </div>
+                </div>
+                <div class="stat-box best">
+                    <span class="stat-icon">🏆</span>
+                    <div class="stat-info">
+                        <span class="stat-label">BEST</span>
+                        <span id="bestScore" class="stat-value">--</span>
+                    </div>
+                </div>
+            </div>
 
-    <div id="gameBoard" class="game-board"></div>
+            <div id="gameBoard" class="game-board"></div>
 
-    <button id="restartBtn" class="neon-btn">New Game</button>
+            <button id="restartBtn" class="neon-btn">
+                <span class="btn-icon">🔄</span>
+                New Game
+            </button>
 
-    <div id="gameOverScreen" class="overlay hidden">
-        <h2>🎉 Congratulations!</h2>
-        <p>You found all pairs!</p>
-        <p>Moves: <span id="finalMoves">0</span> • Time: <span id="finalTime">0</span>s</p>
-        <p>Score: <span id="finalScore">0</span></p>
-        <button id="playAgainBtn" class="neon-btn">Play Again</button>
-    </div>
-    </div>
+            <!-- Game Over Overlay -->
+            <div id="gameOverScreen" class="overlay hidden">
+                <div class="overlay-content">
+                    <div class="confetti-container">
+                        <span class="confetti">🎉</span>
+                        <span class="confetti">✨</span>
+                        <span class="confetti">🎊</span>
+                    </div>
+                    <h2 class="overlay-title">Congratulations!</h2>
+                    <p class="win-subtitle">You found all pairs!</p>
+
+                    <div class="final-stats">
+                        <div class="final-stat">
+                            <span class="final-stat-label">Moves</span>
+                            <span id="finalMoves" class="final-stat-value">0</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="final-stat-label">Time</span>
+                            <span id="finalTime" class="final-stat-value">0:00</span>
+                        </div>
+                        <div class="final-stat highlight">
+                            <span class="final-stat-label">Score</span>
+                            <span id="finalScore" class="final-stat-value">0</span>
+                        </div>
+                    </div>
+
+                    <button id="playAgainBtn" class="neon-btn pulse">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="game.js"></script>
 </body>

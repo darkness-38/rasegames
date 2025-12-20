@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retro Pong - Rase Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../auth.css">
     <link rel="stylesheet" href="style.css">
@@ -13,6 +17,10 @@
 </head>
 
 <body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">
             <a href="/" style="text-decoration: none; color: inherit;">
@@ -28,46 +36,65 @@
         </div>
     </nav>
 
-    <div class="game-container">
-        <div class="game-header">
-            <h1 class="game-title">Retro Pong</h1>
-        </div>
-    </div>
-
-    <div class="game-area">
-        <div class="score-board">
-            <div class="player-score">
-                <span class="label">YOU</span>
-                <span id="playerScore" class="score">0</span>
+    <main class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1 class="game-title">Retro <span class="text-gradient">Pong</span></h1>
             </div>
-            <div class="vs">VS</div>
-            <div class="ai-score">
-                <span class="label">CPU</span>
-                <span id="aiScore" class="score">0</span>
+
+            <div class="score-board">
+                <div class="player-score">
+                    <span class="label">YOU</span>
+                    <span id="playerScore" class="score">0</span>
+                </div>
+                <div class="vs-divider">
+                    <span class="vs">VS</span>
+                    <span class="goal-text">First to 10</span>
+                </div>
+                <div class="ai-score">
+                    <span class="label">CPU</span>
+                    <span id="aiScore" class="score">0</span>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="crt-overlay"></div>
+                <canvas id="gameCanvas" width="700" height="450"></canvas>
+
+                <!-- Start Screen -->
+                <div id="startScreen" class="overlay">
+                    <div class="overlay-content">
+                        <h2 class="overlay-title">🎮 Retro Pong</h2>
+                        <p class="overlay-desc">First to 10 points wins!</p>
+                        <div class="controls-info">
+                            <span>🖱️ Mouse</span>
+                            <span>👆 Touch</span>
+                            <span>⌨️ Arrow Keys</span>
+                        </div>
+                        <button id="startBtn" class="neon-btn pulse">Start Game</button>
+                    </div>
+                </div>
+
+                <!-- Game Over Screen -->
+                <div id="gameOverScreen" class="overlay hidden">
+                    <div class="overlay-content">
+                        <h2 class="overlay-title" id="resultText">You Win!</h2>
+                        <p class="final-score">
+                            <span id="finalPlayerScore">0</span>
+                            <span class="score-divider">-</span>
+                            <span id="finalAiScore">0</span>
+                        </p>
+                        <button id="restartBtn" class="neon-btn pulse">Play Again</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-controls">
+                <button id="upBtn" class="control-btn">▲</button>
+                <button id="downBtn" class="control-btn">▼</button>
             </div>
         </div>
-
-        <canvas id="gameCanvas" width="600" height="400"></canvas>
-
-        <div id="startScreen" class="overlay">
-            <h2>Retro Pong</h2>
-            <p>First to 10 points wins!</p>
-            <p class="hint">Move mouse or touch to control paddle</p>
-            <button id="startBtn" class="neon-btn">Start Game</button>
-        </div>
-
-        <div id="gameOverScreen" class="overlay hidden">
-            <h2 id="resultText">You Win!</h2>
-            <p>Final Score: <span id="finalPlayerScore">0</span> - <span id="finalAiScore">0</span></p>
-            <button id="restartBtn" class="neon-btn">Play Again</button>
-        </div>
-    </div>
-
-    <div class="mobile-controls">
-        <button id="upBtn" class="control-btn">▲</button>
-        <button id="downBtn" class="control-btn">▼</button>
-    </div>
-    </div>
+    </main>
 
     <script src="game.js"></script>
 </body>

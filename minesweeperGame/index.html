@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bomb Squad - Rase Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../auth.css">
     <link rel="stylesheet" href="style.css">
@@ -13,6 +17,10 @@
 </head>
 
 <body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">
             <a href="/" style="text-decoration: none; color: inherit;">
@@ -28,47 +36,66 @@
         </div>
     </nav>
 
-    <div class="game-container">
-        <div class="game-header">
-            <h1 class="game-title">Bomb Squad</h1>
-        </div>
-    </div>
+    <main class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1 class="game-title">Bomb <span class="text-gradient">Squad</span></h1>
+                <p class="game-subtitle">Clear the field without triggering mines!</p>
+            </div>
 
-    <div class="game-info">
-        <div class="info-box">
-            <span class="label">💣 MINES</span>
-            <span id="mineCount" class="value">10</span>
-        </div>
-        <div class="info-box">
-            <span class="label">🚩 FLAGS</span>
-            <span id="flagCount" class="value">0</span>
-        </div>
-        <div class="info-box">
-            <span class="label">⏱️ TIME</span>
-            <span id="timer" class="value">0</span>
-        </div>
-        <div class="info-box">
-            <span class="label">🏆 BEST</span>
-            <span id="bestTime" class="value">--</span>
-        </div>
-    </div>
+            <div class="stats-panel">
+                <div class="stat-box">
+                    <span class="stat-icon">💣</span>
+                    <div class="stat-info">
+                        <span class="stat-label">MINES</span>
+                        <span id="mineCount" class="stat-value">10</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-icon">🚩</span>
+                    <div class="stat-info">
+                        <span class="stat-label">FLAGS</span>
+                        <span id="flagCount" class="stat-value">0</span>
+                    </div>
+                </div>
+                <div class="stat-box timer">
+                    <span class="stat-icon">⏱️</span>
+                    <div class="stat-info">
+                        <span class="stat-label">TIME</span>
+                        <span id="timer" class="stat-value">0:00</span>
+                    </div>
+                </div>
+                <div class="stat-box best">
+                    <span class="stat-icon">🏆</span>
+                    <div class="stat-info">
+                        <span class="stat-label">BEST</span>
+                        <span id="bestTime" class="stat-value">--</span>
+                    </div>
+                </div>
+            </div>
 
-    <div class="difficulty-select">
-        <button class="diff-btn active" data-size="9" data-mines="10">Easy</button>
-        <button class="diff-btn" data-size="12" data-mines="20">Medium</button>
-        <button class="diff-btn" data-size="16" data-mines="40">Hard</button>
-    </div>
+            <div class="difficulty-panel">
+                <button class="diff-btn active" data-size="9" data-mines="10">Easy</button>
+                <button class="diff-btn" data-size="12" data-mines="25">Medium</button>
+                <button class="diff-btn" data-size="16" data-mines="50">Hard</button>
+            </div>
 
-    <div id="gameBoard" class="game-board"></div>
+            <div class="board-container">
+                <div id="gameBoard" class="game-board"></div>
+            </div>
 
-    <div id="gameOverScreen" class="overlay hidden">
-        <h2 id="resultText">Game Over</h2>
-        <p id="resultMessage"></p>
-        <button id="restartBtn" class="neon-btn">Play Again</button>
-    </div>
+            <p class="hint">👆 Tap to reveal • 👆 Long press to flag</p>
 
-    <p class="hint">Left click to reveal • Right click to flag</p>
-    </div>
+            <!-- Game Over Overlay -->
+            <div id="gameOverScreen" class="overlay hidden">
+                <div class="overlay-content">
+                    <h2 class="overlay-title" id="resultText">Game Over</h2>
+                    <p id="resultMessage" class="result-message"></p>
+                    <button id="restartBtn" class="neon-btn pulse">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="game.js"></script>
 </body>

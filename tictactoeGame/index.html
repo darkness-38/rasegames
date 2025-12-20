@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Pro - Rase Games</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../auth.css">
     <link rel="stylesheet" href="style.css">
@@ -13,6 +17,10 @@
 </head>
 
 <body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">
             <a href="/" style="text-decoration: none; color: inherit;">
@@ -28,51 +36,78 @@
         </div>
     </nav>
 
-    <div class="game-container">
-        <div class="game-header">
-            <h1 class="game-title">Tic Tac Pro</h1>
+    <main class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1 class="game-title">Tic Tac <span class="text-gradient">Pro</span></h1>
+                <p class="game-subtitle">Beat the AI to prove your skills!</p>
+            </div>
+
+            <div class="score-panel">
+                <div class="score-box player">
+                    <span class="player-icon x-icon">X</span>
+                    <div class="score-info">
+                        <span class="score-label">YOU</span>
+                        <span id="playerWins" class="score-value">0</span>
+                    </div>
+                </div>
+                <div class="score-box draws">
+                    <span class="draws-icon">⚖️</span>
+                    <div class="score-info">
+                        <span class="score-label">DRAWS</span>
+                        <span id="draws" class="score-value">0</span>
+                    </div>
+                </div>
+                <div class="score-box ai">
+                    <span class="player-icon o-icon">O</span>
+                    <div class="score-info">
+                        <span class="score-label">CPU</span>
+                        <span id="aiWins" class="score-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-bar">
+                <span id="status" class="status-text">Your turn!</span>
+            </div>
+
+            <div class="board-container">
+                <div id="gameBoard" class="game-board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+                <svg id="winLine" class="win-line" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="100" y2="100" />
+                </svg>
+            </div>
+
+            <div class="difficulty-panel">
+                <span class="difficulty-label">Difficulty</span>
+                <div class="difficulty-buttons">
+                    <button class="diff-btn" data-level="easy">Easy</button>
+                    <button class="diff-btn active" data-level="medium">Medium</button>
+                    <button class="diff-btn" data-level="hard">Hard</button>
+                </div>
+            </div>
+
+            <button id="restartBtn" class="neon-btn">
+                <span class="btn-icon">🔄</span>
+                New Game
+            </button>
+
+            <div class="streak-display">
+                <span class="streak-label">🔥 Win Streak:</span>
+                <span id="winStreak" class="streak-value">0</span>
+            </div>
         </div>
-    </div>
-
-    <div class="game-info">
-        <div class="info-box player-box">
-            <span class="label">YOU (X)</span>
-            <span id="playerWins" class="value">0</span>
-        </div>
-        <div class="info-box">
-            <span class="label">DRAWS</span>
-            <span id="draws" class="value">0</span>
-        </div>
-        <div class="info-box ai-box">
-            <span class="label">CPU (O)</span>
-            <span id="aiWins" class="value">0</span>
-        </div>
-    </div>
-
-    <div class="status-bar">
-        <span id="status">Your turn!</span>
-    </div>
-
-    <div id="gameBoard" class="game-board">
-        <div class="cell" data-index="0"></div>
-        <div class="cell" data-index="1"></div>
-        <div class="cell" data-index="2"></div>
-        <div class="cell" data-index="3"></div>
-        <div class="cell" data-index="4"></div>
-        <div class="cell" data-index="5"></div>
-        <div class="cell" data-index="6"></div>
-        <div class="cell" data-index="7"></div>
-        <div class="cell" data-index="8"></div>
-    </div>
-
-    <div class="difficulty-select">
-        <button class="diff-btn" data-level="easy">Easy</button>
-        <button class="diff-btn active" data-level="medium">Medium</button>
-        <button class="diff-btn" data-level="hard">Hard</button>
-    </div>
-
-    <button id="restartBtn" class="neon-btn">New Game</button>
-    </div>
+    </main>
 
     <script src="game.js"></script>
 </body>

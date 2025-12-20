@@ -1,187 +1,245 @@
+/**
+ * Mind Match - Memory Game Logic
+ * Premium memory game with 3D flip animations and leaderboard integration
+ */
 
-const gameBoard = document.getElementById('gameBoard');
-const movesEl = document.getElementById('moves');
-const pairsEl = document.getElementById('pairs');
-const timerEl = document.getElementById('timer');
-const bestScoreEl = document.getElementById('bestScore');
-const gameOverScreen = document.getElementById('gameOverScreen');
-const finalMovesEl = document.getElementById('finalMoves');
-const finalTimeEl = document.getElementById('finalTime');
-const finalScoreEl = document.getElementById('finalScore');
-const restartBtn = document.getElementById('restartBtn');
-const playAgainBtn = document.getElementById('playAgainBtn');
+class MindMatch {
+    constructor() {
+        this.symbols = ['🚀', '🎮', '🎯', '💎', '🔥', '⚡', '🌟', '🎨'];
+        this.cards = [];
+        this.flippedCards = [];
+        this.matchedPairs = 0;
+        this.totalPairs = 8;
+        this.moves = 0;
+        this.timer = 0;
+        this.timerInterval = null;
+        this.isLocked = false;
+        this.bestScore = parseInt(localStorage.getItem('bestMemory') || '0');
 
-const EMOJIS = ['🎮', '🎯', '🎲', '🎪', '🎨', '🎭', '🎵', '🎹'];
-const TOTAL_PAIRS = 8;
-
-let cards = [];
-let flippedCards = [];
-let matchedPairs = 0;
-let moves = 0;
-let timer = 0;
-let timerInterval = null;
-let isLocked = false;
-
-let bestScore = parseInt(localStorage.getItem('memoryBest')) || null;
-if (bestScore) bestScoreEl.textContent = bestScore;
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-function createCards() {
-    const cardValues = [...EMOJIS, ...EMOJIS];
-    shuffle(cardValues);
-
-    cards = cardValues.map((emoji, index) => ({
-        id: index,
-        emoji: emoji,
-        isFlipped: false,
-        isMatched: false
-    }));
-}
-
-function renderBoard() {
-    gameBoard.innerHTML = '';
-
-    cards.forEach((card, index) => {
-        const cardEl = document.createElement('div');
-        cardEl.className = 'card';
-        if (card.isFlipped || card.isMatched) cardEl.classList.add('flipped');
-        if (card.isMatched) cardEl.classList.add('matched');
-
-        cardEl.innerHTML = `
-            <div class="back">?</div>
-            <div class="front">${card.emoji}</div>
-        `;
-
-        cardEl.addEventListener('click', () => handleCardClick(index));
-        gameBoard.appendChild(cardEl);
-    });
-}
-
-function handleCardClick(index) {
-    const card = cards[index];
-
-    if (isLocked || card.isFlipped || card.isMatched) return;
-
-    
-    if (moves === 0 && flippedCards.length === 0 && !timerInterval) {
-        startTimer();
+        this.init();
     }
 
-    card.isFlipped = true;
-    flippedCards.push(index);
-    renderBoard();
-
-    if (flippedCards.length === 2) {
-        moves++;
-        movesEl.textContent = moves;
-        checkMatch();
+    init() {
+        this.setupEventListeners();
+        this.updateBestScore();
+        this.newGame();
     }
-}
 
-function checkMatch() {
-    const [first, second] = flippedCards;
-    const card1 = cards[first];
-    const card2 = cards[second];
+    setupEventListeners() {
+        document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
+        document.getElementById('playAgainBtn').addEventListener('click', () => this.newGame());
+    }
 
-    isLocked = true;
+    newGame() {
+        this.cards = [];
+        this.flippedCards = [];
+        this.matchedPairs = 0;
+        this.moves = 0;
+        this.timer = 0;
+        this.isLocked = false;
 
-    if (card1.emoji === card2.emoji) {
-        
-        card1.isMatched = true;
-        card2.isMatched = true;
-        matchedPairs++;
-        pairsEl.textContent = `${matchedPairs}/${TOTAL_PAIRS}`;
+        this.stopTimer();
+        this.updateMoves();
+        this.updatePairs();
+        this.updateTimer();
+        this.hideOverlay();
 
-        flippedCards = [];
-        isLocked = false;
-        renderBoard();
+        this.createCards();
+        this.renderBoard();
+    }
 
-        if (matchedPairs === TOTAL_PAIRS) {
-            gameOver();
+    createCards() {
+        // Create pairs
+        const cardPairs = [...this.symbols, ...this.symbols];
+
+        // Fisher-Yates shuffle
+        for (let i = cardPairs.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cardPairs[i], cardPairs[j]] = [cardPairs[j], cardPairs[i]];
         }
-    } else {
-        
-        setTimeout(() => {
-            card1.isFlipped = false;
-            card2.isFlipped = false;
-            flippedCards = [];
-            isLocked = false;
-            renderBoard();
+
+        this.cards = cardPairs.map((symbol, index) => ({
+            id: index,
+            symbol,
+            isFlipped: false,
+            isMatched: false
+        }));
+    }
+
+    renderBoard() {
+        const board = document.getElementById('gameBoard');
+        board.innerHTML = '';
+
+        this.cards.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.className = 'memory-card';
+            cardElement.dataset.id = card.id;
+
+            cardElement.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span class="card-symbol">${card.symbol}</span>
+                    </div>
+                    <div class="card-back"></div>
+                </div>
+            `;
+
+            cardElement.addEventListener('click', () => this.flipCard(card.id));
+            board.appendChild(cardElement);
+        });
+    }
+
+    flipCard(id) {
+        if (this.isLocked) return;
+
+        const card = this.cards[id];
+        if (card.isFlipped || card.isMatched) return;
+
+        // Start timer on first flip
+        if (this.moves === 0 && this.flippedCards.length === 0) {
+            this.startTimer();
+        }
+
+        card.isFlipped = true;
+        this.flippedCards.push(card);
+
+        const cardElement = document.querySelector(`[data-id="${id}"]`);
+        cardElement.classList.add('flipped');
+
+        if (this.flippedCards.length === 2) {
+            this.moves++;
+            this.updateMoves();
+            this.checkMatch();
+        }
+    }
+
+    checkMatch() {
+        this.isLocked = true;
+        const [card1, card2] = this.flippedCards;
+
+        if (card1.symbol === card2.symbol) {
+            // Match!
+            card1.isMatched = true;
+            card2.isMatched = true;
+            this.matchedPairs++;
+            this.updatePairs();
+
+            const el1 = document.querySelector(`[data-id="${card1.id}"]`);
+            const el2 = document.querySelector(`[data-id="${card2.id}"]`);
+            el1.classList.add('matched');
+            el2.classList.add('matched');
+
+            this.flippedCards = [];
+            this.isLocked = false;
+
+            if (this.matchedPairs === this.totalPairs) {
+                this.gameWon();
+            }
+        } else {
+            // No match
+            const el1 = document.querySelector(`[data-id="${card1.id}"]`);
+            const el2 = document.querySelector(`[data-id="${card2.id}"]`);
+            el1.classList.add('wrong');
+            el2.classList.add('wrong');
+
+            setTimeout(() => {
+                card1.isFlipped = false;
+                card2.isFlipped = false;
+
+                el1.classList.remove('flipped', 'wrong');
+                el2.classList.remove('flipped', 'wrong');
+
+                this.flippedCards = [];
+                this.isLocked = false;
+            }, 800);
+        }
+    }
+
+    startTimer() {
+        this.timerInterval = setInterval(() => {
+            this.timer++;
+            this.updateTimer();
         }, 1000);
     }
-}
 
-function startTimer() {
-    timer = 0;
-    timerInterval = setInterval(() => {
-        timer++;
-        timerEl.textContent = timer;
-    }, 1000);
-}
-
-function stopTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-}
-
-function calculateScore() {
-    
-    const baseScore = 1000;
-    const movePenalty = moves * 5;
-    const timePenalty = timer * 2;
-    return Math.max(0, baseScore - movePenalty - timePenalty);
-}
-
-function gameOver() {
-    stopTimer();
-
-    const score = calculateScore();
-
-    finalMovesEl.textContent = moves;
-    finalTimeEl.textContent = timer;
-    finalScoreEl.textContent = score;
-
-    if (!bestScore || score > bestScore) {
-        bestScore = score;
-        bestScoreEl.textContent = score;
-        localStorage.setItem('memoryBest', score);
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
     }
 
-    if (window.Leaderboard && score > 0) {
-        Leaderboard.submit('memory', score);
+    updateMoves() {
+        document.getElementById('moves').textContent = this.moves;
     }
 
-    gameOverScreen.classList.remove('hidden');
+    updatePairs() {
+        document.getElementById('pairs').textContent = `${this.matchedPairs}/${this.totalPairs}`;
+    }
+
+    updateTimer() {
+        const minutes = Math.floor(this.timer / 60);
+        const seconds = this.timer % 60;
+        document.getElementById('timer').textContent =
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    updateBestScore() {
+        const bestEl = document.getElementById('bestScore');
+        if (this.bestScore > 0) {
+            bestEl.textContent = this.bestScore;
+        } else {
+            bestEl.textContent = '--';
+        }
+    }
+
+    calculateScore() {
+        // Higher score = better performance
+        // Base: 10000, minus time penalty, minus moves penalty
+        const baseScore = 10000;
+        const timePenalty = this.timer * 5;
+        const movesPenalty = this.moves * 10;
+
+        return Math.max(0, baseScore - timePenalty - movesPenalty);
+    }
+
+    gameWon() {
+        this.stopTimer();
+
+        const score = this.calculateScore();
+
+        // Update best score
+        if (score > this.bestScore) {
+            this.bestScore = score;
+            localStorage.setItem('bestMemory', this.bestScore);
+            this.updateBestScore();
+        }
+
+        // Update overlay
+        document.getElementById('finalMoves').textContent = this.moves;
+        const minutes = Math.floor(this.timer / 60);
+        const seconds = this.timer % 60;
+        document.getElementById('finalTime').textContent =
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        document.getElementById('finalScore').textContent = score;
+
+        // Show overlay after a short delay
+        setTimeout(() => {
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+        }, 500);
+
+        // Submit to leaderboard
+        if (typeof Leaderboard !== 'undefined' && score > 0) {
+            Leaderboard.submit('memory', score);
+        }
+    }
+
+    hideOverlay() {
+        document.getElementById('gameOverScreen').classList.add('hidden');
+    }
 }
 
-function initGame() {
-    stopTimer();
-
-    cards = [];
-    flippedCards = [];
-    matchedPairs = 0;
-    moves = 0;
-    timer = 0;
-    isLocked = false;
-
-    movesEl.textContent = 0;
-    pairsEl.textContent = `0/${TOTAL_PAIRS}`;
-    timerEl.textContent = 0;
-
-    createCards();
-    renderBoard();
-    gameOverScreen.classList.add('hidden');
-}
-
-restartBtn.addEventListener('click', initGame);
-playAgainBtn.addEventListener('click', initGame);
-
-
-initGame();
+// Initialize game
+document.addEventListener('DOMContentLoaded', () => {
+    new MindMatch();
+});

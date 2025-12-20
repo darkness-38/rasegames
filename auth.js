@@ -308,7 +308,7 @@ function updateAuthUI() {
         if (currentUser.isAnonymous) {
             userDisplay.innerHTML = `<span class="user-guest">👤 Guest</span> <button onclick="showAuthModal()" class="btn-small">Sign Up</button>`;
         } else {
-            userDisplay.innerHTML = `<a href="/profile" onclick="route()" class="user-name-link">👤 ${currentUser.displayName}</a> <button onclick="logoutUser()" class="btn-small">Logout</button>`;
+            userDisplay.innerHTML = `<a href="/profile" onclick="route()" class="user-name-link">👤 ${currentUser.displayName}</a> <button onclick="logoutUser()" class="btn-small logout">Logout</button>`;
         }
     } else {
         userDisplay.innerHTML = `<button onclick="showAuthModal()" class="btn-small">Log In</button>`;

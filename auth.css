@@ -1,5 +1,3 @@
-
-
 .auth-modal {
     position: fixed;
     top: 0;
@@ -229,18 +227,35 @@
 }
 
 .btn-small {
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
-    color: #fff;
-    font-size: 0.8rem;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(123, 104, 238, 0.15));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    color: #00d4ff;
+    font-size: 0.85rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
 }
 
 .btn-small:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(123, 104, 238, 0.3));
+    border-color: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-small.logout {
+    background: linear-gradient(135deg, rgba(255, 100, 100, 0.15), rgba(255, 50, 50, 0.15));
+    border-color: rgba(255, 100, 100, 0.3);
+    color: #ff6b6b;
+}
+
+.btn-small.logout:hover {
+    background: linear-gradient(135deg, rgba(255, 100, 100, 0.3), rgba(255, 50, 50, 0.3));
+    border-color: rgba(255, 100, 100, 0.5);
+    box-shadow: 0 4px 15px rgba(255, 100, 100, 0.25);
 }
 
 

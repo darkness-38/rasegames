@@ -1,27 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mind Match - Rase Games</title>
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Parent styles -->
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../auth.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "card-dark": "#1A2230",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .card-back-pattern {
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+
+        .memory-card {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            backface-visibility: hidden;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+        }
+
+        .card-front {
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            animation: matchPulse 0.5s ease;
+        }
+
+        @keyframes matchPulse {
+
+            0%,
+            100% {
+                transform: rotateY(180deg) scale(1);
+            }
+
+            50% {
+                transform: rotateY(180deg) scale(1.05);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
     <script src="../auth.js"></script>
     <script src="../leaderboard.js"></script>
 </head>
 
-<body>
-    <div class="background-effects">
-        <div class="glow-orb"></div>
-    </div>
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen flex flex-col overflow-x-hidden">
 
-    <nav class="navbar">
+    <!-- Top Navigation -->
+    <nav class="navbar" style="position: sticky; top: 0; z-index: 50;">
         <div class="logo">
             <a href="/" style="text-decoration: none; color: inherit;">
                 <span class="logo-text">Rase Games</span>
@@ -36,82 +128,113 @@
         </div>
     </nav>
 
-    <main class="game-wrapper">
-        <div class="game-container">
-            <div class="game-header">
-                <h1 class="game-title">Mind <span class="text-gradient">Match</span></h1>
-                <p class="game-subtitle">Find all matching pairs!</p>
+    <!-- Main Game Area -->
+    <main class="flex-1 flex flex-col items-center justify-start p-4 sm:p-6 gap-6">
+
+        <!-- Game Header -->
+        <div class="flex items-center gap-3 mb-2">
+            <div class="size-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-3xl"
+                    style="font-variation-settings: 'FILL' 1;">psychology</span>
             </div>
-
-            <div class="stats-panel">
-                <div class="stat-box">
-                    <span class="stat-icon">🎯</span>
-                    <div class="stat-info">
-                        <span class="stat-label">MOVES</span>
-                        <span id="moves" class="stat-value">0</span>
-                    </div>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-icon">🧩</span>
-                    <div class="stat-info">
-                        <span class="stat-label">PAIRS</span>
-                        <span id="pairs" class="stat-value">0/8</span>
-                    </div>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-icon">⏱️</span>
-                    <div class="stat-info">
-                        <span class="stat-label">TIME</span>
-                        <span id="timer" class="stat-value">0:00</span>
-                    </div>
-                </div>
-                <div class="stat-box best">
-                    <span class="stat-icon">🏆</span>
-                    <div class="stat-info">
-                        <span class="stat-label">BEST</span>
-                        <span id="bestScore" class="stat-value">--</span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="gameBoard" class="game-board"></div>
-
-            <button id="restartBtn" class="neon-btn">
-                <span class="btn-icon">🔄</span>
-                New Game
-            </button>
-
-            <!-- Game Over Overlay -->
-            <div id="gameOverScreen" class="overlay hidden">
-                <div class="overlay-content">
-                    <div class="confetti-container">
-                        <span class="confetti">🎉</span>
-                        <span class="confetti">✨</span>
-                        <span class="confetti">🎊</span>
-                    </div>
-                    <h2 class="overlay-title">Congratulations!</h2>
-                    <p class="win-subtitle">You found all pairs!</p>
-
-                    <div class="final-stats">
-                        <div class="final-stat">
-                            <span class="final-stat-label">Moves</span>
-                            <span id="finalMoves" class="final-stat-value">0</span>
-                        </div>
-                        <div class="final-stat">
-                            <span class="final-stat-label">Time</span>
-                            <span id="finalTime" class="final-stat-value">0:00</span>
-                        </div>
-                        <div class="final-stat highlight">
-                            <span class="final-stat-label">Score</span>
-                            <span id="finalScore" class="final-stat-value">0</span>
-                        </div>
-                    </div>
-
-                    <button id="playAgainBtn" class="neon-btn pulse">Play Again</button>
-                </div>
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Mind Match</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Find all matching pairs!</p>
             </div>
         </div>
+
+        <!-- HUD: Stats & Timer -->
+        <div class="w-full max-w-2xl grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <!-- Timer -->
+            <div
+                class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50">
+                <span
+                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Time</span>
+                <div
+                    class="flex items-center gap-2 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-mono">
+                    <span class="material-symbols-outlined text-primary text-lg">timer</span>
+                    <span id="timer">0:00</span>
+                </div>
+            </div>
+            <!-- Moves -->
+            <div
+                class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50">
+                <span
+                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Moves</span>
+                <span id="moves" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">0</span>
+            </div>
+            <!-- Pairs -->
+            <div
+                class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50">
+                <span
+                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Pairs</span>
+                <span id="pairs" class="text-xl sm:text-2xl font-bold text-primary">0/8</span>
+            </div>
+            <!-- Best Score -->
+            <div
+                class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50 bg-gradient-to-br from-amber-500/5 to-yellow-500/5">
+                <span
+                    class="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">Best</span>
+                <span id="bestScore" class="text-xl sm:text-2xl font-bold text-amber-600 dark:text-amber-400">--</span>
+            </div>
+        </div>
+
+        <!-- Game Grid -->
+        <div class="w-full max-w-2xl">
+            <div id="gameBoard" class="grid grid-cols-4 gap-2 sm:gap-3 w-full">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Controls Footer -->
+        <div class="flex flex-col items-center gap-3 mt-2 w-full max-w-md">
+            <button id="restartBtn"
+                class="w-full flex items-center justify-center gap-2 h-12 sm:h-14 bg-primary hover:bg-blue-700 text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-blue-900/20 hover:shadow-xl hover:-translate-y-0.5">
+                <span class="material-symbols-outlined">refresh</span>
+                <span>New Game</span>
+            </button>
+            <a href="/"
+                class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                Back to Games
+            </a>
+        </div>
     </main>
+
+    <!-- Game Over Overlay -->
+    <div id="gameOverScreen"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-card-dark rounded-2xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border border-slate-200 dark:border-slate-700 animate-fadeIn">
+            <!-- Confetti -->
+            <div class="text-4xl mb-4">🎉</div>
+
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">Congratulations!</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-6">You found all pairs!</p>
+
+            <!-- Final Stats -->
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-3">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 uppercase block mb-1">Moves</span>
+                    <span id="finalMoves" class="text-xl font-bold text-slate-900 dark:text-white">0</span>
+                </div>
+                <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-3">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 uppercase block mb-1">Time</span>
+                    <span id="finalTime" class="text-xl font-bold text-slate-900 dark:text-white">0:00</span>
+                </div>
+                <div class="bg-primary/10 rounded-xl p-3 border-2 border-primary">
+                    <span class="text-xs text-primary uppercase block mb-1">Score</span>
+                    <span id="finalScore" class="text-xl font-bold text-primary">0</span>
+                </div>
+            </div>
+
+            <button id="playAgainBtn"
+                class="w-full flex items-center justify-center gap-2 h-12 bg-primary hover:bg-blue-700 text-white text-base font-bold rounded-xl transition-all shadow-lg">
+                <span class="material-symbols-outlined">refresh</span>
+                Play Again
+            </button>
+        </div>
+    </div>
 
     <script src="game.js"></script>
 </body>

@@ -45,13 +45,24 @@ class InputHandler {
     }
 
     handleKeyDown(e) {
-        if (!this.keys[e.code]) {
-            this.keys[e.code] = true;
-            this.addToBuffer(e.code);
+        // Don't capture keys when typing in input fields
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+            return;
         }
 
+        // Only track keys when game screen is active
+        const gameScreen = document.getElementById('game-screen');
+        const isGameActive = gameScreen && gameScreen.classList.contains('active');
 
-        if (this.isGameKey(e.code)) {
+        if (!this.keys[e.code]) {
+            this.keys[e.code] = true;
+            if (isGameActive) {
+                this.addToBuffer(e.code);
+            }
+        }
+
+        // Only prevent default during active gameplay
+        if (isGameActive && this.isGameKey(e.code)) {
             e.preventDefault();
         }
     }

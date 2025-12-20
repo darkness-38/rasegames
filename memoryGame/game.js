@@ -63,17 +63,33 @@ class MindMatch {
         const board = document.getElementById('gameBoard');
         board.innerHTML = '';
 
+        // Material symbol icons for cards
+        const iconMap = {
+            '🚀': 'rocket_launch',
+            '🎮': 'sports_esports',
+            '🎯': 'my_location',
+            '💎': 'diamond',
+            '🔥': 'local_fire_department',
+            '⚡': 'bolt',
+            '🌟': 'star',
+            '🎨': 'palette'
+        };
+
         this.cards.forEach(card => {
             const cardElement = document.createElement('div');
-            cardElement.className = 'memory-card';
+            cardElement.className = 'memory-card aspect-square relative cursor-pointer';
             cardElement.dataset.id = card.id;
 
+            const icon = iconMap[card.symbol] || 'help';
+
             cardElement.innerHTML = `
-                <div class="card-inner">
-                    <div class="card-front">
-                        <span class="card-symbol">${card.symbol}</span>
-                    </div>
-                    <div class="card-back"></div>
+                <!-- Card Back (face down) -->
+                <div class="card-face card-back bg-primary rounded-xl shadow-lg flex items-center justify-center card-back-pattern">
+                    <span class="material-symbols-outlined text-white/20 text-3xl sm:text-4xl">help_center</span>
+                </div>
+                <!-- Card Front (face up) -->
+                <div class="card-face card-front bg-white dark:bg-slate-800 rounded-xl shadow-lg border-2 border-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-4xl sm:text-5xl md:text-6xl" style="font-variation-settings: 'FILL' 1;">${icon}</span>
                 </div>
             `;
 
@@ -120,6 +136,22 @@ class MindMatch {
             const el2 = document.querySelector(`[data-id="${card2.id}"]`);
             el1.classList.add('matched');
             el2.classList.add('matched');
+
+            // Apply matched styling - change card front to emerald
+            const front1 = el1.querySelector('.card-front');
+            const front2 = el2.querySelector('.card-front');
+            if (front1) {
+                front1.classList.remove('border-primary');
+                front1.classList.add('bg-emerald-500/10', 'dark:bg-emerald-500/20', 'border-emerald-500/30', 'opacity-80');
+                front1.querySelector('.material-symbols-outlined').classList.remove('text-primary');
+                front1.querySelector('.material-symbols-outlined').classList.add('text-emerald-500');
+            }
+            if (front2) {
+                front2.classList.remove('border-primary');
+                front2.classList.add('bg-emerald-500/10', 'dark:bg-emerald-500/20', 'border-emerald-500/30', 'opacity-80');
+                front2.querySelector('.material-symbols-outlined').classList.remove('text-primary');
+                front2.querySelector('.material-symbols-outlined').classList.add('text-emerald-500');
+            }
 
             this.flippedCards = [];
             this.isLocked = false;

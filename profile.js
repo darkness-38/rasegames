@@ -10,10 +10,10 @@ let userProfile = null;
 
 
 function initProfile() {
-    
+
     renderAvatarGrid();
 
-    
+
     let attempts = 0;
     const checkAuth = setInterval(() => {
         attempts++;
@@ -28,7 +28,7 @@ function initProfile() {
             } else {
                 showNotLoggedIn();
             }
-        } else if (attempts > 30) { 
+        } else if (attempts > 30) {
             clearInterval(checkAuth);
             showNotLoggedIn();
         }
@@ -65,43 +65,36 @@ async function loadUserProfile() {
     const user = window.currentUser;
     if (!user) return;
 
-    
+
     document.getElementById('display-name').textContent = user.displayName || 'Player';
     document.getElementById('user-email').textContent = user.email || '';
     document.getElementById('input-username').value = user.displayName || '';
 
-    
+
     try {
         await loadFirebaseDB();
         const db = firebase.database();
 
-        
+
         const snapshot = await db.ref(`users/${user.uid}`).once('value');
         userProfile = snapshot.val() || {};
 
-        
+
         if (userProfile.avatar) {
             selectedAvatar = userProfile.avatar;
             document.getElementById('current-avatar').textContent = selectedAvatar;
             renderAvatarGrid();
         }
 
-        
-        let createdAt = userProfile.createdAt;
-        if (!createdAt && user.metadata && user.metadata.creationTime) {
-            createdAt = new Date(user.metadata.creationTime).getTime();
-
-            
-            if (!userProfile.createdAt) {
-                db.ref(`users/${user.uid}/createdAt`).set(createdAt).catch(() => { });
-            }
-        }
-
-        if (createdAt) {
+        // Show account creation date from Firebase metadata (actual account creation time)
+        if (user.metadata && user.metadata.creationTime) {
+            const createdAt = new Date(user.metadata.creationTime).getTime();
             document.getElementById('stat-joined').textContent = formatDate(createdAt);
+        } else if (userProfile.createdAt) {
+            document.getElementById('stat-joined').textContent = formatDate(userProfile.createdAt);
         }
 
-        
+
         const games = ['snake', 'clicker', 'runner'];
         let bestRank = null;
         let totalGames = 0;
@@ -119,10 +112,10 @@ async function loadUserProfile() {
                 });
             });
 
-            
+
             entries.sort((a, b) => b.score - a.score);
 
-            
+
             const userIndex = entries.findIndex(e => e.uid === user.uid);
             if (userIndex !== -1) {
                 totalGames++;
@@ -133,7 +126,7 @@ async function loadUserProfile() {
             }
         }
 
-        
+
         document.getElementById('stat-games').textContent = totalGames;
         document.getElementById('stat-best').textContent = bestRank ? `#${bestRank}` : '-';
 
@@ -148,7 +141,7 @@ async function loadFirebaseDB() {
     await loadScriptOnce('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
     await loadScriptOnce('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
 
-    
+
     await new Promise((resolve, reject) => {
         let attempts = 0;
         const check = () => {
@@ -203,10 +196,10 @@ async function saveProfile(e) {
 
     try {
         const user = window.currentUser;
-        
+
         await user.updateProfile({ displayName: username });
 
-        
+
         await loadFirebaseDB();
         await firebase.database().ref(`users/${user.uid}`).update({
             username: username,
@@ -214,7 +207,7 @@ async function saveProfile(e) {
             updatedAt: Date.now()
         });
 
-        
+
         document.getElementById('display-name').textContent = username;
 
         showProfileNotification('Profile saved!', 'success');
@@ -254,7 +247,7 @@ if (typeof window !== 'undefined') {
     window.updateAuthUI = function () {
         if (originalUpdateAuthUI) originalUpdateAuthUI();
 
-        
+
         if (document.getElementById('profile-content')) {
             const user = window.currentUser;
             if (user && !user.isAnonymous) {

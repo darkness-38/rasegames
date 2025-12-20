@@ -108,16 +108,37 @@ function leaveRoom(playerId) {
     playerRooms.delete(playerId);
 
     // If game hasn't started yet (lobby), close entire room
+    // If game hasn't started yet (lobby)
     if (room.state === 'waiting' || room.state === 'selecting') {
-        if (room.host && room.host !== playerId) {
-            io.to(room.host).emit('roomClosed', { reason: 'Other player left the lobby' });
-            playerRooms.delete(room.host);
+
+        // If Host leaves
+        if (room.host === playerId) {
+            console.log(`[ROOM] Host left room ${code}. Scheduling deletion in 30s.`);
+
+            // Mark for deletion but wait 30s
+            room.pendingDeletion = setTimeout(() => {
+                if (rooms.has(code) && rooms.get(code).host === playerId) { // Security check
+                    console.log(`[ROOM] Deleting room ${code} (Host timeout)`);
+
+                    if (room.guest) {
+                        io.to(room.guest).emit('roomClosed', { reason: 'Host disconnected' });
+                        playerRooms.delete(room.guest);
+                    }
+                    rooms.delete(code);
+                }
+            }, 30000); // 30 seconds grace period
+
+            // If Guest leaves
+        } else if (room.guest === playerId) {
+            console.log(`[ROOM] Guest left room ${code}. Removing guest.`);
+            room.guest = null;
+            room.guestCharacter = null;
+            room.guestReady = false;
+
+            io.to(room.host).emit('guestLeft');
+            // Do NOT close the room, let host wait for new guest
         }
-        if (room.guest && room.guest !== playerId) {
-            io.to(room.guest).emit('roomClosed', { reason: 'Other player left the lobby' });
-            playerRooms.delete(room.guest);
-        }
-        rooms.delete(code);
+
         return;
     }
 

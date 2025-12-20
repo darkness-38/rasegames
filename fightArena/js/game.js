@@ -1126,21 +1126,46 @@ function setupMultiplayerCallbacks() {
 function showOnlineCharacterSelect() {
     showScreen('character-select');
 
+    // Wait for screen transition and ensure DOM is ready
+    setTimeout(() => {
+        try {
+            // Use h3 selector as .player-label class was missing
+            const p1Label = document.querySelector('#p1-select h3');
+            const p2Label = document.querySelector('#p2-select h3');
+            const p1Select = document.getElementById('p1-select');
+            const p2Select = document.getElementById('p2-select');
 
-    const p1Label = document.querySelector('#p1-select .player-label');
-    const p2Label = document.querySelector('#p2-select .player-label');
+            console.log('[UI] Setup Character Select:', {
+                isHost: gameState.isHost,
+                p1LabelFound: !!p1Label,
+                p2LabelFound: !!p2Label
+            });
 
-    if (gameState.isHost) {
-        p1Label.innerHTML = 'SEN <span class="key-hint">(Karakter Seç)</span>';
-        p2Label.innerHTML = 'RAKİP <span class="key-hint">(Bekleniyor...)</span>';
-        document.getElementById('p2-select').style.opacity = '0.5';
-        document.getElementById('p2-select').style.pointerEvents = 'none';
-    } else {
-        p1Label.innerHTML = 'RAKİP <span class="key-hint">(Bekleniyor...)</span>';
-        p2Label.innerHTML = 'SEN <span class="key-hint">(Karakter Seç)</span>';
-        document.getElementById('p1-select').style.opacity = '0.5';
-        document.getElementById('p1-select').style.pointerEvents = 'none';
-    }
+            if (!p1Label || !p2Label) {
+                console.warn('[UI WARNING] Player labels not found, UI might look static.');
+            }
+
+            if (gameState.isHost) {
+                if (p1Label) p1Label.innerHTML = 'SEN <span class="key-hint">(Karakter Seç)</span>';
+                if (p2Label) p2Label.innerHTML = 'RAKİP <span class="key-hint">(Bekleniyor...)</span>';
+
+                if (p2Select) {
+                    p2Select.style.opacity = '0.5';
+                    p2Select.style.pointerEvents = 'none';
+                }
+            } else {
+                if (p1Label) p1Label.innerHTML = 'RAKİP <span class="key-hint">(Bekleniyor...)</span>';
+                if (p2Label) p2Label.innerHTML = 'SEN <span class="key-hint">(Karakter Seç)</span>';
+
+                if (p1Select) {
+                    p1Select.style.opacity = '0.5';
+                    p1Select.style.pointerEvents = 'none';
+                }
+            }
+        } catch (e) {
+            console.error('[UI CRASH PREVENTED]', e);
+        }
+    }, 100);
 }
 
 function selectCharacterOnline(charType) {

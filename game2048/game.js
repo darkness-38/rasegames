@@ -1,6 +1,6 @@
 /**
  * Power 2048 - Game Logic
- * Premium 2048 with smooth animations and leaderboard integration
+ * Premium 2048 with Tailwind UI integration
  */
 
 class Game2048 {
@@ -13,30 +13,41 @@ class Game2048 {
         this.won = false;
         this.keepPlaying = false;
 
-        this.tileSize = 0;
-        this.gap = 10;
+        // Tile colors based on value
+        this.tileStyles = {
+            2: 'bg-white text-slate-900',
+            4: 'bg-[#ede0c8] text-slate-800',
+            8: 'bg-[#f2b179] text-white',
+            16: 'bg-[#f59563] text-white',
+            32: 'bg-[#f67c5f] text-white',
+            64: 'bg-[#f65e3b] text-white',
+            128: 'bg-[#edcf72] text-white ring-2 ring-yellow-400/50',
+            256: 'bg-[#edcc61] text-white ring-2 ring-yellow-400/50',
+            512: 'bg-[#edc850] text-white ring-2 ring-yellow-400/50',
+            1024: 'bg-primary text-white ring-2 ring-primary/50 shadow-lg shadow-primary/40',
+            2048: 'bg-gradient-to-br from-yellow-400 to-yellow-600 text-white ring-2 ring-yellow-400 shadow-lg shadow-yellow-500/40'
+        };
 
         this.init();
     }
 
     init() {
-        this.calculateTileSize();
         this.setupEventListeners();
         this.updateBestScore();
         this.newGame();
     }
 
-    calculateTileSize() {
-        const board = document.getElementById('gameBoard');
-        const boardSize = board.offsetWidth - 20; // padding
-        this.tileSize = (boardSize - this.gap * (this.size + 1)) / this.size;
-    }
-
     setupEventListeners() {
+        // Restart buttons
+        document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
+        document.getElementById('winRestartBtn')?.addEventListener('click', () => this.newGame());
+        document.getElementById('gameOverRestartBtn')?.addEventListener('click', () => this.newGame());
+        document.getElementById('continueBtn')?.addEventListener('click', () => this.continueGame());
+
         // Keyboard
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
 
-        // Touch / Swipe
+        // Touch
         let touchStartX, touchStartY;
         const board = document.getElementById('gameBoard');
 
@@ -54,40 +65,42 @@ class Game2048 {
             const dx = touchEndX - touchStartX;
             const dy = touchEndY - touchStartY;
 
-            const absDx = Math.abs(dx);
-            const absDy = Math.abs(dy);
-
-            if (Math.max(absDx, absDy) > 30) {
-                if (absDx > absDy) {
+            if (Math.abs(dx) > Math.abs(dy)) {
+                if (Math.abs(dx) > 30) {
                     this.move(dx > 0 ? 'right' : 'left');
-                } else {
+                }
+            } else {
+                if (Math.abs(dy) > 30) {
                     this.move(dy > 0 ? 'down' : 'up');
                 }
             }
 
             touchStartX = null;
             touchStartY = null;
-        }, { passive: true });
-
-        // Buttons
-        document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
-        document.getElementById('playAgainBtn').addEventListener('click', () => this.newGame());
-        document.getElementById('continueBtn')?.addEventListener('click', () => this.continueGame());
-        document.getElementById('newGameBtn')?.addEventListener('click', () => this.newGame());
-
-        // Window resize
-        window.addEventListener('resize', () => {
-            this.calculateTileSize();
-            this.renderTiles();
         });
     }
 
     handleKeydown(e) {
         if (this.gameOver && !this.keepPlaying) return;
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+
+        const keyMap = {
+            'ArrowUp': 'up',
+            'ArrowDown': 'down',
+            'ArrowLeft': 'left',
+            'ArrowRight': 'right',
+            'w': 'up',
+            'W': 'up',
+            's': 'down',
+            'S': 'down',
+            'a': 'left',
+            'A': 'left',
+            'd': 'right',
+            'D': 'right'
+        };
+
+        if (keyMap[e.key]) {
             e.preventDefault();
-            const direction = e.key.replace('Arrow', '').toLowerCase();
-            this.move(direction);
+            this.move(keyMap[e.key]);
         }
     }
 
@@ -101,19 +114,15 @@ class Game2048 {
         this.updateScore();
         this.hideOverlays();
 
+        // Add two initial tiles
         this.addRandomTile();
         this.addRandomTile();
-        this.renderTiles();
+        this.render();
     }
 
     continueGame() {
         this.keepPlaying = true;
         this.hideOverlays();
-    }
-
-    hideOverlays() {
-        document.getElementById('gameOverScreen').classList.add('hidden');
-        document.getElementById('winScreen')?.classList.add('hidden');
     }
 
     addRandomTile() {
@@ -126,24 +135,22 @@ class Game2048 {
             }
         }
 
-        if (emptyCells.length === 0) return false;
-
-        const { r, c } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        this.grid[r][c] = Math.random() < 0.9 ? 2 : 4;
-
-        return { r, c, value: this.grid[r][c] };
+        if (emptyCells.length > 0) {
+            const { r, c } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            this.grid[r][c] = Math.random() < 0.9 ? 2 : 4;
+            return { r, c };
+        }
+        return null;
     }
 
     move(direction) {
         if (this.gameOver && !this.keepPlaying) return;
 
-        const rotations = { up: 0, right: 1, down: 2, left: 3 };
-        const times = rotations[direction];
-
-        // Rotate grid to always process left
-        let grid = this.rotateGrid(this.grid, times);
         let moved = false;
-        let mergedPositions = [];
+        const mergedPositions = [];
+
+        // Rotate grid to always process left-to-right
+        let grid = this.rotateGrid(direction);
 
         for (let r = 0; r < this.size; r++) {
             const row = grid[r].filter(val => val !== 0);
@@ -165,61 +172,65 @@ class Game2048 {
                 }
             }
 
+            // Fill with zeros
             while (newRow.length < this.size) {
                 newRow.push(0);
             }
 
-            if (newRow.join(',') !== grid[r].join(',')) {
+            if (JSON.stringify(grid[r]) !== JSON.stringify(newRow)) {
                 moved = true;
             }
             grid[r] = newRow;
         }
 
         // Rotate back
-        grid = this.rotateGrid(grid, (4 - times) % 4);
-        // Rotate merged positions back
-        mergedPositions = mergedPositions.map(pos => this.rotatePosition(pos, (4 - times) % 4));
+        this.grid = this.rotateGridBack(grid, direction);
 
         if (moved) {
-            this.grid = grid;
             const newTile = this.addRandomTile();
             this.updateScore();
-            this.renderTiles(newTile, mergedPositions);
+            this.render(newTile, mergedPositions);
 
             if (this.won && !this.keepPlaying) {
-                setTimeout(() => this.showWinScreen(), 300);
+                this.showWinScreen();
             } else if (this.isGameOver()) {
-                this.gameOver = true;
-                setTimeout(() => this.showGameOver(), 300);
+                this.showGameOver();
             }
         }
     }
 
-    rotateGrid(grid, times) {
-        let result = grid.map(row => [...row]);
-        for (let t = 0; t < times; t++) {
-            const rotated = [];
-            for (let c = 0; c < this.size; c++) {
-                const row = [];
-                for (let r = this.size - 1; r >= 0; r--) {
-                    row.push(result[r][c]);
-                }
-                rotated.push(row);
-            }
-            result = rotated;
+    rotateGrid(direction) {
+        let grid = this.grid.map(row => [...row]);
+
+        switch (direction) {
+            case 'right':
+                grid = grid.map(row => row.reverse());
+                break;
+            case 'up':
+                grid = this.transpose(grid);
+                break;
+            case 'down':
+                grid = this.transpose(grid).map(row => row.reverse());
+                break;
         }
-        return result;
+        return grid;
     }
 
-    rotatePosition(pos, times) {
-        let { r, c } = pos;
-        for (let t = 0; t < times; t++) {
-            const newR = c;
-            const newC = this.size - 1 - r;
-            r = newR;
-            c = newC;
+    rotateGridBack(grid, direction) {
+        switch (direction) {
+            case 'right':
+                return grid.map(row => row.reverse());
+            case 'up':
+                return this.transpose(grid);
+            case 'down':
+                return this.transpose(grid.map(row => row.reverse()));
+            default:
+                return grid;
         }
-        return { r, c };
+    }
+
+    transpose(grid) {
+        return grid[0].map((_, c) => grid.map(row => row[c]));
     }
 
     isGameOver() {
@@ -239,49 +250,54 @@ class Game2048 {
             }
         }
 
+        this.gameOver = true;
         return true;
     }
 
-    renderTiles(newTile = null, mergedPositions = []) {
-        const container = document.getElementById('tilesContainer');
-        container.innerHTML = '';
+    render(newTile = null, mergedPositions = []) {
+        const board = document.getElementById('gameBoard');
+        board.innerHTML = '';
 
         for (let r = 0; r < this.size; r++) {
             for (let c = 0; c < this.size; c++) {
                 const value = this.grid[r][c];
-                if (value === 0) continue;
+                const cell = document.createElement('div');
 
-                const tile = document.createElement('div');
-                tile.className = 'tile';
+                cell.className = 'rounded-lg flex items-center justify-center aspect-square transition-all duration-100 font-bold';
 
-                // Tile class for color
-                const tileClass = value <= 2048 ? `tile-${value}` : 'tile-super';
-                tile.classList.add(tileClass);
+                if (value === 0) {
+                    cell.classList.add('bg-cell-empty');
+                } else {
+                    const style = this.tileStyles[value] || 'bg-gradient-to-br from-purple-500 to-pink-500 text-white ring-2 ring-purple-400';
+                    cell.className += ` ${style}`;
 
-                // Position
-                const x = c * (this.tileSize + this.gap) + this.gap;
-                const y = r * (this.tileSize + this.gap) + this.gap;
-                tile.style.width = `${this.tileSize}px`;
-                tile.style.height = `${this.tileSize}px`;
-                tile.style.left = `${x}px`;
-                tile.style.top = `${y}px`;
+                    // Font size based on value
+                    if (value >= 1000) {
+                        cell.classList.add('text-xl', 'md:text-2xl');
+                    } else if (value >= 100) {
+                        cell.classList.add('text-2xl', 'md:text-3xl');
+                    } else {
+                        cell.classList.add('text-3xl', 'md:text-4xl');
+                    }
 
-                // Animations
-                if (newTile && newTile.r === r && newTile.c === c) {
-                    tile.classList.add('new');
+                    cell.textContent = value;
+
+                    // Animation classes
+                    if (newTile && newTile.r === r && newTile.c === c) {
+                        cell.classList.add('tile-new');
+                    }
+                    if (mergedPositions.some(pos => pos.r === r && pos.c === c)) {
+                        cell.classList.add('tile-merged');
+                    }
                 }
-                if (mergedPositions.some(p => p.r === r && p.c === c)) {
-                    tile.classList.add('merged');
-                }
 
-                tile.textContent = value;
-                container.appendChild(tile);
+                board.appendChild(cell);
             }
         }
     }
 
     updateScore() {
-        document.getElementById('score').textContent = this.score;
+        document.getElementById('score').textContent = this.score.toLocaleString();
 
         if (this.score > this.bestScore) {
             this.bestScore = this.score;
@@ -291,11 +307,20 @@ class Game2048 {
     }
 
     updateBestScore() {
-        document.getElementById('bestScore').textContent = this.bestScore;
+        document.getElementById('bestScore').textContent = this.bestScore.toLocaleString();
+    }
+
+    showWinScreen() {
+        document.getElementById('winScreen').classList.remove('hidden');
+
+        // Submit to leaderboard
+        if (typeof Leaderboard !== 'undefined' && this.score > 0) {
+            Leaderboard.submit('game2048', this.score);
+        }
     }
 
     showGameOver() {
-        document.getElementById('finalScore').textContent = this.score;
+        document.getElementById('finalScore').textContent = this.score.toLocaleString();
         document.getElementById('gameOverScreen').classList.remove('hidden');
 
         // Submit to leaderboard
@@ -304,16 +329,9 @@ class Game2048 {
         }
     }
 
-    showWinScreen() {
-        const winScreen = document.getElementById('winScreen');
-        if (winScreen) {
-            winScreen.classList.remove('hidden');
-        }
-
-        // Submit to leaderboard
-        if (typeof Leaderboard !== 'undefined' && this.score > 0) {
-            Leaderboard.submit('game2048', this.score);
-        }
+    hideOverlays() {
+        document.getElementById('winScreen')?.classList.add('hidden');
+        document.getElementById('gameOverScreen')?.classList.add('hidden');
     }
 }
 

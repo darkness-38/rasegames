@@ -95,6 +95,7 @@ function joinRoom(code, guestId) {
     room.state = 'selecting';
     playerRooms.set(guestId, code);
 
+    broadcastRoomList(); // Update list (room is now full/selecting)
     return { success: true, room };
 }
 
@@ -368,16 +369,42 @@ io.on('connection', (socket) => {
     });
 
 
+    socket.on('getRooms', () => {
+        const roomList = Array.from(rooms.values())
+            .filter(r => r.state === 'waiting' || r.state === 'selecting')
+            .map(r => ({
+                code: r.code,
+                host: r.host, // Send host ID (or name if we had it)
+                playerCount: (r.host ? 1 : 0) + (r.guest ? 1 : 0)
+            }));
+        socket.emit('roomList', roomList);
+    });
+
     socket.on('disconnect', () => {
         console.log(`Player disconnected: ${socket.id}`);
         leaveRoom(socket.id);
+        broadcastRoomList(); // Update list on disconnect
     });
 
 
     socket.on('leaveRoom', () => {
         leaveRoom(socket.id);
+        broadcastRoomList(); // Update list on leave
     });
 });
+
+
+function broadcastRoomList() {
+    const roomList = Array.from(rooms.values())
+        .filter(r => r.state === 'waiting' || r.state === 'selecting')
+        .map(r => ({
+            code: r.code,
+            host: r.host,
+            playerCount: (r.host ? 1 : 0) + (r.guest ? 1 : 0)
+        }));
+    // Broadcast to everyone (or just lobby? keeping it simple for now)
+    io.emit('roomListUpdate', roomList);
+}
 
 
 

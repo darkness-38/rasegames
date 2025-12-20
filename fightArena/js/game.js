@@ -128,6 +128,29 @@ function showControls() {
 
 function showOnlineMenu() {
     showScreen('online-menu');
+    setupMultiplayerCallbacks(); // Ensure callbacks are ready
+
+    if (!multiplayer.isConnected) {
+        const listContainer = document.getElementById('room-list');
+        if (listContainer) {
+            listContainer.innerHTML = `
+            <div class="bg-surface-dark/50 border border-white/10 p-4 rounded-xl text-center text-white/40 text-sm animate-pulse">
+                Connecting to lobby...
+            </div>`;
+        }
+
+        multiplayer.connect();
+
+        // Check for connection to request list
+        const checkInterval = setInterval(() => {
+            if (multiplayer.isConnected) {
+                refreshRoomList();
+                clearInterval(checkInterval);
+            }
+        }, 200);
+    } else {
+        refreshRoomList();
+    }
 }
 
 function goToCharacterSelect() {
@@ -1121,6 +1144,62 @@ function setupMultiplayerCallbacks() {
     multiplayer.onStartRematch = () => {
         startOnlineFight();
     };
+
+
+    multiplayer.onRoomListUpdate = (rooms) => {
+        renderRoomList(rooms);
+    };
+}
+
+function renderRoomList(rooms) {
+    const listContainer = document.getElementById('room-list');
+    if (!listContainer) return;
+
+    listContainer.innerHTML = '';
+
+    if (rooms.length === 0) {
+        listContainer.innerHTML = `
+            <div class="bg-surface-dark/50 border border-white/10 p-4 rounded-xl text-center text-white/40 text-sm">
+                No rooms found. Create one!
+            </div>`;
+        return;
+    }
+
+    rooms.forEach(room => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between bg-surface-dark border border-white/10 p-3 rounded-xl hover:border-primary/50 transition-colors group';
+        item.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-mono font-bold">
+                    ${room.playerCount}/2
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold tracking-wider text-sm">ROOM ${room.code}</span>
+                    <span class="text-[10px] text-white/40 uppercase tracking-widest">Waiting for opponent</span>
+                </div>
+            </div>
+            <button onclick="joinRoomByCode('${room.code}')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-primary hover:text-surface-dark text-white/60 text-xs font-bold uppercase tracking-wider transition-all">
+                JOIN
+            </button>
+        `;
+        listContainer.appendChild(item);
+    });
+}
+
+function joinRoomByCode(code) {
+    document.getElementById('join-code').value = code;
+    joinRoom();
+}
+
+function refreshRoomList() {
+    const listContainer = document.getElementById('room-list');
+    if (listContainer) {
+        listContainer.innerHTML = `
+            <div class="bg-surface-dark/50 border border-white/10 p-4 rounded-xl text-center text-white/40 text-sm animate-pulse">
+                Scanning...
+            </div>`;
+    }
+    multiplayer.requestRoomList();
 }
 
 function showOnlineCharacterSelect() {

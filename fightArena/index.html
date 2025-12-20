@@ -1186,20 +1186,46 @@
                             </button>
                         </div>
                     </div>
+                </div>
 
-                    <div id="connection-status" class="text-center text-sm text-white/60"></div>
+                <div class="relative flex py-2 items-center opacity-40">
+                    <div class="flex-grow border-t border-white/20"></div>
                 </div>
-            </main>
-            <footer class="py-4 md:py-6 text-center px-4">
-                <div
-                    class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
-                    <span class="flex items-center gap-2">
-                        <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="ping-display">Ping: --ms</span>
-                    </span>
+
+                <div class="flex flex-col gap-5">
+                    <div class="flex items-center justify-between px-2">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-2xl">list</span>
+                            <h2 class="text-base font-bold tracking-[0.2em] text-white/80 uppercase">Available Rooms
+                            </h2>
+                        </div>
+                        <button onclick="refreshRoomList()"
+                            class="text-xs text-primary hover:text-white transition-colors uppercase font-bold tracking-wider flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">refresh</span> Refresh
+                        </button>
+                    </div>
+                    <div id="room-list" class="flex flex-col gap-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Room List Container -->
+                        <div
+                            class="bg-surface-dark/50 border border-white/10 p-4 rounded-xl text-center text-white/40 text-sm">
+                            Scanning for rooms...
+                        </div>
+                    </div>
                 </div>
-            </footer>
+
+                <div id="connection-status" class="text-center text-sm text-white/60"></div>
         </div>
+        </main>
+        <footer class="py-4 md:py-6 text-center px-4">
+            <div
+                class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
+                <span class="flex items-center gap-2">
+                    <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="ping-display">Ping: --ms</span>
+                </span>
+            </div>
+        </footer>
+    </div>
     </div>
 
 

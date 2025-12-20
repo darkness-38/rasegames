@@ -171,6 +171,19 @@ class MultiplayerClient {
         this.socket.on('chatMessage', (data) => {
             if (this.onChatMessage) this.onChatMessage(data);
         });
+
+        this.socket.on('roomList', (rooms) => {
+            if (this.onRoomListUpdate) this.onRoomListUpdate(rooms);
+        });
+
+        this.socket.on('roomListUpdate', (rooms) => {
+            if (this.onRoomListUpdate) this.onRoomListUpdate(rooms);
+        });
+    }
+
+    requestRoomList() {
+        if (!this.isConnected) return;
+        this.socket.emit('getRooms');
     }
 
     disconnect() {

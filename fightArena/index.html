@@ -1093,7 +1093,7 @@
                 class="absolute inset-0 bg-[linear-gradient(rgba(20,34,16,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(20,34,16,0.1)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)]">
             </div>
         </div>
-        <div class="relative z-10 flex flex-col h-screen max-w-[1440px] mx-auto w-full pr-[17px]">
+        <div class="relative z-10 flex flex-col h-screen max-w-[1440px] mx-auto w-full">
             <header class="flex items-center justify-between px-6 py-5 md:px-10 lg:px-16 w-full">
                 <div class="flex items-center gap-4">
                     <button onclick="goToMenu()"
@@ -1205,35 +1205,23 @@
                     </div>
 
 
-
-                    <div id="room-code"
-                        class="hidden text-center py-4 px-6 bg-surface-dark/80 rounded-xl border border-primary/50 mt-4">
-                        <p class="text-sm text-white/60 mb-2">Your Room Code:</p>
-                        <p class="text-3xl font-mono font-bold text-primary tracking-widest"></p>
-                    </div>
+                    <!-- Connection Status -->
+                    <div id="connection-status" class="text-center text-sm text-white/60 h-6"></div>
 
                 </div>
                 <!-- Old content ends here, effectively hiding/replacing duplicates if any -->
 
-
-
+            </main>
+            <footer class="py-4 md:py-6 text-center px-4">
+                <div
+                    class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
+                    <span class="flex items-center gap-2">
+                        <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="ping-display">Ping: --ms</span>
+                    </span>
+                </div>
+            </footer>
         </div>
-
-
-
-        <div id="connection-status" class="text-center text-sm text-white/60"></div>
-    </div>
-    </main>
-    <footer class="py-4 md:py-6 text-center px-4">
-        <div
-            class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
-            <span class="flex items-center gap-2">
-                <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="ping-display">Ping: --ms</span>
-            </span>
-        </div>
-    </footer>
-    </div>
     </div>
 
 

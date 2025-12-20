@@ -11,18 +11,21 @@ const handleLocation = async () => {
 
     let fileToFetch = "index.html";
 
-
-    if (path.endsWith("about") || path.endsWith("about.html")) fileToFetch = "about.html";
-    if (path.endsWith("community") || path.endsWith("community.html")) fileToFetch = "community.html";
-    if (path.endsWith("leaderboard") || path.endsWith("leaderboard.html")) fileToFetch = "leaderboard.html";
-    if (path.endsWith("profile") || path.endsWith("profile.html")) fileToFetch = "profile.html";
-    if (path.endsWith("games") || path.endsWith("games.html")) fileToFetch = "games.html";
-    if (path === "/" || path.endsWith("index.html")) fileToFetch = "index.html";
-    // Check if path matches any known route, otherwise show 404
-    const knownRoutes = ['/', '/about', '/community', '/leaderboard', '/profile', '/games'];
-    const isKnownRoute = knownRoutes.some(route => path === route || path === route + '.html');
-
-    if (!isKnownRoute && path !== '/') {
+    // Route matching - order matters, more specific routes first
+    if (path === "/" || path === "/index.html") {
+        fileToFetch = "index.html";
+    } else if (path === "/games" || path === "/games.html") {
+        fileToFetch = "games.html";
+    } else if (path === "/about" || path === "/about.html") {
+        fileToFetch = "about.html";
+    } else if (path === "/community" || path === "/community.html") {
+        fileToFetch = "community.html";
+    } else if (path === "/leaderboard" || path === "/leaderboard.html") {
+        fileToFetch = "leaderboard.html";
+    } else if (path === "/profile" || path === "/profile.html") {
+        fileToFetch = "profile.html";
+    } else {
+        // Unknown route - show 404
         fileToFetch = "404.html";
     }
 

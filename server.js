@@ -109,7 +109,6 @@ function leaveRoom(playerId) {
     playerRooms.delete(playerId);
 
     // If game hasn't started yet (lobby), close entire room
-    // If game hasn't started yet (lobby)
     if (room.state === 'waiting' || room.state === 'selecting') {
 
         // If Host leaves

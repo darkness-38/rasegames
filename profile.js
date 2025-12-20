@@ -243,7 +243,7 @@ async function saveProfile(e) {
         });
 
         // Update username in all leaderboard entries
-        const games = ['tictactoe', 'minesweeper', 'pong', 'memory', 'game2048', 'flappy', 'snake', 'clicker', 'runner', 'tetris'];
+        const games = ['tictactoe', 'minesweeper', 'memory', 'game2048', 'flappy', 'snake', 'clicker', 'runner', 'tetris'];
         for (const game of games) {
             try {
                 const snapshot = await db.ref(`leaderboards/${game}`)

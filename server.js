@@ -73,10 +73,16 @@ function createRoom(hostId) {
 }
 
 function joinRoom(code, guestId) {
+    console.log(`[JOIN] Attempting to join room: "${code}"`);
+    console.log(`[JOIN] Available rooms:`, Array.from(rooms.keys()));
+
     const room = rooms.get(code);
-    if (!room) return { error: 'Cant find room!' };
-    if (room.guest) return { error: 'Room is full!' };
-    if (room.host === guestId) return { error: 'You cant join your own room!' };
+    if (!room) {
+        console.log(`[JOIN] Room not found: "${code}"`);
+        return { error: 'Oda bulunamadı!' };
+    }
+    if (room.guest) return { error: 'Oda dolu!' };
+    if (room.host === guestId) return { error: 'Kendi odana katılamazsın!' };
 
     room.guest = guestId;
     room.state = 'selecting';

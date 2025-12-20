@@ -1152,8 +1152,36 @@
                     <!-- NEW LAYOUT INSERTION -->
 
 
+                    <!-- Room Code Display (Initially Hidden) -->
+                    <div id="room-code-display" class="hidden flex flex-col gap-4 mx-auto w-full">
+                        <div
+                            class="bg-surface-dark/80 rounded-xl border border-primary/50 p-6 text-center shadow-lg relative overflow-hidden group">
+                            <div
+                                class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors duration-500">
+                            </div>
+                            <p class="text-sm text-white/60 mb-2 font-bold tracking-widest uppercase">Your Room Code</p>
+                            <div class="flex items-center justify-center gap-4">
+                                <p id="current-room-code"
+                                    class="text-5xl font-mono font-black text-primary tracking-[0.2em] drop-shadow-[0_0_10px_rgba(70,236,19,0.5)]">
+                                </p>
+                                <button
+                                    onclick="navigator.clipboard.writeText(document.getElementById('current-room-code').innerText)"
+                                    class="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all"
+                                    title="Copy Code">
+                                    <span class="material-symbols-outlined text-xl">content_copy</span>
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-white/30 mt-4 uppercase tracking-widest animate-pulse">Waiting
+                                for opponent...</p>
+                        </div>
+                        <button onclick="leaveRoom()"
+                            class="w-full h-14 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/50 text-red-500 hover:text-red-400 font-bold uppercase tracking-widest transition-all">
+                            Cancel Room
+                        </button>
+                    </div>
+
                     <!-- Main View: Available Rooms -->
-                    <div class="flex flex-col gap-4">
+                    <div id="available-rooms-container" class="flex flex-col gap-4">
                         <div class="flex items-center justify-between px-2">
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-primary text-3xl">list</span>

@@ -983,11 +983,11 @@ function setupMultiplayerCallbacks() {
 
 
     multiplayer.onRoomCreated = (code) => {
-        const roomCodeEl = document.getElementById('room-code');
+        document.getElementById('available-rooms-container').classList.add('hidden');
+        const roomCodeEl = document.getElementById('room-code-display');
         roomCodeEl.classList.remove('hidden');
 
-        const codeTextEl = roomCodeEl.querySelector('p:last-child') || roomCodeEl;
-        codeTextEl.textContent = code;
+        document.getElementById('current-room-code').textContent = code;
         document.getElementById('connection-status').textContent = 'Oda oluşturuldu! Rakip bekleniyor...';
         document.getElementById('connection-status').className = 'text-center text-sm text-primary';
         gameState.isHost = true;
@@ -1115,6 +1115,8 @@ function setupMultiplayerCallbacks() {
 
 
     multiplayer.onRoomClosed = (reason) => {
+        document.getElementById('available-rooms-container').classList.remove('hidden');
+        document.getElementById('room-code-display').classList.add('hidden');
         showRoomClosedPopup(reason);
         stopGame();
         gameState.isOnline = false;
@@ -1178,6 +1180,13 @@ function joinRoomByCode(code) {
 
     setupMultiplayerCallbacks();
     multiplayer.joinRoom(code);
+}
+
+function leaveRoom() {
+    multiplayer.leaveRoom();
+    document.getElementById('available-rooms-container').classList.remove('hidden');
+    document.getElementById('room-code-display').classList.add('hidden');
+    document.getElementById('connection-status').textContent = '';
 }
 
 function refreshRoomList() {

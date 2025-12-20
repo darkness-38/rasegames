@@ -1,12 +1,12 @@
 /**
  * Bomb Squad - Minesweeper Game Logic
- * Premium minesweeper with flood-fill and leaderboard integration
+ * Premium minesweeper with Tailwind UI integration
  */
 
 class BombSquad {
     constructor() {
-        this.gridSize = 9;
-        this.mineCount = 10;
+        this.gridSize = 12;
+        this.mineCount = 25;
         this.grid = [];
         this.revealed = [];
         this.flagged = [];
@@ -28,25 +28,22 @@ class BombSquad {
 
     init() {
         this.setupEventListeners();
-        this.updateBestTime();
         this.newGame();
     }
 
     setupEventListeners() {
         // Difficulty buttons
-        document.querySelectorAll('.diff-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        document.querySelectorAll('input[name="difficulty"]').forEach(input => {
+            input.addEventListener('change', (e) => {
                 this.gridSize = parseInt(e.target.dataset.size);
                 this.mineCount = parseInt(e.target.dataset.mines);
-                document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.updateBestTime();
                 this.newGame();
             });
         });
 
-        // Restart button
+        // Restart buttons
         document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
+        document.getElementById('playAgainBtn').addEventListener('click', () => this.newGame());
     }
 
     newGame() {
@@ -122,25 +119,17 @@ class BombSquad {
         board.innerHTML = '';
         board.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
 
-        // Calculate cell size
-        const maxBoardWidth = Math.min(window.innerWidth - 50, 450);
-        const cellSize = Math.floor((maxBoardWidth - (this.gridSize + 1) * 3) / this.gridSize);
-        board.style.width = `${cellSize * this.gridSize + (this.gridSize + 1) * 3 + 16}px`;
-
         for (let r = 0; r < this.gridSize; r++) {
             for (let c = 0; c < this.gridSize; c++) {
                 const cell = document.createElement('div');
-                cell.className = 'mine-cell';
+                cell.className = 'mine-cell relative w-full aspect-square bg-slate-300 dark:bg-[#282e39] hover:bg-slate-400 dark:hover:bg-[#323b49] rounded sm:rounded-md cursor-pointer transition-colors shadow-inner flex items-center justify-center font-bold text-lg sm:text-xl select-none';
                 cell.dataset.row = r;
                 cell.dataset.col = c;
-                cell.style.width = `${cellSize}px`;
-                cell.style.height = `${cellSize}px`;
-                cell.style.fontSize = `${Math.max(cellSize * 0.5, 12)}px`;
 
                 // Click to reveal
                 cell.addEventListener('click', () => this.revealCell(r, c));
 
-                // Right click or long press to flag
+                // Right click to flag
                 cell.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
                     this.toggleFlag(r, c);
@@ -176,21 +165,31 @@ class BombSquad {
         this.revealed[row][col] = true;
 
         const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-        cell.classList.add('revealed');
+        cell.classList.remove('bg-slate-300', 'dark:bg-[#282e39]', 'hover:bg-slate-400', 'dark:hover:bg-[#323b49]', 'cursor-pointer', 'shadow-inner');
+        cell.classList.add('bg-background-light', 'dark:bg-background-dark');
 
         const value = this.grid[row][col];
 
         if (value === -1) {
             // Hit a mine
-            cell.classList.add('mine', 'exploded');
-            cell.textContent = '💣';
+            cell.classList.add('cell-exploded');
+            cell.innerHTML = '<span class="material-symbols-outlined text-red-500">bomb</span>';
             this.endGame(false);
             return;
         }
 
         if (value > 0) {
-            cell.textContent = value;
-            cell.classList.add(`n${value}`);
+            const colors = {
+                1: 'text-blue-500',
+                2: 'text-emerald-500',
+                3: 'text-rose-500',
+                4: 'text-purple-500',
+                5: 'text-orange-500',
+                6: 'text-cyan-500',
+                7: 'text-white',
+                8: 'text-slate-400'
+            };
+            cell.innerHTML = `<span class="${colors[value] || 'text-white'}">${value}</span>`;
         } else {
             // Flood fill empty cells
             this.floodFill(row, col);
@@ -225,13 +224,11 @@ class BombSquad {
         if (this.flagged[row][col]) {
             this.flagged[row][col] = false;
             this.flagsPlaced--;
-            cell.classList.remove('flagged');
-            cell.textContent = '';
+            cell.innerHTML = '';
         } else {
             this.flagged[row][col] = true;
             this.flagsPlaced++;
-            cell.classList.add('flagged');
-            cell.textContent = '🚩';
+            cell.innerHTML = '<span class="material-symbols-outlined text-primary text-sm sm:text-base">flag</span>';
         }
 
         this.updateStats();
@@ -260,8 +257,11 @@ class BombSquad {
                 for (let c = 0; c < this.gridSize; c++) {
                     if (this.grid[r][c] === -1) {
                         const cell = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
-                        cell.classList.add('revealed', 'mine');
-                        cell.textContent = '💣';
+                        cell.classList.remove('bg-slate-300', 'dark:bg-[#282e39]');
+                        cell.classList.add('bg-background-light', 'dark:bg-background-dark');
+                        if (!this.flagged[r][c]) {
+                            cell.innerHTML = '<span class="material-symbols-outlined text-red-500">bomb</span>';
+                        }
                     }
                 }
             }
@@ -272,17 +272,17 @@ class BombSquad {
 
         if (won) {
             titleEl.textContent = '🎉 Victory!';
-            titleEl.className = 'overlay-title win';
+            titleEl.className = 'text-3xl font-bold mb-4 text-emerald-500';
 
-            // Calculate score (lower time = higher score)
             const score = Math.max(0, 10000 - this.timer * 10);
-            messageEl.textContent = `Cleared in ${this.formatTime(this.timer)}! Score: ${score}`;
+            const mins = Math.floor(this.timer / 60);
+            const secs = this.timer % 60;
+            messageEl.textContent = `Cleared in ${mins}:${secs.toString().padStart(2, '0')}! Score: ${score}`;
 
             // Update best time
             if (this.timer < this.bestTimes[this.gridSize]) {
                 this.bestTimes[this.gridSize] = this.timer;
                 localStorage.setItem(`bestMine${this.gridSize}`, this.timer);
-                this.updateBestTime();
             }
 
             // Submit to leaderboard
@@ -291,7 +291,7 @@ class BombSquad {
             }
         } else {
             titleEl.textContent = '💥 Boom!';
-            titleEl.className = 'overlay-title lose';
+            titleEl.className = 'text-3xl font-bold mb-4 text-red-500';
             messageEl.textContent = 'You hit a mine! Try again.';
         }
 
@@ -315,24 +315,15 @@ class BombSquad {
     }
 
     updateTimer() {
-        document.getElementById('timer').textContent = this.formatTime(this.timer);
-    }
-
-    formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
+        const mins = Math.floor(this.timer / 60);
+        const secs = this.timer % 60;
+        document.getElementById('timerMin').textContent = mins.toString().padStart(2, '0');
+        document.getElementById('timerSec').textContent = secs.toString().padStart(2, '0');
     }
 
     updateStats() {
         document.getElementById('mineCount').textContent = this.mineCount;
         document.getElementById('flagCount').textContent = this.flagsPlaced;
-    }
-
-    updateBestTime() {
-        const best = this.bestTimes[this.gridSize];
-        document.getElementById('bestTime').textContent =
-            best < 999 ? this.formatTime(best) : '--';
     }
 
     hideOverlay() {

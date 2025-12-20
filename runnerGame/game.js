@@ -27,16 +27,46 @@ const mobileBestEl = document.getElementById('mobileBest');
 
 
 
-function setCookie(name, value, days = 365) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+// Use localStorage for persistent storage (more reliable than cookies)
+function saveData(name, value) {
+    try {
+        localStorage.setItem(name, value);
+    } catch (e) {
+        console.warn('localStorage not available:', e);
+    }
 }
 
+function loadData(name) {
+    try {
+        return localStorage.getItem(name);
+    } catch (e) {
+        console.warn('localStorage not available:', e);
+        return null;
+    }
+}
+
+// Keep cookie functions for backwards compatibility - migrate old data
 function getCookie(name) {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     return match ? match[2] : null;
 }
+
+// Migrate from cookies to localStorage on first load
+(function migrateFromCookies() {
+    const cookieCoins = getCookie('crCoins');
+    const cookieHighScore = getCookie('crHighScore');
+    const cookieUpgrades = getCookie('crUpgrades');
+
+    if (cookieCoins && !loadData('crCoins')) {
+        saveData('crCoins', cookieCoins);
+    }
+    if (cookieHighScore && !loadData('crHighScore')) {
+        saveData('crHighScore', cookieHighScore);
+    }
+    if (cookieUpgrades && !loadData('crUpgrades')) {
+        saveData('crUpgrades', cookieUpgrades);
+    }
+})();
 
 
 
@@ -67,8 +97,8 @@ const COLORS = {
 let gameRunning = false;
 let score = 0;
 let coins = 0;
-let totalCoins = parseInt(getCookie('crCoins')) || 0;
-let highScore = parseInt(getCookie('crHighScore')) || 0;
+let totalCoins = parseInt(loadData('crCoins')) || 0;
+let highScore = parseInt(loadData('crHighScore')) || 0;
 let gameSpeed = BASE_GAME_SPEED;
 let animationId = null;
 let frameCount = 0;
@@ -101,7 +131,7 @@ let upgrades = {
 };
 
 
-const savedUpgrades = getCookie('crUpgrades');
+const savedUpgrades = loadData('crUpgrades');
 if (savedUpgrades) {
     try {
         const parsed = JSON.parse(decodeURIComponent(savedUpgrades));
@@ -127,7 +157,7 @@ function initBackground() {
     stars = [];
     buildings = [];
 
-    
+
     for (let i = 0; i < 50; i++) {
         stars.push({
             x: Math.random() * canvas.width,
@@ -137,7 +167,7 @@ function initBackground() {
         });
     }
 
-    
+
     for (let i = 0; i < 10; i++) {
         buildings.push({
             x: i * 180,
@@ -153,11 +183,11 @@ function initBackground() {
 
 
 function drawBackground() {
-    
+
     ctx.fillStyle = COLORS.sky1;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    
+
     ctx.fillStyle = 'rgba(255,255,255,0.6)';
     stars.forEach(s => {
         ctx.beginPath();
@@ -169,13 +199,13 @@ function drawBackground() {
         }
     });
 
-    
+
     buildings.forEach(b => {
         const y = canvas.height - GROUND_HEIGHT - b.height;
         ctx.fillStyle = 'rgba(20,10,35,0.7)';
         ctx.fillRect(b.x, y, b.width, b.height);
 
-        
+
         ctx.fillStyle = 'rgba(0,240,255,0.2)';
         for (let wy = y + 15; wy < canvas.height - GROUND_HEIGHT - 20; wy += 25) {
             for (let wx = b.x + 8; wx < b.x + b.width - 10; wx += 15) {
@@ -192,11 +222,11 @@ function drawBackground() {
         }
     });
 
-    
+
     ctx.fillStyle = COLORS.ground;
     ctx.fillRect(0, canvas.height - GROUND_HEIGHT, canvas.width, GROUND_HEIGHT);
 
-    
+
     ctx.strokeStyle = COLORS.groundLine;
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -212,62 +242,62 @@ function drawPlayer() {
 
     ctx.save();
 
-    
+
     ctx.shadowColor = COLORS.player;
     ctx.shadowBlur = 15;
 
-    
 
-    
+
+
     ctx.fillStyle = COLORS.player;
     ctx.beginPath();
     ctx.roundRect(px + 8, py, 20, 18, 5);
     ctx.fill();
 
-    
+
     ctx.fillStyle = '#000';
     ctx.fillRect(px + 10, py + 5, 16, 7);
     ctx.fillStyle = COLORS.playerAccent;
     ctx.fillRect(px + 11, py + 6, 14, 5);
 
-    
+
     ctx.fillStyle = '#0a0a15';
     ctx.beginPath();
     ctx.roundRect(px + 5, py + 19, 26, 18, 3);
     ctx.fill();
 
-    
+
     ctx.fillStyle = COLORS.player;
     ctx.fillRect(px + 7, py + 20, 22, 2);
     ctx.fillRect(px + 15, py + 22, 3, 14);
 
-    
+
     ctx.fillStyle = COLORS.player;
     const armSwing = Math.sin(frameCount * 0.3) * 3;
     ctx.fillRect(px + 2, py + 20 + armSwing, 5, 12);
     ctx.fillRect(px + 28, py + 20 - armSwing, 5, 12);
 
-    
+
     ctx.fillStyle = '#0a0a15';
     if (player.isJumping) {
-        
+
         ctx.fillRect(px + 8, py + 38, 7, 10);
         ctx.fillRect(px + 20, py + 38, 7, 10);
     } else {
-        
+
         const legOffset1 = Math.sin(runFrame * 1.5) * 6;
         const legOffset2 = Math.sin(runFrame * 1.5 + Math.PI) * 6;
         ctx.fillRect(px + 8, py + 38, 7, 10 + legOffset1);
         ctx.fillRect(px + 20, py + 38, 7, 10 + legOffset2);
     }
 
-    
+
     ctx.fillStyle = '#333';
     ctx.fillRect(px + 10, py + 25, 15, 12);
     ctx.fillStyle = COLORS.playerAccent;
     ctx.fillRect(px + 12, py + 27, 11, 3);
 
-    
+
     if (player.isJumping) {
         const flameH = 10 + Math.random() * 10;
         const gradient = ctx.createLinearGradient(0, py + 37, 0, py + 37 + flameH);
@@ -318,7 +348,7 @@ function drawObstacles() {
 
         switch (obs.type) {
             case 'spike':
-                
+
                 ctx.fillStyle = COLORS.obstacle;
                 ctx.shadowColor = COLORS.obstacle;
                 ctx.shadowBlur = 10;
@@ -331,12 +361,12 @@ function drawObstacles() {
                 break;
 
             case 'barrier':
-                
+
                 ctx.fillStyle = COLORS.obstacleAlt;
                 ctx.shadowColor = COLORS.obstacleAlt;
                 ctx.shadowBlur = 8;
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                
+
                 ctx.fillStyle = '#000';
                 for (let i = 0; i < obs.width; i += 10) {
                     ctx.fillRect(obs.x + i, obs.y, 5, obs.height);
@@ -344,13 +374,13 @@ function drawObstacles() {
                 break;
 
             case 'crate':
-                
+
                 ctx.fillStyle = '#444';
                 ctx.strokeStyle = COLORS.obstacle;
                 ctx.lineWidth = 2;
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
                 ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
-                
+
                 ctx.beginPath();
                 ctx.moveTo(obs.x, obs.y);
                 ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
@@ -360,29 +390,29 @@ function drawObstacles() {
                 break;
 
             case 'laser':
-                
+
                 const laserPulse = 0.5 + Math.sin(frameCount * 0.2 + obs.animOffset) * 0.5;
                 ctx.fillStyle = `rgba(255,0,100,${laserPulse})`;
                 ctx.shadowColor = COLORS.obstacle;
                 ctx.shadowBlur = 15 * laserPulse;
                 ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                
+
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(obs.x + 5, obs.y, 5, obs.height);
                 break;
 
             case 'drone':
-                
+
                 const bob = Math.sin(frameCount * 0.1 + obs.animOffset) * 5;
                 ctx.fillStyle = '#333';
                 ctx.shadowColor = COLORS.playerAccent;
                 ctx.shadowBlur = 10;
                 ctx.fillRect(obs.x, obs.y + bob, obs.width, obs.height - 10);
-                
+
                 ctx.fillStyle = COLORS.playerAccent;
                 ctx.fillRect(obs.x - 5, obs.y + bob - 3, 15, 4);
                 ctx.fillRect(obs.x + obs.width - 10, obs.y + bob - 3, 15, 4);
-                
+
                 ctx.fillStyle = '#f00';
                 ctx.beginPath();
                 ctx.arc(obs.x + obs.width / 2, obs.y + bob + 8, 4, 0, Math.PI * 2);
@@ -423,7 +453,7 @@ function drawCoins() {
         ctx.shadowColor = COLORS.coin;
         ctx.shadowBlur = 12;
 
-        
+
         ctx.beginPath();
         ctx.moveTo(0, -coin.size / 2);
         ctx.lineTo(coin.size / 2, 0);
@@ -458,10 +488,10 @@ function updateCoins() {
             coinsEl.textContent = coins;
             coin.collected = true;
 
-            
+
             if (typeof playSound !== 'undefined') playSound('collect');
 
-            
+
             for (let i = 0; i < 5; i++) {
                 particles.push({
                     x: coin.x, y: coin.y,
@@ -527,10 +557,10 @@ function jump() {
         player.isJumping = true;
         player.jumpCount++;
 
-        
+
         if (typeof playSound !== 'undefined') playSound('jump');
 
-        
+
         for (let i = 0; i < 3; i++) {
             particles.push({
                 x: player.x + player.width / 2,
@@ -554,7 +584,7 @@ function checkCollisions() {
     const ph = player.height - 10;
 
     for (const obs of obstacles) {
-        
+
         let ox = obs.x, oy = obs.y, ow = obs.width, oh = obs.height;
         if (obs.type === 'spike') {
             ox += 5; ow -= 10;
@@ -585,7 +615,7 @@ function gameLoop(timestamp) {
     updateParticles();
     checkCollisions();
 
-    
+
     if (timestamp - lastObstacleTime > 1400 - Math.min(score / 2, 600)) {
         spawnObstacle();
         lastObstacleTime = timestamp;
@@ -595,14 +625,14 @@ function gameLoop(timestamp) {
         lastCoinTime = timestamp;
     }
 
-    
+
     if (frameCount % 500 === 0) gameSpeed = Math.min(gameSpeed + 0.3, 12);
 
-    
+
     score++;
     scoreEl.textContent = Math.floor(score / 10);
 
-    
+
     drawBackground();
     drawObstacles();
     drawCoins();
@@ -642,10 +672,10 @@ function startGame() {
     gameRunning = true;
     requestAnimationFrame(gameLoop);
 
-    
+
     if (typeof playSound !== 'undefined') playSound('start');
 
-    
+
     if (!bgMusic) {
         bgMusic = new Audio('/sounds/cyber_background.mp3');
         bgMusic.loop = true;
@@ -663,11 +693,11 @@ function gameOver() {
 
     if (finalScore > highScore) {
         highScore = finalScore;
-        setCookie('crHighScore', highScore);
+        saveData('crHighScore', highScore);
     }
 
     totalCoins += coins;
-    setCookie('crCoins', totalCoins);
+    saveData('crCoins', totalCoins);
 
     finalScoreEl.textContent = finalScore;
     earnedCoinsEl.textContent = coins;
@@ -675,15 +705,15 @@ function gameOver() {
     gameScreen.classList.remove('active');
     gameOverScreen.classList.add('active');
 
-    
+
     if (bgMusic) {
         bgMusic.pause();
     }
 
-    
+
     if (typeof playSound !== 'undefined') playSound('crash');
 
-    
+
     if (window.Leaderboard && finalScore > 0) {
         Leaderboard.submit('runner', finalScore);
     }
@@ -710,7 +740,7 @@ function updateDisplays() {
     if (mobileBestEl) mobileBestEl.textContent = 'BEST: ' + highScore;
     if (shopCoinsEl) shopCoinsEl.textContent = totalCoins;
 
-    
+
     const speedBar = document.getElementById('speedBar');
     const jumpBar = document.getElementById('jumpBar');
     const luckBar = document.getElementById('luckBar');
@@ -770,11 +800,11 @@ function renderUpgrades() {
         list.appendChild(card);
     });
 
-    
+
     if (selectedUpgrade) {
         updateDetailPanel(selectedUpgrade);
     } else if (Object.keys(upgrades).length > 0) {
-        
+
         selectUpgrade(Object.keys(upgrades)[0]);
     }
 }
@@ -793,7 +823,7 @@ function updateDetailPanel(key) {
     const maxed = upg.level >= upg.maxLevel;
     const canBuy = totalCoins >= cost && !maxed;
 
-    
+
     const panel = document.getElementById('upgradeDetailPanel');
     if (panel) panel.classList.remove('hidden');
 
@@ -814,7 +844,7 @@ function updateDetailPanel(key) {
     if (subtitleEl) subtitleEl.textContent = 'CYBER ENHANCEMENT // MK-' + (upg.level + 1);
     if (descEl) descEl.textContent = upg.desc;
 
-    
+
     let bonusText = '+0%';
     let powerPercent = 0;
     if (key === 'doubleJump') {
@@ -840,7 +870,7 @@ function updateDetailPanel(key) {
     if (imageEl) imageEl.style.backgroundImage = `url('${upgradeImages[key] || upgradeImages.magnet}')`;
     if (badgeEl) badgeEl.textContent = key === 'doubleJump' ? 'LOCOMOTION' : key === 'magnet' ? 'PASSIVE' : key === 'coinBonus' ? 'ECONOMY' : 'LOCOMOTION';
 
-    
+
     for (let i = 1; i <= 5; i++) {
         const bar = document.getElementById('levelBar' + i);
         if (bar) {
@@ -873,8 +903,8 @@ function buyUpgrade(key) {
         totalCoins -= cost;
         upg.level++;
 
-        setCookie('crCoins', totalCoins);
-        setCookie('crUpgrades', encodeURIComponent(JSON.stringify(
+        saveData('crCoins', totalCoins);
+        saveData('crUpgrades', encodeURIComponent(JSON.stringify(
             Object.fromEntries(Object.entries(upgrades).map(([k, v]) => [k, v.level]))
         )));
 

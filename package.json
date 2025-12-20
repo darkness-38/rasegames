@@ -9,5 +9,8 @@
     "dependencies": {
         "express": "^5.2.1",
         "socket.io": "^4.8.1"
+    },
+    "devDependencies": {
+        "tailwindcss": "^4.1.18"
     }
 }

@@ -126,18 +126,19 @@ io.on('connection', (socket) => {
 
 
     socket.on('joinRoom', (code) => {
-        const result = joinRoom(code.toUpperCase(), socket.id);
+        const upperCode = code.toUpperCase();
+        const result = joinRoom(upperCode, socket.id);
 
         if (result.error) {
             socket.emit('joinError', { message: result.error });
             return;
         }
 
-        socket.join(code);
-        socket.emit('joinedRoom', { code, isHost: false });
+        socket.join(upperCode);
+        socket.emit('joinedRoom', { code: upperCode, isHost: false });
         io.to(result.room.host).emit('guestJoined', { guestId: socket.id });
-        io.to(code).emit('goToCharacterSelect');
-        console.log(`Player ${socket.id} joined room ${code}`);
+        io.to(upperCode).emit('goToCharacterSelect');
+        console.log(`Player ${socket.id} joined room ${upperCode}`);
     });
 
 

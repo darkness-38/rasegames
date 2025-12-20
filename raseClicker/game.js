@@ -713,17 +713,17 @@ function highlightCode(code) {
     // Arrow functions (pink)
     result = result.replace(/(=&gt;|=>)/g, '<span style="color:#C586C0;">$1</span>');
 
-    // Properties after dots (light cyan)
-    result = result.replace(/\\.([a-zA-Z_][a-zA-Z0-9_]*)/g, '.<span style="color:#9CDCFE;">$1</span>');
+    // Properties after dots (light cyan) - DISABLED: breaks HTML
+    // result = result.replace(/\\.([a-zA-Z_][a-zA-Z0-9_]*)/g, '.<span style="color:#9CDCFE;">$1</span>');
 
-    // Operators (light orange)
-    result = result.replace(/(===|!==|==|!=|&&|\\|\\|)/g, '<span style="color:#D19A66;">$1</span>');
+    // Operators (light orange) - DISABLED: breaks HTML
+    // result = result.replace(/(===|!==|==|!=|&&|\\|\\|)/g, '<span style="color:#D19A66;">$1</span>');
 
-    // Brackets and parentheses (golden)
-    result = result.replace(/(\(|\)|\{|\}|\[|\])/g, '<span style="color:#FFD700;">$1</span>');
+    // Brackets - DISABLED: breaks HTML
+    // result = result.replace(/(\(|\)|\{|\}|\[|\])/g, '<span style="color:#FFD700;">$1</span>');
 
-    // Colons and semicolons (light purple)  
-    result = result.replace(/(:|;|,)/g, '<span style="color:#D4BFFF;">$1</span>');
+    // Colons - DISABLED: breaks HTML  
+    // result = result.replace(/(:|;|,)/g, '<span style="color:#D4BFFF;">$1</span>');
 
     // Booleans (coral/salmon)
     booleans.forEach(b => {

@@ -194,19 +194,22 @@ class MultiplayerClient {
 
     joinRoom(code) {
         console.log('[MULTIPLAYER] joinRoom called with code:', code);
-        console.log('[MULTIPLAYER] isConnected:', this.isConnected);
-        console.log('[MULTIPLAYER] socket exists:', !!this.socket);
 
-        if (!this.isConnected) {
-            console.log('[MULTIPLAYER] Not connected, connecting first...');
-            this.connect();
-            setTimeout(() => {
-                console.log('[MULTIPLAYER] Emitting joinRoom after delay:', code);
-                this.socket.emit('joinRoom', code);
-            }, 500);
-        } else {
+        if (this.isConnected && this.socket) {
             console.log('[MULTIPLAYER] Already connected, emitting joinRoom:', code);
             this.socket.emit('joinRoom', code);
+        } else {
+            console.log('[MULTIPLAYER] Not connected, establishing connection...');
+            this.connect();
+
+            // Wait for connection
+            const onConnect = () => {
+                console.log('[MULTIPLAYER] Connected! Emitting joinRoom:', code);
+                this.socket.emit('joinRoom', code);
+                this.socket.off('connect', onConnect); // Remove listener
+            };
+
+            this.socket.on('connect', onConnect);
         }
     }
 

@@ -69,8 +69,15 @@ function createRoom(hostId) {
     rooms.set(code, room);
     playerRooms.set(hostId, code);
 
+    console.log(`[ROOM] Created new room: "${code}" for host: ${hostId}`);
     return room;
 }
+
+// Log active rooms every 30 seconds
+setInterval(() => {
+    console.log(`[STATUS] Active rooms (${rooms.size}):`, Array.from(rooms.keys()));
+    console.log(`[STATUS] Connected players in rooms:`, playerRooms.size);
+}, 30000);
 
 function joinRoom(code, guestId) {
     console.log(`[JOIN] Attempting to join room: "${code}"`);

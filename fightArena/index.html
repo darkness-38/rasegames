@@ -1147,84 +1147,98 @@
                                 <span class="material-symbols-outlined text-3xl">swords</span>
                             </div>
                         </button>
+                    </div>
 
-                        <div id="room-code"
-                            class="hidden text-center py-4 px-6 bg-surface-dark/80 rounded-xl border border-primary/50">
-                            <p class="text-sm text-white/60 mb-2">Your Room Code:</p>
-                            <p class="text-3xl font-mono font-bold text-primary tracking-widest"></p>
+                    <!-- NEW LAYOUT INSERTION -->
+
+
+                    <!-- Main View: Available Rooms -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between px-2">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary text-3xl">list</span>
+                                <h2 class="text-xl font-bold tracking-[0.2em] text-white/90 uppercase">Available Rooms
+                                </h2>
+                            </div>
+                            <button onclick="refreshRoomList()"
+                                class="text-xs text-primary hover:text-white transition-colors uppercase font-bold tracking-wider flex items-center gap-1 bg-white/5 px-3 py-1 rounded-full hover:bg-primary hover:text-surface-dark">
+                                <span class="material-symbols-outlined text-sm">refresh</span> Refresh
+                            </button>
+                        </div>
+
+                        <div id="room-list"
+                            class="flex flex-col gap-3 min-h-[300px] max-h-[400px] overflow-y-auto pr-2 custom-scrollbar bg-surface-dark/30 rounded-2xl border border-white/5 p-2">
+                            <div
+                                class="flex flex-col items-center justify-center h-full text-center text-white/40 gap-2">
+                                <span class="material-symbols-outlined text-4xl opacity-50">wifi_find</span>
+                                <span class="text-sm">Scanning for active rooms...</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="relative flex py-2 items-center opacity-40">
                         <div class="flex-grow border-t border-white/20"></div>
+                        <span
+                            class="flex-shrink-0 mx-4 text-white/30 text-xs font-bold uppercase tracking-widest">Options</span>
+                        <div class="flex-grow border-t border-white/20"></div>
                     </div>
 
-                    <div class="flex flex-col gap-5">
-                        <div class="flex items-center gap-3 px-2">
-                            <span class="material-symbols-outlined text-primary text-2xl">meeting_room</span>
-                            <h2 class="text-base font-bold tracking-[0.2em] text-white/80 uppercase">Join Room</h2>
-                        </div>
-                        <div class="flex flex-col gap-4">
-                            <div class="relative group">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button onclick="createRoom()"
+                            class="group relative overflow-hidden h-20 rounded-xl bg-surface-dark border border-white/10 hover:border-primary/50 text-white hover:bg-surface-dark/90 transition-all duration-300 shadow-lg hover:shadow-neon flex items-center px-6 gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-surface-dark transition-colors">
+                                <span class="material-symbols-outlined text-2xl">add</span>
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <span class="font-bold text-lg uppercase tracking-wider">Create Room</span>
+                                <span class="text-[10px] text-white/40 uppercase tracking-widest">Host a new
+                                    match</span>
+                            </div>
+                        </button>
+
+                        <div class="flex gap-2">
+                            <div class="relative flex-1 group">
                                 <input id="join-code" maxlength="6"
-                                    class="w-full h-16 bg-background-dark/50 border border-white/20 rounded-xl px-6 text-center text-white placeholder-white/20 font-mono text-xl tracking-[0.15em] uppercase outline-none focus:border-primary focus:shadow-neon transition-all duration-300"
-                                    placeholder="Enter Room Code" type="text" />
-                                <div
-                                    class="absolute inset-0 rounded-xl bg-primary/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300">
-                                </div>
+                                    class="w-full h-20 bg-surface-dark/50 border border-white/10 rounded-xl px-4 text-center text-white placeholder-white/20 font-mono text-lg tracking-widest uppercase outline-none focus:border-primary focus:shadow-neon transition-all duration-300"
+                                    placeholder="CODE" type="text" />
                             </div>
                             <button onclick="joinRoom()"
-                                class="group relative w-full h-16 rounded-xl bg-primary text-surface-dark font-black text-lg tracking-widest uppercase shadow-neon hover:shadow-neon-strong hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-20deg] translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out">
-                                </div>
-                                <span class="flex items-center justify-center gap-3 relative z-10">
-                                    Join
-                                    <span
-                                        class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform">login</span>
-                                </span>
+                                class="w-20 h-20 rounded-xl bg-white/5 hover:bg-primary hover:text-surface-dark text-white/60 hover:shadow-neon transition-all duration-300 flex flex-col items-center justify-center gap-1 group">
+                                <span
+                                    class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">login</span>
+                                <span class="text-[9px] font-bold uppercase tracking-widest">Join</span>
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <div class="relative flex py-2 items-center opacity-40">
-                    <div class="flex-grow border-t border-white/20"></div>
-                </div>
-
-                <div class="flex flex-col gap-5">
-                    <div class="flex items-center justify-between px-2">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary text-2xl">list</span>
-                            <h2 class="text-base font-bold tracking-[0.2em] text-white/80 uppercase">Available Rooms
-                            </h2>
-                        </div>
-                        <button onclick="refreshRoomList()"
-                            class="text-xs text-primary hover:text-white transition-colors uppercase font-bold tracking-wider flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm">refresh</span> Refresh
-                        </button>
+                    <div id="room-code"
+                        class="hidden text-center py-4 px-6 bg-surface-dark/80 rounded-xl border border-primary/50 mt-4">
+                        <p class="text-sm text-white/60 mb-2">Your Room Code:</p>
+                        <p class="text-3xl font-mono font-bold text-primary tracking-widest"></p>
                     </div>
-                    <div id="room-list" class="flex flex-col gap-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
-                        <!-- Room List Container -->
-                        <div
-                            class="bg-surface-dark/50 border border-white/10 p-4 rounded-xl text-center text-white/40 text-sm">
-                            Scanning for rooms...
-                        </div>
-                    </div>
-                </div>
 
-                <div id="connection-status" class="text-center text-sm text-white/60"></div>
+                </div>
+                <!-- Old content ends here, effectively hiding/replacing duplicates if any -->
+
+
+
         </div>
-        </main>
-        <footer class="py-4 md:py-6 text-center px-4">
-            <div
-                class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
-                <span class="flex items-center gap-2">
-                    <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="ping-display">Ping: --ms</span>
-                </span>
-            </div>
-        </footer>
+
+
+
+        <div id="connection-status" class="text-center text-sm text-white/60"></div>
+    </div>
+    </main>
+    <footer class="py-4 md:py-6 text-center px-4">
+        <div
+            class="inline-flex items-center gap-3 text-[10px] md:text-xs font-medium text-white/30 uppercase tracking-widest">
+            <span class="flex items-center gap-2">
+                <span class="ping-indicator w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="ping-display">Ping: --ms</span>
+            </span>
+        </div>
+    </footer>
     </div>
     </div>
 

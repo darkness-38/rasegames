@@ -1,12 +1,16 @@
 /**
  * Pixel Bird - Flappy Bird Clone
- * Premium flappy with neon pipes and leaderboard integration
+ * Premium flappy with canvas rendering and leaderboard integration
  */
 
 class PixelBird {
     constructor() {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
+
+        // Resize canvas to container
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
 
         // Bird settings
         this.bird = {
@@ -41,6 +45,17 @@ class PixelBird {
         this.init();
     }
 
+    resizeCanvas() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = container.clientHeight;
+
+        // Reinit stars on resize
+        if (this.stars.length > 0) {
+            this.initStars();
+        }
+    }
+
     init() {
         this.setupEventListeners();
         this.updateHighScore();
@@ -48,6 +63,7 @@ class PixelBird {
     }
 
     initStars() {
+        this.stars = [];
         for (let i = 0; i < 50; i++) {
             this.stars.push({
                 x: Math.random() * this.canvas.width,
@@ -87,6 +103,8 @@ class PixelBird {
     }
 
     startGame() {
+        this.resizeCanvas();
+        this.bird.x = 80;
         this.bird.y = this.canvas.height / 2;
         this.bird.velocity = 0;
         this.bird.rotation = 0;
@@ -242,8 +260,8 @@ class PixelBird {
         }
 
         // Ground
-        ctx.fillStyle = '#1a1a2e';
-        ctx.fillRect(0, h - 2, w, 2);
+        ctx.fillStyle = '#282e39';
+        ctx.fillRect(0, h - 4, w, 4);
 
         // Draw pipes
         for (const pipe of this.pipes) {
@@ -253,12 +271,12 @@ class PixelBird {
         // Draw bird
         this.drawBird();
 
-        // In-game score
+        // In-game score (watermark style)
         if (this.gameRunning && !this.gameOver) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.font = 'bold 80px Clash Display';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.font = 'bold 120px Spline Sans, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(this.score, w / 2, h / 2);
+            ctx.fillText(this.score, w / 2, h / 2 + 40);
         }
     }
 
@@ -269,43 +287,31 @@ class PixelBird {
         const gap = this.pipeGap;
 
         // Top pipe
-        const topGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + w, 0);
-        topGrad.addColorStop(0, '#7b68ee');
-        topGrad.addColorStop(0.5, '#9b87ff');
-        topGrad.addColorStop(1, '#7b68ee');
+        ctx.fillStyle = '#1c2438';
+        ctx.strokeStyle = '#3b4354';
+        ctx.lineWidth = 2;
 
-        ctx.fillStyle = topGrad;
+        // Top pipe body
         ctx.fillRect(pipe.x, 0, w, pipe.topHeight);
+        ctx.strokeRect(pipe.x, 0, w, pipe.topHeight);
 
         // Top pipe cap
-        ctx.fillStyle = '#a599ff';
+        ctx.fillStyle = '#252d42';
         ctx.fillRect(pipe.x - 5, pipe.topHeight - 20, w + 10, 20);
-
-        // Top pipe glow
-        ctx.shadowColor = '#7b68ee';
-        ctx.shadowBlur = 15;
-        ctx.fillRect(pipe.x, 0, w, pipe.topHeight);
-        ctx.shadowBlur = 0;
+        ctx.strokeRect(pipe.x - 5, pipe.topHeight - 20, w + 10, 20);
 
         // Bottom pipe
         const bottomY = pipe.topHeight + gap;
-        const bottomGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + w, 0);
-        bottomGrad.addColorStop(0, '#00d4ff');
-        bottomGrad.addColorStop(0.5, '#40e0ff');
-        bottomGrad.addColorStop(1, '#00d4ff');
+        ctx.fillStyle = '#1c2438';
 
-        ctx.fillStyle = bottomGrad;
+        // Bottom pipe body
         ctx.fillRect(pipe.x, bottomY, w, h - bottomY);
+        ctx.strokeRect(pipe.x, bottomY, w, h - bottomY);
 
         // Bottom pipe cap
-        ctx.fillStyle = '#60e8ff';
+        ctx.fillStyle = '#252d42';
         ctx.fillRect(pipe.x - 5, bottomY, w + 10, 20);
-
-        // Bottom pipe glow
-        ctx.shadowColor = '#00d4ff';
-        ctx.shadowBlur = 15;
-        ctx.fillRect(pipe.x, bottomY, w, h - bottomY);
-        ctx.shadowBlur = 0;
+        ctx.strokeRect(pipe.x - 5, bottomY, w + 10, 20);
     }
 
     drawBird() {
@@ -316,40 +322,24 @@ class PixelBird {
         ctx.translate(bird.x + bird.width / 2, bird.y + bird.height / 2);
         ctx.rotate(bird.rotation * Math.PI / 180);
 
-        // Bird body (neon glow)
-        ctx.shadowColor = '#ffd700';
-        ctx.shadowBlur = 20;
+        // Bird glow
+        ctx.shadowColor = '#0f49bd';
+        ctx.shadowBlur = 15;
 
         // Body
-        ctx.fillStyle = '#ffd700';
+        ctx.fillStyle = '#0f49bd';
         ctx.beginPath();
-        ctx.ellipse(0, 0, bird.width / 2, bird.height / 2, 0, 0, Math.PI * 2);
+        ctx.roundRect(-bird.width / 2, -bird.height / 2, bird.width, bird.height, 6);
         ctx.fill();
 
         ctx.shadowBlur = 0;
 
-        // Eye
-        ctx.fillStyle = '#fff';
-        ctx.beginPath();
-        ctx.arc(8, -4, 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#000';
-        ctx.beginPath();
-        ctx.arc(10, -4, 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Beak
-        ctx.fillStyle = '#ff6600';
-        ctx.beginPath();
-        ctx.moveTo(bird.width / 2, 0);
-        ctx.lineTo(bird.width / 2 + 10, 3);
-        ctx.lineTo(bird.width / 2, 6);
-        ctx.closePath();
-        ctx.fill();
+        // Eye visor
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillRect(2, -6, 10, 8);
 
         // Wing
-        ctx.fillStyle = '#ffcc00';
+        ctx.fillStyle = '#0a3690';
         ctx.beginPath();
         ctx.ellipse(-5, 5, 8, 5, -0.3, 0, Math.PI * 2);
         ctx.fill();

@@ -146,10 +146,26 @@ io.on('connection', (socket) => {
 
     socket.on('joinRoom', (code) => {
         const upperCode = code.toUpperCase();
+        const roomCount = rooms.size;
+        const availableRooms = Array.from(rooms.keys());
+
+        console.log(`[JOIN] Socket ${socket.id} trying to join: "${upperCode}"`);
+        console.log(`[JOIN] Total rooms on server: ${roomCount}`);
+        console.log(`[JOIN] Available room codes:`, availableRooms);
+
+        // Send debug info to client
+        socket.emit('debugInfo', {
+            action: 'joinAttempt',
+            requestedCode: upperCode,
+            availableRooms: availableRooms,
+            roomCount: roomCount
+        });
+
         const result = joinRoom(upperCode, socket.id);
 
         if (result.error) {
-            socket.emit('joinError', { message: result.error });
+            console.log(`[JOIN] Error: ${result.error}`);
+            socket.emit('joinError', { message: result.error, debug: { availableRooms, requestedCode: upperCode } });
             return;
         }
 
@@ -157,7 +173,7 @@ io.on('connection', (socket) => {
         socket.emit('joinedRoom', { code: upperCode, isHost: false });
         io.to(result.room.host).emit('guestJoined', { guestId: socket.id });
         io.to(upperCode).emit('goToCharacterSelect');
-        console.log(`Player ${socket.id} joined room ${upperCode}`);
+        console.log(`[JOIN] SUCCESS: Player ${socket.id} joined room ${upperCode}`);
     });
 
 

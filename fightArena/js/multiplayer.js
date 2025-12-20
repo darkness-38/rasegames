@@ -66,18 +66,32 @@ class MultiplayerClient {
 
 
         this.socket.on('roomCreated', (data) => {
+            console.log('[ROOM] Created room:', data.code);
             this.roomCode = data.code;
             this.isHost = true;
             if (this.onRoomCreated) this.onRoomCreated(data.code);
         });
 
         this.socket.on('joinedRoom', (data) => {
+            console.log('[ROOM] Joined room:', data.code);
             this.roomCode = data.code;
             this.isHost = data.isHost;
             if (this.onJoinedRoom) this.onJoinedRoom(data);
         });
 
+        // Debug info from server
+        this.socket.on('debugInfo', (data) => {
+            console.log('[DEBUG] Server info:', data);
+            console.log('[DEBUG] Available rooms on server:', data.availableRooms);
+            console.log('[DEBUG] Total room count:', data.roomCount);
+        });
+
         this.socket.on('joinError', (data) => {
+            console.error('[ERROR] Join failed:', data.message);
+            if (data.debug) {
+                console.error('[ERROR] Requested code:', data.debug.requestedCode);
+                console.error('[ERROR] Available rooms:', data.debug.availableRooms);
+            }
             if (this.onJoinError) this.onJoinError(data.message);
         });
 

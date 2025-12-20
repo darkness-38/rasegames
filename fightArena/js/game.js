@@ -901,6 +901,37 @@ function hideAnnouncer() {
     document.getElementById('announcer').classList.remove('show');
 }
 
+function showRoomClosedPopup(reason) {
+    // Remove existing popup if any
+    const existing = document.getElementById('room-closed-popup');
+    if (existing) existing.remove();
+
+    // Create popup
+    const popup = document.createElement('div');
+    popup.id = 'room-closed-popup';
+    popup.innerHTML = `
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center animate-fadeIn">
+            <div class="bg-gradient-to-b from-surface-dark to-background-dark border-2 border-red-500/50 rounded-2xl p-8 max-w-md mx-4 text-center shadow-[0_0_50px_rgba(255,0,0,0.3)]">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-red-500/20 border-2 border-red-500 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-4xl text-red-500">door_open</span>
+                </div>
+                <h2 class="text-2xl font-black text-white uppercase mb-2">Room Closed</h2>
+                <p class="text-white/70 mb-6">${reason || 'The room has been closed.'}</p>
+                <button onclick="closeRoomClosedPopup()" class="px-8 py-3 bg-gradient-to-r from-primary to-green-400 text-black font-bold uppercase rounded-xl hover:shadow-neon transition-all">
+                    Back to Menu
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+}
+
+function closeRoomClosedPopup() {
+    const popup = document.getElementById('room-closed-popup');
+    if (popup) popup.remove();
+    goToMenu();
+}
+
 
 
 
@@ -1077,13 +1108,9 @@ function setupMultiplayerCallbacks() {
 
 
     multiplayer.onRoomClosed = (reason) => {
-        showAnnouncer(reason, '#ff4444');
-        setTimeout(() => {
-            hideAnnouncer();
-            stopGame();
-            gameState.isOnline = false;
-            goToMenu();
-        }, 2000);
+        showRoomClosedPopup(reason);
+        stopGame();
+        gameState.isOnline = false;
     };
 
 

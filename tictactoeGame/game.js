@@ -26,8 +26,8 @@ class TicTacPro {
 
     init() {
         this.setupEventListeners();
-        this.updateScores();
-        this.updateStreak();
+        this.updateStats();
+        this.updateIndicators();
     }
 
     setupEventListeners() {
@@ -40,8 +40,13 @@ class TicTacPro {
         document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
 
         // Difficulty buttons
-        document.querySelectorAll('.diff-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.setDifficulty(e.target.dataset.level));
+        document.querySelectorAll('input[name="difficulty"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                this.difficulty = e.target.value;
+                document.getElementById('difficultyLabel').textContent =
+                    e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1) + ' Mode';
+                this.newGame();
+            });
         });
     }
 
@@ -55,6 +60,7 @@ class TicTacPro {
         this.makeMove(index, 'X');
 
         if (!this.gameOver) {
+            this.updateIndicators();
             setTimeout(() => this.aiMove(), 400);
         }
     }
@@ -62,8 +68,15 @@ class TicTacPro {
     makeMove(index, player) {
         this.board[index] = player;
         const cell = document.querySelector(`[data-index="${index}"]`);
-        cell.textContent = player;
-        cell.classList.add(player.toLowerCase(), 'taken');
+
+        // Set cell content with styling
+        if (player === 'X') {
+            cell.innerHTML = `<span class="text-6xl font-bold text-primary">${player}</span>`;
+        } else {
+            cell.innerHTML = `<span class="text-6xl font-bold text-gray-400 dark:text-gray-500">${player}</span>`;
+        }
+        cell.classList.add('taken');
+        cell.style.cursor = 'not-allowed';
 
         const winner = this.checkWinner();
         if (winner) {
@@ -72,7 +85,7 @@ class TicTacPro {
             this.endGame('draw');
         } else {
             this.currentPlayer = player === 'X' ? 'O' : 'X';
-            this.updateStatus();
+            this.updateTurnDisplay();
         }
     }
 
@@ -94,6 +107,7 @@ class TicTacPro {
 
         if (move !== null) {
             this.makeMove(move, 'O');
+            this.updateIndicators();
         }
     }
 
@@ -177,13 +191,15 @@ class TicTacPro {
 
     endGame(result) {
         this.gameOver = true;
-        const statusEl = document.getElementById('status');
+        const statusEl = document.getElementById('gameStatus');
+        const turnEl = document.getElementById('turnText');
 
         if (result === 'X') {
             this.playerWins++;
             this.winStreak++;
-            statusEl.textContent = '🎉 You Win!';
-            statusEl.className = 'status-text win';
+            statusEl.textContent = 'Victory!';
+            statusEl.className = 'px-3 py-1 bg-green-500/20 text-green-500 text-xs font-bold uppercase tracking-widest rounded-full mb-2';
+            turnEl.textContent = '🎉 You Win!';
 
             // Update best streak
             if (this.winStreak > this.bestStreak) {
@@ -195,69 +211,37 @@ class TicTacPro {
             if (typeof Leaderboard !== 'undefined') {
                 Leaderboard.submit('tictactoe', this.winStreak);
             }
+
+            document.getElementById('streakMessage').textContent =
+                `Your best streak is ${this.bestStreak}. Keep going!`;
+
         } else if (result === 'O') {
             this.aiWins++;
             this.winStreak = 0;
-            statusEl.textContent = '😢 CPU Wins!';
-            statusEl.className = 'status-text lose';
+            statusEl.textContent = 'Defeat';
+            statusEl.className = 'px-3 py-1 bg-red-500/20 text-red-500 text-xs font-bold uppercase tracking-widest rounded-full mb-2';
+            turnEl.textContent = '😢 CPU Wins';
+
         } else {
             this.draws++;
-            statusEl.textContent = "🤝 It's a Draw!";
-            statusEl.className = 'status-text draw';
+            statusEl.textContent = 'Draw';
+            statusEl.className = 'px-3 py-1 bg-gray-500/20 text-gray-400 text-xs font-bold uppercase tracking-widest rounded-full mb-2';
+            turnEl.textContent = "🤝 It's a Draw!";
         }
 
-        this.updateScores();
-        this.updateStreak();
-        this.showWinLine(result);
+        this.updateStats();
+        this.highlightWinningCells(result);
     }
 
-    showWinLine(winner) {
+    highlightWinningCells(winner) {
         if (winner !== 'X' && winner !== 'O') return;
 
         const pattern = this.getWinningPattern();
         if (!pattern) return;
 
-        // Highlight winning cells
         pattern.forEach(idx => {
             document.querySelector(`[data-index="${idx}"]`).classList.add('win-cell');
         });
-
-        // Calculate line coordinates
-        const lineCoords = this.getLineCoords(pattern);
-        const svg = document.getElementById('winLine');
-        const line = svg.querySelector('line');
-
-        line.setAttribute('x1', lineCoords.x1);
-        line.setAttribute('y1', lineCoords.y1);
-        line.setAttribute('x2', lineCoords.x2);
-        line.setAttribute('y2', lineCoords.y2);
-
-        // Change line color based on winner
-        line.style.stroke = winner === 'X' ? '#00d4ff' : '#ff006e';
-
-        svg.classList.add('show');
-    }
-
-    getLineCoords(pattern) {
-        const coords = {
-            [JSON.stringify([0, 1, 2])]: { x1: 5, y1: 17, x2: 95, y2: 17 },
-            [JSON.stringify([3, 4, 5])]: { x1: 5, y1: 50, x2: 95, y2: 50 },
-            [JSON.stringify([6, 7, 8])]: { x1: 5, y1: 83, x2: 95, y2: 83 },
-            [JSON.stringify([0, 3, 6])]: { x1: 17, y1: 5, x2: 17, y2: 95 },
-            [JSON.stringify([1, 4, 7])]: { x1: 50, y1: 5, x2: 50, y2: 95 },
-            [JSON.stringify([2, 5, 8])]: { x1: 83, y1: 5, x2: 83, y2: 95 },
-            [JSON.stringify([0, 4, 8])]: { x1: 5, y1: 5, x2: 95, y2: 95 },
-            [JSON.stringify([2, 4, 6])]: { x1: 95, y1: 5, x2: 5, y2: 95 }
-        };
-        return coords[JSON.stringify(pattern)];
-    }
-
-    setDifficulty(level) {
-        this.difficulty = level;
-        document.querySelectorAll('.diff-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.level === level);
-        });
-        this.newGame();
     }
 
     newGame() {
@@ -267,34 +251,62 @@ class TicTacPro {
 
         // Reset cells
         document.querySelectorAll('.cell').forEach(cell => {
-            cell.textContent = '';
-            cell.className = 'cell';
+            cell.innerHTML = '';
+            cell.classList.remove('taken', 'win-cell');
+            cell.style.cursor = 'pointer';
         });
 
-        // Hide win line
-        document.getElementById('winLine').classList.remove('show');
-
-        this.updateStatus();
+        this.updateTurnDisplay();
+        this.updateIndicators();
     }
 
-    updateStatus() {
-        const statusEl = document.getElementById('status');
+    updateTurnDisplay() {
+        const statusEl = document.getElementById('gameStatus');
+        const turnEl = document.getElementById('turnText');
+
         if (this.currentPlayer === 'X') {
-            statusEl.textContent = 'Your turn!';
+            statusEl.textContent = 'Your Turn';
+            statusEl.className = 'px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest rounded-full mb-2';
+            turnEl.textContent = "Player X's Turn";
         } else {
-            statusEl.textContent = 'CPU thinking...';
+            statusEl.textContent = 'Thinking...';
+            statusEl.className = 'px-3 py-1 bg-gray-500/20 text-gray-400 text-xs font-bold uppercase tracking-widest rounded-full mb-2';
+            turnEl.textContent = "CPU's Turn";
         }
-        statusEl.className = 'status-text';
     }
 
-    updateScores() {
-        document.getElementById('playerWins').textContent = this.playerWins;
-        document.getElementById('aiWins').textContent = this.aiWins;
-        document.getElementById('draws').textContent = this.draws;
+    updateIndicators() {
+        const playerInd = document.getElementById('playerIndicator');
+        const aiInd = document.getElementById('aiIndicator');
+
+        if (this.currentPlayer === 'X' && !this.gameOver) {
+            playerInd.className = 'h-2 w-2 rounded-full bg-green-500 animate-pulse';
+            aiInd.className = 'h-2 w-2 rounded-full bg-gray-400';
+        } else if (this.currentPlayer === 'O' && !this.gameOver) {
+            playerInd.className = 'h-2 w-2 rounded-full bg-gray-400';
+            aiInd.className = 'h-2 w-2 rounded-full bg-green-500 animate-pulse';
+        } else {
+            playerInd.className = 'h-2 w-2 rounded-full bg-gray-400';
+            aiInd.className = 'h-2 w-2 rounded-full bg-gray-400';
+        }
     }
 
-    updateStreak() {
+    updateStats() {
+        const total = this.playerWins + this.aiWins + this.draws;
+
         document.getElementById('winStreak').textContent = this.winStreak;
+        document.getElementById('winsCount').textContent = this.playerWins;
+        document.getElementById('drawsCount').textContent = this.draws;
+        document.getElementById('lossesCount').textContent = this.aiWins;
+        document.getElementById('totalGames').textContent = total;
+
+        if (total > 0) {
+            const winRate = Math.round((this.playerWins / total) * 100);
+            document.getElementById('winRate').textContent = winRate + '%';
+            document.getElementById('winsBar').style.width = (this.playerWins / total * 100) + '%';
+            document.getElementById('drawsBar').style.width = (this.draws / total * 100) + '%';
+            document.getElementById('lossesBar').style.width = (this.aiWins / total * 100) + '%';
+        }
     }
 }
 

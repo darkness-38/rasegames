@@ -31,6 +31,7 @@ class MultiplayerClient {
         this.onRoundEnded = null;
         this.onMatchEnded = null;
         this.onRematchRequested = null;
+        this.onRematchDeclined = null;
         this.onStartRematch = null;
         this.onChatMessage = null;
     }
@@ -38,9 +39,14 @@ class MultiplayerClient {
     connect() {
         if (this.socket) return;
 
+        // Determine server URL - use current origin for same-domain deployment
+        // If running on localhost without explicit port, use current origin
+        const serverUrl = window.location.origin;
+
+        console.log('Connecting to server:', serverUrl);
 
         // Connect to the server with WebSocket only
-        this.socket = io({
+        this.socket = io(serverUrl, {
             transports: ['websocket'],
             upgrade: false
         });
@@ -135,8 +141,12 @@ class MultiplayerClient {
             if (this.onMatchEnded) this.onMatchEnded(data);
         });
 
-        this.socket.on('rematchRequested', () => {
-            if (this.onRematchRequested) this.onRematchRequested();
+        this.socket.on('rematchRequested', (data) => {
+            if (this.onRematchRequested) this.onRematchRequested(data);
+        });
+
+        this.socket.on('rematchDeclined', () => {
+            if (this.onRematchDeclined) this.onRematchDeclined();
         });
 
         this.socket.on('startRematch', () => {
@@ -238,6 +248,18 @@ class MultiplayerClient {
     requestRematch() {
         if (this.socket) {
             this.socket.emit('requestRematch');
+        }
+    }
+
+    acceptRematch() {
+        if (this.socket) {
+            this.socket.emit('acceptRematch');
+        }
+    }
+
+    declineRematch() {
+        if (this.socket) {
+            this.socket.emit('declineRematch');
         }
     }
 

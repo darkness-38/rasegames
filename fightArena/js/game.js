@@ -171,19 +171,118 @@ function selectArena(arenaType) {
 }
 
 function updateCharacterSelection() {
+    // Character data for preview
+    const characterData = {
+        warrior: {
+            name: 'Shadow Warrior',
+            lore: 'A legendary blade master who trained in the ancient Shadow Dojo. His devastating combos can break through any defense.',
+            power: 90, speed: 50, defense: 80,
+            ability1: 'Sword Slash', ability2: 'Heavy Strike', special: 'Blade Storm',
+            icon: 'swords', gradient: 'from-orange-500 to-orange-800'
+        },
+        ninja: {
+            name: 'Phantom Ninja',
+            lore: 'Swift as the wind, deadly as the night. This assassin uses speed and shadow techniques to overwhelm opponents.',
+            power: 60, speed: 95, defense: 40,
+            ability1: 'Shuriken', ability2: 'Shadow Dash', special: 'Shadow Clone',
+            icon: 'visibility_off', gradient: 'from-purple-500 to-purple-900'
+        },
+        mage: {
+            name: 'Arcane Mage',
+            lore: 'Master of elemental magic, capable of devastating ranged attacks. Controls the battlefield with powerful spells.',
+            power: 75, speed: 65, defense: 55,
+            ability1: 'Fireball', ability2: 'Ice Blast', special: 'Arcane Surge',
+            icon: 'auto_fix_high', gradient: 'from-blue-500 to-blue-900'
+        }
+    };
 
-    document.querySelectorAll('#p1-cards .char-card').forEach(card => {
+    // Update P1 cards
+    document.querySelectorAll('#p1-cards .char-card-mini, #p1-cards .char-card').forEach(card => {
         card.classList.toggle('selected', card.dataset.char === gameState.p1Character);
+        if (card.dataset.char === gameState.p1Character) {
+            card.classList.add('border-primary', 'shadow-[0_0_30px_rgba(70,236,19,0.4)]');
+        } else {
+            card.classList.remove('border-primary', 'shadow-[0_0_30px_rgba(70,236,19,0.4)]');
+        }
     });
 
-
-    document.querySelectorAll('#p2-cards .char-card').forEach(card => {
+    // Update P2 cards
+    document.querySelectorAll('#p2-cards .char-card-mini, #p2-cards .char-card').forEach(card => {
         card.classList.toggle('selected', card.dataset.char === gameState.p2Character);
+        if (card.dataset.char === gameState.p2Character) {
+            card.classList.add('border-red-500', 'shadow-[0_0_30px_rgba(255,0,110,0.4)]');
+        } else {
+            card.classList.remove('border-red-500', 'shadow-[0_0_30px_rgba(255,0,110,0.4)]');
+        }
     });
 
+    // Update P1 preview
+    updatePreviewPanel(1, gameState.p1Character, characterData);
+    // Update P2 preview
+    updatePreviewPanel(2, gameState.p2Character, characterData);
 
+    // Enable fight button
     const fightBtn = document.getElementById('fight-btn');
     fightBtn.disabled = !(gameState.p1Character && gameState.p2Character);
+}
+
+function updatePreviewPanel(playerNum, charType, characterData) {
+    const prefix = `p${playerNum}`;
+    const charVisual = document.getElementById(`${prefix}-char-visual`);
+    const charInfo = document.getElementById(`${prefix}-char-info`);
+
+    if (!charType || !characterData[charType]) {
+        if (charInfo) charInfo.style.display = 'none';
+        if (charVisual) {
+            charVisual.innerHTML = `
+                <div class="text-center text-white/30">
+                    <span class="material-symbols-outlined text-6xl mb-2">help_outline</span>
+                    <p class="text-xs uppercase tracking-wider">Select Fighter</p>
+                </div>`;
+        }
+        return;
+    }
+
+    const data = characterData[charType];
+
+    // Update visual
+    if (charVisual) {
+        charVisual.innerHTML = `
+            <div class="flex flex-col items-center justify-center animate-fadeIn">
+                <div class="w-24 h-24 rounded-2xl bg-gradient-to-br ${data.gradient} flex items-center justify-center shadow-2xl mb-4 animate-pulse">
+                    <span class="material-symbols-outlined text-5xl text-white" style="font-variation-settings: 'FILL' 1;">${data.icon}</span>
+                </div>
+            </div>`;
+    }
+
+    // Show info panel
+    if (charInfo) {
+        charInfo.style.display = 'block';
+
+        // Update name and lore
+        const nameEl = document.getElementById(`${prefix}-char-name`);
+        const loreEl = document.getElementById(`${prefix}-char-lore`);
+        if (nameEl) nameEl.textContent = data.name;
+        if (loreEl) loreEl.textContent = data.lore;
+
+        // Update stats with animation
+        setTimeout(() => {
+            const powerBar = document.getElementById(`${prefix}-stat-power`);
+            const speedBar = document.getElementById(`${prefix}-stat-speed`);
+            const defenseBar = document.getElementById(`${prefix}-stat-defense`);
+            if (powerBar) powerBar.style.width = `${data.power}%`;
+            if (speedBar) speedBar.style.width = `${data.speed}%`;
+            if (defenseBar) defenseBar.style.width = `${data.defense}%`;
+        }, 50);
+
+        // Update abilities
+        const ability1 = document.getElementById(`${prefix}-ability-1`);
+        const ability2 = document.getElementById(`${prefix}-ability-2`);
+        const abilitySpecial = document.getElementById(`${prefix}-ability-special`);
+        if (ability1) ability1.textContent = data.ability1;
+        if (ability2) ability2.textContent = data.ability2;
+        if (abilitySpecial) abilitySpecial.textContent = data.special;
+    }
 }
 
 function createCharacter(type, playerNum) {

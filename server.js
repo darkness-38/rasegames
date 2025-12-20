@@ -94,6 +94,21 @@ function leaveRoom(playerId) {
 
     playerRooms.delete(playerId);
 
+    // If game hasn't started yet (lobby), close entire room
+    if (room.state === 'waiting' || room.state === 'selecting') {
+        if (room.host && room.host !== playerId) {
+            io.to(room.host).emit('roomClosed', { reason: 'Other player left the lobby' });
+            playerRooms.delete(room.host);
+        }
+        if (room.guest && room.guest !== playerId) {
+            io.to(room.guest).emit('roomClosed', { reason: 'Other player left the lobby' });
+            playerRooms.delete(room.guest);
+        }
+        rooms.delete(code);
+        return;
+    }
+
+    // During game, handle normally
     if (room.host === playerId) {
         if (room.guest) {
             io.to(room.guest).emit('roomClosed', { reason: 'Host left the room' });
@@ -101,11 +116,9 @@ function leaveRoom(playerId) {
         }
         rooms.delete(code);
     } else if (room.guest === playerId) {
-        room.guest = null;
-        room.guestCharacter = null;
-        room.guestReady = false;
-        room.state = 'waiting';
-        io.to(room.host).emit('guestLeft');
+        io.to(room.host).emit('roomClosed', { reason: 'Opponent left the room' });
+        playerRooms.delete(room.host);
+        rooms.delete(code);
     }
 }
 
@@ -251,20 +264,46 @@ io.on('connection', (socket) => {
         const room = rooms.get(code);
         if (!room) return;
 
+        // Mark who requested rematch
         if (room.host === socket.id) {
-            room.hostReady = true;
+            room.hostWantsRematch = true;
         } else {
-            room.guestReady = true;
+            room.guestWantsRematch = true;
         }
 
-        socket.to(code).emit('rematchRequested');
+        // Send rematch request to opponent
+        socket.to(code).emit('rematchRequested', { from: socket.id });
+    });
 
-        if (room.hostReady && room.guestReady) {
-            room.state = 'playing';
-            room.hostReady = false;
-            room.guestReady = false;
-            io.to(code).emit('startRematch');
-        }
+    socket.on('acceptRematch', () => {
+        const code = playerRooms.get(socket.id);
+        if (!code) return;
+
+        const room = rooms.get(code);
+        if (!room) return;
+
+        // Both players want rematch, start it
+        room.state = 'playing';
+        room.hostWantsRematch = false;
+        room.guestWantsRematch = false;
+        room.hostReady = false;
+        room.guestReady = false;
+        io.to(code).emit('startRematch');
+    });
+
+    socket.on('declineRematch', () => {
+        const code = playerRooms.get(socket.id);
+        if (!code) return;
+
+        const room = rooms.get(code);
+        if (!room) return;
+
+        // Notify both players and close room
+        io.to(code).emit('rematchDeclined');
+
+        if (room.host) playerRooms.delete(room.host);
+        if (room.guest) playerRooms.delete(room.guest);
+        rooms.delete(code);
     });
 
 

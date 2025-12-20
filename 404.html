@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>404 Not Found - Rase Games</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4f46e5",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0a0a",
+                    },
+                    fontFamily: {
+                        "display": ["Clash Display", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="logo">
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    <span class="logo-text">Rase Games</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/games" class="nav-link">Games</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/leaderboard" class="nav-link">Leaderboards</a>
+                <a href="/community" class="nav-link">Community</a>
+                <div id="user-display"></div>
+            </div>
+        </nav>
+
+        <!-- Main Content: 404 Hero -->
+        <main class="flex-grow flex items-center justify-center p-4 relative overflow-hidden">
+            <!-- Decorative Background Elements -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl">
+                </div>
+                <div
+                    class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2">
+                </div>
+            </div>
+
+            <div class="flex flex-col max-w-[960px] w-full z-10">
+                <div class="flex flex-col items-center gap-8 py-12 text-center">
+
+                    <!-- 404 Visual -->
+                    <div class="relative group">
+                        <h1
+                            class="text-[10rem] md:text-[14rem] font-bold leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-slate-300 to-slate-100 dark:from-slate-700 dark:to-background-dark select-none">
+                            404
+                        </h1>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span aria-hidden="true"
+                                class="text-9xl md:text-[10rem] font-bold text-primary/30 blur-sm transform scale-105 select-none animate-pulse">404</span>
+                        </div>
+                    </div>
+
+                    <!-- Game Over Text -->
+                    <div class="flex max-w-[540px] flex-col items-center gap-4">
+                        <h2 class="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.015em]">
+                            🎮 Game Over! Page Not Found
+                        </h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-base md:text-lg font-normal leading-relaxed">
+                            Looks like this level doesn't exist. The page you're looking for might have been moved,
+                            deleted, or never existed in the first place.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full justify-center">
+                        <a href="/"
+                            class="flex w-full sm:w-auto min-w-[180px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-indigo-600 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5">
+                            <span class="material-symbols-outlined text-[20px]">home</span>
+                            <span>Return to Home</span>
+                        </a>
+                        <a href="/games"
+                            class="flex w-full sm:w-auto min-w-[180px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-slate-200 dark:bg-[#1a1a2e] text-slate-900 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-300 dark:hover:bg-[#252540] transition-colors border border-transparent dark:border-white/10">
+                            <span class="material-symbols-outlined text-[20px]">sports_esports</span>
+                            <span>Browse Games</span>
+                        </a>
+                    </div>
+
+                    <!-- Easter Egg -->
+                    <p class="text-slate-400 dark:text-slate-600 text-sm mt-8">
+                        Press <kbd class="px-2 py-1 bg-slate-200 dark:bg-slate-800 rounded text-xs font-mono">↑ ↑ ↓ ↓ ←
+                            → ← → B A</kbd>
+                        to unlock secret level... just kidding! 🕹️
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-solid border-slate-200 dark:border-white/10 px-6 py-8 text-center">
+            <div class="flex flex-col gap-4 max-w-[960px] mx-auto">
+                <div class="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+                    <a class="text-slate-500 hover:text-primary dark:text-slate-500 dark:hover:text-white transition-colors text-sm font-medium"
+                        href="/about">About</a>
+                    <a class="text-slate-500 hover:text-primary dark:text-slate-500 dark:hover:text-white transition-colors text-sm font-medium"
+                        href="/community">Community</a>
+                    <a class="text-slate-500 hover:text-primary dark:text-slate-500 dark:hover:text-white transition-colors text-sm font-medium"
+                        href="/leaderboard">Leaderboards</a>
+                </div>
+                <div class="flex items-center justify-center gap-2 text-slate-400 dark:text-slate-600">
+                    <span class="material-symbols-outlined text-[16px]">copyright</span>
+                    <p class="text-sm font-normal leading-normal">2024 Rase Corporation. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+
+</html>

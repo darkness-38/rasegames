@@ -18,9 +18,30 @@ const handleLocation = async () => {
     if (path.endsWith("profile") || path.endsWith("profile.html")) fileToFetch = "profile.html";
     if (path.endsWith("games") || path.endsWith("games.html")) fileToFetch = "games.html";
     if (path === "/" || path.endsWith("index.html")) fileToFetch = "index.html";
+    // Check if path matches any known route, otherwise show 404
+    const knownRoutes = ['/', '/about', '/community', '/leaderboard', '/profile', '/games'];
+    const isKnownRoute = knownRoutes.some(route => path === route || path === route + '.html');
+
+    if (!isKnownRoute && path !== '/') {
+        fileToFetch = "404.html";
+    }
 
     try {
         const response = await fetch(fileToFetch);
+
+        // If fetch fails (404), load 404 page
+        if (!response.ok) {
+            const notFoundResponse = await fetch("404.html");
+            const notFoundText = await notFoundResponse.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(notFoundText, 'text/html');
+            const newMain = doc.querySelector('main');
+            if (newMain) {
+                document.querySelector('main').innerHTML = newMain.innerHTML;
+            }
+            return;
+        }
+
         const text = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
@@ -63,6 +84,19 @@ const handleLocation = async () => {
 
     } catch (e) {
         console.error("Error loading page", e);
+        // On error, try to load 404 page
+        try {
+            const notFoundResponse = await fetch("404.html");
+            const notFoundText = await notFoundResponse.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(notFoundText, 'text/html');
+            const newMain = doc.querySelector('main');
+            if (newMain) {
+                document.querySelector('main').innerHTML = newMain.innerHTML;
+            }
+        } catch (e2) {
+            console.error("Could not load 404 page", e2);
+        }
     }
 };
 

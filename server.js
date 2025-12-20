@@ -106,6 +106,11 @@ app.get(/^(.*)$/, (req, res, next) => {
     });
 });
 
+// 404 Error Handler
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
+
 
 
 

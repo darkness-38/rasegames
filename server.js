@@ -114,20 +114,14 @@ function leaveRoom(playerId) {
 
         // If Host leaves
         if (room.host === playerId) {
-            console.log(`[ROOM] Host left room ${code}. Scheduling deletion in 30s.`);
+            console.log(`[ROOM] Host left room ${code}. Deleting immediately. (User requested no grace period)`);
 
-            // Mark for deletion but wait 30s
-            room.pendingDeletion = setTimeout(() => {
-                if (rooms.has(code) && rooms.get(code).host === playerId) { // Security check
-                    console.log(`[ROOM] Deleting room ${code} (Host timeout)`);
-
-                    if (room.guest) {
-                        io.to(room.guest).emit('roomClosed', { reason: 'Host disconnected' });
-                        playerRooms.delete(room.guest);
-                    }
-                    rooms.delete(code);
-                }
-            }, 30000); // 30 seconds grace period
+            if (room.guest) {
+                io.to(room.guest).emit('roomClosed', { reason: 'Host disconnected' });
+                playerRooms.delete(room.guest);
+            }
+            rooms.delete(code);
+            broadcastRoomList();
 
             // If Guest leaves
         } else if (room.guest === playerId) {

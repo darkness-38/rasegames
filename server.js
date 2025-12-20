@@ -18,6 +18,23 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
+// Redirect .html URLs to clean URLs
+app.use((req, res, next) => {
+    const url = req.url;
+
+    // Redirect /path/index.html to /path/
+    if (url.endsWith('/index.html')) {
+        return res.redirect(301, url.slice(0, -10));
+    }
+
+    // Redirect /path.html to /path
+    if (url.endsWith('.html') && !url.includes('/index.html')) {
+        return res.redirect(301, url.slice(0, -5));
+    }
+
+    next();
+});
+
 // Serve static files with extensions option to enable clean URLs
 app.use(express.static(path.join(__dirname), {
     extensions: ['html']

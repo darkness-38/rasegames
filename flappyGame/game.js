@@ -46,13 +46,25 @@ class PixelBird {
     }
 
     resizeCanvas() {
-        const container = this.canvas.parentElement;
-        this.canvas.width = container.clientWidth;
-        this.canvas.height = container.clientHeight;
+        const container = document.getElementById('canvasContainer');
+        if (!container) return;
+
+        // Get actual container dimensions
+        const rect = container.getBoundingClientRect();
+        const width = rect.width || 800;
+        const height = rect.height || 600;
+
+        this.canvas.width = width;
+        this.canvas.height = height;
 
         // Reinit stars on resize
-        if (this.stars.length > 0) {
+        if (this.stars && this.stars.length > 0) {
             this.initStars();
+        }
+
+        // Reset bird position
+        if (this.bird) {
+            this.bird.y = this.canvas.height / 2;
         }
     }
 

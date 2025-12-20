@@ -1,9 +1,3 @@
-
-
-
-
-
-// Firebase config with obfuscated API key
 const firebaseConfig = {
     apiKey: atob('QUl6YVN5QmlnUksxUVYxbk8tcVRtTU1MVWNuQ3RYdFcwZV9zWG5R'),
     authDomain: "rasegames-9934f.firebaseapp.com",

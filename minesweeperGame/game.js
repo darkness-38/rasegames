@@ -1,8 +1,3 @@
-/**
- * Bomb Squad - Minesweeper Game Logic
- * Premium minesweeper with Tailwind UI integration
- */
-
 class BombSquad {
     constructor() {
         this.gridSize = 12;
@@ -32,7 +27,6 @@ class BombSquad {
     }
 
     setupEventListeners() {
-        // Difficulty buttons
         document.querySelectorAll('input[name="difficulty"]').forEach(input => {
             input.addEventListener('change', (e) => {
                 this.gridSize = parseInt(e.target.dataset.size);
@@ -41,7 +35,6 @@ class BombSquad {
             });
         });
 
-        // Restart buttons
         document.getElementById('restartBtn').addEventListener('click', () => this.newGame());
         document.getElementById('playAgainBtn').addEventListener('click', () => this.newGame());
     }
@@ -61,7 +54,6 @@ class BombSquad {
         this.updateStats();
         this.hideOverlay();
 
-        // Initialize empty grid
         for (let r = 0; r < this.gridSize; r++) {
             this.grid[r] = [];
             this.revealed[r] = [];
@@ -331,7 +323,6 @@ class BombSquad {
     }
 }
 
-// Initialize game
 document.addEventListener('DOMContentLoaded', () => {
     new BombSquad();
 });

@@ -1,8 +1,3 @@
-/**
- * Mind Match - Memory Game Logic
- * Premium memory game with 3D flip animations and leaderboard integration
- */
-
 class MindMatch {
     constructor() {
         this.symbols = ['🚀', '🎮', '🎯', '💎', '🔥', '⚡', '🌟', '🎨'];
@@ -49,10 +44,8 @@ class MindMatch {
     }
 
     createCards() {
-        // Create pairs
         const cardPairs = [...this.symbols, ...this.symbols];
 
-        // Fisher-Yates shuffle
         for (let i = cardPairs.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [cardPairs[i], cardPairs[j]] = [cardPairs[j], cardPairs[i]];
@@ -95,7 +88,6 @@ class MindMatch {
         const card = this.cards[id];
         if (card.isFlipped || card.isMatched) return;
 
-        // Start timer on first flip
         if (this.moves === 0 && this.flippedCards.length === 0) {
             this.startTimer();
         }
@@ -194,8 +186,6 @@ class MindMatch {
     }
 
     calculateScore() {
-        // Higher score = better performance
-        // Base: 10000, minus time penalty, minus moves penalty
         const baseScore = 10000;
         const timePenalty = this.timer * 5;
         const movesPenalty = this.moves * 10;
@@ -239,7 +229,6 @@ class MindMatch {
     }
 }
 
-// Initialize game
 document.addEventListener('DOMContentLoaded', () => {
     new MindMatch();
 });

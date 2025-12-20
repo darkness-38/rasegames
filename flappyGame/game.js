@@ -1,18 +1,11 @@
-/**
- * Pixel Bird - Flappy Bird Clone
- * Premium flappy with canvas rendering and leaderboard integration
- */
-
 class PixelBird {
     constructor() {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
 
-        // Resize canvas to container
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
 
-        // Bird settings
         this.bird = {
             x: 80,
             y: this.canvas.height / 2,
@@ -24,7 +17,6 @@ class PixelBird {
             rotation: 0
         };
 
-        // Pipe settings
         this.pipes = [];
         this.pipeWidth = 60;
         this.pipeGap = 150;
@@ -32,13 +24,11 @@ class PixelBird {
         this.pipeSpawnRate = 100;
         this.frameCount = 0;
 
-        // Game state
         this.score = 0;
         this.highScore = parseInt(localStorage.getItem('highFlappy') || '0');
         this.gameRunning = false;
         this.gameOver = false;
 
-        // Stars background
         this.stars = [];
         this.initStars();
 

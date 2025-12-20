@@ -61,16 +61,12 @@ function selectAvatar(avatar) {
     renderAvatarGrid();
 }
 
-// Edit Modal Functions
 function openEditModal() {
     const modal = document.getElementById('edit-modal');
     if (modal) {
         modal.classList.remove('hidden');
-        // Set current username in input
         const user = window.currentUser;
-        if (user) {
-            document.getElementById('input-username').value = user.displayName || '';
-        }
+        if (user) document.getElementById('input-username').value = user.displayName || '';
         renderAvatarGrid();
     }
 }
@@ -82,7 +78,6 @@ function closeEditModal() {
     }
 }
 
-// Export functions
 window.openEditModal = openEditModal;
 window.closeEditModal = closeEditModal;
 
@@ -111,8 +106,6 @@ async function loadUserProfile() {
             renderAvatarGrid();
         }
 
-        // Show account creation date from Firebase metadata (actual account creation time)
-        // Firebase's creationTime is an ISO string like "Fri, 20 Dec 2024 09:00:00 GMT"
         if (user.metadata && user.metadata.creationTime) {
             const createdAt = new Date(user.metadata.creationTime);
             document.getElementById('stat-joined').textContent = formatDate(createdAt);

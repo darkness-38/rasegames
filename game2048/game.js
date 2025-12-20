@@ -1,19 +1,13 @@
-/**
- * Power 2048 - Game Logic
- * Premium 2048 with sliding animations and endless gameplay
- */
-
 class Game2048 {
     constructor() {
         this.size = 4;
         this.grid = [];
-        this.tileElements = new Map(); // Track DOM elements by tile ID for animations
+        this.tileElements = new Map();
         this.tileId = 0;
         this.maxTile = 0;
         this.bestTile = parseInt(localStorage.getItem('best2048Tile') || '0');
         this.gameOver = false;
 
-        // Tile colors based on value
         this.tileStyles = {
             2: 'bg-white text-slate-900',
             4: 'bg-[#ede0c8] text-slate-800',
@@ -52,19 +46,16 @@ class Game2048 {
         board.innerHTML = '';
         board.className = 'grid grid-cols-4 gap-3 aspect-square relative';
 
-        // Create background cells
         for (let i = 0; i < 16; i++) {
             const cell = document.createElement('div');
             cell.className = 'bg-cell-empty rounded-lg aspect-square';
             board.appendChild(cell);
         }
 
-        // Create tile container (absolute positioned overlay)
         this.tileContainer = document.createElement('div');
         this.tileContainer.className = 'absolute inset-0';
         board.appendChild(this.tileContainer);
 
-        // Calculate sizes
         setTimeout(() => {
             this.cellSize = (board.offsetWidth - this.gap * 3) / 4;
         }, 10);
@@ -76,7 +67,6 @@ class Game2048 {
 
         document.addEventListener('keydown', (e) => this.handleKeydown(e));
 
-        // Touch support
         let touchStartX, touchStartY;
         const board = document.getElementById('gameBoard');
 
@@ -162,11 +152,10 @@ class Game2048 {
 
         const { r, c } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
 
-        // Progressive spawn
         let minSpawn = 2;
-        if (this.maxTile >= 256) minSpawn = 16;
-        else if (this.maxTile >= 128) minSpawn = 8;
-        else if (this.maxTile >= 64) minSpawn = 4;
+        if (this.maxTile >= 1024) minSpawn = 16;
+        else if (this.maxTile >= 512) minSpawn = 8;
+        else if (this.maxTile >= 256) minSpawn = 4;
 
         const value = Math.random() < 0.9 ? minSpawn : minSpawn * 2;
 
@@ -189,15 +178,20 @@ class Game2048 {
     createTileElement(tile, isNew = false) {
         const el = document.createElement('div');
         el.className = 'absolute rounded-lg flex items-center justify-center font-bold';
-        el.style.transition = 'left 0.12s ease-out, top 0.12s ease-out, transform 0.12s ease-out';
+        el.style.transition = 'left 0.12s ease-out, top 0.12s ease-out';
 
         this.updateTileAppearance(el, tile.value);
         this.positionTile(el, tile.r, tile.c);
 
         if (isNew) {
-            el.style.transform = 'scale(0)';
+            el.style.opacity = '0';
+            el.style.transform = 'scale(0.5)';
             requestAnimationFrame(() => {
-                el.style.transform = 'scale(1)';
+                requestAnimationFrame(() => {
+                    el.style.transition = 'left 0.12s ease-out, top 0.12s ease-out, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease-out';
+                    el.style.opacity = '1';
+                    el.style.transform = 'scale(1)';
+                });
             });
         }
 

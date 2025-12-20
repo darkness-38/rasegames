@@ -11,23 +11,33 @@ const handleLocation = async () => {
 
     let fileToFetch = "index.html";
 
+    // Normalize path - remove trailing slash except for root
+    let normalizedPath = path;
+    if (path !== "/" && path.endsWith("/")) {
+        normalizedPath = path.slice(0, -1);
+    }
+
+    console.log("Normalized path:", normalizedPath, "fileToFetch will be set based on this");
+
     // Route matching - order matters, more specific routes first
-    if (path === "/" || path === "/index.html") {
+    if (normalizedPath === "/" || normalizedPath === "/index.html" || normalizedPath === "/index") {
         fileToFetch = "index.html";
-    } else if (path === "/games" || path === "/games.html") {
+    } else if (normalizedPath === "/games" || normalizedPath === "/games.html") {
         fileToFetch = "games.html";
-    } else if (path === "/about" || path === "/about.html") {
+    } else if (normalizedPath === "/about" || normalizedPath === "/about.html") {
         fileToFetch = "about.html";
-    } else if (path === "/community" || path === "/community.html") {
+    } else if (normalizedPath === "/community" || normalizedPath === "/community.html") {
         fileToFetch = "community.html";
-    } else if (path === "/leaderboard" || path === "/leaderboard.html") {
+    } else if (normalizedPath === "/leaderboard" || normalizedPath === "/leaderboard.html") {
         fileToFetch = "leaderboard.html";
-    } else if (path === "/profile" || path === "/profile.html") {
+    } else if (normalizedPath === "/profile" || normalizedPath === "/profile.html") {
         fileToFetch = "profile.html";
     } else {
         // Unknown route - show 404
         fileToFetch = "404.html";
     }
+
+    console.log("Final fileToFetch:", fileToFetch);
 
     try {
         const response = await fetch(fileToFetch);

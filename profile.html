@@ -217,6 +217,94 @@
             .profile-card {
                 padding: 25px;
             }
+
+            .edit-modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+        }
+
+        /* Edit Modal Styles */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-modal.hidden {
+            display: none;
+        }
+
+        .edit-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .edit-modal-content {
+            position: relative;
+            background: rgba(20, 20, 30, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .edit-modal-content h3 {
+            margin: 0 0 25px 0;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .edit-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .edit-modal-close:hover {
+            color: #fff;
+        }
+
+        .avatar-container {
+            cursor: pointer;
+        }
+
+        .avatar-container:hover .avatar-edit {
+            background: #00d4ff;
         }
     </style>
 </head>
@@ -248,18 +336,18 @@
             </h1>
 
             <div class="profile-container">
-                
+
                 <div id="not-logged-in" class="profile-card not-logged-in hidden">
                     <h2>Login Required</h2>
                     <p>Please log in or sign up to view your profile.</p>
                     <button onclick="showAuthModal()" class="save-btn" style="margin-top: 20px;">Log In</button>
                 </div>
 
-                
+
                 <div id="profile-content" class="hidden">
                     <div class="profile-card">
                         <div class="profile-header">
-                            <div class="avatar-container">
+                            <div class="avatar-container" onclick="openEditModal()">
                                 <div class="avatar" id="current-avatar">🎮</div>
                                 <div class="avatar-edit">✏️</div>
                             </div>
@@ -284,9 +372,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="profile-card">
-                        <h3 style="margin-top: 0; margin-bottom: 20px;">Edit Profile</h3>
+                <!-- Edit Profile Modal -->
+                <div id="edit-modal" class="edit-modal hidden">
+                    <div class="edit-modal-overlay" onclick="closeEditModal()"></div>
+                    <div class="edit-modal-content">
+                        <button class="edit-modal-close" onclick="closeEditModal()">×</button>
+                        <h3>Edit Profile</h3>
 
                         <form class="profile-form" onsubmit="saveProfile(event)">
                             <div class="form-group">

@@ -1,8 +1,3 @@
-
-
-
-
-
 const FIREBASE_AUTH = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
 
 let auth = null;
@@ -12,15 +7,15 @@ let currentUser = null;
 async function initAuth() {
     if (auth) return;
 
-    
+
     if (typeof firebase === 'undefined') {
         await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
     }
     await loadScript(FIREBASE_AUTH);
 
     if (!firebase.apps.length) {
-        firebase.initializeApp({
-            apiKey: "AIzaSyBigRK1QV1nO-qTmMMLUcnCtXtW0e_sXnQ",
+        firebase.initializeApp(window.getFirebaseConfig ? window.getFirebaseConfig() : {
+            apiKey: atob('QUl6YVN5QmlnUksxUVYxbk8tcVRtTU1MVWNuQ3RYdFcwZV9zWG5R'),
             authDomain: "rasegames-9934f.firebaseapp.com",
             databaseURL: "https://rasegames-9934f-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "rasegames-9934f"
@@ -29,28 +24,26 @@ async function initAuth() {
 
     auth = firebase.auth();
 
-    
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-    
     let authStateChecked = false;
     auth.onAuthStateChanged(user => {
         currentUser = user;
         updateAuthUI();
 
-        
+
         window.currentUser = user;
 
-        
+
         if (!authStateChecked) {
             authStateChecked = true;
             window.authStateChecked = true;
             if (!user) {
-                
+
                 showAuthModal(true);
             }
         } else if (!user) {
-            
+
             showAuthModal(true);
         }
     });
@@ -76,14 +69,21 @@ function loadScript(src) {
 
 async function registerUser(email, password, username) {
     try {
+        // Check if username is already taken
+        const isAvailable = await checkUsernameAvailable(username);
+        if (!isAvailable) {
+            return { success: false, error: 'This username is already taken' };
+        }
+
         const result = await auth.createUserWithEmailAndPassword(email, password);
-        
+
         await result.user.updateProfile({ displayName: username });
 
-        
+
         const db = firebase.database();
         await db.ref(`users/${result.user.uid}`).set({
             username: username,
+            usernameLower: username.toLowerCase(),
             createdAt: Date.now()
         });
 
@@ -94,6 +94,45 @@ async function registerUser(email, password, username) {
         return { success: false, error: getErrorMessage(error.code) };
     }
 }
+
+// Check if username is available (not already used by another user)
+async function checkUsernameAvailable(username, currentUid = null) {
+    try {
+        // Load Firebase DB if not loaded
+        if (typeof firebase === 'undefined' || !firebase.database) {
+            await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        const db = firebase.database();
+        const snapshot = await db.ref('users')
+            .orderByChild('usernameLower')
+            .equalTo(username.toLowerCase())
+            .once('value');
+
+        if (!snapshot.exists()) {
+            return true; // Username is available
+        }
+
+        // If currentUid is provided, check if it's the same user
+        if (currentUid) {
+            const users = snapshot.val();
+            const uids = Object.keys(users);
+            // If only one result and it's the current user, username is available
+            if (uids.length === 1 && uids[0] === currentUid) {
+                return true;
+            }
+        }
+
+        return false; // Username is taken
+    } catch (e) {
+        console.error('Username check error:', e);
+        return true; // On error, allow (will fail at save if really taken)
+    }
+}
+
+// Export for use in profile.js
+window.checkUsernameAvailable = checkUsernameAvailable;
 
 async function loginUser(email, password) {
     try {
@@ -121,7 +160,7 @@ async function loginWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         const result = await auth.signInWithPopup(provider);
 
-        
+
         try {
             const db = firebase.database();
             const userRef = db.ref(`users/${result.user.uid}`);
@@ -149,7 +188,7 @@ async function logoutUser() {
     try {
         await auth.signOut();
         showNotification('Logged out', 'info');
-        
+
         showAuthModal(true);
     } catch (error) {
         console.error('Logout error:', error);
@@ -203,7 +242,7 @@ function showAuthModal(force = false) {
     const modal = document.getElementById('auth-modal');
     modal.classList.remove('hidden');
 
-    
+
     const closeBtn = document.getElementById('auth-close-btn');
     const overlay = document.getElementById('auth-overlay');
 
@@ -217,7 +256,7 @@ function showAuthModal(force = false) {
 }
 
 function hideAuthModal() {
-    
+
     if (!currentUser) return;
 
     const modal = document.getElementById('auth-modal');

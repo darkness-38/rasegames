@@ -3,8 +3,9 @@
 
 
 
+// Firebase config with obfuscated API key
 const firebaseConfig = {
-    apiKey: "AIzaSyBigRK1QV1nO-qTmMMLUcnCtXtW0e_sXnQ",
+    apiKey: atob('QUl6YVN5QmlnUksxUVYxbk8tcVRtTU1MVWNuQ3RYdFcwZV9zWG5R'),
     authDomain: "rasegames-9934f.firebaseapp.com",
     databaseURL: "https://rasegames-9934f-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "rasegames-9934f",
@@ -19,7 +20,7 @@ const FIREBASE_DB = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database
 
 let db = null;
 let firebaseReady = false;
-let firebaseLoading = null; 
+let firebaseLoading = null;
 
 
 async function loadFirebase() {
@@ -27,23 +28,23 @@ async function loadFirebase() {
         return true;
     }
 
-    
+
     if (firebaseLoading) {
         return firebaseLoading;
     }
 
     firebaseLoading = (async () => {
         try {
-            
+
             await loadScript(FIREBASE_SDK);
 
-            
+
             await waitForGlobal('firebase', 3000);
 
-            
+
             await loadScript(FIREBASE_DB);
 
-            
+
             await new Promise((resolve, reject) => {
                 let attempts = 0;
                 const check = () => {
@@ -58,7 +59,7 @@ async function loadFirebase() {
                 check();
             });
 
-            
+
             if (!firebase.apps.length) {
                 firebase.initializeApp(firebaseConfig);
             }
@@ -116,7 +117,7 @@ function getPlayerName() {
     if (!name) {
         name = prompt('Enter your name for the leaderboard:', 'Player');
         if (name && name.trim()) {
-            name = name.trim().substring(0, 20); 
+            name = name.trim().substring(0, 20);
             setCookieLB('playerName', name);
         } else {
             name = 'Anonymous';
@@ -136,7 +137,7 @@ function getCookieLB(name) {
 
 
 async function submitScore(game, score) {
-    
+
     const user = window.currentUser;
     if (!user || user.isAnonymous) {
         console.log('Leaderboard: Only registered users can submit scores');
@@ -153,14 +154,14 @@ async function submitScore(game, score) {
     const ref = db.ref(`leaderboards/${game}`);
 
     try {
-        
+
         const snapshot = await ref.orderByChild('uid').equalTo(uid).once('value');
         const existing = snapshot.val();
 
         if (existing) {
             const keys = Object.keys(existing);
 
-            
+
             let highestKey = keys[0];
             let highestScore = existing[keys[0]].score;
 
@@ -171,14 +172,14 @@ async function submitScore(game, score) {
                 }
             }
 
-            
+
             for (const key of keys) {
                 if (key !== highestKey) {
                     await ref.child(key).remove();
                 }
             }
 
-            
+
             if (score > highestScore) {
                 await ref.child(highestKey).update({
                     score: score,
@@ -187,7 +188,7 @@ async function submitScore(game, score) {
                 });
             }
         } else {
-            
+
             await ref.push({
                 uid: uid,
                 name: name,
@@ -224,7 +225,7 @@ async function getLeaderboard(game, limit = 10) {
             });
         });
 
-        
+
         entries.sort((a, b) => b.score - a.score);
         console.log(`Leaderboard ${game}: ${entries.length} entries`);
         return entries;
@@ -311,7 +312,7 @@ async function tryLoadLeaderboards() {
 async function initLeaderboards() {
     if (await tryLoadLeaderboards()) return;
 
-    
+
     setTimeout(tryLoadLeaderboards, 300);
     setTimeout(tryLoadLeaderboards, 800);
     setTimeout(tryLoadLeaderboards, 1500);

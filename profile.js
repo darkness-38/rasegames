@@ -61,6 +61,31 @@ function selectAvatar(avatar) {
     renderAvatarGrid();
 }
 
+// Edit Modal Functions
+function openEditModal() {
+    const modal = document.getElementById('edit-modal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        // Set current username in input
+        const user = window.currentUser;
+        if (user) {
+            document.getElementById('input-username').value = user.displayName || '';
+        }
+        renderAvatarGrid();
+    }
+}
+
+function closeEditModal() {
+    const modal = document.getElementById('edit-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+
+// Export functions
+window.openEditModal = openEditModal;
+window.closeEditModal = closeEditModal;
+
 async function loadUserProfile() {
     const user = window.currentUser;
     if (!user) return;
@@ -87,11 +112,12 @@ async function loadUserProfile() {
         }
 
         // Show account creation date from Firebase metadata (actual account creation time)
+        // Firebase's creationTime is an ISO string like "Fri, 20 Dec 2024 09:00:00 GMT"
         if (user.metadata && user.metadata.creationTime) {
-            const createdAt = new Date(user.metadata.creationTime).getTime();
+            const createdAt = new Date(user.metadata.creationTime);
             document.getElementById('stat-joined').textContent = formatDate(createdAt);
         } else if (userProfile.createdAt) {
-            document.getElementById('stat-joined').textContent = formatDate(userProfile.createdAt);
+            document.getElementById('stat-joined').textContent = formatDate(new Date(userProfile.createdAt));
         }
 
 
@@ -158,7 +184,7 @@ async function loadFirebaseDB() {
 
     if (!firebase.apps.length) {
         firebase.initializeApp({
-            apiKey: "AIzaSyBigRK1QV1nO-qTmMMLUcnCtXtW0e_sXnQ",
+            apiKey: atob('QUl6YVN5QmlnUksxUVYxbk8tcVRtTU1MVWNuQ3RYdFcwZV9zWG5R'),
             authDomain: "rasegames-9934f.firebaseapp.com",
             databaseURL: "https://rasegames-9934f-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "rasegames-9934f"
@@ -187,29 +213,68 @@ async function saveProfile(e) {
     const username = document.getElementById('input-username').value.trim();
 
     if (!username || username.length < 2) {
-        alert('Username must be at least 2 characters');
+        showProfileNotification('Username must be at least 2 characters', 'error');
         return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Saving...';
+    btn.textContent = 'Checking...';
 
     try {
         const user = window.currentUser;
+
+        // Check if username is already taken by another user
+        if (typeof window.checkUsernameAvailable === 'function') {
+            const isAvailable = await window.checkUsernameAvailable(username, user.uid);
+            if (!isAvailable) {
+                showProfileNotification('This username is already taken', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Save';
+                return;
+            }
+        }
+
+        btn.textContent = 'Saving...';
 
         await user.updateProfile({ displayName: username });
 
 
         await loadFirebaseDB();
-        await firebase.database().ref(`users/${user.uid}`).update({
+        const db = firebase.database();
+
+        await db.ref(`users/${user.uid}`).update({
             username: username,
+            usernameLower: username.toLowerCase(),
             avatar: selectedAvatar,
             updatedAt: Date.now()
         });
 
+        // Update username in all leaderboard entries
+        const games = ['tictactoe', 'minesweeper', 'pong', 'memory', 'game2048', 'flappy', 'snake', 'clicker', 'runner', 'tetris'];
+        for (const game of games) {
+            try {
+                const snapshot = await db.ref(`leaderboards/${game}`)
+                    .orderByChild('uid')
+                    .equalTo(user.uid)
+                    .once('value');
+
+                if (snapshot.exists()) {
+                    const updates = {};
+                    snapshot.forEach(child => {
+                        updates[`leaderboards/${game}/${child.key}/name`] = username;
+                    });
+                    if (Object.keys(updates).length > 0) {
+                        await db.ref().update(updates);
+                    }
+                }
+            } catch (e) {
+                console.log(`Could not update ${game} leaderboard:`, e);
+            }
+        }
 
         document.getElementById('display-name').textContent = username;
 
+        closeEditModal();
         showProfileNotification('Profile saved!', 'success');
 
     } catch (e) {
@@ -227,10 +292,12 @@ function formatScore(num) {
     return num.toString();
 }
 
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
+function formatDate(date) {
+    if (!(date instanceof Date)) {
+        date = new Date(date);
+    }
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${months[date.getMonth()]} ${date.getFullYear()}`;
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
 function showProfileNotification(message, type) {

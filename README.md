@@ -23,7 +23,7 @@ A collection of modern web games with a sleek cyberpunk aesthetic, user authenti
 
 ## ✨ Features
 
-- 🔐 **User Authentication** - Firebase Auth (email/password + anonymous)
+- 🔐 **User Authentication** - Firebase Auth (email/password + Google + anonymous)
 - 🏆 **Global Leaderboards** - Compete with players worldwide
 - 💾 **Cloud Saves** - Progress synced across devices
 - 📱 **Mobile Responsive** - Touch controls for all games
@@ -48,7 +48,7 @@ A collection of modern web games with a sleek cyberpunk aesthetic, user authenti
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/rasegames.git
+git clone https://github.com/darkness-38/rasegames.git
 cd rasegames
 
 # Install dependencies
@@ -123,4 +123,4 @@ Contributions welcome! Please open an issue first to discuss changes.
 
 ---
 
-Made with ❤️ by Rase Games Team
+Made with ❤️ by Rase Corporation

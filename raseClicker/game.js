@@ -678,9 +678,10 @@ let codeLineIndex = 0;
 
 // Syntax highlighting function
 function highlightCode(code) {
-    // Brighter colors for visibility
-    const keywords = ['const', 'let', 'var', 'function', 'class', 'if', 'else', 'return', 'import', 'from', 'export', 'this', 'new'];
-    const builtins = ['console', 'document', 'window', 'Math', 'JSON', 'app', 'res', 'req'];
+    // Full color - no gray!
+    const keywords = ['const', 'let', 'var', 'function', 'class', 'if', 'else', 'return', 'import', 'from', 'export', 'this', 'new', 'static', 'async', 'await', 'for', 'while', 'switch', 'case', 'break', 'try', 'catch', 'throw', 'typeof', 'instanceof'];
+    const builtins = ['console', 'document', 'window', 'Math', 'JSON', 'app', 'res', 'req', 'io', 'room', 'rooms', 'socket', 'playerRooms', 'data', 'error', 'result', 'options', 'config'];
+    const booleans = ['true', 'false', 'null', 'undefined'];
 
     let result = code;
 
@@ -718,10 +719,22 @@ function highlightCode(code) {
     result = result.replace(/(===|!==|==|!=|&&|\\|\\|)/g, '<span style="color:#D19A66;">$1</span>');
 
     // Brackets and parentheses (golden)
-    result = result.replace(/(\\(|\\)|\\{|\\}|\\[|\\])/g, '<span style="color:#FFD700;">$1</span>');
+    result = result.replace(/(\(|\)|\{|\}|\[|\])/g, '<span style="color:#FFD700;">$1</span>');
 
     // Colons and semicolons (light purple)  
     result = result.replace(/(:|;|,)/g, '<span style="color:#D4BFFF;">$1</span>');
+
+    // Booleans (coral/salmon)
+    booleans.forEach(b => {
+        const regex = new RegExp(`\\b(${b})\\b`, 'g');
+        result = result.replace(regex, '<span style="color:#FF6B6B;">$1</span>');
+    });
+
+    // Assignment operators (light orange)
+    result = result.replace(/(\+=|-=|\*=|\/=|%=)/g, '<span style="color:#D19A66;">$1</span>');
+
+    // Remaining variable names (teal/cyan) - catch all identifiers not yet colored
+    result = result.replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\b(?![^<]*>)/g, '<span style="color:#4EC9B0;">$1</span>');
 
     return result;
 }

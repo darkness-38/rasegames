@@ -22,6 +22,8 @@ let dy = 0;
 let gameLoop;
 let isGameRunning = false;
 let isPaused = false;
+let speedLevel = 1;
+let currentSpeed = 100;
 
 
 highScoreElement.textContent = highScore;
@@ -55,9 +57,12 @@ function initGame() {
         { x: 8, y: 10 }
     ];
     score = 0;
+    speedLevel = 1;
+    currentSpeed = 100;
     dx = 1;
     dy = 0;
     scoreElement.textContent = 0;
+    updateSpeedUI();
     createFood();
     isGameRunning = true;
     isPaused = false;
@@ -66,10 +71,21 @@ function initGame() {
     gameOverScreen.classList.add('hidden');
 
     if (gameLoop) clearInterval(gameLoop);
-    gameLoop = setInterval(drawGame, GAME_SPEED);
+    gameLoop = setInterval(drawGame, currentSpeed);
 
 
     if (typeof playSound !== 'undefined') playSound('start');
+}
+
+function updateSpeedUI() {
+    const speedLevelEl = document.getElementById('speedLevel');
+    const speedBarEl = document.getElementById('speedBar');
+    if (speedLevelEl) {
+        speedLevelEl.textContent = speedLevel.toString().padStart(2, '0');
+    }
+    if (speedBarEl) {
+        speedBarEl.style.width = (speedLevel * 10) + '%';
+    }
 }
 
 function createFood() {
@@ -117,6 +133,17 @@ function drawGame() {
             highScoreElement.textContent = highScore;
             setCookie('snakeHighScore', highScore, 365);
         }
+
+        // Update speed level every 100 points, max 10
+        const newLevel = Math.min(10, Math.floor(score / 100) + 1);
+        if (newLevel > speedLevel) {
+            speedLevel = newLevel;
+            currentSpeed = Math.max(40, 100 - (speedLevel - 1) * 7); // Speed up
+            clearInterval(gameLoop);
+            gameLoop = setInterval(drawGame, currentSpeed);
+            updateSpeedUI();
+        }
+
         createFood();
 
 

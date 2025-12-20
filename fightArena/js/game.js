@@ -970,23 +970,7 @@ function createRoom() {
     multiplayer.createRoom();
 }
 
-function joinRoom() {
-    const code = document.getElementById('join-code').value.toUpperCase();
-    if (code.length !== 6) {
-        document.getElementById('connection-status').textContent = 'Geçerli bir oda kodu girin (6 karakter)';
-        document.getElementById('connection-status').className = 'connection-status error';
-        return;
-    }
 
-    document.getElementById('connection-status').textContent = 'Odaya bağlanılıyor...';
-    document.getElementById('connection-status').className = 'connection-status connecting';
-
-
-    setupMultiplayerCallbacks();
-
-
-    multiplayer.joinRoom(code);
-}
 
 function setupMultiplayerCallbacks() {
 
@@ -1187,8 +1171,13 @@ function renderRoomList(rooms) {
 }
 
 function joinRoomByCode(code) {
-    document.getElementById('join-code').value = code;
-    joinRoom();
+    if (!code) return;
+
+    document.getElementById('connection-status').textContent = 'Odaya katılınıyor...';
+    document.getElementById('connection-status').className = 'connection-status connecting';
+
+    setupMultiplayerCallbacks();
+    multiplayer.joinRoom(code);
 }
 
 function refreshRoomList() {

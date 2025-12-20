@@ -334,26 +334,155 @@ class PixelBird {
         ctx.translate(bird.x + bird.width / 2, bird.y + bird.height / 2);
         ctx.rotate(bird.rotation * Math.PI / 180);
 
-        // Bird glow
+        // Bird glow effect
         ctx.shadowColor = '#0f49bd';
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 20;
 
-        // Body
-        ctx.fillStyle = '#0f49bd';
+        // Body gradient
+        const bodyGrad = ctx.createLinearGradient(-bird.width / 2, -bird.height / 2, bird.width / 2, bird.height / 2);
+        bodyGrad.addColorStop(0, '#3b82f6');
+        bodyGrad.addColorStop(0.5, '#0f49bd');
+        bodyGrad.addColorStop(1, '#1e3a8a');
+
+        // Main body
+        ctx.fillStyle = bodyGrad;
         ctx.beginPath();
-        ctx.roundRect(-bird.width / 2, -bird.height / 2, bird.width, bird.height, 6);
+        ctx.ellipse(0, 0, bird.width / 2, bird.height / 2, 0, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.shadowBlur = 0;
 
-        // Eye visor
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-        ctx.fillRect(2, -6, 10, 8);
-
-        // Wing
-        ctx.fillStyle = '#0a3690';
+        // Belly (lighter area)
+        const bellyGrad = ctx.createRadialGradient(0, 4, 0, 0, 4, 12);
+        bellyGrad.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+        bellyGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = bellyGrad;
         ctx.beginPath();
-        ctx.ellipse(-5, 5, 8, 5, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(0, 4, bird.width / 3, bird.height / 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tail feathers
+        ctx.fillStyle = '#1e3a8a';
+        ctx.beginPath();
+        ctx.moveTo(-bird.width / 2 - 2, -4);
+        ctx.lineTo(-bird.width / 2 - 12, -8);
+        ctx.lineTo(-bird.width / 2 - 10, 0);
+        ctx.lineTo(-bird.width / 2 - 14, 4);
+        ctx.lineTo(-bird.width / 2 - 2, 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Tail detail lines
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(-bird.width / 2 - 3, -2);
+        ctx.lineTo(-bird.width / 2 - 10, -4);
+        ctx.moveTo(-bird.width / 2 - 3, 0);
+        ctx.lineTo(-bird.width / 2 - 11, 2);
+        ctx.stroke();
+
+        // Wing (animated based on velocity)
+        const wingAngle = Math.sin(Date.now() / 80) * 0.4;
+        ctx.save();
+        ctx.translate(-2, 2);
+        ctx.rotate(wingAngle);
+
+        const wingGrad = ctx.createLinearGradient(0, -10, 0, 10);
+        wingGrad.addColorStop(0, '#60a5fa');
+        wingGrad.addColorStop(1, '#1e40af');
+        ctx.fillStyle = wingGrad;
+
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 12, 7, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Wing detail
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(-8, 0);
+        ctx.quadraticCurveTo(0, -3, 8, 0);
+        ctx.stroke();
+
+        ctx.restore();
+
+        // Eye white
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.ellipse(8, -4, 7, 6, 0.1, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye iris
+        const eyeGrad = ctx.createRadialGradient(9, -4, 0, 9, -4, 4);
+        eyeGrad.addColorStop(0, '#1e293b');
+        eyeGrad.addColorStop(0.7, '#0f172a');
+        eyeGrad.addColorStop(1, '#000');
+        ctx.fillStyle = eyeGrad;
+        ctx.beginPath();
+        ctx.arc(9, -4, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye pupil
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(10, -4, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye highlight
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(8, -5, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eyebrow/feather detail
+        ctx.strokeStyle = '#1e3a8a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(8, -6, 8, -2.5, -1.8);
+        ctx.stroke();
+
+        // Beak upper
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath();
+        ctx.moveTo(bird.width / 2 - 2, -2);
+        ctx.lineTo(bird.width / 2 + 12, 1);
+        ctx.lineTo(bird.width / 2 - 2, 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Beak lower
+        ctx.fillStyle = '#ea580c';
+        ctx.beginPath();
+        ctx.moveTo(bird.width / 2 - 2, 2);
+        ctx.lineTo(bird.width / 2 + 10, 3);
+        ctx.lineTo(bird.width / 2 - 2, 5);
+        ctx.closePath();
+        ctx.fill();
+
+        // Beak detail line
+        ctx.strokeStyle = '#c2410c';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(bird.width / 2, 2);
+        ctx.lineTo(bird.width / 2 + 8, 2);
+        ctx.stroke();
+
+        // Cheek blush
+        ctx.fillStyle = 'rgba(251, 146, 60, 0.4)';
+        ctx.beginPath();
+        ctx.ellipse(4, 2, 4, 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Top feather tuft
+        ctx.fillStyle = '#3b82f6';
+        ctx.beginPath();
+        ctx.moveTo(0, -bird.height / 2);
+        ctx.lineTo(-3, -bird.height / 2 - 6);
+        ctx.lineTo(0, -bird.height / 2 - 3);
+        ctx.lineTo(3, -bird.height / 2 - 8);
+        ctx.lineTo(2, -bird.height / 2);
+        ctx.closePath();
         ctx.fill();
 
         ctx.restore();

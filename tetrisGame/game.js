@@ -19,11 +19,11 @@ const restartBtn = document.getElementById('restartBtn');
 const COLS = 10, ROWS = 20, BLOCK_SIZE = 30, PREVIEW_BLOCK = 20;
 
 const SHAPES = {
-    I: [[1,1,1,1]], O: [[1,1],[1,1]], T: [[0,1,0],[1,1,1]],
-    S: [[0,1,1],[1,1,0]], Z: [[1,1,0],[0,1,1]], J: [[1,0,0],[1,1,1]], L: [[0,0,1],[1,1,1]]
+    I: [[1, 1, 1, 1]], O: [[1, 1], [1, 1]], T: [[0, 1, 0], [1, 1, 1]],
+    S: [[0, 1, 1], [1, 1, 0]], Z: [[1, 1, 0], [0, 1, 1]], J: [[1, 0, 0], [1, 1, 1]], L: [[0, 0, 1], [1, 1, 1]]
 };
 
-const COLORS = { I:'#00ffff', O:'#ffff00', T:'#ff00ff', S:'#00ff00', Z:'#ff0000', J:'#0066ff', L:'#ff8800' };
+const COLORS = { I: '#00ffff', O: '#ffff00', T: '#ff00ff', S: '#00ff00', Z: '#ff0000', J: '#0066ff', L: '#ff8800' };
 
 let board = [], currentPiece = null, nextPiece = null, holdPiece = null, canHold = true;
 let score = 0, lines = 0, level = 1, highScore = parseInt(localStorage.getItem('tetrisHighScore')) || 0;
@@ -87,8 +87,17 @@ function lockPiece() {
 
 function clearLines() {
     let cleared = 0;
+    let clearedRows = [];
+
     for (let r = ROWS - 1; r >= 0; r--) {
         if (board[r].every(cell => cell !== 0)) {
+            // Store colors before clearing for particles
+            for (let c = 0; c < COLS; c++) {
+                const color = board[r][c];
+                const x = c * BLOCK_SIZE + BLOCK_SIZE / 2;
+                const y = r * BLOCK_SIZE + BLOCK_SIZE / 2;
+                createParticles(x, y, color, 5);
+            }
             board.splice(r, 1);
             board.unshift(Array(COLS).fill(0));
             cleared++; r++;
@@ -102,7 +111,7 @@ function clearLines() {
         dropInterval = Math.max(100, 1000 - (level - 1) * 100);
         scoreElement.textContent = score;
         linesElement.textContent = lines;
-        levelElement.textContent = level;
+        levelElement.textContent = level.toString().padStart(2, '0');
         if (score > highScore) {
             highScore = score;
             highScoreElement.textContent = highScore;
@@ -133,22 +142,141 @@ function hold() {
     drawHoldPiece();
 }
 
-function drawBlock(ctx, x, y, color, size = BLOCK_SIZE) {
-    ctx.fillStyle = color;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = color;
-    ctx.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+// Particle system for effects
+let particles = [];
+
+function createParticles(x, y, color, count = 10) {
+    for (let i = 0; i < count; i++) {
+        particles.push({
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.5) * 8 - 3,
+            color: color,
+            life: 1,
+            size: Math.random() * 6 + 2
+        });
+    }
+}
+
+function updateParticles() {
+    for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.3; // gravity
+        p.life -= 0.03;
+        p.size *= 0.97;
+        if (p.life <= 0) particles.splice(i, 1);
+    }
+}
+
+function drawParticles() {
+    particles.forEach(p => {
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
-    ctx.fillRect(x * size + 3, y * size + 3, size - 8, 3);
+}
+
+function drawBlock(ctx, x, y, color, size = BLOCK_SIZE) {
+    const px = x * size;
+    const py = y * size;
+    const margin = 1;
+    const innerSize = size - margin * 2;
+
+    // Block shadow
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    ctx.fillRect(px + margin + 2, py + margin + 2, innerSize, innerSize);
+
+    // Main block with gradient
+    const gradient = ctx.createLinearGradient(px, py, px + size, py + size);
+    gradient.addColorStop(0, lightenColor(color, 30));
+    gradient.addColorStop(0.5, color);
+    gradient.addColorStop(1, darkenColor(color, 30));
+
+    ctx.fillStyle = gradient;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = color;
+
+    // Rounded rectangle for 3D effect
+    ctx.beginPath();
+    ctx.roundRect(px + margin, py + margin, innerSize, innerSize, 4);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Top highlight (3D effect)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.beginPath();
+    ctx.roundRect(px + margin + 2, py + margin + 2, innerSize - 4, innerSize / 4, 2);
+    ctx.fill();
+
+    // Inner border glow
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(px + margin + 1, py + margin + 1, innerSize - 2, innerSize - 2, 3);
+    ctx.stroke();
+
+    // Bottom dark edge
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.beginPath();
+    ctx.roundRect(px + margin + 2, py + margin + innerSize - 6, innerSize - 4, 4, 2);
+    ctx.fill();
+}
+
+// Color helper functions
+function lightenColor(color, percent) {
+    const num = parseInt(color.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.min(255, (num >> 16) + amt);
+    const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
+    const B = Math.min(255, (num & 0x0000FF) + amt);
+    return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
+function darkenColor(color, percent) {
+    const num = parseInt(color.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.max(0, (num >> 16) - amt);
+    const G = Math.max(0, ((num >> 8) & 0x00FF) - amt);
+    const B = Math.max(0, (num & 0x0000FF) - amt);
+    return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
 }
 
 function drawBoard() {
-    ctx.fillStyle = '#111116';
+    // Dark background with subtle gradient
+    const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    bgGradient.addColorStop(0, '#0a0e14');
+    bgGradient.addColorStop(1, '#050810');
+    ctx.fillStyle = bgGradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) ctx.strokeRect(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (board[r][c]) drawBlock(ctx, c, r, board[r][c]);
+
+    // Grid lines with glow
+    ctx.strokeStyle = 'rgba(15, 73, 189, 0.1)';
+    ctx.lineWidth = 1;
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            ctx.strokeRect(c * BLOCK_SIZE, r * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        }
+    }
+
+    // Draw locked blocks
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            if (board[r][c]) drawBlock(ctx, c, r, board[r][c]);
+        }
+    }
+
+    // Draw particles
+    updateParticles();
+    drawParticles();
 }
 
 function drawPiece() {
@@ -224,7 +352,7 @@ function gameOver() {
 }
 
 document.addEventListener('keydown', (e) => {
-    if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
     if (!isGameRunning && !startScreen.classList.contains('hidden')) { initGame(); return; }
     if (!isGameRunning) return;
     switch (e.code) {
@@ -240,7 +368,7 @@ document.addEventListener('keydown', (e) => {
 
 restartBtn.addEventListener('click', initGame);
 
-['leftBtn','rightBtn','rotateBtn','downBtn','dropBtn'].forEach(id => {
+['leftBtn', 'rightBtn', 'rotateBtn', 'downBtn', 'dropBtn'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => {
         if (!isGameRunning && !startScreen.classList.contains('hidden')) { initGame(); return; }
         if (!isGameRunning) return;

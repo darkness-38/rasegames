@@ -63,6 +63,7 @@
             display: block;
         }
     </style>
+    <link rel="stylesheet" href="../auth.css">
 </head>
 
 <body
@@ -86,6 +87,7 @@
                 <h1 class="text-xl font-bold tracking-wider text-white neon-text">NEON SNAKE</h1>
             </div>
             <div class="flex gap-3">
+                <div id="user-display"></div>
                 <button
                     class="flex items-center justify-center rounded-lg size-10 bg-[#282e39] hover:bg-[#3b4354] text-white transition-colors">
                     <span class="material-symbols-outlined">volume_up</span>
@@ -247,7 +249,9 @@
     <!-- Footer decoration -->
     <div class="w-full h-1 bg-gradient-to-r from-transparent via-[#282e39] to-transparent opacity-50"></div>
 
+    <script src="../leaderboard.js"></script>
     <script src="game.js"></script>
+    <script src="../auth.js"></script>
 </body>
 
 </html>

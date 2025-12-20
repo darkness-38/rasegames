@@ -36,6 +36,9 @@ class Character {
         this.comboCount = 0;
         this.lastComboTime = 0;
 
+        // Attack key release tracking - prevent holding key for rapid attacks
+        this.attackKeyReleased = true;
+
 
         this.state = 'idle';
         this.stateTime = 0;
@@ -55,7 +58,7 @@ class Character {
                 damage: 30,
                 knockback: 5,
                 duration: 15,
-                cooldown: 20,
+                cooldown: 12,  // ~0.2 seconds - Quick recovery
                 hitboxWidth: 60,
                 hitboxHeight: 40,
                 energyGain: 5
@@ -64,7 +67,7 @@ class Character {
                 damage: 60,
                 knockback: 12,
                 duration: 25,
-                cooldown: 35,
+                cooldown: 25,  // ~0.4 seconds - Medium recovery
                 hitboxWidth: 80,
                 hitboxHeight: 50,
                 energyGain: 10
@@ -73,7 +76,7 @@ class Character {
                 damage: 45,
                 knockback: 8,
                 duration: 30,
-                cooldown: 60,
+                cooldown: 40,  // ~0.6 seconds - Longer recovery
                 hitboxWidth: 100,
                 hitboxHeight: 60,
                 energyCost: 30,
@@ -83,7 +86,7 @@ class Character {
                 damage: 200,
                 knockback: 25,
                 duration: 60,
-                cooldown: 120,
+                cooldown: 80,  // ~1.3 seconds - Very long recovery
                 hitboxWidth: 150,
                 hitboxHeight: 100,
                 energyCost: 100,
@@ -238,19 +241,34 @@ class Character {
             const executedCombo = this.checkAndExecuteCombo();
 
             if (!executedCombo) {
-                // Regular attacks if no combo matched
-                if (input.lightAttack) {
-                    this.startAttack('light');
-                } else if (input.heavyAttack) {
-                    this.startAttack('heavy');
-                } else if (input.special) {
-                    if (this.energy >= 100 && this.isCrouching) {
-                        this.startAttack('ultimate');
-                    } else if (this.energy >= (this.attacks.special.energyCost || 0)) {
-                        this.startAttack('special');
+                // Check if any attack key is pressed
+                const anyAttackPressed = input.lightAttack || input.heavyAttack || input.special;
+
+                // Only allow attack if key was released since last attack
+                if (anyAttackPressed && this.attackKeyReleased) {
+                    this.attackKeyReleased = false; // Mark as held
+
+                    if (input.lightAttack) {
+                        this.startAttack('light');
+                    } else if (input.heavyAttack) {
+                        this.startAttack('heavy');
+                    } else if (input.special) {
+                        if (this.energy >= 100 && this.isCrouching) {
+                            this.startAttack('ultimate');
+                        } else if (this.energy >= (this.attacks.special.energyCost || 0)) {
+                            this.startAttack('special');
+                        }
                     }
                 }
+
+                // Reset release flag when no attack key is pressed
+                if (!anyAttackPressed) {
+                    this.attackKeyReleased = true;
+                }
             }
+        } else if (!input.lightAttack && !input.heavyAttack && !input.special) {
+            // Also reset when on cooldown but keys are released
+            this.attackKeyReleased = true;
         }
 
         // Update combo display timer

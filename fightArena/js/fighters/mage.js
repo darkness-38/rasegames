@@ -10,7 +10,7 @@ class Mage extends Character {
             type: 'mage',
             speed: 5.5,
             jumpForce: -14,
-            maxHealth: 950,
+            maxHealth: 1400,
             defense: 1.1,
             color: '#3a86ff',
             secondaryColor: '#023e8a',

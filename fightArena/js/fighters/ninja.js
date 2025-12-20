@@ -10,7 +10,7 @@ class Ninja extends Character {
             type: 'ninja',
             speed: 8,
             jumpForce: -16,
-            maxHealth: 900,
+            maxHealth: 1350,
             defense: 1.2,
             color: '#7209b7',
             secondaryColor: '#3a0ca3',

@@ -10,7 +10,7 @@ class Warrior extends Character {
             type: 'warrior',
             speed: 5,
             jumpForce: -14,
-            maxHealth: 1200,
+            maxHealth: 1800,
             defense: 0.9,
             color: '#ff6b35',
             secondaryColor: '#8b2500',

@@ -11,12 +11,13 @@ const handleLocation = async () => {
 
     let fileToFetch = "index.html";
 
-    
+
     if (path.endsWith("about") || path.endsWith("about.html")) fileToFetch = "about.html";
     if (path.endsWith("community") || path.endsWith("community.html")) fileToFetch = "community.html";
     if (path.endsWith("leaderboard") || path.endsWith("leaderboard.html")) fileToFetch = "leaderboard.html";
     if (path.endsWith("profile") || path.endsWith("profile.html")) fileToFetch = "profile.html";
-    if (path.endsWith("/") || path.endsWith("index.html")) fileToFetch = "index.html";
+    if (path.endsWith("games") || path.endsWith("games.html")) fileToFetch = "games.html";
+    if (path === "/" || path.endsWith("index.html")) fileToFetch = "index.html";
 
     try {
         const response = await fetch(fileToFetch);
@@ -24,7 +25,7 @@ const handleLocation = async () => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
 
-        
+
         const newMain = doc.querySelector('main');
         if (newMain) {
             document.querySelector('main').innerHTML = newMain.innerHTML;
@@ -32,17 +33,17 @@ const handleLocation = async () => {
             console.warn("No main tag found in fetched page, loading fallback.");
         }
 
-        
+
         const runPageScripts = () => {
-            
+
             if (typeof updateAuthUI === 'function') {
                 updateAuthUI();
             }
 
-            
+
             const isLeaderboard = path.includes('leaderboard');
             if (isLeaderboard && window.loadLeaderboards) {
-                
+
                 window.loadLeaderboards();
                 setTimeout(window.loadLeaderboards, 300);
             }
@@ -51,7 +52,7 @@ const handleLocation = async () => {
                 window.initProfile();
             }
 
-            
+
             if (typeof createParticles === 'function' && document.querySelector('.particles-container')) {
                 createParticles();
             }

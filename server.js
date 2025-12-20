@@ -18,22 +18,72 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
-// Redirect .html URLs to clean URLs
+// Redirect .html URLs to clean URLs (with validation to prevent open redirects)
 app.use((req, res, next) => {
     const url = req.url;
 
+    // Security: Only process paths, not full URLs with protocols
+    // Reject any URL that looks like an absolute URL or contains dangerous characters
+    if (url.includes('://') || url.includes('//') || url.startsWith('\\')) {
+        return next();
+    }
+
     // Redirect /path/index.html to /path/
     if (url.endsWith('/index.html')) {
-        return res.redirect(301, url.slice(0, -10));
+        const cleanPath = url.slice(0, -10);
+        // Validate the resulting path is safe (starts with / and has no protocol)
+        if (cleanPath.startsWith('/') && !cleanPath.includes('://')) {
+            return res.redirect(301, cleanPath);
+        }
     }
 
     // Redirect /path.html to /path
     if (url.endsWith('.html') && !url.includes('/index.html')) {
-        return res.redirect(301, url.slice(0, -5));
+        const cleanPath = url.slice(0, -5);
+        if (cleanPath.startsWith('/') && !cleanPath.includes('://')) {
+            return res.redirect(301, cleanPath);
+        }
     }
 
     next();
 });
+
+// Simple in-memory rate limiting for DoS protection
+const rateLimit = new Map();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_MAX = 200; // max requests per window per IP
+
+const rateLimiter = (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+
+    if (!rateLimit.has(ip)) {
+        rateLimit.set(ip, { count: 1, startTime: now });
+    } else {
+        const record = rateLimit.get(ip);
+        if (now - record.startTime > RATE_LIMIT_WINDOW) {
+            rateLimit.set(ip, { count: 1, startTime: now });
+        } else if (record.count >= RATE_LIMIT_MAX) {
+            return res.status(429).send('Too many requests');
+        } else {
+            record.count++;
+        }
+    }
+    next();
+};
+
+// Cleanup old entries every 5 minutes
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, record] of rateLimit.entries()) {
+        if (now - record.startTime > RATE_LIMIT_WINDOW * 2) {
+            rateLimit.delete(ip);
+        }
+    }
+}, 300000);
+
+// Apply rate limiting
+app.use(rateLimiter);
 
 // Serve static files with extensions option to enable clean URLs
 app.use(express.static(path.join(__dirname), {
@@ -42,7 +92,15 @@ app.use(express.static(path.join(__dirname), {
 
 // Fallback: serve index.html for directory paths
 app.get(/^(.*)$/, (req, res, next) => {
-    const filePath = path.join(__dirname, req.path, 'index.html');
+    // Security: Normalize and validate path to prevent directory traversal
+    const requestedPath = path.normalize(req.path).replace(/^(\.\.[\/\\])+/, '');
+    const filePath = path.join(__dirname, requestedPath, 'index.html');
+
+    // Ensure the resolved path is still within __dirname (prevent path traversal)
+    if (!filePath.startsWith(__dirname)) {
+        return res.status(403).send('Forbidden');
+    }
+
     res.sendFile(filePath, (err) => {
         if (err) next();
     });

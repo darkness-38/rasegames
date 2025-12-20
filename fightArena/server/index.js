@@ -14,6 +14,43 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
+// Simple in-memory rate limiting
+const rateLimit = new Map();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const RATE_LIMIT_MAX = 100; // max requests per window
+
+const rateLimiter = (req, res, next) => {
+    const ip = req.ip || req.connection.remoteAddress;
+    const now = Date.now();
+
+    if (!rateLimit.has(ip)) {
+        rateLimit.set(ip, { count: 1, startTime: now });
+    } else {
+        const record = rateLimit.get(ip);
+        if (now - record.startTime > RATE_LIMIT_WINDOW) {
+            // Reset window
+            rateLimit.set(ip, { count: 1, startTime: now });
+        } else if (record.count >= RATE_LIMIT_MAX) {
+            return res.status(429).send('Too many requests');
+        } else {
+            record.count++;
+        }
+    }
+    next();
+};
+
+// Clean up old rate limit entries every 5 minutes
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, record] of rateLimit.entries()) {
+        if (now - record.startTime > RATE_LIMIT_WINDOW * 2) {
+            rateLimit.delete(ip);
+        }
+    }
+}, 300000);
+
+// Apply rate limiting to all routes
+app.use(rateLimiter);
 
 app.use(express.static(path.join(__dirname, '../')));
 
@@ -50,7 +87,7 @@ function createRoom(hostId) {
         hostCharacter: null,
         guestCharacter: null,
         arena: 'dojo',
-        state: 'waiting', 
+        state: 'waiting',
         gameState: null,
         hostReady: false,
         guestReady: false
@@ -85,14 +122,14 @@ function leaveRoom(playerId) {
     playerRooms.delete(playerId);
 
     if (room.host === playerId) {
-        
+
         if (room.guest) {
             io.to(room.guest).emit('roomClosed', { reason: 'Host odadan ayrıldı' });
             playerRooms.delete(room.guest);
         }
         rooms.delete(code);
     } else if (room.guest === playerId) {
-        
+
         room.guest = null;
         room.guestCharacter = null;
         room.guestReady = false;
@@ -108,7 +145,7 @@ function leaveRoom(playerId) {
 io.on('connection', (socket) => {
     console.log(`Player connected: ${socket.id}`);
 
-    
+
     socket.on('createRoom', () => {
         const room = createRoom(socket.id);
         socket.join(room.code);
@@ -116,7 +153,7 @@ io.on('connection', (socket) => {
         console.log(`Room created: ${room.code} by ${socket.id}`);
     });
 
-    
+
     socket.on('joinRoom', (code) => {
         const result = joinRoom(code.toUpperCase(), socket.id);
 
@@ -128,16 +165,16 @@ io.on('connection', (socket) => {
         socket.join(code);
         socket.emit('joinedRoom', { code, isHost: false });
 
-        
+
         io.to(result.room.host).emit('guestJoined', { guestId: socket.id });
 
-        
+
         io.to(code).emit('goToCharacterSelect');
 
         console.log(`Player ${socket.id} joined room ${code}`);
     });
 
-    
+
     socket.on('selectCharacter', ({ character }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -151,11 +188,11 @@ io.on('connection', (socket) => {
             room.guestCharacter = character;
         }
 
-        
+
         socket.to(code).emit('opponentSelectedCharacter', { character });
     });
 
-    
+
     socket.on('selectArena', ({ arena }) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -167,7 +204,7 @@ io.on('connection', (socket) => {
         io.to(code).emit('arenaSelected', { arena });
     });
 
-    
+
     socket.on('playerReady', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -183,7 +220,7 @@ io.on('connection', (socket) => {
 
         socket.to(code).emit('opponentReady');
 
-        
+
         if (room.hostReady && room.guestReady && room.hostCharacter && room.guestCharacter) {
             room.state = 'playing';
             io.to(code).emit('startOnlineGame', {
@@ -194,16 +231,16 @@ io.on('connection', (socket) => {
         }
     });
 
-    
+
     socket.on('playerInput', (inputData) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
 
-        
+
         socket.to(code).emit('opponentInput', inputData);
     });
 
-    
+
     socket.on('gameStateSync', (state) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -215,7 +252,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('gameStateUpdate', state);
     });
 
-    
+
     socket.on('roundEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -223,7 +260,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('roundEnded', data);
     });
 
-    
+
     socket.on('matchEnd', (data) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -238,7 +275,7 @@ io.on('connection', (socket) => {
         socket.to(code).emit('matchEnded', data);
     });
 
-    
+
     socket.on('requestRematch', () => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
@@ -254,7 +291,7 @@ io.on('connection', (socket) => {
 
         socket.to(code).emit('rematchRequested');
 
-        
+
         if (room.hostReady && room.guestReady) {
             room.state = 'playing';
             room.hostReady = false;
@@ -263,24 +300,24 @@ io.on('connection', (socket) => {
         }
     });
 
-    
+
     socket.on('chatMessage', (message) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
 
         socket.to(code).emit('chatMessage', {
             from: socket.id,
-            message: message.substring(0, 100) 
+            message: message.substring(0, 100)
         });
     });
 
-    
+
     socket.on('disconnect', () => {
         console.log(`Player disconnected: ${socket.id}`);
         leaveRoom(socket.id);
     });
 
-    
+
     socket.on('leaveRoom', () => {
         leaveRoom(socket.id);
     });

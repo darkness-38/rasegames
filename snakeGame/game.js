@@ -68,7 +68,7 @@ function initGame() {
     if (gameLoop) clearInterval(gameLoop);
     gameLoop = setInterval(drawGame, GAME_SPEED);
 
-    
+
     if (typeof playSound !== 'undefined') playSound('start');
 }
 
@@ -78,7 +78,7 @@ function createFood() {
         y: Math.floor(Math.random() * TILE_COUNT)
     };
 
-    
+
     snake.forEach(part => {
         if (part.x === food.x && part.y === food.y) {
             createFood();
@@ -89,16 +89,16 @@ function createFood() {
 function drawGame() {
     if (isPaused) return;
 
-    
+
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-    
+
     if (head.x < 0 || head.x >= TILE_COUNT || head.y < 0 || head.y >= TILE_COUNT) {
         gameOver();
         return;
     }
 
-    
+
     for (let i = 0; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
             gameOver();
@@ -108,7 +108,7 @@ function drawGame() {
 
     snake.unshift(head);
 
-    
+
     if (head.x === food.x && head.y === food.y) {
         score += 10;
         scoreElement.textContent = score;
@@ -119,19 +119,19 @@ function drawGame() {
         }
         createFood();
 
-        
+
         if (typeof playSound !== 'undefined') playSound('eat');
 
-        
+
     } else {
         snake.pop();
     }
 
-    
-    ctx.fillStyle = '#111116';
+
+    ctx.fillStyle = '#0b0e14';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    
+
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
     for (let i = 0; i < TILE_COUNT; i++) {
         ctx.beginPath();
@@ -144,10 +144,10 @@ function drawGame() {
         ctx.stroke();
     }
 
-    
-    ctx.fillStyle = '#ff0055';
+
+    ctx.fillStyle = '#ec4899';
     ctx.shadowBlur = 15;
-    ctx.shadowColor = '#ff0055';
+    ctx.shadowColor = '#ec4899';
     ctx.beginPath();
     ctx.arc(
         food.x * GRID_SIZE + GRID_SIZE / 2,
@@ -159,16 +159,18 @@ function drawGame() {
     ctx.fill();
     ctx.shadowBlur = 0;
 
-    
+
     snake.forEach((part, index) => {
-        
+
         if (index === 0) {
-            ctx.fillStyle = '#ffffff'; 
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#ffffff';
+            ctx.fillStyle = '#0f49bd';
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#0f49bd';
         } else {
-            ctx.fillStyle = '#00ff88'; 
-            ctx.shadowBlur = 0;
+            const alpha = 1 - (index / snake.length) * 0.4;
+            ctx.fillStyle = `rgba(15, 73, 189, ${alpha})`;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#0f49bd';
         }
 
         ctx.fillRect(
@@ -178,7 +180,7 @@ function drawGame() {
             GRID_SIZE - 2
         );
 
-        
+
         ctx.shadowBlur = 0;
     });
 }
@@ -189,17 +191,17 @@ function gameOver() {
     finalScoreElement.textContent = score;
     gameOverScreen.classList.remove('hidden');
 
-    
+
     if (typeof playSound !== 'undefined') playSound('gameover');
 
-    
+
     if (window.Leaderboard && score > 0) {
         Leaderboard.submit('snake', score);
     }
 }
 
 document.addEventListener('keydown', (e) => {
-    
+
     if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
     }
@@ -245,7 +247,7 @@ function setDirection(newDx, newDy) {
     }
     if (!isGameRunning) return;
 
-    
+
     if (newDx !== 0 && dx !== -newDx) { dx = newDx; dy = 0; }
     if (newDy !== 0 && dy !== -newDy) { dy = newDy; dx = 0; }
 }

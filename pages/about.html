@@ -1,60 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Rase Games</title>
-    <link rel="stylesheet" href="../styles/style.css">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>RaseGames - About</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "primary-glow": "#2f70ff",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1a2230",
+                    },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #101622;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(47, 112, 255, 0.5);
+        }
+    </style>
     <link rel="stylesheet" href="../styles/auth.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
 </head>
 
-<body>
-    <div class="background-effects">
-        <div class="glow-orb"></div>
-
+<body class="bg-background-dark font-display text-white antialiased min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex h-16 items-center justify-between px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
+            <a href="/" class="flex items-center gap-3 no-underline">
+                <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">sports_esports</span>
+                </div>
+                <h2 class="text-white text-xl font-bold tracking-tight">Rase<span class="text-primary">Games</span></h2>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
+                    href="/pages/games">Games</a>
+                <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
+                    href="/pages/challenges">Challenges</a>
+                <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
+                    href="/pages/leaderboard">Leaderboard</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <div id="user-display" class="flex items-center gap-3">
+                    <button onclick="showAuthModal()"
+                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <nav class="navbar">
-        <div class="logo">
-            <a href="/" style="text-decoration: none; color: inherit;">
-                <span class="logo-text">Rase Games</span>
-            </a>
-        </div>
-        <div class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/pages/games" class="nav-link">Games</a>
-            <a href="/pages/challenges" class="nav-link">Challenges</a>
-            <a href="/pages/about" class="nav-link">About</a>
-            <a href="/pages/leaderboard" class="nav-link">Leaderboards</a>
-            <div id="user-display"></div>
-        </div>
-    </nav>
-
-    <main class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">
-                About <span class="text-gradient">Rase Games</span>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center px-6 py-16">
+        <div class="max-w-3xl text-center">
+            <div class="mb-8">
+                <span class="material-symbols-outlined text-primary text-8xl">sports_esports</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                About <span class="text-primary">RaseGames</span>
             </h1>
-            <p class="hero-subtitle">
+            <p class="text-gray-400 text-lg md:text-xl mb-8 leading-relaxed">
                 We are a small team of developers passionate about creating unique micro-gaming experiences.
-                Our mission is to bring joy through simple yet engaging mechanics.
+                Our mission is to bring joy through simple yet engaging browser games.
             </p>
-            <p class="hero-subtitle">
-                Stay tuned as we expand our universe with more titles and adventures.
+            <p class="text-gray-400 text-lg md:text-xl mb-12 leading-relaxed">
+                All our games are free to play, no downloads required. Challenge yourself, compete with friends,
+                and climb the leaderboards!
             </p>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-6 mb-12">
+                <div class="bg-surface-dark border border-white/5 rounded-xl p-6">
+                    <p class="text-3xl font-bold text-primary mb-2">10+</p>
+                    <p class="text-gray-400 text-sm">Games</p>
+                </div>
+                <div class="bg-surface-dark border border-white/5 rounded-xl p-6">
+                    <p class="text-3xl font-bold text-green-400 mb-2">Free</p>
+                    <p class="text-gray-400 text-sm">Forever</p>
+                </div>
+                <div class="bg-surface-dark border border-white/5 rounded-xl p-6">
+                    <p class="text-3xl font-bold text-yellow-400 mb-2">24/7</p>
+                    <p class="text-gray-400 text-sm">Available</p>
+                </div>
+            </div>
+
+            <a href="/pages/games"
+                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-glow text-white px-8 py-3 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(15,73,189,0.3)] no-underline">
+                <span class="material-symbols-outlined">sports_esports</span>
+                Start Playing
+            </a>
         </div>
     </main>
 
-    <script src="../scripts/particles.js"></script>
+    <!-- Footer -->
+    <footer class="w-full border-t border-white/5 bg-[#0b0f17] py-8">
+        <div class="px-6 lg:px-20 max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col gap-2">
+                <h3 class="text-white font-bold text-lg">Rase<span class="text-primary">Games</span></h3>
+            </div>
+            <div class="flex gap-8">
+                <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
+                    href="/pages/about">About</a>
+            </div>
+        </div>
+    </footer>
+
     <script src="../scripts/challenges.js"></script>
     <script src="../scripts/auth.js"></script>
-    <script src="../scripts/router.js"></script>
 </body>
 
 </html>

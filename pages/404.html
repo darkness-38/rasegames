@@ -40,20 +40,33 @@
     <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
 
         <!-- Navigation -->
-        <nav class="navbar">
-            <div class="logo">
-                <a href="/" style="text-decoration: none; color: inherit;">
-                    <span class="logo-text">Rase Games</span>
+        <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
+            <div class="flex h-16 items-center justify-between px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
+                <a href="/" class="flex items-center gap-3 no-underline">
+                    <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
+                        <span class="material-symbols-outlined" style="font-size: 20px;">sports_esports</span>
+                    </div>
+                    <h2 class="text-white text-xl font-bold tracking-tight">Rase<span class="text-primary">Games</span>
+                    </h2>
                 </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
+                        href="/pages/games">Games</a>
+                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
+                        href="/pages/challenges">Challenges</a>
+                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
+                        href="/pages/leaderboard">Leaderboard</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="user-display" class="flex items-center gap-3">
+                        <button onclick="showAuthModal()"
+                            class="h-9 px-4 rounded-lg bg-primary hover:bg-indigo-600 text-white text-sm font-bold transition-all">
+                            Sign In
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/pages/games" class="nav-link">Games</a>
-                <a href="/pages/about" class="nav-link">About</a>
-                <a href="/pages/leaderboard" class="nav-link">Leaderboards</a>
-                <div id="user-display"></div>
-            </div>
-        </nav>
+        </div>
 
         <!-- Main Content: 404 Hero -->
         <main class="flex-grow flex items-center justify-center p-4 relative overflow-hidden">

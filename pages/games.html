@@ -68,7 +68,7 @@
 <body class="bg-background-dark font-display text-white antialiased overflow-x-hidden">
     <div class="relative flex min-h-screen w-full flex-col">
         <!-- Navigation -->
-        <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/95 backdrop-blur-md">
+        <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
             <div class="flex h-16 items-center justify-between px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
                 <a href="/" class="flex items-center gap-3 no-underline">
                     <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
@@ -78,19 +78,20 @@
                     </h2>
                 </a>
                 <div class="hidden md:flex items-center gap-8">
-                    <a class="text-white text-glow text-sm font-medium border-b-2 border-primary py-5 no-underline"
-                        href="/pages/games">All Games</a>
-                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
+                    <a class="text-white text-glow text-sm font-medium transition-colors no-underline border-b-2 border-primary py-5"
+                        href="/pages/games">Games</a>
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
                         href="/pages/challenges">Challenges</a>
-                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
                         href="/pages/leaderboard">Leaderboard</a>
-                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
                 </div>
-                <div id="user-display" class="flex items-center gap-4">
-                    <button onclick="showAuthModal()"
-                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
-                        Sign In
-                    </button>
+                <div class="flex items-center gap-4">
+                    <div id="user-display" class="flex items-center gap-3">
+                        <button onclick="showAuthModal()"
+                            class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                            Sign In
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -332,7 +333,6 @@
                 <div class="flex gap-8">
                     <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
                         href="/pages/about">About</a>
-                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
                 </div>
             </div>
         </footer>

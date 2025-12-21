@@ -86,7 +86,7 @@ setInterval(() => {
 app.use(rateLimiter);
 
 // Redirect old page URLs to new pages/ folder
-const pageRedirects = ['profile', 'games', 'challenges', 'leaderboard', 'about', 'community'];
+const pageRedirects = ['profile', 'games', 'challenges', 'leaderboard', 'about'];
 pageRedirects.forEach(page => {
     app.get(`/${page}`, (req, res) => {
         res.redirect(301, `/pages/${page}`);

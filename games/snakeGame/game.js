@@ -311,6 +311,10 @@ function gameOver() {
 
     if (typeof playSound !== 'undefined') playSound('gameover');
 
+    // Award gameplay XP
+    if (typeof awardGameplayXP === 'function') {
+        awardGameplayXP('snake', 'score', score);
+    }
 
     if (window.Leaderboard && score > 0) {
         Leaderboard.submit('snake', score);

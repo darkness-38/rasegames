@@ -411,6 +411,11 @@ class Game2048 {
         if (typeof trackChallengeProgress === 'function') {
             trackChallengeProgress('2048', 'score', this.score);
         }
+
+        // Award gameplay XP
+        if (typeof awardGameplayXP === 'function') {
+            awardGameplayXP('2048', 'score', this.score);
+        }
     }
 
     hideOverlays() {

@@ -355,6 +355,12 @@ function gameOver() {
     finalScoreElement.textContent = score;
     finalLinesElement.textContent = lines;
     gameOverScreen.classList.remove('hidden');
+
+    // Award gameplay XP
+    if (typeof awardGameplayXP === 'function') {
+        awardGameplayXP('tetris', 'score', score);
+    }
+
     if (window.Leaderboard && score > 0) Leaderboard.submit('tetris', score);
 }
 

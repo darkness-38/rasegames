@@ -702,6 +702,11 @@ function gameOver() {
         trackChallengeProgress('cyber-runner', 'distance', Math.floor(score / 50));
     }
 
+    // Award gameplay XP
+    if (typeof awardGameplayXP === 'function') {
+        awardGameplayXP('cyber-runner', 'score', finalScore);
+    }
+
     if (finalScore > highScore) {
         highScore = finalScore;
         saveData('crHighScore', highScore);

@@ -420,6 +420,112 @@ const ChallengesSystem = {
     formatTimeRemaining() {
         const time = this.getTimeUntilReset();
         return `${String(time.hours).padStart(2, '0')}:${String(time.minutes).padStart(2, '0')}:${String(time.seconds).padStart(2, '0')}`;
+    },
+
+    // Gameplay XP cooldowns (prevent spam)
+    _gameplayCooldowns: {},
+
+    // Award XP for playing games (not challenges)
+    // trigger: 'play' (2 XP), 'score' (3-5 XP based on score), 'win' (+10 XP)
+    awardGameplayXP(gameId, trigger = 'play', score = 0) {
+        const user = window.currentUser;
+        if (!user || user.isAnonymous) return null;
+
+        const userId = user.uid;
+        const now = Date.now();
+        const cooldownKey = `${userId}-${gameId}-${trigger}`;
+        const cooldownMs = 30000; // 30 seconds cooldown
+
+        // Check cooldown
+        if (this._gameplayCooldowns[cooldownKey] && now - this._gameplayCooldowns[cooldownKey] < cooldownMs) {
+            return null; // Still on cooldown
+        }
+
+        // Set cooldown
+        this._gameplayCooldowns[cooldownKey] = now;
+
+        // Calculate XP based on trigger
+        let xpAmount = 0;
+        let reason = '';
+
+        switch (trigger) {
+            case 'play':
+                xpAmount = 2;
+                reason = 'Game Started';
+                break;
+            case 'score':
+                // 3-5 XP based on score magnitude
+                xpAmount = Math.min(5, Math.max(3, Math.floor(score / 100) + 3));
+                reason = 'Game Complete';
+                break;
+            case 'win':
+                xpAmount = 10;
+                reason = 'Victory!';
+                break;
+            default:
+                xpAmount = 2;
+                reason = 'Playing';
+        }
+
+        // Get or create progress
+        const progress = this.ensureDailyInit(userId);
+        progress.totalXP = (progress.totalXP || 0) + xpAmount;
+        this.saveUserProgress(userId, progress);
+
+        // Save to Firebase
+        this.saveXPToFirebase(userId, progress.totalXP);
+
+        // Show toast
+        this.showGameplayXPToast(xpAmount, reason, gameId);
+
+        return { xpAwarded: xpAmount, totalXP: progress.totalXP };
+    },
+
+    // Show small XP toast for gameplay
+    showGameplayXPToast(xp, reason, gameId) {
+        const gameInfo = this.GAMES[gameId] || { emoji: '🎮', name: 'Game' };
+
+        const toast = document.createElement('div');
+        toast.innerHTML = `
+            <span style="font-size: 1.2rem;">${gameInfo.emoji}</span>
+            <span style="color: #fbbf24; font-weight: bold;">+${xp} XP</span>
+            <span style="color: #9ca3af; font-size: 0.75rem;">${reason}</span>
+        `;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #1a2230, #2a3240);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            z-index: 10000;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            animation: xpSlideIn 0.3s ease;
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes xpSlideIn {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
     }
 };
 
@@ -430,5 +536,12 @@ window.ChallengesSystem = ChallengesSystem;
 window.trackChallengeProgress = function (gameId, trackKey, amount = 1) {
     if (window.ChallengesSystem) {
         ChallengesSystem.trackAction(gameId, trackKey, amount);
+    }
+};
+
+// Helper function for gameplay XP from game pages
+window.awardGameplayXP = function (gameId, trigger = 'play', score = 0) {
+    if (window.ChallengesSystem) {
+        ChallengesSystem.awardGameplayXP(gameId, trigger, score);
     }
 };

@@ -240,6 +240,11 @@ class PixelBird {
             this.updateHighScore();
         }
 
+        // Award gameplay XP
+        if (typeof awardGameplayXP === 'function') {
+            awardGameplayXP('flappy', 'score', this.score);
+        }
+
         // Update overlay
         document.getElementById('finalScore').textContent = this.score;
         document.getElementById('newBest').classList.toggle('hidden', !isNewBest);

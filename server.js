@@ -85,6 +85,25 @@ setInterval(() => {
 // Apply rate limiting
 app.use(rateLimiter);
 
+// Redirect old page URLs to new pages/ folder
+const pageRedirects = ['profile', 'games', 'challenges', 'leaderboard', 'about', 'community'];
+pageRedirects.forEach(page => {
+    app.get(`/${page}`, (req, res) => {
+        res.redirect(301, `/pages/${page}`);
+    });
+});
+
+// Redirect old game URLs to new games/ folder
+const gameRedirects = ['game2048', 'snakeGame', 'tetrisGame', 'flappyGame', 'memoryGame', 'minesweeperGame', 'tictactoeGame', 'raseClicker', 'runnerGame', 'fightArena'];
+gameRedirects.forEach(game => {
+    app.get(`/${game}`, (req, res) => {
+        res.redirect(301, `/games/${game}`);
+    });
+    app.get(`/${game}/`, (req, res) => {
+        res.redirect(301, `/games/${game}/`);
+    });
+});
+
 // Serve static files with extensions option to enable clean URLs
 app.use(express.static(path.join(__dirname), {
     extensions: ['html']

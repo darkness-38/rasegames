@@ -86,13 +86,13 @@
                         </div>
                     </div>
 
-                    <!-- Game Over Text -->
+                    <!-- not found Text -->
                     <div class="flex max-w-[540px] flex-col items-center gap-4">
                         <h2 class="text-3xl md:text-4xl font-bold leading-tight tracking-[-0.015em]">
-                            🎮 Game Over! Page Not Found
+                            Page Not Found
                         </h2>
                         <p class="text-slate-500 dark:text-slate-400 text-base md:text-lg font-normal leading-relaxed">
-                            Looks like this level doesn't exist. The page you're looking for might have been moved,
+                            The page you're looking for might have been moved,
                             deleted, or never existed in the first place.
                         </p>
                     </div>
@@ -123,6 +123,343 @@
     </div>
 
     <script src="auth.js"></script>
+
+    <!-- Secret Easter Egg - Konami Code -->
+    <style>
+        .secret-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .secret-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .secret-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 10px rgba(79, 70, 229, 0.5));
+            }
+
+            to {
+                filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.8));
+            }
+        }
+
+        .secret-subtitle {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        #secret-game {
+            border: 2px solid #4f46e5;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.3);
+        }
+
+        .close-secret {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-secret:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .game-controls {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+
+        .game-controls kbd {
+            background: #1e293b;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 0 2px;
+        }
+    </style>
+
+    <div class="secret-overlay" id="secretOverlay">
+        <button class="close-secret" onclick="closeSecretLevel()">&times;</button>
+        <h2 class="secret-title">🎮 SECRET LEVEL UNLOCKED! 🎮</h2>
+        <p class="secret-subtitle">You found the easter egg! Enjoy this mini space shooter.</p>
+        <canvas id="secret-game" width="400" height="500"></canvas>
+        <p class="game-controls">
+            Use <kbd>←</kbd> <kbd>→</kbd> to move, <kbd>SPACE</kbd> to shoot
+        </p>
+    </div>
+
+    <script>
+        // Konami Code Easter Egg
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        let konamiIndex = 0;
+        let gameActive = false;
+
+        document.addEventListener('keydown', (e) => {
+            if (gameActive) return;
+
+            if (e.code === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    unlockSecretLevel();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = e.code === konamiCode[0] ? 1 : 0;
+            }
+        });
+
+        function unlockSecretLevel() {
+            document.getElementById('secretOverlay').classList.add('active');
+            gameActive = true;
+            startSecretGame();
+        }
+
+        function closeSecretLevel() {
+            document.getElementById('secretOverlay').classList.remove('active');
+            gameActive = false;
+        }
+
+        // Mini Space Shooter Game
+        function startSecretGame() {
+            const canvas = document.getElementById('secret-game');
+            const ctx = canvas.getContext('2d');
+
+            let player = { x: 180, y: 450, width: 40, height: 30, speed: 6 };
+            let bullets = [];
+            let enemies = [];
+            let particles = [];
+            let score = 0;
+            let gameOver = false;
+            let lastEnemySpawn = 0;
+            let keys = {};
+
+            document.addEventListener('keydown', (e) => {
+                if (gameActive) keys[e.code] = true;
+                if (e.code === 'Space') e.preventDefault();
+            });
+            document.addEventListener('keyup', (e) => keys[e.code] = false);
+
+            function spawnEnemy() {
+                enemies.push({
+                    x: Math.random() * (canvas.width - 30),
+                    y: -30,
+                    width: 30,
+                    height: 30,
+                    speed: 2 + Math.random() * 2,
+                    color: ['#ef4444', '#f97316', '#eab308'][Math.floor(Math.random() * 3)]
+                });
+            }
+
+            function createParticles(x, y, color) {
+                for (let i = 0; i < 8; i++) {
+                    particles.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * 6,
+                        vy: (Math.random() - 0.5) * 6,
+                        life: 30,
+                        color
+                    });
+                }
+            }
+
+            function drawPlayer() {
+                // Ship body
+                ctx.fillStyle = '#4f46e5';
+                ctx.beginPath();
+                ctx.moveTo(player.x + player.width / 2, player.y);
+                ctx.lineTo(player.x, player.y + player.height);
+                ctx.lineTo(player.x + player.width, player.y + player.height);
+                ctx.closePath();
+                ctx.fill();
+
+                // Engine glow
+                ctx.fillStyle = '#818cf8';
+                ctx.beginPath();
+                ctx.moveTo(player.x + 10, player.y + player.height);
+                ctx.lineTo(player.x + player.width / 2, player.y + player.height + 10 + Math.random() * 5);
+                ctx.lineTo(player.x + player.width - 10, player.y + player.height);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            function update() {
+                if (!gameActive) return;
+
+                ctx.fillStyle = '#0a0a0a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Stars background
+                ctx.fillStyle = '#ffffff';
+                for (let i = 0; i < 50; i++) {
+                    const x = (i * 73) % canvas.width;
+                    const y = ((i * 97) + Date.now() * 0.05) % canvas.height;
+                    ctx.fillRect(x, y, 1, 1);
+                }
+
+                if (!gameOver) {
+                    // Player movement
+                    if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+                    if (keys['ArrowRight'] && player.x < canvas.width - player.width) player.x += player.speed;
+
+                    // Shooting
+                    if (keys['Space'] && bullets.length < 5) {
+                        bullets.push({ x: player.x + player.width / 2 - 2, y: player.y, width: 4, height: 15 });
+                        keys['Space'] = false;
+                    }
+
+                    // Spawn enemies
+                    if (Date.now() - lastEnemySpawn > 800) {
+                        spawnEnemy();
+                        lastEnemySpawn = Date.now();
+                    }
+                }
+
+                // Update bullets
+                bullets = bullets.filter(b => {
+                    b.y -= 8;
+                    ctx.fillStyle = '#22d3ee';
+                    ctx.shadowColor = '#22d3ee';
+                    ctx.shadowBlur = 10;
+                    ctx.fillRect(b.x, b.y, b.width, b.height);
+                    ctx.shadowBlur = 0;
+                    return b.y > -20;
+                });
+
+                // Update enemies
+                enemies = enemies.filter(enemy => {
+                    enemy.y += enemy.speed;
+
+                    // Draw enemy
+                    ctx.fillStyle = enemy.color;
+                    ctx.beginPath();
+                    ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.width / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#000';
+                    ctx.beginPath();
+                    ctx.arc(enemy.x + 8, enemy.y + 12, 4, 0, Math.PI * 2);
+                    ctx.arc(enemy.x + 22, enemy.y + 12, 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Check bullet collision
+                    for (let i = bullets.length - 1; i >= 0; i--) {
+                        const b = bullets[i];
+                        if (b.x < enemy.x + enemy.width && b.x + b.width > enemy.x &&
+                            b.y < enemy.y + enemy.height && b.y + b.height > enemy.y) {
+                            bullets.splice(i, 1);
+                            createParticles(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
+                            score += 100;
+                            return false;
+                        }
+                    }
+
+                    // Check player collision
+                    if (!gameOver && enemy.y + enemy.height > player.y &&
+                        enemy.x < player.x + player.width && enemy.x + enemy.width > player.x) {
+                        gameOver = true;
+                        createParticles(player.x + player.width / 2, player.y + player.height / 2, '#4f46e5');
+                    }
+
+                    return enemy.y < canvas.height + 50;
+                });
+
+                // Update particles
+                particles = particles.filter(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life--;
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.life / 30;
+                    ctx.fillRect(p.x, p.y, 4, 4);
+                    ctx.globalAlpha = 1;
+                    return p.life > 0;
+                });
+
+                // Draw player
+                if (!gameOver) drawPlayer();
+
+                // Score
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 20px "Clash Display", sans-serif';
+                ctx.fillText(`Score: ${score}`, 10, 30);
+
+                // Game over
+                if (gameOver) {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 36px "Clash Display", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+                    ctx.font = '20px "Inter", sans-serif';
+                    ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
+                    ctx.font = '14px "Inter", sans-serif';
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fillText('Press ENTER to restart', canvas.width / 2, canvas.height / 2 + 60);
+                    ctx.textAlign = 'left';
+
+                    if (keys['Enter']) {
+                        score = 0;
+                        gameOver = false;
+                        enemies = [];
+                        bullets = [];
+                        particles = [];
+                        player.x = 180;
+                        keys['Enter'] = false;
+                    }
+                }
+
+                requestAnimationFrame(update);
+            }
+
+            update();
+        }
+    </script>
 </body>
 
 </html>

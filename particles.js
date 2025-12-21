@@ -48,27 +48,29 @@ class Particle {
         this.size = size;
         this.color = color;
         this.density = (Math.random() * 30) + 1;
-        
+
         this.speedX = (Math.random() * 0.5) - 0.25;
         this.speedY = (Math.random() * 0.5) - 0.25;
     }
 
-    
+
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
         ctx.closePath();
+        ctx.globalAlpha = 0.4;
         ctx.fillStyle = this.color;
         ctx.fill();
+        ctx.globalAlpha = 1;
     }
 
-    
+
     update() {
-        
+
         this.baseX += this.speedX;
         this.baseY += this.speedY;
 
-        
+
         if (this.baseX > canvas.width || this.baseX < 0) {
             this.speedX = -this.speedX;
         }
@@ -76,7 +78,7 @@ class Particle {
             this.speedY = -this.speedY;
         }
 
-        
+
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -88,14 +90,14 @@ class Particle {
         let directionY = forceDirectionY * force * this.density;
 
         if (distance < mouse.radius) {
-            
+
             this.x -= directionX;
             this.y -= directionY;
         } else {
-            
+
             if (this.x !== this.baseX) {
                 let dx = this.x - this.baseX;
-                this.x -= dx / 10; 
+                this.x -= dx / 10;
             }
             if (this.y !== this.baseY) {
                 let dy = this.y - this.baseY;
@@ -112,7 +114,7 @@ function init() {
     particlesArray = [];
     let numberOfParticles = (canvas.height * canvas.width) / 9000;
 
-    
+
     const blueColors = ['#4285F4', '#8AB4F8', '#1967D2', '#D2E3FC'];
 
     for (let i = 0; i < numberOfParticles; i++) {
@@ -146,8 +148,8 @@ function connect() {
 
             if (distance < (canvas.width / 7) * (canvas.height / 7)) {
                 opacityValue = 1 - (distance / 20000);
-                
-                ctx.strokeStyle = 'rgba(66, 133, 244,' + (opacityValue * 0.15) + ')';
+
+                ctx.strokeStyle = 'rgba(66, 133, 244,' + (opacityValue * 0.08) + ')';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(particlesArray[a].x, particlesArray[a].y);

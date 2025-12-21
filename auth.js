@@ -29,11 +29,12 @@ async function initAuth() {
     let authStateChecked = false;
     auth.onAuthStateChanged(user => {
         currentUser = user;
-        updateAuthUI();
-
-
         window.currentUser = user;
 
+        updateAuthUI();
+
+        // Dispatch custom event for other scripts to listen
+        window.dispatchEvent(new CustomEvent('authStateChanged', { detail: { user } }));
 
         if (!authStateChecked) {
             authStateChecked = true;

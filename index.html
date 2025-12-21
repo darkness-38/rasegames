@@ -499,20 +499,6 @@
             const heroGuest = document.getElementById('hero-guest');
             const heroUsername = document.getElementById('hero-username');
 
-            // Check auth state periodically until it's determined
-            const checkAuth = setInterval(() => {
-                if (window.authStateChecked !== undefined) {
-                    clearInterval(checkAuth);
-                    updateHeroDisplay();
-                }
-            }, 100);
-
-            // Fallback timeout
-            setTimeout(() => {
-                clearInterval(checkAuth);
-                updateHeroDisplay();
-            }, 3000);
-
             function updateHeroDisplay() {
                 const user = window.currentUser;
 
@@ -530,6 +516,16 @@
                     heroLoggedIn.style.display = 'none';
                     heroGuest.style.display = 'flex';
                 }
+            }
+
+            // Listen for auth state changes from auth.js
+            window.addEventListener('authStateChanged', () => {
+                updateHeroDisplay();
+            });
+
+            // Also check immediately if auth is already loaded
+            if (window.currentUser !== undefined) {
+                updateHeroDisplay();
             }
         }
     </script>

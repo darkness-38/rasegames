@@ -64,6 +64,76 @@ const ChallengesSystem = {
         'tictactoe': { name: 'Tic Tac Pro', emoji: '⭕', url: '/tictactoeGame/', color: 'from-red-400 to-pink-500' }
     },
 
+    // Level thresholds - XP required for each level
+    LEVEL_THRESHOLDS: [
+        { level: 1, xp: 0, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
+        { level: 2, xp: 100, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
+        { level: 3, xp: 250, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
+        { level: 4, xp: 450, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
+        { level: 5, xp: 700, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
+        { level: 6, xp: 1000, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
+        { level: 7, xp: 1400, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
+        { level: 8, xp: 1900, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
+        { level: 9, xp: 2500, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
+        { level: 10, xp: 3200, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
+        { level: 11, xp: 4000, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
+        { level: 12, xp: 5000, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
+        { level: 13, xp: 6200, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
+        { level: 14, xp: 7600, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
+        { level: 15, xp: 9200, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
+        { level: 16, xp: 11000, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
+        { level: 17, xp: 13200, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
+        { level: 18, xp: 15800, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
+        { level: 19, xp: 18800, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
+        { level: 20, xp: 22200, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
+        { level: 21, xp: 26000, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
+        { level: 22, xp: 30500, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
+        { level: 23, xp: 35500, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
+        { level: 24, xp: 41000, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
+        { level: 25, xp: 50000, title: 'Mitik', emoji: '🔥', color: '#ef4444' }
+    ],
+
+    // Get level info from XP
+    getLevelFromXP(xp) {
+        let levelData = this.LEVEL_THRESHOLDS[0];
+        for (let i = this.LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {
+            if (xp >= this.LEVEL_THRESHOLDS[i].xp) {
+                levelData = this.LEVEL_THRESHOLDS[i];
+                break;
+            }
+        }
+        return levelData;
+    },
+
+    // Get XP needed for next level
+    getXPForNextLevel(currentXP) {
+        const currentLevel = this.getLevelFromXP(currentXP);
+        const nextLevelIndex = this.LEVEL_THRESHOLDS.findIndex(l => l.level === currentLevel.level + 1);
+
+        if (nextLevelIndex === -1) {
+            return { needed: 0, total: 0, isMax: true };
+        }
+
+        const nextLevel = this.LEVEL_THRESHOLDS[nextLevelIndex];
+        return {
+            needed: nextLevel.xp - currentXP,
+            total: nextLevel.xp - currentLevel.xp,
+            nextLevel: nextLevel,
+            isMax: false
+        };
+    },
+
+    // Get progress percentage within current level
+    getLevelProgress(currentXP) {
+        const currentLevel = this.getLevelFromXP(currentXP);
+        const nextInfo = this.getXPForNextLevel(currentXP);
+
+        if (nextInfo.isMax) return 100;
+
+        const xpIntoLevel = currentXP - currentLevel.xp;
+        return Math.round((xpIntoLevel / nextInfo.total) * 100);
+    },
+
     // Get today's date as a seed for random generation
     getTodaySeed() {
         const today = new Date();
@@ -187,10 +257,12 @@ const ChallengesSystem = {
 
             const db = firebase.database();
             const user = window.currentUser;
+            const levelInfo = this.getLevelFromXP(totalXP);
 
             await db.ref(`xpLeaderboard/${userId}`).set({
                 username: user.displayName || 'Anonymous',
                 xp: totalXP,
+                level: levelInfo.level,
                 lastUpdated: Date.now()
             });
         } catch (e) {

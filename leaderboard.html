@@ -1,189 +1,307 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html class="dark" lang="tr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XP Leaderboard - Rase Games</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="auth.css">
+    <title>Seviye Liderlik Tablosu - Rase Games</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        primary: '#4f46e5',
-                        'primary-glow': '#6366f1',
-                        'background-dark': '#0a0a0f',
-                        'surface-dark': '#1a2230',
+                        "primary": "#0f49bd",
+                        "primary-glow": "#2f70ff",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1a2230",
+                        "gold": "#FFD700",
+                        "silver": "#C0C0C0",
+                        "bronze": "#CD7F32",
                     },
                     fontFamily: {
-                        display: ['Space Grotesk', 'sans-serif'],
-                        body: ['Inter', 'sans-serif'],
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 15px rgba(15, 73, 189, 0.3)' },
+                            '50%': { opacity: .8, boxShadow: '0 0 30px rgba(15, 73, 189, 0.6)' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
-                }
-            }
+                },
+            },
         }
     </script>
     <style>
-        body {
-            background-color: #0a0a0f;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        .rank-1 {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
+        ::-webkit-scrollbar-track {
+            background: #101622;
         }
 
-        .rank-2 {
-            background: linear-gradient(135deg, #c0c0c0, #9a9a9a);
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
         }
 
-        .rank-3 {
-            background: linear-gradient(135deg, #cd7f32, #a65c1a);
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
         }
 
-        .leaderboard-row {
-            transition: all 0.3s ease;
+        .text-glow {
+            text-shadow: 0 0 10px rgba(47, 112, 255, 0.5);
         }
 
-        .leaderboard-row:hover {
-            transform: translateX(8px);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .current-user {
-            border: 2px solid #4f46e5;
-            background: rgba(79, 70, 229, 0.1);
-        }
-
-        @keyframes shine {
-            0% {
-                background-position: -200% center;
-            }
-
-            100% {
-                background-position: 200% center;
-            }
-        }
-
-        .top-3-card {
-            animation: shine 3s infinite linear;
-            background-size: 200% auto;
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 12px;
         }
     </style>
 </head>
 
-<body>
-    <div class="background-effects">
-        <div class="glow-orb"></div>
+<body class="bg-background-dark font-display text-white antialiased overflow-x-hidden">
+    <div class="relative flex min-h-screen w-full flex-col">
+        <!-- Navbar -->
+        <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/90 backdrop-blur-md">
+            <div class="flex h-16 items-center justify-between px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
+                        <span class="material-symbols-outlined" style="font-size: 20px;">sports_esports</span>
+                    </div>
+                    <a class="text-white text-xl font-bold tracking-tight" href="/">Rase<span
+                            class="text-primary">Games</span></a>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                        href="/">Home</a>
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                        href="/games">Games</a>
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                        href="/challenges">Challenges</a>
+                    <a class="text-white text-glow text-sm font-medium transition-colors"
+                        href="/leaderboard">Leaderboard</a>
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                        href="/community">Community</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="user-display"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col items-center w-full">
+            <div class="w-full relative px-6 lg:px-20 pt-10 pb-6 max-w-[1440px]">
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+                    <div>
+                        <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
+                            <span class="material-symbols-outlined text-[18px]">home</span>
+                            <span>/</span>
+                            <span class="text-primary">Rankings</span>
+                        </div>
+                        <h1 class="text-4xl font-bold text-white tracking-tight">Seviye Liderlik Tablosu</h1>
+                        <p class="text-gray-400 mt-2">Günlük görevleri tamamla, XP kazan ve seviye atla!</p>
+                    </div>
+                </div>
+
+                <!-- Top 3 Podium -->
+                <div id="top-3-container" class="flex flex-col md:flex-row justify-center items-end gap-6 mb-16 px-4"
+                    style="display: none;">
+                    <!-- 2nd Place -->
+                    <div id="podium-2"
+                        class="flex flex-col items-center w-full md:w-1/3 max-w-[280px] order-2 md:order-1 animate-float"
+                        style="animation-delay: 1s;">
+                        <div class="relative mb-4">
+                            <div
+                                class="size-24 rounded-full border-4 border-silver overflow-hidden shadow-[0_0_20px_rgba(192,192,192,0.3)] bg-surface-dark flex items-center justify-center">
+                                <span id="avatar-2" class="text-4xl">🥈</span>
+                            </div>
+                            <div
+                                class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-silver text-background-dark font-bold px-3 py-0.5 rounded-full text-sm shadow-lg">
+                                #2
+                            </div>
+                        </div>
+                        <div
+                            class="text-center w-full bg-surface-dark/50 border border-white/5 rounded-xl p-4 backdrop-blur-sm">
+                            <h3 id="name-2" class="text-white font-bold text-lg truncate">-</h3>
+                            <div id="level-badge-2" class="level-badge mt-2 mx-auto"
+                                style="background: rgba(107, 114, 128, 0.2); color: #9ca3af;">
+                                <span id="level-emoji-2">🌱</span>
+                                <span>Seviye <span id="level-2">1</span></span>
+                            </div>
+                            <p id="title-2" class="text-gray-500 text-xs mt-2">Çaylak</p>
+                        </div>
+                    </div>
+
+                    <!-- 1st Place -->
+                    <div id="podium-1"
+                        class="flex flex-col items-center w-full md:w-1/3 max-w-[320px] order-1 md:order-2 z-10 animate-float">
+                        <div class="relative mb-6">
+                            <div class="absolute -top-10 left-1/2 -translate-x-1/2 text-gold animate-bounce">
+                                <span class="material-symbols-outlined text-[40px]">emoji_events</span>
+                            </div>
+                            <div
+                                class="size-32 rounded-full border-4 border-gold overflow-hidden shadow-[0_0_30px_rgba(255,215,0,0.4)] ring-4 ring-gold/20 bg-surface-dark flex items-center justify-center">
+                                <span id="avatar-1" class="text-5xl">👑</span>
+                            </div>
+                            <div
+                                class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-gold text-background-dark font-bold px-4 py-1 rounded-full text-base shadow-xl flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">military_tech</span>
+                                <span>#1</span>
+                            </div>
+                        </div>
+                        <div
+                            class="text-center w-full bg-gradient-to-b from-surface-dark to-background-dark border border-gold/30 rounded-xl p-6 shadow-2xl relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gold"></div>
+                            <h3 id="name-1" class="text-2xl font-bold text-white mb-1 truncate">-</h3>
+                            <div id="level-badge-1" class="level-badge mt-2 mx-auto"
+                                style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
+                                <span id="level-emoji-1">👑</span>
+                                <span>Seviye <span id="level-1">1</span></span>
+                            </div>
+                            <p id="title-1" class="text-gold text-sm mt-2 font-medium">Efsane</p>
+                        </div>
+                    </div>
+
+                    <!-- 3rd Place -->
+                    <div id="podium-3"
+                        class="flex flex-col items-center w-full md:w-1/3 max-w-[280px] order-3 md:order-3 animate-float"
+                        style="animation-delay: 2s;">
+                        <div class="relative mb-4">
+                            <div
+                                class="size-24 rounded-full border-4 border-bronze overflow-hidden shadow-[0_0_20px_rgba(205,127,50,0.3)] bg-surface-dark flex items-center justify-center">
+                                <span id="avatar-3" class="text-4xl">🥉</span>
+                            </div>
+                            <div
+                                class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-bronze text-white font-bold px-3 py-0.5 rounded-full text-sm shadow-lg">
+                                #3
+                            </div>
+                        </div>
+                        <div
+                            class="text-center w-full bg-surface-dark/50 border border-white/5 rounded-xl p-4 backdrop-blur-sm">
+                            <h3 id="name-3" class="text-white font-bold text-lg truncate">-</h3>
+                            <div id="level-badge-3" class="level-badge mt-2 mx-auto"
+                                style="background: rgba(107, 114, 128, 0.2); color: #9ca3af;">
+                                <span id="level-emoji-3">🌱</span>
+                                <span>Seviye <span id="level-3">1</span></span>
+                            </div>
+                            <p id="title-3" class="text-gray-500 text-xs mt-2">Çaylak</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your Rank (if logged in) -->
+                <div id="your-rank"
+                    class="w-full bg-surface-dark border border-white/5 rounded-xl overflow-hidden shadow-lg mb-6"
+                    style="display: none;">
+                    <div
+                        class="grid grid-cols-12 gap-4 px-6 py-4 bg-primary/10 border-l-4 border-l-primary items-center relative group">
+                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div id="your-rank-number" class="col-span-1 text-center font-bold text-primary-glow text-lg">#?
+                        </div>
+                        <div class="col-span-6 md:col-span-7 flex items-center gap-3">
+                            <div
+                                class="size-10 rounded-full bg-primary/20 overflow-hidden border border-primary/30 flex items-center justify-center">
+                                <span id="your-avatar" class="text-xl">👤</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-white font-bold flex items-center gap-2">
+                                    <span id="your-name">Sen</span>
+                                    <span
+                                        class="text-[10px] bg-primary/20 text-primary px-1.5 rounded uppercase">Ben</span>
+                                </span>
+                                <span id="your-level-text" class="text-gray-400 text-xs">Seviye 1 • Çaylak</span>
+                            </div>
+                        </div>
+                        <div class="col-span-5 md:col-span-4 flex items-center justify-end gap-3">
+                            <div class="hidden sm:block">
+                                <div class="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div id="your-progress-bar" class="h-full bg-primary" style="width: 0%;"></div>
+                                </div>
+                                <p id="your-xp-text" class="text-gray-500 text-[10px] mt-1 text-right">0 / 100 XP</p>
+                            </div>
+                            <div id="your-level-badge" class="level-badge"
+                                style="background: rgba(107, 114, 128, 0.2); color: #9ca3af;">
+                                <span id="your-level-emoji">🌱</span>
+                                <span>Lv.<span id="your-level">1</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Table -->
+                <div class="w-full bg-surface-dark border border-white/5 rounded-xl overflow-hidden shadow-lg mb-12">
+                    <!-- Table Header -->
+                    <div
+                        class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/5 bg-background-dark/50 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                        <div class="col-span-1 text-center">Sıra</div>
+                        <div class="col-span-6 md:col-span-7">Oyuncu</div>
+                        <div class="col-span-5 md:col-span-4 text-right">Seviye</div>
+                    </div>
+
+                    <!-- Table Body -->
+                    <div id="leaderboard-list" class="divide-y divide-white/5">
+                        <div class="px-6 py-12 text-center text-gray-500">
+                            <span class="material-symbols-outlined text-4xl mb-2 block">hourglass_empty</span>
+                            Yükleniyor...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full border-t border-white/5 bg-[#0b0f17] py-8">
+            <div
+                class="px-6 lg:px-20 max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-white font-bold text-lg">Rase Games</h3>
+                    <p class="text-gray-500 text-sm">© 2024 Rase Games. All rights reserved.</p>
+                </div>
+                <div class="flex gap-8">
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/about">About</a>
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/community">Community</a>
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm"
+                        href="/challenges">Challenges</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Scroll to Top -->
+        <div class="fixed bottom-8 right-8 z-50">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                class="bg-surface-dark border border-white/10 hover:border-primary text-white p-3 rounded-full shadow-lg transition-all hover:-translate-y-1 hover:shadow-primary/20">
+                <span class="material-symbols-outlined">arrow_upward</span>
+            </button>
+        </div>
     </div>
 
-    <nav class="navbar">
-        <div class="logo">
-            <a href="/" style="text-decoration: none; color: inherit;">
-                <span class="logo-text">Rase Games</span>
-            </a>
-        </div>
-        <div class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/games" class="nav-link">Games</a>
-            <a href="/challenges" class="nav-link">Challenges</a>
-            <a href="/about" class="nav-link">About</a>
-            <a href="/leaderboard" class="nav-link active">Leaderboards</a>
-            <a href="/community" class="nav-link">Community</a>
-            <div id="user-display"></div>
-        </div>
-    </nav>
-
-    <main class="max-w-4xl mx-auto px-6 py-12">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 text-sm font-medium mb-6">
-                <span class="material-symbols-outlined text-lg">leaderboard</span>
-                Global Rankings
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-display">
-                XP Liderlik Tablosu
-            </h1>
-            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                Günlük görevleri tamamlayarak XP kazan ve en üst sıralara çık!
-            </p>
-        </div>
-
-        <!-- Top 3 Podium -->
-        <div id="top-3-container" class="grid grid-cols-3 gap-4 mb-10" style="display: none;">
-            <!-- 2nd Place -->
-            <div id="rank-2" class="flex flex-col items-center pt-8">
-                <div
-                    class="w-20 h-20 rounded-full rank-2 flex items-center justify-center text-3xl font-bold text-gray-800 mb-3">
-                    2
-                </div>
-                <div class="text-white font-bold text-lg" id="name-2">-</div>
-                <div class="text-gray-400 text-sm" id="xp-2">0 XP</div>
-            </div>
-            <!-- 1st Place -->
-            <div id="rank-1" class="flex flex-col items-center">
-                <div
-                    class="w-24 h-24 rounded-full rank-1 flex items-center justify-center text-4xl font-bold text-gray-800 mb-3 shadow-lg shadow-yellow-500/30">
-                    👑
-                </div>
-                <div class="text-white font-bold text-xl" id="name-1">-</div>
-                <div class="text-yellow-400 text-sm font-bold" id="xp-1">0 XP</div>
-            </div>
-            <!-- 3rd Place -->
-            <div id="rank-3" class="flex flex-col items-center pt-12">
-                <div
-                    class="w-16 h-16 rounded-full rank-3 flex items-center justify-center text-2xl font-bold text-gray-800 mb-3">
-                    3
-                </div>
-                <div class="text-white font-bold text-lg" id="name-3">-</div>
-                <div class="text-gray-400 text-sm" id="xp-3">0 XP</div>
-            </div>
-        </div>
-
-        <!-- Leaderboard List -->
-        <div class="bg-surface-dark border border-white/10 rounded-2xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between">
-                <h2 class="text-xl font-bold text-white">Top 10 Oyuncular</h2>
-                <span class="material-symbols-outlined text-yellow-400">emoji_events</span>
-            </div>
-
-            <div id="leaderboard-list" class="divide-y divide-white/5">
-                <div class="px-6 py-8 text-center text-gray-500">
-                    <span class="material-symbols-outlined text-4xl mb-2 block">hourglass_empty</span>
-                    Yükleniyor...
-                </div>
-            </div>
-        </div>
-
-        <!-- Your Rank -->
-        <div id="your-rank"
-            class="mt-6 bg-primary/10 border border-primary/30 rounded-xl p-4 flex items-center justify-between"
-            style="display: none;">
-            <div class="flex items-center gap-4">
-                <span class="material-symbols-outlined text-primary">person</span>
-                <span class="text-white font-medium">Senin Sıran:</span>
-                <span id="your-rank-number" class="text-primary font-bold text-xl">#?</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-yellow-400">star</span>
-                <span id="your-xp" class="text-white font-bold">0 XP</span>
-            </div>
-        </div>
-    </main>
-
-    <script src="particles.js"></script>
     <script src="challenges.js"></script>
     <script src="auth.js"></script>
     <script>
@@ -201,9 +319,9 @@
                 listEl.innerHTML = `
                     <div class="px-6 py-12 text-center text-gray-500">
                         <span class="material-symbols-outlined text-4xl mb-2 block">sentiment_dissatisfied</span>
-                        <p>Henüz kimse XP kazanmamış.</p>
+                        <p>Henüz kimse seviye atlamamış.</p>
                         <p class="text-sm mt-2">Görevleri tamamlayarak ilk sen ol!</p>
-                        <a href="/challenges" class="inline-block mt-4 px-6 py-2 bg-primary hover:bg-primary-glow text-white rounded-lg no-underline">
+                        <a href="/challenges" class="inline-block mt-4 px-6 py-2 bg-primary hover:bg-primary-glow text-white rounded-lg no-underline transition-colors">
                             Görevlere Git
                         </a>
                     </div>
@@ -213,64 +331,123 @@
 
             // Show top 3 podium
             if (leaderboard.length >= 1) {
-                top3Container.style.display = 'grid';
+                top3Container.style.display = 'flex';
+                const levelInfo1 = ChallengesSystem.getLevelFromXP(leaderboard[0].xp);
                 document.getElementById('name-1').textContent = leaderboard[0].username;
-                document.getElementById('xp-1').textContent = `${leaderboard[0].xp} XP`;
+                document.getElementById('level-1').textContent = levelInfo1.level;
+                document.getElementById('level-emoji-1').textContent = levelInfo1.emoji;
+                document.getElementById('title-1').textContent = levelInfo1.title;
+                const badge1 = document.getElementById('level-badge-1');
+                badge1.style.background = `${levelInfo1.color}20`;
+                badge1.style.color = levelInfo1.color;
             }
             if (leaderboard.length >= 2) {
+                const levelInfo2 = ChallengesSystem.getLevelFromXP(leaderboard[1].xp);
                 document.getElementById('name-2').textContent = leaderboard[1].username;
-                document.getElementById('xp-2').textContent = `${leaderboard[1].xp} XP`;
+                document.getElementById('level-2').textContent = levelInfo2.level;
+                document.getElementById('level-emoji-2').textContent = levelInfo2.emoji;
+                document.getElementById('title-2').textContent = levelInfo2.title;
+                const badge2 = document.getElementById('level-badge-2');
+                badge2.style.background = `${levelInfo2.color}20`;
+                badge2.style.color = levelInfo2.color;
             }
             if (leaderboard.length >= 3) {
+                const levelInfo3 = ChallengesSystem.getLevelFromXP(leaderboard[2].xp);
                 document.getElementById('name-3').textContent = leaderboard[2].username;
-                document.getElementById('xp-3').textContent = `${leaderboard[2].xp} XP`;
+                document.getElementById('level-3').textContent = levelInfo3.level;
+                document.getElementById('level-emoji-3').textContent = levelInfo3.emoji;
+                document.getElementById('title-3').textContent = levelInfo3.title;
+                const badge3 = document.getElementById('level-badge-3');
+                badge3.style.background = `${levelInfo3.color}20`;
+                badge3.style.color = levelInfo3.color;
             }
 
-            // Build list
+            // Build list (show 4-10)
             const currentUserId = window.currentUser?.uid;
             let html = '';
 
-            leaderboard.forEach((entry, index) => {
-                const rank = index + 1;
+            leaderboard.slice(3).forEach((entry, index) => {
+                const rank = index + 4;
                 const isCurrentUser = entry.uid === currentUserId;
-                const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+                const levelInfo = ChallengesSystem.getLevelFromXP(entry.xp);
 
                 html += `
-                    <div class="leaderboard-row px-6 py-4 flex items-center justify-between ${isCurrentUser ? 'current-user rounded-lg' : ''}">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 flex items-center justify-center text-xl font-bold ${rank <= 3 ? '' : 'text-gray-500'}">
-                                ${rankIcon}
+                    <div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-white/5 transition-colors items-center ${isCurrentUser ? 'bg-primary/10 border-l-4 border-l-primary' : ''}">
+                        <div class="col-span-1 text-center font-medium text-gray-500">${rank}</div>
+                        <div class="col-span-6 md:col-span-7 flex items-center gap-3">
+                            <div class="size-10 rounded-full bg-surface-dark overflow-hidden border border-white/10 flex items-center justify-center">
+                                <span class="text-xl">${levelInfo.emoji}</span>
                             </div>
-                            <div>
-                                <div class="text-white font-medium ${isCurrentUser ? 'text-primary' : ''}">${entry.username}</div>
+                            <div class="flex flex-col">
+                                <span class="text-white font-medium ${isCurrentUser ? 'text-primary' : ''}">${entry.username}</span>
+                                <span class="text-gray-500 text-xs">${levelInfo.title}</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-yellow-400 text-sm">star</span>
-                            <span class="text-white font-bold">${entry.xp} XP</span>
+                        <div class="col-span-5 md:col-span-4 flex items-center justify-end">
+                            <div class="level-badge" style="background: ${levelInfo.color}20; color: ${levelInfo.color};">
+                                <span>${levelInfo.emoji}</span>
+                                <span>Seviye ${levelInfo.level}</span>
+                            </div>
                         </div>
                     </div>
                 `;
             });
 
+            // If we only have top 3, show message
+            if (leaderboard.length <= 3) {
+                html = `
+                    <div class="px-6 py-8 text-center text-gray-500">
+                        <p>Henüz bu kadar oyuncu var.</p>
+                        <p class="text-sm mt-1">Sen de katıl!</p>
+                    </div>
+                `;
+            }
+
             listEl.innerHTML = html;
 
-            // Show current user's rank if logged in
+            // Show current user's rank
             if (currentUserId) {
                 const userRankEl = document.getElementById('your-rank');
                 const userIndex = leaderboard.findIndex(e => e.uid === currentUserId);
-
                 const progress = ChallengesSystem.getUserProgress(currentUserId);
                 const userXP = progress.totalXP || 0;
 
-                if (userIndex !== -1) {
-                    userRankEl.style.display = 'flex';
-                    document.getElementById('your-rank-number').textContent = `#${userIndex + 1}`;
-                    document.getElementById('your-xp').textContent = `${userXP} XP`;
-                } else if (userXP > 0) {
-                    userRankEl.style.display = 'flex';
-                    document.getElementById('your-rank-number').textContent = `#${leaderboard.length + 1}+`;
-                    document.getElementById('your-xp').textContent = `${userXP} XP`;
+                if (userXP > 0 || userIndex !== -1) {
+                    userRankEl.style.display = 'block';
+
+                    const levelInfo = ChallengesSystem.getLevelFromXP(userXP);
+                    const nextLevelInfo = ChallengesSystem.getXPForNextLevel(userXP);
+                    const levelProgress = ChallengesSystem.getLevelProgress(userXP);
+
+                    // Rank number
+                    if (userIndex !== -1) {
+                        document.getElementById('your-rank-number').textContent = `#${userIndex + 1}`;
+                    } else {
+                        document.getElementById('your-rank-number').textContent = `#${leaderboard.length + 1}+`;
+                    }
+
+                    // Name
+                    document.getElementById('your-name').textContent = window.currentUser?.displayName || 'Sen';
+
+                    // Level text
+                    document.getElementById('your-level-text').textContent = `Seviye ${levelInfo.level} • ${levelInfo.title}`;
+
+                    // Level badge
+                    document.getElementById('your-level').textContent = levelInfo.level;
+                    document.getElementById('your-level-emoji').textContent = levelInfo.emoji;
+                    const yourBadge = document.getElementById('your-level-badge');
+                    yourBadge.style.background = `${levelInfo.color}20`;
+                    yourBadge.style.color = levelInfo.color;
+
+                    // Progress bar
+                    document.getElementById('your-progress-bar').style.width = `${levelProgress}%`;
+                    document.getElementById('your-progress-bar').style.background = levelInfo.color;
+
+                    if (nextLevelInfo.isMax) {
+                        document.getElementById('your-xp-text').textContent = 'MAX LEVEL';
+                    } else {
+                        document.getElementById('your-xp-text').textContent = `${userXP - levelInfo.xp} / ${nextLevelInfo.total} XP`;
+                    }
                 }
             }
         }

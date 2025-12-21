@@ -194,12 +194,22 @@ class TicTacPro {
         const statusEl = document.getElementById('gameStatus');
         const turnEl = document.getElementById('turnText');
 
+        // Track for daily challenges
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('tictactoe', 'games', 1);
+        }
+
         if (result === 'X') {
             this.playerWins++;
             this.winStreak++;
             statusEl.textContent = 'Victory!';
             statusEl.className = 'px-3 py-1 bg-green-500/20 text-green-500 text-xs font-bold uppercase tracking-widest rounded-full mb-2';
             turnEl.textContent = '🎉 You Win!';
+
+            // Track win for challenges
+            if (typeof trackChallengeProgress === 'function') {
+                trackChallengeProgress('tictactoe', 'wins', 1);
+            }
 
             // Update best streak
             if (this.winStreak > this.bestStreak) {

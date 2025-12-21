@@ -303,6 +303,12 @@ class Game2048 {
         }
 
         if (moved) {
+            // Track for daily challenges
+            if (typeof trackChallengeProgress === 'function') {
+                trackChallengeProgress('2048', 'moves', 1);
+                trackChallengeProgress('2048', 'score', this.score);
+            }
+
             // Remove merged tiles after animation
             setTimeout(() => {
                 tilesToRemove.forEach(t => {

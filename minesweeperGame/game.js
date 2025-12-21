@@ -156,6 +156,11 @@ class BombSquad {
 
         this.revealed[row][col] = true;
 
+        // Track for daily challenges
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('minesweeper', 'cells', 1);
+        }
+
         const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
         cell.classList.remove('bg-slate-300', 'dark:bg-[#282e39]', 'hover:bg-slate-400', 'dark:hover:bg-[#323b49]', 'cursor-pointer', 'shadow-inner');
         cell.classList.add('bg-background-light', 'dark:bg-background-dark');
@@ -280,6 +285,11 @@ class BombSquad {
             // Submit to leaderboard
             if (typeof Leaderboard !== 'undefined') {
                 Leaderboard.submit('minesweeper', score);
+            }
+
+            // Track for daily challenges
+            if (typeof trackChallengeProgress === 'function') {
+                trackChallengeProgress('minesweeper', 'wins', 1);
             }
         } else {
             titleEl.textContent = '💥 Boom!';

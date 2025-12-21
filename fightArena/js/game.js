@@ -858,6 +858,15 @@ function endMatch(winner) {
 
     showAnnouncer(`PLAYER ${winner} WINS!`, winner === 1 ? '#00f0ff' : '#ff006e');
 
+    // Track for daily challenges
+    if (typeof trackChallengeProgress === 'function') {
+        trackChallengeProgress('fight-arena', 'matches', 1);
+        // Player 1 wins count as a win for the user
+        if (winner === 1) {
+            trackChallengeProgress('fight-arena', 'wins', 1);
+        }
+    }
+
     setTimeout(() => {
         hideAnnouncer();
         showResultScreen(winner);

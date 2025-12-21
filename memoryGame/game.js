@@ -132,6 +132,11 @@ class MindMatch {
             this.matchedPairs++;
             this.updatePairs();
 
+            // Track for daily challenges
+            if (typeof trackChallengeProgress === 'function') {
+                trackChallengeProgress('memory', 'matches', 1);
+            }
+
             const el1 = document.querySelector(`[data-id="${card1.id}"]`);
             const el2 = document.querySelector(`[data-id="${card2.id}"]`);
             el1.classList.add('matched');
@@ -229,6 +234,11 @@ class MindMatch {
         this.stopTimer();
 
         const score = this.calculateScore();
+
+        // Track for daily challenges
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('memory', 'games', 1);
+        }
 
         // Update best score
         if (score > this.bestScore) {

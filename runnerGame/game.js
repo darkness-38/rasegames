@@ -488,6 +488,11 @@ function updateCoins() {
             coinsEl.textContent = coins;
             coin.collected = true;
 
+            // Track for daily challenges
+            if (typeof trackChallengeProgress === 'function') {
+                trackChallengeProgress('cyber-runner', 'coins', Math.ceil(coinMult));
+            }
+
 
             if (typeof playSound !== 'undefined') playSound('collect');
 
@@ -690,6 +695,12 @@ function gameOver() {
     cancelAnimationFrame(animationId);
 
     const finalScore = Math.floor(score / 10);
+
+    // Track for daily challenges
+    if (typeof trackChallengeProgress === 'function') {
+        trackChallengeProgress('cyber-runner', 'score', finalScore);
+        trackChallengeProgress('cyber-runner', 'distance', Math.floor(score / 50));
+    }
 
     if (finalScore > highScore) {
         highScore = finalScore;

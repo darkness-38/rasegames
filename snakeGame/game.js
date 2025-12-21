@@ -134,6 +134,12 @@ function drawGame() {
             setCookie('snakeHighScore', highScore, 365);
         }
 
+        // Track for daily challenges
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('snake', 'food', 1);
+            trackChallengeProgress('snake', 'score', 10);
+        }
+
         // Update speed level every 100 points, max 10
         const newLevel = Math.min(10, Math.floor(score / 100) + 1);
         if (newLevel > speedLevel) {

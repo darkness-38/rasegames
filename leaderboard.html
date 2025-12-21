@@ -1,121 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboards - Rase Games</title>
+    <title>XP Leaderboard - Rase Games</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="auth.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        'primary-glow': '#6366f1',
+                        'background-dark': '#0a0a0f',
+                        'surface-dark': '#1a2230',
+                    },
+                    fontFamily: {
+                        display: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        .leaderboard-container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            max-width: 1000px;
-            width: 100%;
-            padding: 0 20px;
-            margin-bottom: 50px;
-        }
-
-        .game-leaderboard {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 25px;
-        }
-
-        .leaderboard-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .leaderboard-icon {
-            font-size: 2rem;
-        }
-
-        .leaderboard-title {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .leaderboard-table th,
-        .leaderboard-table td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        .leaderboard-table th {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .leaderboard-table tr:not(:last-child) td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .rank {
-            font-weight: 700;
-            width: 50px;
+        body {
+            background-color: #0a0a0f;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
         }
 
         .rank-1 {
-            color: #ffd700;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
         }
 
         .rank-2 {
-            color: #c0c0c0;
+            background: linear-gradient(135deg, #c0c0c0, #9a9a9a);
         }
 
         .rank-3 {
-            color: #cd7f32;
+            background: linear-gradient(135deg, #cd7f32, #a65c1a);
         }
 
-        .player-name {
-            font-weight: 500;
+        .leaderboard-row {
+            transition: all 0.3s ease;
         }
 
-        .player-score {
-            text-align: right;
-            font-family: 'Clash Display', sans-serif;
-            color: #00d4ff;
+        .leaderboard-row:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .empty-message {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.4);
-            padding: 30px;
+        .current-user {
+            border: 2px solid #4f46e5;
+            background: rgba(79, 70, 229, 0.1);
         }
 
-        .loading {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            padding: 30px;
-        }
-
-        @media (max-width: 600px) {
-
-            .leaderboard-table th,
-            .leaderboard-table td {
-                padding: 10px 8px;
-                font-size: 0.9rem;
+        @keyframes shine {
+            0% {
+                background-position: -200% center;
             }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .top-3-card {
+            animation: shine 3s infinite linear;
+            background-size: 200% auto;
         }
     </style>
 </head>
@@ -136,249 +99,191 @@
             <a href="/games" class="nav-link">Games</a>
             <a href="/challenges" class="nav-link">Challenges</a>
             <a href="/about" class="nav-link">About</a>
-            <a href="/leaderboard" class="nav-link">Leaderboards</a>
+            <a href="/leaderboard" class="nav-link active">Leaderboards</a>
             <a href="/community" class="nav-link">Community</a>
             <div id="user-display"></div>
         </div>
     </nav>
 
-    <main class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">
-                Global <span class="text-gradient">Leaderboards</span>
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 text-sm font-medium mb-6">
+                <span class="material-symbols-outlined text-lg">leaderboard</span>
+                Global Rankings
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-display">
+                XP Liderlik Tablosu
             </h1>
-            <p class="hero-subtitle">
-                Compete with players worldwide and climb to the top!
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                Günlük görevleri tamamlayarak XP kazan ve en üst sıralara çık!
             </p>
+        </div>
 
-            <div class="leaderboard-container">
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🐍</span>
-                        <h2 class="leaderboard-title">Neon Snake</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="snake-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <!-- Top 3 Podium -->
+        <div id="top-3-container" class="grid grid-cols-3 gap-4 mb-10" style="display: none;">
+            <!-- 2nd Place -->
+            <div id="rank-2" class="flex flex-col items-center pt-8">
+                <div
+                    class="w-20 h-20 rounded-full rank-2 flex items-center justify-center text-3xl font-bold text-gray-800 mb-3">
+                    2
                 </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">💻</span>
-                        <h2 class="leaderboard-title">Code Clicker</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Total LoC</th>
-                            </tr>
-                        </thead>
-                        <tbody id="clicker-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="text-white font-bold text-lg" id="name-2">-</div>
+                <div class="text-gray-400 text-sm" id="xp-2">0 XP</div>
+            </div>
+            <!-- 1st Place -->
+            <div id="rank-1" class="flex flex-col items-center">
+                <div
+                    class="w-24 h-24 rounded-full rank-1 flex items-center justify-center text-4xl font-bold text-gray-800 mb-3 shadow-lg shadow-yellow-500/30">
+                    👑
                 </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🏃</span>
-                        <h2 class="leaderboard-title">Cyber Runner</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Best Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="runner-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="text-white font-bold text-xl" id="name-1">-</div>
+                <div class="text-yellow-400 text-sm font-bold" id="xp-1">0 XP</div>
+            </div>
+            <!-- 3rd Place -->
+            <div id="rank-3" class="flex flex-col items-center pt-12">
+                <div
+                    class="w-16 h-16 rounded-full rank-3 flex items-center justify-center text-2xl font-bold text-gray-800 mb-3">
+                    3
                 </div>
+                <div class="text-white font-bold text-lg" id="name-3">-</div>
+                <div class="text-gray-400 text-sm" id="xp-3">0 XP</div>
+            </div>
+        </div>
 
+        <!-- Leaderboard List -->
+        <div class="bg-surface-dark border border-white/10 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between">
+                <h2 class="text-xl font-bold text-white">Top 10 Oyuncular</h2>
+                <span class="material-symbols-outlined text-yellow-400">emoji_events</span>
+            </div>
 
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🧱</span>
-                        <h2 class="leaderboard-title">Cyber Blocks</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tetris-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div id="leaderboard-list" class="divide-y divide-white/5">
+                <div class="px-6 py-8 text-center text-gray-500">
+                    <span class="material-symbols-outlined text-4xl mb-2 block">hourglass_empty</span>
+                    Yükleniyor...
                 </div>
+            </div>
+        </div>
 
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🐦</span>
-                        <h2 class="leaderboard-title">Pixel Bird</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="flappy-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🏓</span>
-                        <h2 class="leaderboard-title">Retro Pong</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Wins</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pong-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">💣</span>
-                        <h2 class="leaderboard-title">Bomb Squad</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="minesweeper-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🃏</span>
-                        <h2 class="leaderboard-title">Mind Match</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="memory-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">🔢</span>
-                        <h2 class="leaderboard-title">Power 2048</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="game2048-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="game-leaderboard">
-                    <div class="leaderboard-header">
-                        <span class="leaderboard-icon">⭕</span>
-                        <h2 class="leaderboard-title">Tic Tac Pro</h2>
-                    </div>
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                                <th style="text-align: right;">Win Streak</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tictactoe-leaderboard">
-                            <tr>
-                                <td colspan="3" class="loading">Loading...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Your Rank -->
+        <div id="your-rank"
+            class="mt-6 bg-primary/10 border border-primary/30 rounded-xl p-4 flex items-center justify-between"
+            style="display: none;">
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-primary">person</span>
+                <span class="text-white font-medium">Senin Sıran:</span>
+                <span id="your-rank-number" class="text-primary font-bold text-xl">#?</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-yellow-400">star</span>
+                <span id="your-xp" class="text-white font-bold">0 XP</span>
             </div>
         </div>
     </main>
 
     <script src="particles.js"></script>
+    <script src="challenges.js"></script>
     <script src="auth.js"></script>
-    <script src="leaderboard.js"></script>
-    <script src="router.js"></script>
+    <script>
+        async function loadLeaderboard() {
+            if (!window.ChallengesSystem) {
+                setTimeout(loadLeaderboard, 500);
+                return;
+            }
+
+            const leaderboard = await ChallengesSystem.getXPLeaderboard(10);
+            const listEl = document.getElementById('leaderboard-list');
+            const top3Container = document.getElementById('top-3-container');
+
+            if (leaderboard.length === 0) {
+                listEl.innerHTML = `
+                    <div class="px-6 py-12 text-center text-gray-500">
+                        <span class="material-symbols-outlined text-4xl mb-2 block">sentiment_dissatisfied</span>
+                        <p>Henüz kimse XP kazanmamış.</p>
+                        <p class="text-sm mt-2">Görevleri tamamlayarak ilk sen ol!</p>
+                        <a href="/challenges" class="inline-block mt-4 px-6 py-2 bg-primary hover:bg-primary-glow text-white rounded-lg no-underline">
+                            Görevlere Git
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Show top 3 podium
+            if (leaderboard.length >= 1) {
+                top3Container.style.display = 'grid';
+                document.getElementById('name-1').textContent = leaderboard[0].username;
+                document.getElementById('xp-1').textContent = `${leaderboard[0].xp} XP`;
+            }
+            if (leaderboard.length >= 2) {
+                document.getElementById('name-2').textContent = leaderboard[1].username;
+                document.getElementById('xp-2').textContent = `${leaderboard[1].xp} XP`;
+            }
+            if (leaderboard.length >= 3) {
+                document.getElementById('name-3').textContent = leaderboard[2].username;
+                document.getElementById('xp-3').textContent = `${leaderboard[2].xp} XP`;
+            }
+
+            // Build list
+            const currentUserId = window.currentUser?.uid;
+            let html = '';
+
+            leaderboard.forEach((entry, index) => {
+                const rank = index + 1;
+                const isCurrentUser = entry.uid === currentUserId;
+                const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+
+                html += `
+                    <div class="leaderboard-row px-6 py-4 flex items-center justify-between ${isCurrentUser ? 'current-user rounded-lg' : ''}">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 flex items-center justify-center text-xl font-bold ${rank <= 3 ? '' : 'text-gray-500'}">
+                                ${rankIcon}
+                            </div>
+                            <div>
+                                <div class="text-white font-medium ${isCurrentUser ? 'text-primary' : ''}">${entry.username}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-yellow-400 text-sm">star</span>
+                            <span class="text-white font-bold">${entry.xp} XP</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listEl.innerHTML = html;
+
+            // Show current user's rank if logged in
+            if (currentUserId) {
+                const userRankEl = document.getElementById('your-rank');
+                const userIndex = leaderboard.findIndex(e => e.uid === currentUserId);
+
+                const progress = ChallengesSystem.getUserProgress(currentUserId);
+                const userXP = progress.totalXP || 0;
+
+                if (userIndex !== -1) {
+                    userRankEl.style.display = 'flex';
+                    document.getElementById('your-rank-number').textContent = `#${userIndex + 1}`;
+                    document.getElementById('your-xp').textContent = `${userXP} XP`;
+                } else if (userXP > 0) {
+                    userRankEl.style.display = 'flex';
+                    document.getElementById('your-rank-number').textContent = `#${leaderboard.length + 1}+`;
+                    document.getElementById('your-xp').textContent = `${userXP} XP`;
+                }
+            }
+        }
+
+        // Wait for auth then load
+        window.addEventListener('authStateChanged', () => {
+            setTimeout(loadLeaderboard, 500);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(loadLeaderboard, 1000);
+        });
+    </script>
 </body>
 
 </html>

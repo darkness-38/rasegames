@@ -252,6 +252,11 @@ function handleClick(e) {
     checkAchievements();
     updateUI();
 
+    // Track for daily challenges
+    if (typeof trackChallengeProgress === 'function') {
+        trackChallengeProgress('rase-clicker', 'clicks', 1);
+        trackChallengeProgress('rase-clicker', 'diamonds', clickPower);
+    }
 
     if (typeof playSound !== 'undefined') playSound('click');
 }

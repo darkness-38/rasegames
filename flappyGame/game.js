@@ -116,6 +116,11 @@ class PixelBird {
         this.gameOver = false;
         this.gameRunning = true;
 
+        // Track for daily challenges
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('flappy', 'games', 1);
+        }
+
         this.updateScore();
         this.hideOverlays();
         this.gameLoop();
@@ -159,6 +164,11 @@ class PixelBird {
                 pipe.passed = true;
                 this.score++;
                 this.updateScore();
+
+                // Track for daily challenges
+                if (typeof trackChallengeProgress === 'function') {
+                    trackChallengeProgress('flappy', 'score', 1);
+                }
             }
 
             // Remove off-screen pipes

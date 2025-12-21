@@ -112,6 +112,13 @@ function clearLines() {
         scoreElement.textContent = score;
         linesElement.textContent = lines;
         levelElement.textContent = level.toString().padStart(2, '0');
+
+        // Track for daily challenges
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('tetris', 'lines', cleared);
+            trackChallengeProgress('tetris', 'score', pts[cleared] * level);
+        }
+
         if (score > highScore) {
             highScore = score;
             highScoreElement.textContent = highScore;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Günlük Görevler - Rase Games</title>
+    <title>Daily Challenges - Rase Games</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
@@ -95,10 +95,10 @@
         <div class="flex flex-col lg:flex-row gap-8 mb-12">
             <!-- Left: Titles -->
             <div class="flex-1 flex flex-col justify-center">
-                <h2 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Günlük Görevler</h2>
+                <h2 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Daily Challenges</h2>
                 <p class="text-gray-400 text-lg max-w-xl">
-                    Görevleri tamamla, XP kazan ve seviye atla! Görevler
-                    <span id="reset-timer" class="text-primary font-bold">00:00:00</span> içinde yenilenir.
+                    Complete challenges, earn XP and level up! Challenges reset in
+                    <span id="reset-timer" class="text-primary font-bold">00:00:00</span>.
                 </p>
             </div>
 
@@ -111,20 +111,20 @@
                 <div class="relative z-10">
                     <div class="flex justify-between items-end mb-4">
                         <div>
-                            <p class="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">Günlük İlerleme
+                            <p class="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">Daily Progress
                             </p>
                             <div class="flex items-baseline gap-2">
                                 <span id="progress-percent" class="text-3xl font-bold">0%</span>
                                 <span id="progress-status"
                                     class="text-sm text-gray-500 font-medium flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[16px]">schedule</span>
-                                    Başla!
+                                    Start!
                                 </span>
                             </div>
                         </div>
                         <div class="text-right">
                             <span id="completed-count" class="text-2xl font-bold text-white">0/3</span>
-                            <p class="text-xs text-gray-400">Tamamlandı</p>
+                            <p class="text-xs text-gray-400">Completed</p>
                         </div>
                     </div>
                     <div class="w-full bg-gray-700 rounded-full h-3 mb-4">
@@ -136,8 +136,8 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-400 font-medium">
-                        <span id="user-level-display">Seviye 1</span>
-                        <span id="total-xp-display">Toplam: 0 XP</span>
+                        <span id="user-level-display">Level 1</span>
+                        <span id="total-xp-display">Total: 0 XP</span>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@
             <!-- Loading -->
             <div class="col-span-full text-center py-12 text-gray-500">
                 <span class="material-symbols-outlined text-4xl mb-2 block animate-spin">sync</span>
-                Görevler yükleniyor...
+                Loading challenges...
             </div>
         </div>
 
@@ -156,11 +156,11 @@
         <div id="guest-warning"
             class="hidden mt-8 p-6 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-center">
             <span class="material-symbols-outlined text-yellow-500 text-4xl mb-3 block">warning</span>
-            <h3 class="text-xl font-bold text-yellow-400 mb-2">Misafir olarak oynuyorsun</h3>
-            <p class="text-gray-400 mb-4">Görev ilerlemen ve XP'lerin kaydedilmiyor. Kayıt ol!</p>
+            <h3 class="text-xl font-bold text-yellow-400 mb-2">Playing as Guest</h3>
+            <p class="text-gray-400 mb-4">Your challenge progress and XP are not saved. Sign Up!</p>
             <button onclick="showAuthModal()"
                 class="bg-primary hover:bg-primary-glow text-white px-6 py-2 rounded-lg font-bold transition-colors">
-                Kayıt Ol
+                Sign Up
             </button>
         </div>
     </main>
@@ -214,12 +214,12 @@
                         </div>
                         <div class="absolute top-4 left-4 z-20 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10 flex items-center gap-1">
                             <span class="material-symbols-outlined text-[14px] text-yellow-400">star</span>
-                            Günlük
+                            Daily
                         </div>
                         ${isCompleted ? `
                             <div class="absolute top-4 right-4 z-20 bg-green-500/80 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                                 <span class="material-symbols-outlined text-[14px]">check</span>
-                                Tamamlandı
+                                Completed
                             </div>
                         ` : ''}
                         <div class="absolute bottom-4 left-4 z-20">
@@ -246,7 +246,7 @@
                         
                         <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
                             <div class="flex flex-col">
-                                <span class="text-xs text-gray-400 uppercase tracking-wider mb-0.5">Ödül</span>
+                                <span class="text-xs text-gray-400 uppercase tracking-wider mb-0.5">Reward</span>
                                 <span class="text-sm font-bold text-yellow-400 flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[16px]">bolt</span>
                                     ${challenge.xp} XP
@@ -254,7 +254,7 @@
                             </div>
                             <a href="${game.url}" class="bg-primary hover:bg-primary-glow text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 flex items-center gap-2 no-underline ${isCompleted ? 'opacity-50 pointer-events-none' : ''}">
                                 <span class="material-symbols-outlined text-[18px]">play_arrow</span>
-                                ${isCompleted ? 'Tamamlandı' : 'Oyna'}
+                                ${isCompleted ? 'Completed' : 'Play'}
                             </a>
                         </div>
                     </div>
@@ -273,13 +273,20 @@
             const grid = document.getElementById('challenges-grid');
             const guestWarning = document.getElementById('guest-warning');
 
-            // Show guest warning if not logged in properly
-            if (!user || user.isAnonymous) {
+            // Show guest warning only for anonymous users, hide for registered users
+            if (user && !user.isAnonymous) {
+                guestWarning.classList.add('hidden');
+            } else {
                 guestWarning.classList.remove('hidden');
             }
 
-            const challenges = ChallengesSystem.getDailyChallenges();
+            // Get user progress to find their locked level for today
             const userId = user?.uid || 'guest';
+            // Ensure initialized for today
+            const progress = ChallengesSystem.ensureDailyInit(userId);
+            const level = progress.dayStartLevel || 1;
+
+            const challenges = ChallengesSystem.getDailyChallenges(level);
 
             let completedCount = 0;
             let totalProgress = 0;
@@ -304,9 +311,9 @@
             // Update status text
             const statusEl = document.getElementById('progress-status');
             if (completedCount === 3) {
-                statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px] text-green-500">check_circle</span><span class="text-green-500">Tamamlandı!</span>';
+                statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px] text-green-500">check_circle</span><span class="text-green-500">Completed!</span>';
             } else if (completedCount > 0) {
-                statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">trending_up</span><span class="text-primary">Devam et!</span>';
+                statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">trending_up</span><span class="text-primary">Keep going!</span>';
             }
 
             // Update user level display
@@ -316,9 +323,9 @@
                 const levelInfo = ChallengesSystem.getLevelFromXP(totalXP);
 
                 document.getElementById('user-level-display').innerHTML = `
-                    <span style="color: ${levelInfo.color}">${levelInfo.emoji} Seviye ${levelInfo.level}</span>
+                    <span style="color: ${levelInfo.color}">${levelInfo.emoji} Level ${levelInfo.level}</span>
                 `;
-                document.getElementById('total-xp-display').textContent = `Toplam: ${totalXP} XP`;
+                document.getElementById('total-xp-display').textContent = `Total: ${totalXP} XP`;
             }
         }
 

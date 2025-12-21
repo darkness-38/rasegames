@@ -8,45 +8,45 @@ const ChallengesSystem = {
     // All possible challenges grouped by game - simplified for trackable actions
     CHALLENGE_POOL: {
         'rase-clicker': [
-            { id: 'rc-clicks', title: 'Click Master', description: '500 kez tıkla', goal: 500, xp: 50, icon: '👆', trackKey: 'clicks' },
-            { id: 'rc-diamonds', title: 'Diamond Hunter', description: '100 elmas topla', goal: 100, xp: 75, icon: '💎', trackKey: 'diamonds' },
+            { id: 'rc-clicks', title: 'Click Master', description: 'Click 500 times', goal: 500, xp: 50, icon: '👆', trackKey: 'clicks' },
+            { id: 'rc-diamonds', title: 'Diamond Hunter', description: 'Collect 100 diamonds', goal: 100, xp: 75, icon: '💎', trackKey: 'diamonds' },
         ],
         'fight-arena': [
-            { id: 'fa-wins', title: 'Arena Champion', description: '2 maç kazan', goal: 2, xp: 100, icon: '🏆', trackKey: 'wins' },
-            { id: 'fa-matches', title: 'Fighter', description: '3 maç oyna', goal: 3, xp: 50, icon: '⚔️', trackKey: 'matches' },
+            { id: 'fa-wins', title: 'Arena Champion', description: 'Win 2 matches', goal: 2, xp: 100, icon: '🏆', trackKey: 'wins' },
+            { id: 'fa-matches', title: 'Fighter', description: 'Play 3 matches', goal: 3, xp: 50, icon: '⚔️', trackKey: 'matches' },
         ],
         'cyber-runner': [
-            { id: 'cr-distance', title: 'Distance Runner', description: '500m koş', goal: 500, xp: 60, icon: '🏃', trackKey: 'distance' },
-            { id: 'cr-coins', title: 'Coin Collector', description: '50 coin topla', goal: 50, xp: 50, icon: '🪙', trackKey: 'coins' },
-            { id: 'cr-score', title: 'High Score', description: '2000 puan yap', goal: 2000, xp: 100, icon: '📈', trackKey: 'score' },
+            { id: 'cr-distance', title: 'Distance Runner', description: 'Run 500m', goal: 500, xp: 60, icon: '🏃', trackKey: 'distance' },
+            { id: 'cr-coins', title: 'Coin Collector', description: 'Collect 50 coins', goal: 50, xp: 50, icon: '🪙', trackKey: 'coins' },
+            { id: 'cr-score', title: 'High Score', description: 'Score 2000 points', goal: 2000, xp: 100, icon: '📈', trackKey: 'score', mode: 'max' },
         ],
         '2048': [
-            { id: '2k-score', title: 'Score Hunter', description: '1000 puan yap', goal: 1000, xp: 50, icon: '🎯', trackKey: 'score' },
-            { id: '2k-moves', title: 'Move Master', description: '100 hamle yap', goal: 100, xp: 40, icon: '🔢', trackKey: 'moves' },
+            { id: '2k-score', title: 'Score Hunter', description: 'Score 1000 points', goal: 1000, xp: 50, icon: '🎯', trackKey: 'score', mode: 'max' },
+            { id: '2k-moves', title: 'Move Master', description: 'Make 100 moves', goal: 100, xp: 40, icon: '🔢', trackKey: 'moves' },
         ],
         'snake': [
-            { id: 'sn-score', title: 'Snake Master', description: '50 puan yap', goal: 50, xp: 60, icon: '🐍', trackKey: 'score' },
-            { id: 'sn-food', title: 'Food Collector', description: '30 yem ye', goal: 30, xp: 50, icon: '🍎', trackKey: 'food' },
+            { id: 'sn-score', title: 'Snake Master', description: 'Score 50 points', goal: 50, xp: 60, icon: '🐍', trackKey: 'score', mode: 'max' },
+            { id: 'sn-food', title: 'Food Collector', description: 'Eat 30 food', goal: 30, xp: 50, icon: '🍎', trackKey: 'food' },
         ],
         'tetris': [
-            { id: 'tt-lines', title: 'Line Clearer', description: '10 satır temizle', goal: 10, xp: 70, icon: '🧱', trackKey: 'lines' },
-            { id: 'tt-score', title: 'Tetris Pro', description: '1000 puan yap', goal: 1000, xp: 60, icon: '📊', trackKey: 'score' },
+            { id: 'tt-lines', title: 'Line Clearer', description: 'Clear 10 lines', goal: 10, xp: 70, icon: '🧱', trackKey: 'lines' },
+            { id: 'tt-score', title: 'Tetris Pro', description: 'Score 1000 points', goal: 1000, xp: 60, icon: '📊', trackKey: 'score', mode: 'max' },
         ],
         'flappy': [
-            { id: 'fl-score', title: 'Flappy Master', description: '10 boru geç', goal: 10, xp: 80, icon: '🐦', trackKey: 'score' },
-            { id: 'fl-games', title: 'Bird Player', description: '5 oyun oyna', goal: 5, xp: 40, icon: '🎮', trackKey: 'games' },
+            { id: 'fl-score', title: 'Flappy Master', description: 'Pass 10 pipes', goal: 10, xp: 80, icon: '🐦', trackKey: 'score', mode: 'max' },
+            { id: 'fl-games', title: 'Bird Player', description: 'Play 5 games', goal: 5, xp: 40, icon: '🎮', trackKey: 'games' },
         ],
         'memory': [
-            { id: 'mm-matches', title: 'Memory Master', description: '10 eşleşme bul', goal: 10, xp: 50, icon: '🃏', trackKey: 'matches' },
-            { id: 'mm-games', title: 'Card Player', description: '3 oyun tamamla', goal: 3, xp: 60, icon: '🎴', trackKey: 'games' },
+            { id: 'mm-matches', title: 'Memory Master', description: 'Find 10 matches', goal: 10, xp: 50, icon: '🃏', trackKey: 'matches' },
+            { id: 'mm-games', title: 'Card Player', description: 'Complete 3 games', goal: 3, xp: 60, icon: '🎴', trackKey: 'games' },
         ],
         'minesweeper': [
-            { id: 'ms-cells', title: 'Minesweeper', description: '30 hücre aç', goal: 30, xp: 50, icon: '💣', trackKey: 'cells' },
-            { id: 'ms-wins', title: 'Bomb Expert', description: '1 oyun kazan', goal: 1, xp: 100, icon: '🏆', trackKey: 'wins' },
+            { id: 'ms-cells', title: 'Minesweeper', description: 'Open 30 cells', goal: 30, xp: 50, icon: '💣', trackKey: 'cells' },
+            { id: 'ms-wins', title: 'Bomb Expert', description: 'Win 1 game', goal: 1, xp: 100, icon: '🏆', trackKey: 'wins' },
         ],
         'tictactoe': [
-            { id: 'ttt-wins', title: 'Tic Tac Champion', description: '2 oyun kazan', goal: 2, xp: 60, icon: '⭕', trackKey: 'wins' },
-            { id: 'ttt-games', title: 'X O Player', description: '3 oyun oyna', goal: 3, xp: 40, icon: '❌', trackKey: 'games' },
+            { id: 'ttt-wins', title: 'Tic Tac Champion', description: 'Win 2 games', goal: 2, xp: 60, icon: '⭕', trackKey: 'wins' },
+            { id: 'ttt-games', title: 'X O Player', description: 'Play 3 games', goal: 3, xp: 40, icon: '❌', trackKey: 'games' },
         ]
     },
 
@@ -66,31 +66,31 @@ const ChallengesSystem = {
 
     // Level thresholds - XP required for each level
     LEVEL_THRESHOLDS: [
-        { level: 1, xp: 0, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
-        { level: 2, xp: 100, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
-        { level: 3, xp: 250, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
-        { level: 4, xp: 450, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
-        { level: 5, xp: 700, title: 'Çaylak', emoji: '🌱', color: '#6b7280' },
-        { level: 6, xp: 1000, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
-        { level: 7, xp: 1400, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
-        { level: 8, xp: 1900, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
-        { level: 9, xp: 2500, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
-        { level: 10, xp: 3200, title: 'Deneyimli', emoji: '⚡', color: '#3b82f6' },
-        { level: 11, xp: 4000, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
-        { level: 12, xp: 5000, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
-        { level: 13, xp: 6200, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
-        { level: 14, xp: 7600, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
-        { level: 15, xp: 9200, title: 'Uzman', emoji: '💎', color: '#8b5cf6' },
-        { level: 16, xp: 11000, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
-        { level: 17, xp: 13200, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
-        { level: 18, xp: 15800, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
-        { level: 19, xp: 18800, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
-        { level: 20, xp: 22200, title: 'Efsane', emoji: '👑', color: '#f59e0b' },
-        { level: 21, xp: 26000, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
-        { level: 22, xp: 30500, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
-        { level: 23, xp: 35500, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
-        { level: 24, xp: 41000, title: 'Mitik', emoji: '🔥', color: '#ef4444' },
-        { level: 25, xp: 50000, title: 'Mitik', emoji: '🔥', color: '#ef4444' }
+        { level: 1, xp: 0, title: 'Rookie', emoji: '🌱', color: '#6b7280' },
+        { level: 2, xp: 100, title: 'Rookie', emoji: '🌱', color: '#6b7280' },
+        { level: 3, xp: 250, title: 'Rookie', emoji: '🌱', color: '#6b7280' },
+        { level: 4, xp: 450, title: 'Rookie', emoji: '🌱', color: '#6b7280' },
+        { level: 5, xp: 700, title: 'Rookie', emoji: '🌱', color: '#6b7280' },
+        { level: 6, xp: 1000, title: 'Experienced', emoji: '⚡', color: '#3b82f6' },
+        { level: 7, xp: 1400, title: 'Experienced', emoji: '⚡', color: '#3b82f6' },
+        { level: 8, xp: 1900, title: 'Experienced', emoji: '⚡', color: '#3b82f6' },
+        { level: 9, xp: 2500, title: 'Experienced', emoji: '⚡', color: '#3b82f6' },
+        { level: 10, xp: 3200, title: 'Experienced', emoji: '⚡', color: '#3b82f6' },
+        { level: 11, xp: 4000, title: 'Expert', emoji: '💎', color: '#8b5cf6' },
+        { level: 12, xp: 5000, title: 'Expert', emoji: '💎', color: '#8b5cf6' },
+        { level: 13, xp: 6200, title: 'Expert', emoji: '💎', color: '#8b5cf6' },
+        { level: 14, xp: 7600, title: 'Expert', emoji: '💎', color: '#8b5cf6' },
+        { level: 15, xp: 9200, title: 'Expert', emoji: '💎', color: '#8b5cf6' },
+        { level: 16, xp: 11000, title: 'Legend', emoji: '👑', color: '#f59e0b' },
+        { level: 17, xp: 13200, title: 'Legend', emoji: '👑', color: '#f59e0b' },
+        { level: 18, xp: 15800, title: 'Legend', emoji: '👑', color: '#f59e0b' },
+        { level: 19, xp: 18800, title: 'Legend', emoji: '👑', color: '#f59e0b' },
+        { level: 20, xp: 22200, title: 'Legend', emoji: '👑', color: '#f59e0b' },
+        { level: 21, xp: 26000, title: 'Mythic', emoji: '🔥', color: '#ef4444' },
+        { level: 22, xp: 30500, title: 'Mythic', emoji: '🔥', color: '#ef4444' },
+        { level: 23, xp: 35500, title: 'Mythic', emoji: '🔥', color: '#ef4444' },
+        { level: 24, xp: 41000, title: 'Mythic', emoji: '🔥', color: '#ef4444' },
+        { level: 25, xp: 50000, title: 'Mythic', emoji: '🔥', color: '#ef4444' }
     ],
 
     // Get level info from XP
@@ -155,7 +155,7 @@ const ChallengesSystem = {
     },
 
     // Get today's 3 challenges
-    getDailyChallenges() {
+    getDailyChallenges(level = 1) {
         const seed = this.getTodaySeed();
         const random = this.seededRandom(seed);
 
@@ -168,14 +168,26 @@ const ChallengesSystem = {
         // Pick 3 different games for today
         const selectedGames = shuffledGames.slice(0, 3);
 
+        // Scaling factor: 10% increase per level
+        // Level 1: 1.0x, Level 11: 2.0x, Level 21: 3.0x
+        const scaleFactor = 1 + (level - 1) * 0.1;
+
         // Pick one random challenge from each game
         const dailyChallenges = selectedGames.map((gameId, index) => {
             const gameChallenges = this.CHALLENGE_POOL[gameId];
             const challengeIndex = Math.floor(random() * gameChallenges.length);
             const challenge = gameChallenges[challengeIndex];
 
+            // Scale goal and XP
+            const scaledGoal = Math.round(challenge.goal * scaleFactor);
+            const scaledXP = Math.round(challenge.xp * scaleFactor);
+
             return {
                 ...challenge,
+                goal: scaledGoal,
+                originalGoal: challenge.goal, // Keep track of base goal
+                xp: scaledXP,
+                originalXP: challenge.xp,     // Keep track of base xp
                 gameId: gameId,
                 game: this.GAMES[gameId],
                 dailyId: `${seed}-${index}`
@@ -189,7 +201,9 @@ const ChallengesSystem = {
     getUserProgress(userId) {
         const stored = localStorage.getItem(this.STORAGE_KEY);
         const allProgress = stored ? JSON.parse(stored) : {};
-        return allProgress[userId] || { date: '', challenges: {}, totalXP: 0, completedToday: 0 };
+        // Ensure dayStartLevel exists for consistency
+        const defaultProgress = { date: '', challenges: {}, totalXP: 0, completedToday: 0, dayStartLevel: 1 };
+        return allProgress[userId] || defaultProgress;
     },
 
     // Save user's challenge progress to localStorage
@@ -200,12 +214,8 @@ const ChallengesSystem = {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(allProgress));
     },
 
-    // Track game action - called from game pages
-    trackAction(gameId, trackKey, amount = 1) {
-        const user = window.currentUser;
-        if (!user || user.isAnonymous) return;
-
-        const userId = user.uid;
+    // Ensure daily progress is initialized for the user
+    ensureDailyInit(userId) {
         const progress = this.getUserProgress(userId);
         const today = this.getTodaySeed();
 
@@ -214,10 +224,32 @@ const ChallengesSystem = {
             progress.date = today;
             progress.challenges = {};
             progress.completedToday = 0;
+
+            // Set dayStartLevel to current level
+            const levelInfo = this.getLevelFromXP(progress.totalXP || 0);
+            progress.dayStartLevel = levelInfo.level;
+
+            this.saveUserProgress(userId, progress);
         }
 
+        return progress;
+    },
+
+
+    // Track game action - called from game pages
+    trackAction(gameId, trackKey, amount = 1) {
+        const user = window.currentUser;
+        if (!user || user.isAnonymous) return;
+
+        const userId = user.uid;
+        // Ensure initialized for today
+        const progress = this.ensureDailyInit(userId);
+
+        // Use dayStartLevel for challenge scaling (fallback to 1 if missing for some reason)
+        const currentChallengeLevel = progress.dayStartLevel || 1;
+
         // Find today's challenges that match this game and trackKey
-        const dailyChallenges = this.getDailyChallenges();
+        const dailyChallenges = this.getDailyChallenges(currentChallengeLevel);
         const matchingChallenges = dailyChallenges.filter(c => c.gameId === gameId && c.trackKey === trackKey);
 
         matchingChallenges.forEach(challenge => {
@@ -228,14 +260,23 @@ const ChallengesSystem = {
             // Don't add more if already completed
             if (progress.challenges[challenge.id].completed) return;
 
-            progress.challenges[challenge.id].current += amount;
+            if (challenge.mode === 'max') {
+                // For 'max' mode, usually track high score - only update if current amount is higher
+                const currentVal = progress.challenges[challenge.id].current || 0;
+                if (amount > currentVal) {
+                    progress.challenges[challenge.id].current = amount;
+                }
+            } else {
+                // Default 'cumulative' mode
+                progress.challenges[challenge.id].current += amount;
+            }
 
             // Check if challenge is completed
             if (progress.challenges[challenge.id].current >= challenge.goal) {
                 progress.challenges[challenge.id].completed = true;
                 progress.completedToday = (progress.completedToday || 0) + 1;
 
-                // Add XP
+                // Add XP (scaled)
                 progress.totalXP = (progress.totalXP || 0) + challenge.xp;
 
                 // Save XP to Firebase
@@ -307,7 +348,7 @@ const ChallengesSystem = {
             <div style="display: flex; align-items: center; gap: 12px;">
                 <span style="font-size: 2rem;">${challenge.icon}</span>
                 <div>
-                    <div style="font-weight: bold; color: #10b981;">Görev Tamamlandı!</div>
+                    <div style="font-weight: bold; color: #10b981;">Challenge Completed!</div>
                     <div>${challenge.title}</div>
                     <div style="color: #fbbf24; font-weight: bold;">+${challenge.xp} XP</div>
                 </div>

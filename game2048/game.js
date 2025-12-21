@@ -126,6 +126,7 @@ class Game2048 {
 
         this.tileId = 0;
         this.maxTile = 0;
+        this.score = 0;
         this.gameOver = false;
 
         this.hideOverlays();
@@ -266,6 +267,7 @@ class Game2048 {
                 if (mergeTarget) {
                     // Merge
                     const newValue = tile.value * 2;
+                    this.score += newValue;
 
                     // Track max tile
                     if (newValue > this.maxTile) {
@@ -303,10 +305,9 @@ class Game2048 {
         }
 
         if (moved) {
-            // Track for daily challenges
+            // Track for daily challenges - MOVES only (score is tracked at end)
             if (typeof trackChallengeProgress === 'function') {
                 trackChallengeProgress('2048', 'moves', 1);
-                trackChallengeProgress('2048', 'score', this.score);
             }
 
             // Remove merged tiles after animation
@@ -404,6 +405,11 @@ class Game2048 {
 
         if (typeof Leaderboard !== 'undefined' && this.maxTile > 0) {
             Leaderboard.submit('game2048', this.maxTile);
+        }
+
+        // Track score challenge on game over (Max Mode)
+        if (typeof trackChallengeProgress === 'function') {
+            trackChallengeProgress('2048', 'score', this.score);
         }
     }
 

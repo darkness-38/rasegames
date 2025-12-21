@@ -166,10 +166,10 @@ function joinRoom(code, guestId) {
     const room = rooms.get(code);
     if (!room) {
         console.log(`[JOIN] Room not found: "${code}"`);
-        return { error: 'Oda bulunamadı!' };
+        return { error: 'Room not found!' };
     }
-    if (room.guest) return { error: 'Oda dolu!' };
-    if (room.host === guestId) return { error: 'Kendi odana katılamazsın!' };
+    if (room.guest) return { error: 'Room is full!' };
+    if (room.host === guestId) return { error: 'You cannot join your own room!' };
 
     room.guest = guestId;
     room.state = 'selecting';

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Challenges - Rase Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        'primary-glow': '#6366f1',
+                        'background-dark': '#0a0a0f',
+                        'surface-dark': '#1a2230',
+                    },
+                    fontFamily: {
+                        display: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0f;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .challenge-card {
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.2);
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+
+        .countdown-digit {
+            font-variant-numeric: tabular-nums;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(79, 70, 229, 0.6);
+            }
+        }
+
+        .completed-badge {
+            animation: pulse-glow 2s infinite;
+        }
+
+        .xp-badge {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-effects">
+        <div class="glow-orb"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/games" class="nav-link">Games</a>
+            <a href="/challenges" class="nav-link active">Challenges</a>
+            <a href="/leaderboard" class="nav-link">Leaderboards</a>
+            <a href="/community" class="nav-link">Community</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-medium mb-6">
+                <span class="material-symbols-outlined text-lg">emoji_events</span>
+                Daily Challenges
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-display">
+                Günlük Görevler
+            </h1>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                Her gün 3 yeni görev! Görevleri tamamlayarak XP kazan ve sıralamada yüksel.
+            </p>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="flex justify-center mb-10">
+            <div class="bg-surface-dark border border-white/10 rounded-xl px-8 py-4 flex items-center gap-6">
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span>Yeni görevlere kalan:</span>
+                </div>
+                <div id="countdown" class="text-2xl font-bold text-white font-display countdown-digit">
+                    --:--:--
+                </div>
+            </div>
+        </div>
+
+        <!-- Guest Message (shown for non-logged-in users) -->
+        <div id="guest-message" class="hidden text-center py-16">
+            <div class="bg-surface-dark border border-white/10 rounded-2xl p-12 max-w-lg mx-auto">
+                <span class="material-symbols-outlined text-6xl text-gray-500 mb-4 block">lock</span>
+                <h2 class="text-2xl font-bold text-white mb-4">Giriş Yapın</h2>
+                <p class="text-gray-400 mb-6">
+                    Günlük görevleri görmek ve XP kazanmak için giriş yapmanız gerekiyor.
+                </p>
+                <button onclick="showAuthModal()"
+                    class="px-8 py-3 bg-primary hover:bg-primary-glow text-white font-bold rounded-lg transition-all">
+                    Giriş Yap
+                </button>
+            </div>
+        </div>
+
+        <!-- Challenges Container -->
+        <div id="challenges-container" class="space-y-6" style="display: none;">
+            <!-- Challenges will be dynamically inserted here -->
+        </div>
+
+        <!-- Stats Section -->
+        <div id="stats-section" class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6" style="display: none;">
+            <div class="bg-surface-dark border border-white/10 rounded-xl p-6 text-center">
+                <span class="material-symbols-outlined text-3xl text-primary mb-2 block">check_circle</span>
+                <div id="completed-today" class="text-3xl font-bold text-white">0/3</div>
+                <div class="text-gray-400 text-sm">Bugün Tamamlanan</div>
+            </div>
+            <div class="bg-surface-dark border border-white/10 rounded-xl p-6 text-center">
+                <span class="material-symbols-outlined text-3xl text-yellow-500 mb-2 block">star</span>
+                <div id="total-xp" class="text-3xl font-bold text-white">0</div>
+                <div class="text-gray-400 text-sm">Toplam XP</div>
+            </div>
+            <div class="bg-surface-dark border border-white/10 rounded-xl p-6 text-center">
+                <span class="material-symbols-outlined text-3xl text-green-500 mb-2 block">local_fire_department</span>
+                <div id="streak-count" class="text-3xl font-bold text-white">0</div>
+                <div class="text-gray-400 text-sm">Gün Serisi</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="particles.js"></script>
+    <script src="challenges.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Update countdown timer
+        function updateCountdown() {
+            if (window.ChallengesSystem) {
+                document.getElementById('countdown').textContent = ChallengesSystem.formatTimeRemaining();
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Initialize challenges display
+        function initChallenges() {
+            const checkAuth = setInterval(() => {
+                if (window.authStateChecked !== undefined) {
+                    clearInterval(checkAuth);
+                    displayChallenges();
+                }
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                displayChallenges();
+            }, 3000);
+        }
+
+        function displayChallenges() {
+            const user = window.currentUser;
+            const guestMessage = document.getElementById('guest-message');
+            const challengesContainer = document.getElementById('challenges-container');
+            const statsSection = document.getElementById('stats-section');
+
+            if (!user || user.isAnonymous) {
+                guestMessage.classList.remove('hidden');
+                challengesContainer.style.display = 'none';
+                statsSection.style.display = 'none';
+                return;
+            }
+
+            guestMessage.classList.add('hidden');
+            challengesContainer.style.display = 'block';
+            statsSection.style.display = 'grid';
+
+            const challenges = ChallengesSystem.getDailyChallenges();
+            const progress = ChallengesSystem.getUserProgress(user.uid);
+
+            let html = '';
+            let completedCount = 0;
+
+            challenges.forEach((challenge, index) => {
+                const status = ChallengesSystem.getChallengeStatus(user.uid, challenge.id, challenge.goal);
+                if (status.completed) completedCount++;
+
+                html += `
+                    <div class="challenge-card bg-surface-dark border ${status.completed ? 'border-green-500/50' : 'border-white/10'} rounded-2xl p-6 ${status.completed ? 'completed-badge' : ''}">
+                        <div class="flex items-start gap-6">
+                            <!-- Game Icon -->
+                            <div class="shrink-0">
+                                <div class="w-20 h-20 rounded-xl bg-gradient-to-br ${challenge.game.color} flex items-center justify-center text-4xl">
+                                    ${challenge.game.emoji}
+                                </div>
+                            </div>
+                            
+                            <!-- Challenge Info -->
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="text-2xl">${challenge.icon}</span>
+                                    <h3 class="text-xl font-bold text-white">${challenge.title}</h3>
+                                    ${status.completed ? '<span class="material-symbols-outlined text-green-500">check_circle</span>' : ''}
+                                </div>
+                                
+                                <p class="text-gray-400 mb-3">${challenge.description}</p>
+                                
+                                <div class="flex items-center gap-4 mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-white/5 text-gray-300 text-sm flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">sports_esports</span>
+                                        ${challenge.game.name}
+                                    </span>
+                                    <span class="xp-badge px-3 py-1 rounded-full text-black text-sm font-bold">
+                                        +${challenge.xp} XP
+                                    </span>
+                                </div>
+                                
+                                <!-- Progress Bar -->
+                                <div class="mb-2">
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-400">İlerleme</span>
+                                        <span class="text-white font-medium">${status.current}/${challenge.goal}</span>
+                                    </div>
+                                    <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+                                        <div class="progress-bar h-full ${status.completed ? 'bg-green-500' : 'bg-primary'} rounded-full" style="width: ${status.percentage}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Play Button -->
+                            <div class="shrink-0">
+                                <a href="${challenge.game.url}" class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl ${status.completed ? 'bg-green-500/20 text-green-400' : 'bg-primary hover:bg-primary-glow text-white'} transition-all no-underline">
+                                    <span class="material-symbols-outlined text-2xl">${status.completed ? 'check' : 'play_arrow'}</span>
+                                    <span class="text-sm font-medium">${status.completed ? 'Tamamlandı' : 'Oyna'}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            challengesContainer.innerHTML = html;
+
+            // Update stats
+            document.getElementById('completed-today').textContent = `${completedCount}/3`;
+            document.getElementById('total-xp').textContent = progress.totalXP || 0;
+            document.getElementById('streak-count').textContent = progress.streak || 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', initChallenges);
+    </script>
+</body>
+
+</html>

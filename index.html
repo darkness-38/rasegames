@@ -158,6 +158,8 @@
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
                         href="/games">Games</a>
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                        href="/challenges">Challenges</a>
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
                         href="/leaderboard">Leaderboards</a>
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
                         href="/community">Community</a>
@@ -188,15 +190,17 @@
                         class="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/90 to-transparent">
                     </div>
 
-                    <!-- Content -->
-                    <div class="relative z-10 flex flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl">
+                    <!-- Content for LOGGED-IN users -->
+                    <div id="hero-logged-in"
+                        class="relative z-10 flex flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl"
+                        style="display: none;">
                         <div
                             class="mb-2 flex items-center gap-2 text-primary font-bold text-sm tracking-wider uppercase">
                             <span class="material-symbols-outlined text-sm">bolt</span>
                             System Online
                         </div>
                         <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-4 tracking-tight">
-                            <span class="typing-container">WELCOME BACK, PLAYER ONE.</span>
+                            <span class="typing-container">WELCOME BACK, <span id="hero-username">PLAYER</span>.</span>
                         </h1>
                         <p class="text-gray-400 text-lg md:text-xl max-w-lg mb-8 font-light">
                             Your daily stats are waiting. <span class="text-white font-medium">3 New challenges</span>
@@ -208,11 +212,41 @@
                                 <span class="material-symbols-outlined">query_stats</span>
                                 View Stats
                             </a>
-                            <a href="/leaderboard"
+                            <a href="/challenges"
                                 class="h-12 px-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold tracking-wide transition-all border border-white/10 flex items-center gap-2 no-underline">
                                 <span class="material-symbols-outlined">emoji_events</span>
                                 Challenges
                             </a>
+                        </div>
+                    </div>
+
+                    <!-- Content for GUEST users -->
+                    <div id="hero-guest"
+                        class="relative z-10 flex flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl"
+                        style="display: none;">
+                        <div
+                            class="mb-2 flex items-center gap-2 text-primary font-bold text-sm tracking-wider uppercase">
+                            <span class="material-symbols-outlined text-sm">sports_esports</span>
+                            Ready to Play
+                        </div>
+                        <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-4 tracking-tight">
+                            Experience Gaming<br><span class="text-primary">Beyond Limits</span>
+                        </h1>
+                        <p class="text-gray-400 text-lg md:text-xl max-w-lg mb-8 font-light">
+                            Dive into our universe of micro-games. <span class="text-white font-medium">Sign in</span>
+                            to track your progress and compete on leaderboards.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="/games"
+                                class="h-12 px-8 rounded-lg bg-primary hover:bg-primary-glow text-white font-bold tracking-wide transition-all shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] flex items-center gap-2 no-underline">
+                                <span class="material-symbols-outlined">sports_esports</span>
+                                Browse Games
+                            </a>
+                            <button onclick="showAuthModal()"
+                                class="h-12 px-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold tracking-wide transition-all border border-white/10 flex items-center gap-2">
+                                <span class="material-symbols-outlined">login</span>
+                                Sign In
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -241,7 +275,7 @@
                 <!-- Game Cards Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Card 1 - Rase Clicker -->
-                    <a href="/raseClicker/"
+                    <a href="/raseClicker/" data-game-id="rase-clicker"
                         class="card-hover-effect group relative flex flex-col gap-4 rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center">
@@ -262,12 +296,17 @@
                                         Rase Clicker</h3>
                                     <p class="text-gray-500 text-sm">Idle, Clicker</p>
                                 </div>
-                                <div class="flex gap-1 text-yellow-500">
+                                <div class="game-rating-display flex gap-1 items-center text-yellow-500"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
                                     <span class="material-symbols-outlined text-[16px]">star</span>
-                                    <span class="text-white text-sm font-bold">4.8</span>
+                                    <span class="rating-avg text-white text-sm font-bold">-</span>
+                                    <span class="rating-count text-gray-500 text-xs"></span>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm mb-4">Click your way to server domination!</p>
+                            <p class="text-gray-400 text-sm mb-2">Click your way to server domination!</p>
+                            <!-- Rating Stars -->
+                            <div class="rating-stars-container mb-3" data-game="rase-clicker"
+                                onclick="event.preventDefault(); event.stopPropagation();"></div>
                             <div class="mt-auto">
                                 <div
                                     class="w-full h-10 rounded-lg bg-white/5 hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 hover:border-primary group-hover:bg-primary flex items-center justify-center gap-2">
@@ -279,7 +318,7 @@
                     </a>
 
                     <!-- Card 2 - Fight Arena -->
-                    <a href="/fightArena/"
+                    <a href="/fightArena/" data-game-id="fight-arena"
                         class="card-hover-effect group relative flex flex-col gap-4 rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-red-500/20 to-orange-600/20 flex items-center justify-center">
@@ -299,12 +338,17 @@
                                         Fight Arena</h3>
                                     <p class="text-gray-500 text-sm">Fighting, PvP</p>
                                 </div>
-                                <div class="flex gap-1 text-yellow-500">
+                                <div class="game-rating-display flex gap-1 items-center text-yellow-500"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
                                     <span class="material-symbols-outlined text-[16px]">star</span>
-                                    <span class="text-white text-sm font-bold">4.9</span>
+                                    <span class="rating-avg text-white text-sm font-bold">-</span>
+                                    <span class="rating-count text-gray-500 text-xs"></span>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm mb-4">2D fighting game with online multiplayer!</p>
+                            <p class="text-gray-400 text-sm mb-2">2D fighting game with online multiplayer!</p>
+                            <!-- Rating Stars -->
+                            <div class="rating-stars-container mb-3" data-game="fight-arena"
+                                onclick="event.preventDefault(); event.stopPropagation();"></div>
                             <div class="mt-auto">
                                 <div
                                     class="w-full h-10 rounded-lg bg-white/5 hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 hover:border-primary group-hover:bg-primary flex items-center justify-center gap-2">
@@ -316,7 +360,7 @@
                     </a>
 
                     <!-- Card 3 - Cyber Runner -->
-                    <a href="/runnerGame/index.html"
+                    <a href="/runnerGame/index.html" data-game-id="cyber-runner"
                         class="card-hover-effect group relative flex flex-col gap-4 rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-600/20 flex items-center justify-center">
@@ -336,12 +380,17 @@
                                         Cyber Runner</h3>
                                     <p class="text-gray-500 text-sm">Endless Runner, Action</p>
                                 </div>
-                                <div class="flex gap-1 text-yellow-500">
+                                <div class="game-rating-display flex gap-1 items-center text-yellow-500"
+                                    onclick="event.preventDefault(); event.stopPropagation();">
                                     <span class="material-symbols-outlined text-[16px]">star</span>
-                                    <span class="text-white text-sm font-bold">4.7</span>
+                                    <span class="rating-avg text-white text-sm font-bold">-</span>
+                                    <span class="rating-count text-gray-500 text-xs"></span>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm mb-4">Infinite runner with upgrades. Escape the system!</p>
+                            <p class="text-gray-400 text-sm mb-2">Infinite runner with upgrades. Escape the system!</p>
+                            <!-- Rating Stars -->
+                            <div class="rating-stars-container mb-3" data-game="cyber-runner"
+                                onclick="event.preventDefault(); event.stopPropagation();"></div>
                             <div class="mt-auto">
                                 <div
                                     class="w-full h-10 rounded-lg bg-white/5 hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 hover:border-primary group-hover:bg-primary flex items-center justify-center gap-2">
@@ -354,50 +403,10 @@
                 </div>
             </div>
 
-            <!-- Recently Played Section -->
-            <div class="w-full px-6 lg:px-20 py-8 max-w-[1440px] mb-20">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="h-8 w-1 bg-gray-600 rounded-full"></div>
-                    <h2 class="text-xl md:text-2xl font-bold text-white">Recently Played</h2>
-                </div>
-                <div class="flex gap-4 overflow-x-auto pb-4 [-ms-scrollbar-style:none] [scrollbar-width:none]">
-                    <!-- Recent Game 1 - Rase Clicker -->
-                    <a href="/raseClicker/"
-                        class="min-w-[200px] h-32 rounded-lg bg-surface-dark border border-white/5 flex items-center p-3 gap-4 hover:bg-white/5 transition-colors cursor-pointer group no-underline">
-                        <div
-                            class="size-16 rounded bg-gradient-to-br from-cyan-500/30 to-blue-600/30 flex items-center justify-center shrink-0">
-                            <span class="text-3xl">💎</span>
-                        </div>
-                        <div class="flex flex-col justify-center">
-                            <p class="text-white font-bold text-sm truncate w-24">Rase Clicker</p>
-                            <p class="text-xs text-primary group-hover:text-primary-glow">Resume</p>
-                        </div>
-                    </a>
-                    <!-- Recent Game 2 - Fight Arena -->
-                    <a href="/fightArena/"
-                        class="min-w-[200px] h-32 rounded-lg bg-surface-dark border border-white/5 flex items-center p-3 gap-4 hover:bg-white/5 transition-colors cursor-pointer group no-underline">
-                        <div
-                            class="size-16 rounded bg-gradient-to-br from-red-500/30 to-orange-600/30 flex items-center justify-center shrink-0">
-                            <span class="text-3xl">⚔️</span>
-                        </div>
-                        <div class="flex flex-col justify-center">
-                            <p class="text-white font-bold text-sm truncate w-24">Fight Arena</p>
-                            <p class="text-xs text-primary group-hover:text-primary-glow">Resume</p>
-                        </div>
-                    </a>
-                    <!-- Recent Game 3 - Cyber Runner -->
-                    <a href="/runnerGame/index.html"
-                        class="min-w-[200px] h-32 rounded-lg bg-surface-dark border border-white/5 flex items-center p-3 gap-4 hover:bg-white/5 transition-colors cursor-pointer group no-underline">
-                        <div
-                            class="size-16 rounded bg-gradient-to-br from-purple-500/30 to-pink-600/30 flex items-center justify-center shrink-0">
-                            <span class="text-3xl">🏃</span>
-                        </div>
-                        <div class="flex flex-col justify-center">
-                            <p class="text-white font-bold text-sm truncate w-24">Cyber Runner</p>
-                            <p class="text-xs text-primary group-hover:text-primary-glow">Resume</p>
-                        </div>
-                    </a>
-                </div>
+            <!-- Recently Played Section (Dynamic - Only for logged-in users) -->
+            <div id="recently-played-section" class="w-full px-6 lg:px-20 py-8 max-w-[1440px] mb-20"
+                style="display: none;">
+                <!-- Content will be dynamically populated by gameHistory.js -->
             </div>
         </main>
 
@@ -438,7 +447,92 @@
     </div>
 
     <script src="particles.js"></script>
+    <script src="rating.js"></script>
+    <script src="gameHistory.js"></script>
     <script src="auth.js"></script>
+    <script>
+        // Initialize rating system on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Game IDs mapping
+            const games = ['rase-clicker', 'fight-arena', 'cyber-runner'];
+
+            // Create stars for each game
+            games.forEach(gameId => {
+                const container = document.querySelector(`.rating-stars-container[data-game="${gameId}"]`);
+                if (container && window.RatingSystem) {
+                    const ratingUI = RatingSystem.createRatingUI(gameId, {
+                        showCount: false,
+                        size: 'small',
+                        interactive: true
+                    });
+                    container.appendChild(ratingUI);
+
+                    // Update the card's rating display
+                    updateCardRating(gameId);
+                }
+            });
+
+            function updateCardRating(gameId) {
+                const card = document.querySelector(`[data-game-id="${gameId}"]`);
+                if (card && window.RatingSystem) {
+                    const rating = RatingSystem.getGameRating(gameId);
+                    const avgEl = card.querySelector('.rating-avg');
+                    const countEl = card.querySelector('.rating-count');
+
+                    if (avgEl) avgEl.textContent = rating.average > 0 ? rating.average.toFixed(1) : '-';
+                    if (countEl) countEl.textContent = rating.totalRatings > 0 ? `(${rating.totalRatings})` : '';
+                }
+            }
+
+            // Initialize Recently Played section (only for logged-in users)
+            if (window.GameHistory) {
+                GameHistory.renderRecentlyPlayed('recently-played-section');
+            }
+
+            // Initialize Hero section based on auth state
+            initHeroSection();
+        });
+
+        // Hero section toggle based on login status
+        function initHeroSection() {
+            const heroLoggedIn = document.getElementById('hero-logged-in');
+            const heroGuest = document.getElementById('hero-guest');
+            const heroUsername = document.getElementById('hero-username');
+
+            // Check auth state periodically until it's determined
+            const checkAuth = setInterval(() => {
+                if (window.authStateChecked !== undefined) {
+                    clearInterval(checkAuth);
+                    updateHeroDisplay();
+                }
+            }, 100);
+
+            // Fallback timeout
+            setTimeout(() => {
+                clearInterval(checkAuth);
+                updateHeroDisplay();
+            }, 3000);
+
+            function updateHeroDisplay() {
+                const user = window.currentUser;
+
+                if (user && !user.isAnonymous) {
+                    // Logged-in user
+                    heroLoggedIn.style.display = 'flex';
+                    heroGuest.style.display = 'none';
+
+                    // Update username
+                    if (heroUsername && user.displayName) {
+                        heroUsername.textContent = user.displayName.toUpperCase();
+                    }
+                } else {
+                    // Guest or not logged in
+                    heroLoggedIn.style.display = 'none';
+                    heroGuest.style.display = 'flex';
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

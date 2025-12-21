@@ -309,7 +309,33 @@ function updateAuthUI() {
         if (currentUser.isAnonymous) {
             userDisplay.innerHTML = `<span class="user-guest">👤 Guest</span> <button onclick="showAuthModal()" class="btn-small">Sign Up</button>`;
         } else {
-            userDisplay.innerHTML = `<a href="/profile" onclick="route()" class="user-name-link">👤 ${currentUser.displayName}</a> <button onclick="logoutUser()" class="btn-small logout">Logout</button>`;
+            // Get level info if ChallengesSystem is available
+            let levelHTML = '';
+            if (window.ChallengesSystem) {
+                const progress = ChallengesSystem.getUserProgress(currentUser.uid);
+                const userXP = progress?.totalXP || 0;
+                const levelInfo = ChallengesSystem.getLevelFromXP(userXP);
+                const levelProgress = ChallengesSystem.getLevelProgress(userXP);
+
+                levelHTML = `
+                    <div class="navbar-level-indicator" style="display: flex; flex-direction: column; align-items: flex-end; margin-right: 8px;">
+                        <span style="color: ${levelInfo.color}; font-size: 11px; font-weight: 600;">
+                            ${levelInfo.emoji} Lv.${levelInfo.level}
+                        </span>
+                        <div style="width: 48px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 2px; overflow: hidden;">
+                            <div style="width: ${levelProgress}%; height: 100%; background: ${levelInfo.color}; transition: width 0.3s;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            userDisplay.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    ${levelHTML}
+                    <a href="/profile" class="user-name-link">👤 ${currentUser.displayName}</a>
+                    <button onclick="logoutUser()" class="btn-small logout">Logout</button>
+                </div>
+            `;
         }
     } else {
         userDisplay.innerHTML = `<button onclick="showAuthModal()" class="btn-small">Log In</button>`;

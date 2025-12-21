@@ -89,28 +89,55 @@ Firebase config is stored in `firebase-config.js`. Update with your own credenti
 
 ```
 rasegames/
-├── index.html          # Homepage with game cards
-├── challenges.html     # Daily challenges page
-├── challenges.js       # Challenge system logic
-├── profile.html        # User profile page
-├── auth.js             # Firebase authentication
-├── auth.css            # Auth modal styles
-├── leaderboard.js      # Global leaderboard system
-├── sounds.js           # Sound effects manager
-├── server.js           # Express + Socket.io server
-├── style.css           # Global styles
 │
-├── snakeGame/          # Neon Snake
-├── tetrisGame/         # Cyber Blocks
-├── raseClicker/        # Clicker Game
-├── runnerGame/         # Cyber Runner
-├── flappyGame/         # Pixel Bird
-├── minesweeperGame/    # Bomb Squad
-├── memoryGame/         # Mind Match
-├── game2048/           # Power 2048
-├── tictactoeGame/      # Tic Tac Pro
-└── fightArena/         # Fight Arena (Multiplayer)
+├── index.html              # Homepage (root)
+│
+├── pages/                  # 📄 HTML Pages
+│   ├── games.html          # All games listing
+│   ├── challenges.html     # Daily challenges
+│   ├── profile.html        # User profile
+│   ├── leaderboard.html    # Global leaderboards
+│   ├── about.html          # About page
+│   ├── community.html      # Community page
+│   └── 404.html            # Error page
+│
+├── scripts/                # 🔧 JavaScript
+│   ├── auth.js             # Firebase authentication
+│   ├── challenges.js       # Challenge & XP system
+│   ├── leaderboard.js      # Leaderboard logic
+│   ├── sounds.js           # Sound effects manager
+│   ├── particles.js        # Background particles
+│   ├── router.js           # Page routing
+│   ├── profile.js          # Profile page logic
+│   ├── gameHistory.js      # Game history tracking
+│   ├── rating.js           # Game rating system
+│   └── firebase-config.js  # Firebase configuration
+│
+├── styles/                 # 🎨 CSS
+│   ├── style.css           # Global styles
+│   ├── auth.css            # Auth modal styles
+│   └── leaderboard.css     # Leaderboard styles
+│
+├── games/                  # 🎮 Game Folders
+│   ├── game2048/           # Power 2048
+│   ├── snakeGame/          # Neon Snake
+│   ├── tetrisGame/         # Cyber Blocks
+│   ├── flappyGame/         # Pixel Bird
+│   ├── memoryGame/         # Mind Match
+│   ├── minesweeperGame/    # Bomb Squad
+│   ├── tictactoeGame/      # Tic Tac Pro
+│   ├── raseClicker/        # Rase Clicker
+│   ├── runnerGame/         # Cyber Runner
+│   └── fightArena/         # Fight Arena (Multiplayer)
+│
+├── assets/                 # 🔊 Static Assets
+│   └── sounds/             # Sound effect files
+│
+├── server.js               # Express + Socket.io server
+├── package.json            # Dependencies
+└── render.yaml             # Render deployment config
 ```
+
 
 ## 🎮 Controls
 

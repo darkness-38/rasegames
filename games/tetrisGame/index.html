@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Cyber Blocks</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "primary-glow": "#0f49bd80",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#050a14",
+                        "surface-dark": "#111827",
+                        "cyber-border": "#1e3a8a",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(15, 73, 189, 0.6), 0 0 20px rgba(15, 73, 189, 0.4)',
+                        'neon-sm': '0 0 5px rgba(15, 73, 189, 0.5)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Subtle background animation */
+        .bg-cyber-pattern {
+            background-color: #050a14;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(15, 73, 189, 0.05) 0%, transparent 50%),
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .02) 25%, rgba(255, 255, 255, .02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .02) 75%, rgba(255, 255, 255, .02) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .02) 25%, rgba(255, 255, 255, .02) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .02) 75%, rgba(255, 255, 255, .02) 76%, transparent 77%, transparent);
+            background-size: 100% 100%, 50px 50px, 50px 50px;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="/styles/auth.css">
+</head>
+
+<body
+    class="bg-background-dark font-display text-white min-h-screen flex flex-col overflow-hidden bg-cyber-pattern selection:bg-primary selection:text-white">
+
+    <!-- Top Navigation -->
+    <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-6 py-4 lg:px-10 z-10 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-4 text-white">
+            <a href="/pages/games" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <div class="size-8 text-primary">
+                    <span class="material-symbols-outlined !text-[32px]">arrow_back</span>
+                </div>
+                <span class="text-sm text-gray-400">Back to Games</span>
+            </a>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="size-8 text-primary animate-pulse">
+                <span class="material-symbols-outlined !text-[32px]">grid_view</span>
+            </div>
+            <h2
+                class="text-white text-xl lg:text-2xl font-bold leading-tight tracking-[0.05em] drop-shadow-[0_0_8px_rgba(15,73,189,0.8)]">
+                CYBER BLOCKS</h2>
+        </div>
+        <div class="flex items-center gap-3">
+            <div id="user-display"></div>
+            <button
+                class="flex items-center justify-center rounded-lg h-10 w-10 hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">volume_up</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Area -->
+    <main class="flex-1 flex items-center justify-center p-4 lg:p-8 overflow-hidden relative">
+        <div class="w-full max-w-7xl flex flex-col lg:flex-row gap-6 lg:gap-12 items-start justify-center h-full">
+
+            <!-- Left HUD: Stats -->
+            <div class="w-full lg:w-64 flex flex-col gap-4 order-2 lg:order-1">
+                <!-- Score Card -->
+                <div
+                    class="flex flex-col gap-1 rounded-xl p-5 border border-white/10 bg-surface-dark/50 backdrop-blur shadow-lg relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-primary/50 group-hover:bg-primary transition-colors">
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-primary text-xl">trophy</span>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">Score</p>
+                    </div>
+                    <p id="score"
+                        class="text-white text-3xl font-bold leading-none tracking-tight tabular-nums drop-shadow-md">0
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">High: <span id="highScore">0</span></p>
+                </div>
+
+                <!-- Level Card -->
+                <div
+                    class="flex flex-col gap-1 rounded-xl p-5 border border-white/10 bg-surface-dark/50 backdrop-blur shadow-lg relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-purple-500/50 group-hover:bg-purple-500 transition-colors">
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-purple-400 text-xl">trending_up</span>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">Level</p>
+                    </div>
+                    <p id="level" class="text-white text-3xl font-bold leading-none tracking-tight tabular-nums">01</p>
+                </div>
+
+                <!-- Lines Card -->
+                <div
+                    class="flex flex-col gap-1 rounded-xl p-5 border border-white/10 bg-surface-dark/50 backdrop-blur shadow-lg relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-cyan-500/50 group-hover:bg-cyan-500 transition-colors">
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-cyan-400 text-xl">layers</span>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">Lines</p>
+                    </div>
+                    <p id="lines" class="text-white text-3xl font-bold leading-none tracking-tight tabular-nums">0</p>
+                </div>
+
+                <!-- Controls Legend (Desktop) -->
+                <div class="hidden lg:flex flex-col gap-3 mt-4 p-4 border border-white/5 rounded-xl bg-black/20">
+                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Controls</p>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Move</span>
+                        <div class="flex gap-1">
+                            <span class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_back</span>
+                            <span
+                                class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_forward</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Rotate</span>
+                        <span class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_upward</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Drop</span>
+                        <span class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_downward</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Hard Drop</span>
+                        <div class="px-1.5 py-0.5 bg-white/10 rounded text-[10px] font-mono">SPACE</div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>Hold</span>
+                        <div class="px-1.5 py-0.5 bg-white/10 rounded text-[10px] font-mono">C</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center: Game Board -->
+            <div class="relative order-1 lg:order-2 shrink-0">
+                <!-- Board Glow Container -->
+                <div
+                    class="relative p-1 rounded-lg bg-gradient-to-b from-gray-800 to-gray-900 shadow-neon border border-primary/30">
+                    <!-- The Canvas -->
+                    <canvas id="gameCanvas" width="300" height="600" class="bg-[#080c14] rounded"></canvas>
+
+                    <!-- Start Screen Overlay -->
+                    <div id="startScreen"
+                        class="absolute inset-0 z-20 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded">
+                        <div
+                            class="relative w-full max-w-xs mx-4 bg-surface-dark border border-white/10 rounded-xl shadow-2xl p-6 flex flex-col gap-6 items-center text-center overflow-hidden">
+                            <div
+                                class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 blur-3xl rounded-full pointer-events-none">
+                            </div>
+                            <div
+                                class="size-16 rounded-full bg-gray-800 flex items-center justify-center border border-primary/30 shadow-lg">
+                                <span class="material-symbols-outlined text-primary text-3xl">play_arrow</span>
+                            </div>
+                            <div class="space-y-1 relative z-10">
+                                <h3 class="text-white text-xl font-bold tracking-tight">CYBER BLOCKS</h3>
+                                <p class="text-gray-400 text-sm">Press any key to start</p>
+                            </div>
+                            <button onclick="initGame()"
+                                class="w-full cursor-pointer rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-neon text-white text-sm font-bold tracking-widest transition-all">
+                                START GAME
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Game Over Overlay -->
+                    <div id="gameOverScreen"
+                        class="hidden absolute inset-0 z-20 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded">
+                        <div
+                            class="relative w-full max-w-xs mx-4 bg-surface-dark border border-white/10 rounded-xl shadow-2xl p-6 flex flex-col gap-6 items-center text-center overflow-hidden">
+                            <div
+                                class="absolute -top-10 -right-10 w-32 h-32 bg-red-500/20 blur-3xl rounded-full pointer-events-none">
+                            </div>
+                            <div
+                                class="size-16 rounded-full bg-gray-800 flex items-center justify-center border border-red-500/30 shadow-lg">
+                                <span class="material-symbols-outlined text-red-500 text-3xl">close</span>
+                            </div>
+                            <div class="space-y-1 relative z-10">
+                                <h3 class="text-white text-xl font-bold tracking-tight">GAME OVER</h3>
+                                <p class="text-gray-400 text-sm">Score: <span id="finalScore"
+                                        class="text-primary font-bold">0</span></p>
+                            </div>
+                            <button id="restartBtn"
+                                class="w-full cursor-pointer rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-neon text-white text-sm font-bold tracking-widest transition-all">
+                                PLAY AGAIN
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right HUD: Next & Hold -->
+            <div class="w-full lg:w-64 flex flex-col gap-6 order-3">
+                <!-- Next Piece Panel -->
+                <div
+                    class="flex flex-col rounded-xl overflow-hidden bg-surface-dark/50 backdrop-blur border border-white/10 shadow-lg">
+                    <div class="px-5 py-3 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                        <h3 class="text-white tracking-widest text-sm font-bold leading-tight">NEXT BLOCK</h3>
+                        <span class="material-symbols-outlined text-primary text-sm animate-pulse">emergency</span>
+                    </div>
+                    <div class="p-4 flex justify-center items-center min-h-[120px] relative bg-black/30">
+                        <canvas id="nextCanvas" width="100" height="100"></canvas>
+                    </div>
+                </div>
+
+                <!-- Hold Panel -->
+                <div
+                    class="flex flex-col rounded-xl overflow-hidden bg-surface-dark/50 backdrop-blur border border-white/10 shadow-lg opacity-80 hover:opacity-100 transition-opacity">
+                    <div class="px-5 py-3 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                        <h3 class="text-gray-400 tracking-widest text-xs font-bold leading-tight">HOLD</h3>
+                        <div class="text-[10px] border border-white/20 px-1 rounded text-gray-500">C</div>
+                    </div>
+                    <div class="p-4 flex justify-center items-center min-h-[100px] bg-black/30">
+                        <canvas id="holdCanvas" width="100" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Controls -->
+    <div class="lg:hidden fixed bottom-4 left-0 right-0 flex justify-center gap-2 px-4 z-30">
+        <button id="leftBtn"
+            class="size-14 rounded-xl bg-surface-dark/80 backdrop-blur border border-white/10 flex items-center justify-center text-white active:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl">arrow_back</span>
+        </button>
+        <button id="rotateBtn"
+            class="size-14 rounded-xl bg-surface-dark/80 backdrop-blur border border-white/10 flex items-center justify-center text-white active:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl">rotate_right</span>
+        </button>
+        <button id="downBtn"
+            class="size-14 rounded-xl bg-surface-dark/80 backdrop-blur border border-white/10 flex items-center justify-center text-white active:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl">arrow_downward</span>
+        </button>
+        <button id="rightBtn"
+            class="size-14 rounded-xl bg-surface-dark/80 backdrop-blur border border-white/10 flex items-center justify-center text-white active:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl">arrow_forward</span>
+        </button>
+        <button id="dropBtn"
+            class="size-14 rounded-xl bg-primary/80 backdrop-blur border border-primary/50 flex items-center justify-center text-white active:bg-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl">keyboard_double_arrow_down</span>
+        </button>
+    </div>
+
+    <script src="/scripts/leaderboard.js"></script>
+    <script src="game.js"></script>
+    <script src="/scripts/challenges.js"></script>
+    <script src="/scripts/auth.js"></script>
+</body>
+
+</html>

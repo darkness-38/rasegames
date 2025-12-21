@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Profile - Rase Games</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "primary-dark": "#0a3690",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "card-dark": "#161e2c",
+                        "border-dark": "#282e39",
+                        "text-secondary": "#9da6b9"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #101622;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #282e39;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b4354;
+        }
+
+        /* Level bar animation */
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .level-bar-fill {
+            background: linear-gradient(90deg, #0a3690, #0f49bd, #3b82f6, #0f49bd, #0a3690);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        /* Edit modal animation */
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-content {
+            animation: modalSlideIn 0.3s ease;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/pages/games" class="nav-link">Games</a>
+            <a href="/pages/challenges" class="nav-link">Challenges</a>
+            <a href="/pages/about" class="nav-link">About</a>
+            <a href="/pages/leaderboard" class="nav-link">Leaderboards</a>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <!-- Not Logged In State -->
+    <div id="not-logged-in" class="hidden flex-1 flex items-center justify-center p-4">
+        <div class="bg-card-dark border border-border-dark rounded-xl p-8 text-center max-w-md">
+            <span class="material-symbols-outlined text-6xl text-primary mb-4">lock</span>
+            <h2 class="text-2xl font-bold text-white mb-2">Login Required</h2>
+            <p class="text-text-secondary mb-6">Please log in to view your profile and track your progress.</p>
+            <button onclick="showAuthModal()"
+                class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-colors">
+                Log In
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Profile Content -->
+    <main id="profile-content" class="hidden flex-1 flex flex-col max-w-[1440px] mx-auto w-full px-4 md:px-10 py-6">
+
+        <!-- Breadcrumbs & Page Title -->
+        <div class="flex flex-col gap-2 mb-6">
+            <div class="flex flex-wrap gap-2 items-center text-sm">
+                <a class="text-text-secondary hover:text-white transition-colors" href="/">Home</a>
+                <span class="text-text-secondary material-symbols-outlined text-[16px]">chevron_right</span>
+                <span class="text-white font-medium">Profile</span>
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight">Player Profile</h1>
+        </div>
+
+        <!-- Main Dashboard Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+
+            <!-- Left Column: Identity Card -->
+            <div class="lg:col-span-3 flex flex-col gap-6">
+                <div
+                    class="bg-card-dark border border-border-dark rounded-xl p-6 flex flex-col items-center relative overflow-hidden group">
+                    <!-- Background accent -->
+                    <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/20 to-transparent">
+                    </div>
+
+                    <div class="relative mt-4 mb-4 cursor-pointer" onclick="openEditModal()">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-tr from-primary to-purple-500 rounded-full blur opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                        <div id="profile-avatar"
+                            class="relative size-32 rounded-full border-4 border-card-dark bg-card-dark flex items-center justify-center text-6xl">
+                            🎮
+                        </div>
+                        <div class="absolute bottom-1 right-1 bg-green-500 border-4 border-card-dark p-1.5 rounded-full"
+                            title="Online"></div>
+                        <div
+                            class="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white">edit</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center text-center w-full z-10">
+                        <h2 id="profile-username" class="text-2xl font-bold text-white mb-1">Player</h2>
+                        <span id="profile-title"
+                            class="px-3 py-1 bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider rounded-full mb-4 border border-primary/30">Beginner</span>
+
+                        <div
+                            class="w-full flex items-center justify-between px-4 py-3 bg-background-dark rounded-lg mb-6 border border-border-dark">
+                            <div class="flex flex-col items-center">
+                                <span class="text-text-secondary text-xs uppercase">Rank</span>
+                                <span id="profile-rank" class="text-white font-bold text-sm flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-yellow-400 text-sm">star</span> Bronze
+                                </span>
+                            </div>
+                            <div class="h-8 w-px bg-border-dark"></div>
+                            <div class="flex flex-col items-center">
+                                <span class="text-text-secondary text-xs uppercase">Level</span>
+                                <span id="profile-level" class="text-white font-bold text-sm">1</span>
+                            </div>
+                        </div>
+
+                        <button onclick="openEditModal()"
+                            class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-2.5 px-4 rounded-lg transition-colors shadow-[0_0_15px_rgba(15,73,189,0.3)]">
+                            <span class="material-symbols-outlined text-sm">edit</span>
+                            <span>Edit Profile</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Account Info -->
+                <div class="bg-card-dark border border-border-dark rounded-xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-4 border-b border-border-dark pb-2">Account Info</h3>
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-text-secondary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">mail</span> Email
+                            </span>
+                            <span id="profile-email"
+                                class="text-white font-medium text-xs truncate max-w-[150px]">-</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-text-secondary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">calendar_month</span> Joined
+                            </span>
+                            <span id="profile-joined" class="text-white font-medium">-</span>
+                        </div>
+                    </div>
+
+                    <button onclick="logoutUser()"
+                        class="w-full mt-4 py-2 border border-red-500/30 hover:border-red-500 text-red-400 hover:text-red-300 text-sm rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">logout</span>
+                        Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Center Column: Performance & Stats -->
+            <div class="lg:col-span-6 flex flex-col gap-6">
+
+                <!-- Level Progress -->
+                <div class="bg-card-dark border border-border-dark rounded-xl p-6">
+                    <div class="flex justify-between items-end mb-2">
+                        <div>
+                            <p class="text-text-secondary text-sm font-medium mb-1">Current Progress</p>
+                            <h3 id="level-title" class="text-white text-xl font-bold">Level 1</h3>
+                        </div>
+                        <p id="level-percent" class="text-primary text-sm font-bold">0%</p>
+                    </div>
+                    <div
+                        class="relative h-4 w-full bg-background-dark rounded-full overflow-hidden border border-border-dark">
+                        <div id="level-bar" class="absolute top-0 left-0 h-full level-bar-fill rounded-full"
+                            style="width: 0%;"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-text-secondary font-mono">
+                        <span id="xp-current">0 XP</span>
+                        <span id="xp-needed">100 XP</span>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-xl p-5 flex flex-col justify-between hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-text-secondary text-sm font-medium">Total XP</span>
+                            <div
+                                class="p-2 bg-yellow-500/10 rounded-lg text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-colors">
+                                <span class="material-symbols-outlined">stars</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span id="stat-total-xp" class="text-3xl font-bold text-white">0</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-xl p-5 flex flex-col justify-between hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-text-secondary text-sm font-medium">Challenges Done</span>
+                            <div
+                                class="p-2 bg-green-500/10 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span id="stat-challenges" class="text-3xl font-bold text-white">0</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-xl p-5 flex flex-col justify-between hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-text-secondary text-sm font-medium">Current Level</span>
+                            <div
+                                class="p-2 bg-purple-500/10 rounded-lg text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined">trending_up</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span id="stat-level" class="text-3xl font-bold text-white">1</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-card-dark border border-border-dark rounded-xl p-5 flex flex-col justify-between hover:border-primary/50 transition-colors group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-text-secondary text-sm font-medium">Today's Progress</span>
+                            <div
+                                class="p-2 bg-blue-500/10 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined">today</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span id="stat-today" class="text-3xl font-bold text-white">0/3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links to Games -->
+                <div class="bg-card-dark border border-border-dark rounded-xl p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Quick Play</h3>
+                        <a class="text-sm text-primary hover:text-white transition-colors" href="/pages/games">View All</a>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="quick-games">
+                        <a href="/game2048/"
+                            class="flex flex-col items-center gap-2 p-4 rounded-lg bg-background-dark border border-border-dark hover:border-primary/50 transition-all hover:scale-105">
+                            <span class="text-3xl">🔢</span>
+                            <span class="text-white text-sm font-medium">2048</span>
+                        </a>
+                        <a href="/snakeGame/"
+                            class="flex flex-col items-center gap-2 p-4 rounded-lg bg-background-dark border border-border-dark hover:border-primary/50 transition-all hover:scale-105">
+                            <span class="text-3xl">🐍</span>
+                            <span class="text-white text-sm font-medium">Snake</span>
+                        </a>
+                        <a href="/tetrisGame/"
+                            class="flex flex-col items-center gap-2 p-4 rounded-lg bg-background-dark border border-border-dark hover:border-primary/50 transition-all hover:scale-105">
+                            <span class="text-3xl">🧱</span>
+                            <span class="text-white text-sm font-medium">Tetris</span>
+                        </a>
+                        <a href="/memoryGame/"
+                            class="flex flex-col items-center gap-2 p-4 rounded-lg bg-background-dark border border-border-dark hover:border-primary/50 transition-all hover:scale-105">
+                            <span class="text-3xl">🃏</span>
+                            <span class="text-white text-sm font-medium">Memory</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Level Badge & Daily Challenges -->
+            <div class="lg:col-span-3 flex flex-col gap-6">
+
+                <!-- Level Showcase -->
+                <div class="bg-card-dark border border-border-dark rounded-xl overflow-hidden">
+                    <div
+                        class="p-4 border-b border-border-dark bg-background-dark/50 flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Level Badge</h3>
+                    </div>
+                    <div
+                        class="relative flex items-center justify-center p-8 bg-gradient-to-br from-primary/10 to-purple-500/10">
+                        <div id="level-badge" class="flex flex-col items-center">
+                            <span class="text-6xl mb-2">🌱</span>
+                            <span id="badge-level" class="text-white font-bold text-xl">Level 1</span>
+                            <span id="badge-title" class="text-primary text-sm">Seedling</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Challenges Link -->
+                <div class="bg-card-dark border border-border-dark rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Daily Challenges</h3>
+                        <span id="challenges-count"
+                            class="text-xs px-2 py-1 rounded bg-background-dark text-text-secondary border border-border-dark">0/3</span>
+                    </div>
+                    <p class="text-text-secondary text-sm mb-4">Complete daily challenges to earn XP and level up!</p>
+                    <a href="/pages/challenges"
+                        class="w-full flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors">
+                        <span class="material-symbols-outlined">emoji_events</span>
+                        View Challenges
+                    </a>
+                </div>
+
+                <!-- Level Info -->
+                <div class="bg-card-dark border border-border-dark rounded-xl p-6 flex-1">
+                    <h3 class="text-lg font-bold text-white mb-4">Level Rewards</h3>
+                    <div class="flex flex-col gap-3 text-sm">
+                        <div class="flex items-center gap-3 text-text-secondary">
+                            <span class="material-symbols-outlined text-green-500">check_circle</span>
+                            <span>Harder challenges = More XP</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-text-secondary">
+                            <span class="material-symbols-outlined text-green-500">check_circle</span>
+                            <span>Level up for new badges</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-text-secondary">
+                            <span class="material-symbols-outlined text-green-500">check_circle</span>
+                            <span>Compete on leaderboards</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeEditModal()"></div>
+        <div
+            class="modal-content relative bg-card-dark border border-border-dark rounded-xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <button class="absolute top-4 right-4 text-text-secondary hover:text-white text-2xl"
+                onclick="closeEditModal()">×</button>
+            <h3 class="text-xl font-bold text-white mb-6 text-center">Edit Profile</h3>
+
+            <form id="edit-form" class="flex flex-col gap-5">
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-text-secondary">Username</label>
+                    <input type="text" id="edit-username"
+                        class="w-full px-4 py-3 bg-background-dark border border-border-dark rounded-lg text-white focus:border-primary focus:outline-none"
+                        placeholder="Your username" maxlength="20" required>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm text-text-secondary">Select Avatar</label>
+                    <div id="avatar-grid" class="grid grid-cols-6 gap-2"></div>
+                </div>
+
+                <button type="submit" id="save-btn"
+                    class="w-full py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">save</span>
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../scripts/challenges.js"></script>
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Avatar options
+        const avatarOptions = ['🎮', '🎯', '🏆', '⚡', '🔥', '💎', '🚀', '🎲', '🎪', '🎭', '🦊', '🐲', '🦁', '🐺', '🦅', '🐍', '🎸', '🎹'];
+        let selectedAvatar = '🎮';
+
+        // Initialize profile page
+        function initProfile() {
+            renderAvatarGrid();
+
+            // Listen for auth state
+            window.addEventListener('authStateChanged', updateProfileDisplay);
+
+            // Initial check
+            if (window.authStateChecked) {
+                updateProfileDisplay();
+            }
+        }
+
+        // Update profile display based on auth state
+        function updateProfileDisplay() {
+            const user = window.currentUser;
+            const notLoggedIn = document.getElementById('not-logged-in');
+            const profileContent = document.getElementById('profile-content');
+
+            if (user && !user.isAnonymous) {
+                notLoggedIn.classList.add('hidden');
+                profileContent.classList.remove('hidden');
+                profileContent.classList.add('flex');
+                loadUserData(user);
+            } else {
+                notLoggedIn.classList.remove('hidden');
+                notLoggedIn.classList.add('flex');
+                profileContent.classList.add('hidden');
+            }
+        }
+
+        // Load user data
+        function loadUserData(user) {
+            // Basic info
+            document.getElementById('profile-username').textContent = user.displayName || 'Player';
+            document.getElementById('profile-email').textContent = user.email || '-';
+            document.getElementById('edit-username').value = user.displayName || '';
+
+            // Join date
+            if (user.metadata?.creationTime) {
+                const joinDate = new Date(user.metadata.creationTime);
+                document.getElementById('profile-joined').textContent = joinDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            }
+
+            // Load avatar from localStorage
+            const savedAvatar = localStorage.getItem('rase_user_avatar_' + user.uid);
+            if (savedAvatar) {
+                selectedAvatar = savedAvatar;
+            }
+            document.getElementById('profile-avatar').textContent = selectedAvatar;
+            updateAvatarSelection();
+
+            // Load XP and Level from ChallengesSystem
+            if (window.ChallengesSystem) {
+                const progress = ChallengesSystem.getUserProgress(user.uid);
+                const totalXP = progress.totalXP || 0;
+                const levelInfo = ChallengesSystem.getLevelFromXP(totalXP);
+                const levelProgress = ChallengesSystem.getLevelProgress(totalXP);
+
+                // Update level displays
+                document.getElementById('profile-level').textContent = levelInfo.level;
+                document.getElementById('level-title').textContent = `Level ${levelInfo.level}`;
+                document.getElementById('stat-level').textContent = levelInfo.level;
+                document.getElementById('badge-level').textContent = `Level ${levelInfo.level}`;
+
+                // Level badge and title
+                document.getElementById('level-badge').querySelector('span').textContent = levelInfo.emoji;
+                document.getElementById('badge-title').textContent = levelInfo.title || 'Adventurer';
+                document.getElementById('profile-title').textContent = levelInfo.title || 'Adventurer';
+
+                // XP progress
+                const currentLevelXP = ChallengesSystem.LEVEL_THRESHOLDS[levelInfo.level - 1] || 0;
+                const nextLevelXP = ChallengesSystem.LEVEL_THRESHOLDS[levelInfo.level] || (currentLevelXP + 100);
+
+                document.getElementById('level-percent').textContent = `${Math.round(levelProgress)}%`;
+                document.getElementById('level-bar').style.width = `${levelProgress}%`;
+                document.getElementById('xp-current').textContent = `${totalXP} XP`;
+                document.getElementById('xp-needed').textContent = `${nextLevelXP} XP`;
+
+                // Stats
+                document.getElementById('stat-total-xp').textContent = totalXP.toLocaleString();
+
+                // Today's challenges
+                const completedToday = progress.completedToday || 0;
+                document.getElementById('stat-today').textContent = `${completedToday}/3`;
+                document.getElementById('challenges-count').textContent = `${completedToday}/3`;
+
+                // Total challenges (estimate based on XP - roughly 50 XP per challenge average)
+                const estimatedChallenges = Math.floor(totalXP / 50);
+                document.getElementById('stat-challenges').textContent = estimatedChallenges;
+
+                // Rank based on level
+                updateRank(levelInfo.level);
+            }
+        }
+
+        // Update rank based on level
+        function updateRank(level) {
+            let rank = 'Bronze';
+            let icon = 'star';
+            let color = 'text-orange-400';
+
+            if (level >= 50) { rank = 'Diamond'; icon = 'diamond'; color = 'text-cyan-400'; }
+            else if (level >= 30) { rank = 'Platinum'; icon = 'hexagon'; color = 'text-emerald-400'; }
+            else if (level >= 20) { rank = 'Gold'; icon = 'star'; color = 'text-yellow-400'; }
+            else if (level >= 10) { rank = 'Silver'; icon = 'star'; color = 'text-gray-300'; }
+
+            document.getElementById('profile-rank').innerHTML = `
+                <span class="material-symbols-outlined ${color} text-sm">${icon}</span> ${rank}
+            `;
+        }
+
+        // Render avatar selection grid
+        function renderAvatarGrid() {
+            const grid = document.getElementById('avatar-grid');
+            grid.innerHTML = avatarOptions.map(avatar => `
+                <div class="avatar-option size-10 rounded-lg flex items-center justify-center text-2xl cursor-pointer border-2 transition-all ${avatar === selectedAvatar ? 'border-primary bg-primary/20' : 'border-border-dark bg-background-dark hover:border-primary/50'}" onclick="selectAvatar('${avatar}')">
+                    ${avatar}
+                </div>
+            `).join('');
+        }
+
+        // Select avatar
+        function selectAvatar(avatar) {
+            selectedAvatar = avatar;
+            updateAvatarSelection();
+        }
+
+        // Update avatar selection UI
+        function updateAvatarSelection() {
+            const options = document.querySelectorAll('.avatar-option');
+            options.forEach(opt => {
+                const isSelected = opt.textContent.trim() === selectedAvatar;
+                opt.classList.toggle('border-primary', isSelected);
+                opt.classList.toggle('bg-primary/20', isSelected);
+                opt.classList.toggle('border-border-dark', !isSelected);
+            });
+        }
+
+        // Open edit modal
+        function openEditModal() {
+            const modal = document.getElementById('edit-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            const modal = document.getElementById('edit-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Save profile
+        document.getElementById('edit-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const user = window.currentUser;
+            if (!user) return;
+
+            const newUsername = document.getElementById('edit-username').value.trim();
+            const saveBtn = document.getElementById('save-btn');
+
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Saving...';
+
+            try {
+                // Update Firebase profile
+                if (newUsername && newUsername !== user.displayName) {
+                    await user.updateProfile({ displayName: newUsername });
+                }
+
+                // Save avatar to localStorage
+                localStorage.setItem('rase_user_avatar_' + user.uid, selectedAvatar);
+
+                // Update display
+                document.getElementById('profile-username').textContent = newUsername || 'Player';
+                document.getElementById('profile-avatar').textContent = selectedAvatar;
+
+                closeEditModal();
+
+                // Show success
+                saveBtn.innerHTML = '<span class="material-symbols-outlined">check</span> Saved!';
+                setTimeout(() => {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<span class="material-symbols-outlined">save</span> Save Changes';
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span class="material-symbols-outlined">error</span> Error';
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<span class="material-symbols-outlined">save</span> Save Changes';
+                }, 2000);
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initProfile);
+    </script>
+</body>
+
+</html>

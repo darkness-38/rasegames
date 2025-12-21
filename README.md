@@ -1,6 +1,6 @@
 # 🎮 Rase Games
 
-A collection of modern web games with a sleek cyberpunk aesthetic, user authentication, and global leaderboards.
+A collection of modern web games with a sleek cyberpunk aesthetic, user authentication, daily challenges, and global leaderboards.
 
 ![Games](https://img.shields.io/badge/Games-10-blue)
 ![Firebase](https://img.shields.io/badge/Backend-Firebase-orange)
@@ -25,10 +25,31 @@ A collection of modern web games with a sleek cyberpunk aesthetic, user authenti
 
 - 🔐 **User Authentication** - Firebase Auth (email/password + Google + anonymous)
 - 🏆 **Global Leaderboards** - Compete with players worldwide
+- 🎯 **Daily Challenges** - 3 unique challenges every day with XP rewards
+- 📈 **Leveling System** - Earn XP and level up with unique badges
 - 💾 **Cloud Saves** - Progress synced across devices
 - 📱 **Mobile Responsive** - Touch controls for all games
 - 🎨 **Modern UI** - Neon/cyberpunk theme with Tailwind CSS
 - 🔊 **Sound Effects** - Immersive audio feedback
+
+## 🎯 Daily Challenges System
+
+- **3 Daily Challenges** - New challenges every day at midnight
+- **Game-Specific Goals** - Score points, collect items, win matches
+- **XP Rewards** - Complete challenges to earn experience points
+- **Difficulty Scaling** - Challenges scale based on your level
+- **Progress Tracking** - Track completion in real-time
+
+### Level Progression
+
+| Level | XP Required | Title | Badge |
+|-------|-------------|-------|-------|
+| 1-4 | 0-300 | Seedling | 🌱 |
+| 5-9 | 300-900 | Explorer | 🌿 |
+| 10-19 | 900-2400 | Adventurer | 🌳 |
+| 20-29 | 2400-4900 | Warrior | ⚔️ |
+| 30-49 | 4900-12400 | Champion | 🏆 |
+| 50+ | 12400+ | Legend | 👑 |
 
 ## 🛠️ Tech Stack
 
@@ -69,6 +90,9 @@ Firebase config is stored in `firebase-config.js`. Update with your own credenti
 ```
 rasegames/
 ├── index.html          # Homepage with game cards
+├── challenges.html     # Daily challenges page
+├── challenges.js       # Challenge system logic
+├── profile.html        # User profile page
 ├── auth.js             # Firebase authentication
 ├── auth.css            # Auth modal styles
 ├── leaderboard.js      # Global leaderboard system
@@ -108,10 +132,11 @@ rasegames/
 
 ## 👤 User Profile
 
-- Custom avatars (emoji-based)
-- Username customization
-- View personal high scores
-- Track play statistics
+- **Custom Avatars** - Choose from 18 emoji avatars
+- **Username Customization** - Edit your display name
+- **Level Progress** - Visual XP bar and level display
+- **Stats Dashboard** - Total XP, challenges completed, rank
+- **Quick Play** - Direct links to favorite games
 
 ## 📝 License
 

@@ -170,7 +170,7 @@
         <div class="px-6 max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex flex-col gap-2">
                 <h3 class="text-white font-bold text-lg">Rase Games</h3>
-                <p class="text-gray-500 text-sm">© 2024 Rase Games. All rights reserved.</p>
+
             </div>
             <div class="flex gap-8">
                 <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/about">About</a>
@@ -274,10 +274,13 @@
             const guestWarning = document.getElementById('guest-warning');
 
             // Show guest warning only for anonymous users, hide for registered users
-            if (user && !user.isAnonymous) {
-                guestWarning.classList.add('hidden');
-            } else {
-                guestWarning.classList.remove('hidden');
+            // Wait until auth state is actually checked by Firebase
+            if (window.authStateChecked) {
+                if (user && !user.isAnonymous) {
+                    guestWarning.classList.add('hidden');
+                } else {
+                    guestWarning.classList.remove('hidden');
+                }
             }
 
             // Get user progress to find their locked level for today

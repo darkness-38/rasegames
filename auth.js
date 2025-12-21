@@ -361,7 +361,5 @@ window.Auth = {
     register: registerUser,
     loginAnonymous,
     logout: logoutUser,
-    isRegistered: isRegisteredUser,
-    getUsername,
     showModal: showAuthModal
 };

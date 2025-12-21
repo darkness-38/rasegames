@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html class="dark" lang="tr">
+<html class="dark" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Challenges - Rase Games</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>RaseGames - Challenges</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
@@ -24,9 +22,7 @@
                         "surface-dark": "#1a2230",
                         "card-dark": "#1c222e",
                     },
-                    fontFamily: {
-                        "display": ["Space Grotesk", "sans-serif"]
-                    },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
                 },
             },
         }
@@ -34,7 +30,6 @@
     <style>
         ::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -46,45 +41,42 @@
             border-radius: 4px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #374151;
-        }
-
         .text-glow {
             text-shadow: 0 0 10px rgba(47, 112, 255, 0.5);
         }
-
-        .challenge-card:hover .card-image {
-            transform: scale(1.05);
-        }
     </style>
+    <link rel="stylesheet" href="../styles/auth.css">
 </head>
 
 <body class="bg-background-dark font-display text-white min-h-screen flex flex-col overflow-x-hidden">
-    <!-- Top Navigation -->
-    <div class="sticky top-0 z-50 border-b border-white/5 bg-background-dark/90 backdrop-blur-md">
+    <!-- Navigation -->
+    <div class="border-b border-white/5 bg-[#151a23]">
         <div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
-                    <span class="material-symbols-outlined" style="font-size: 20px;">sports_esports</span>
+            <a href="/" class="flex items-center gap-4 no-underline">
+                <div class="size-8 text-primary">
+                    <span class="material-symbols-outlined text-3xl">sports_esports</span>
                 </div>
-                <a class="text-white text-xl font-bold tracking-tight" href="/">Rase<span
-                        class="text-primary">Games</span></a>
-            </div>
+                <h1 class="text-xl font-bold tracking-tight text-white">Rase<span class="text-primary">Games</span></h1>
+            </a>
             <nav class="hidden md:flex items-center gap-8">
-                <a class="text-gray-400 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors no-underline"
                     href="/">Home</a>
-                <a class="text-gray-400 hover:text-white hover:text-glow text-sm font-medium transition-colors"
-                    href="/pages/games">Games</a>
-                <a class="text-white text-glow text-sm font-bold border-b-2 border-primary py-5"
+                <a class="text-primary text-sm font-bold border-b-2 border-primary py-5 no-underline"
                     href="/pages/challenges">Challenges</a>
-                <a class="text-gray-400 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors no-underline"
                     href="/pages/leaderboard">Leaderboard</a>
-                <a class="text-gray-400 hover:text-white hover:text-glow text-sm font-medium transition-colors"
-                    href="/pages/community">Community</a>
+                <a class="text-gray-400 hover:text-primary text-sm font-medium transition-colors no-underline"
+                    href="/pages/games">Games</a>
             </nav>
-            <div class="flex items-center gap-4">
-                <div id="user-display"></div>
+            <div id="user-display" class="flex items-center gap-6">
+                <div id="xp-display" class="hidden sm:flex items-center gap-3 bg-slate-800 rounded-full px-3 py-1.5">
+                    <span class="material-symbols-outlined text-yellow-500 text-[18px]">bolt</span>
+                    <span id="total-xp" class="text-xs font-bold">0 XP</span>
+                </div>
+                <button onclick="showAuthModal()"
+                    class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                    Sign In
+                </button>
             </div>
         </div>
     </div>
@@ -93,32 +85,29 @@
     <main class="flex-1 max-w-[1280px] w-full mx-auto px-6 py-8">
         <!-- Page Header & Stats -->
         <div class="flex flex-col lg:flex-row gap-8 mb-12">
-            <!-- Left: Titles -->
             <div class="flex-1 flex flex-col justify-center">
                 <h2 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Daily Challenges</h2>
-                <p class="text-gray-400 text-lg max-w-xl">
-                    Complete challenges, earn XP and level up! Challenges reset in
-                    <span id="reset-timer" class="text-primary font-bold">00:00:00</span>.
-                </p>
+                <p class="text-gray-400 text-lg max-w-xl">Complete tasks to earn XP and level up. Challenges reset at
+                    <span class="text-primary font-bold">midnight</span>.</p>
             </div>
 
-            <!-- Right: Progress Card -->
+            <!-- Progress Card -->
             <div
-                class="lg:w-[480px] w-full bg-card-dark rounded-xl p-6 shadow-lg border border-white/5 relative overflow-hidden group">
+                class="lg:w-[480px] w-full bg-card-dark rounded-xl p-6 shadow-sm border border-white/5 relative overflow-hidden group">
                 <div
                     class="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-500">
                 </div>
                 <div class="relative z-10">
                     <div class="flex justify-between items-end mb-4">
                         <div>
-                            <p class="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">Daily Progress
+                            <p class="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">Today's Progress
                             </p>
                             <div class="flex items-baseline gap-2">
                                 <span id="progress-percent" class="text-3xl font-bold">0%</span>
                                 <span id="progress-status"
                                     class="text-sm text-gray-500 font-medium flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[16px]">schedule</span>
-                                    Start!
+                                    Waiting
                                 </span>
                             </div>
                         </div>
@@ -127,7 +116,7 @@
                             <p class="text-xs text-gray-400">Completed</p>
                         </div>
                     </div>
-                    <div class="w-full bg-gray-700 rounded-full h-3 mb-4">
+                    <div class="w-full bg-slate-700 rounded-full h-3 mb-4">
                         <div id="progress-bar" class="bg-primary h-3 rounded-full relative transition-all duration-500"
                             style="width: 0%">
                             <div
@@ -136,46 +125,57 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-400 font-medium">
-                        <span id="user-level-display">Level 1</span>
-                        <span id="total-xp-display">Total: 0 XP</span>
+                        <span id="current-level">Level 1</span>
+                        <span id="next-reward">Next: 100 XP</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Guest Warning -->
+        <div id="guest-warning"
+            class="hidden mb-8 p-6 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-center">
+            <span class="material-symbols-outlined text-yellow-500 text-4xl mb-3">warning</span>
+            <h3 class="text-xl font-bold text-white mb-2">Sign In Required</h3>
+            <p class="text-gray-400 mb-4">Create an account to save your progress and compete on leaderboards.</p>
+            <button onclick="showAuthModal()"
+                class="bg-primary hover:bg-primary-glow text-white px-6 py-2 rounded-lg font-bold transition-all">
+                Sign In / Sign Up
+            </button>
+        </div>
+
         <!-- Challenges Grid -->
-        <div id="challenges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Loading -->
-            <div class="col-span-full text-center py-12 text-gray-500">
-                <span class="material-symbols-outlined text-4xl mb-2 block animate-spin">sync</span>
-                Loading challenges...
+        <div id="challenges-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Challenges will be loaded here dynamically -->
+            <div class="col-span-full text-center py-20 text-gray-500">
+                <span class="material-symbols-outlined text-6xl mb-4">hourglass_empty</span>
+                <p>Loading challenges...</p>
             </div>
         </div>
 
-        <!-- Guest Warning -->
-        <div id="guest-warning"
-            class="hidden mt-8 p-6 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-center">
-            <span class="material-symbols-outlined text-yellow-500 text-4xl mb-3 block">warning</span>
-            <h3 class="text-xl font-bold text-yellow-400 mb-2">Playing as Guest</h3>
-            <p class="text-gray-400 mb-4">Your challenge progress and XP are not saved. Sign Up!</p>
-            <button onclick="showAuthModal()"
-                class="bg-primary hover:bg-primary-glow text-white px-6 py-2 rounded-lg font-bold transition-colors">
-                Sign Up
-            </button>
+        <!-- Completed Challenges Section -->
+        <div class="mt-12 pt-8 border-t border-white/5">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Completed Today</h3>
+            </div>
+            <div id="completed-container" class="space-y-3">
+                <p class="text-gray-500 text-sm">No challenges completed yet today.</p>
+            </div>
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="w-full border-t border-white/5 bg-[#0b0f17] py-8 mt-auto">
         <div class="px-6 max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex flex-col gap-2">
-                <h3 class="text-white font-bold text-lg">Rase Games</h3>
-
+            <div>
+                <h3 class="text-white font-bold text-lg">Rase<span class="text-primary">Games</span></h3>
+                <p class="text-gray-500 text-sm">© 2024 Rase Corporation</p>
             </div>
             <div class="flex gap-8">
-                <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/pages/about">About</a>
-                <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/pages/leaderboard">Leaderboard</a>
-                <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/pages/community">Community</a>
+                <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
+                    href="/pages/about">About</a>
+                <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
+                    href="/pages/community">Community</a>
             </div>
         </div>
     </footer>
@@ -184,77 +184,61 @@
     <script src="../scripts/auth.js"></script>
     <script>
         // Challenge card template
-        function createChallengeCard(challenge, status) {
-            const game = challenge.game;
-            const progressPercent = Math.min(100, Math.round((status.current / challenge.goal) * 100));
-            const isCompleted = status.completed;
-
-            // Gradient colors based on game
-            const gradients = {
-                'rase-clicker': 'from-cyan-600 to-blue-800',
-                'fight-arena': 'from-red-600 to-orange-700',
-                'cyber-runner': 'from-purple-600 to-pink-700',
-                '2048': 'from-yellow-600 to-orange-700',
-                'snake': 'from-green-600 to-lime-700',
-                'tetris': 'from-blue-600 to-indigo-800',
-                'flappy': 'from-yellow-500 to-amber-600',
-                'memory': 'from-pink-600 to-rose-700',
-                'minesweeper': 'from-gray-600 to-slate-800',
-                'tictactoe': 'from-red-500 to-pink-600'
+        function createChallengeCard(challenge, index, isCompleted) {
+            const gradients = [
+                'from-cyan-500/20 to-blue-600/20',
+                'from-red-500/20 to-orange-600/20',
+                'from-purple-500/20 to-pink-600/20'
+            ];
+            const icons = {
+                'snake': '🐍', 'tetris': '🧱', 'runner': '🏃', 'clicker': '💎',
+                'flappy': '🐦', '2048': '🔢', 'memory': '🃏', 'minesweeper': '💣',
+                'tictactoe': '⭕', 'fightarena': '⚔️'
             };
+            const gameIcon = icons[challenge.gameId] || '🎮';
 
-            const gradient = gradients[challenge.gameId] || 'from-primary to-primary-glow';
+            if (isCompleted) {
+                return `
+                    <div class="p-4 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl">${gameIcon}</span>
+                            <div>
+                                <h4 class="font-bold text-white">${challenge.description}</h4>
+                                <p class="text-xs text-green-400">+${challenge.xp} XP earned</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined text-green-500 text-3xl">check_circle</span>
+                    </div>
+                `;
+            }
+
+            const progress = challenge.current || 0;
+            const target = challenge.target || 1;
+            const percent = Math.min((progress / target) * 100, 100);
 
             return `
-                <div class="challenge-card group bg-card-dark rounded-xl overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 flex flex-col h-full ${isCompleted ? 'opacity-75' : ''}">
-                    <div class="relative h-48 overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-80 z-10"></div>
-                        <div class="card-image w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center transition-transform duration-700">
-                            <span class="text-7xl">${challenge.icon}</span>
-                        </div>
-                        <div class="absolute top-4 left-4 z-20 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[14px] text-yellow-400">star</span>
-                            Daily
-                        </div>
-                        ${isCompleted ? `
-                            <div class="absolute top-4 right-4 z-20 bg-green-500/80 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">check</span>
-                                Completed
-                            </div>
-                        ` : ''}
-                        <div class="absolute bottom-4 left-4 z-20">
-                            <div class="bg-primary/20 backdrop-blur-sm p-2 rounded-lg inline-flex mb-2">
-                                <span class="text-2xl">${game.emoji}</span>
-                            </div>
+                <div class="group bg-card-dark rounded-xl overflow-hidden border border-white/5 hover:border-primary/50 transition-all duration-300 flex flex-col h-full">
+                    <div class="relative h-32 overflow-hidden bg-gradient-to-br ${gradients[index % 3]} flex items-center justify-center">
+                        <span class="text-6xl">${gameIcon}</span>
+                        <div class="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10">
+                            ${challenge.xp} XP
                         </div>
                     </div>
                     <div class="p-5 flex-1 flex flex-col">
-                        <h3 class="text-xl font-bold mb-1 group-hover:text-primary transition-colors">${challenge.title}</h3>
-                        <p class="text-gray-500 text-xs mb-2">${game.name}</p>
-                        <p class="text-gray-400 text-sm mb-4 flex-1">${challenge.description}</p>
+                        <h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">${challenge.description}</h3>
+                        <p class="text-gray-500 text-sm mb-4">${challenge.gameName || 'Any Game'}</p>
                         
-                        <!-- Progress Bar -->
-                        <div class="mb-4">
-                            <div class="flex justify-between text-xs text-gray-400 mb-1">
-                                <span>${status.current} / ${challenge.goal}</span>
-                                <span>${progressPercent}%</span>
+                        <div class="mt-auto">
+                            <div class="flex justify-between text-xs text-gray-400 mb-2">
+                                <span>Progress</span>
+                                <span>${progress}/${target}</span>
                             </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2">
-                                <div class="h-2 rounded-full transition-all duration-500 ${isCompleted ? 'bg-green-500' : 'bg-primary'}" style="width: ${progressPercent}%"></div>
+                            <div class="w-full bg-slate-700 rounded-full h-2 mb-4">
+                                <div class="bg-primary h-2 rounded-full transition-all" style="width: ${percent}%"></div>
                             </div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-                            <div class="flex flex-col">
-                                <span class="text-xs text-gray-400 uppercase tracking-wider mb-0.5">Reward</span>
-                                <span class="text-sm font-bold text-yellow-400 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[16px]">bolt</span>
-                                    ${challenge.xp} XP
-                                </span>
-                            </div>
-                            <a href="${game.url}" class="bg-primary hover:bg-primary-glow text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 flex items-center gap-2 no-underline ${isCompleted ? 'opacity-50 pointer-events-none' : ''}">
+                            <a href="/games/${challenge.gameId || 'games'}/" class="w-full bg-primary hover:bg-primary-glow text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2 no-underline">
                                 <span class="material-symbols-outlined text-[18px]">play_arrow</span>
-                                ${isCompleted ? 'Completed' : 'Play'}
+                                Play Now
                             </a>
                         </div>
                     </div>
@@ -262,92 +246,93 @@
             `;
         }
 
-        // Load and render challenges
-        function loadChallenges() {
-            if (!window.ChallengesSystem) {
-                setTimeout(loadChallenges, 500);
+        async function loadChallenges() {
+            const container = document.getElementById('challenges-container');
+            const completedContainer = document.getElementById('completed-container');
+            const guestWarning = document.getElementById('guest-warning');
+
+            // Wait for auth
+            if (!window.authStateChecked) {
+                await new Promise(resolve => {
+                    window.addEventListener('authStateChanged', resolve, { once: true });
+                });
+            }
+
+            if (!window.currentUser || window.currentUser.isAnonymous) {
+                guestWarning.classList.remove('hidden');
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-gray-500">
+                        <p>Sign in to view and complete challenges.</p>
+                    </div>
+                `;
                 return;
             }
 
-            const user = window.currentUser;
-            const grid = document.getElementById('challenges-grid');
-            const guestWarning = document.getElementById('guest-warning');
+            guestWarning.classList.add('hidden');
 
-            // Show guest warning only for anonymous users, hide for registered users
-            // Wait until auth state is actually checked by Firebase
-            if (window.authStateChecked) {
-                if (user && !user.isAnonymous) {
-                    guestWarning.classList.add('hidden');
-                } else {
-                    guestWarning.classList.remove('hidden');
-                }
-            }
+            if (window.ChallengesSystem) {
+                await ChallengesSystem.ensureDailyInit(window.currentUser.uid);
+                const progress = ChallengesSystem.getUserProgress(window.currentUser.uid);
+                const dailyChallenges = progress?.dailyChallenges || [];
 
-            // Get user progress to find their locked level for today
-            const userId = user?.uid || 'guest';
-            // Ensure initialized for today
-            const progress = ChallengesSystem.ensureDailyInit(userId);
-            const level = progress.dayStartLevel || 1;
-
-            const challenges = ChallengesSystem.getDailyChallenges(level);
-
-            let completedCount = 0;
-            let totalProgress = 0;
-            let html = '';
-
-            challenges.forEach(challenge => {
-                const status = ChallengesSystem.getChallengeStatus(userId, challenge.id, challenge.goal);
-                html += createChallengeCard(challenge, status);
-
-                if (status.completed) completedCount++;
-                totalProgress += status.percentage;
-            });
-
-            grid.innerHTML = html;
-
-            // Update progress display
-            const avgProgress = Math.round(totalProgress / challenges.length);
-            document.getElementById('progress-percent').textContent = `${avgProgress}%`;
-            document.getElementById('progress-bar').style.width = `${avgProgress}%`;
-            document.getElementById('completed-count').textContent = `${completedCount}/3`;
-
-            // Update status text
-            const statusEl = document.getElementById('progress-status');
-            if (completedCount === 3) {
-                statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px] text-green-500">check_circle</span><span class="text-green-500">Completed!</span>';
-            } else if (completedCount > 0) {
-                statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">trending_up</span><span class="text-primary">Keep going!</span>';
-            }
-
-            // Update user level display
-            if (user && !user.isAnonymous && window.ChallengesSystem) {
-                const progress = ChallengesSystem.getUserProgress(userId);
+                // Update stats
                 const totalXP = progress?.totalXP || 0;
                 const levelInfo = ChallengesSystem.getLevelFromXP(totalXP);
+                const levelProgress = ChallengesSystem.getLevelProgress(totalXP);
 
-                document.getElementById('user-level-display').innerHTML = `
-                    <span style="color: ${levelInfo.color}">${levelInfo.emoji} Level ${levelInfo.level}</span>
-                `;
-                document.getElementById('total-xp-display').textContent = `Total: ${totalXP} XP`;
+                document.getElementById('total-xp').textContent = `${totalXP} XP`;
+                document.getElementById('xp-display').classList.remove('hidden');
+                document.getElementById('current-level').textContent = `Level ${levelInfo.level}`;
+
+                // Count completed
+                const completed = dailyChallenges.filter(c => c.completed);
+                const completedCount = completed.length;
+                const totalCount = dailyChallenges.length || 3;
+                const progressPercent = Math.round((completedCount / totalCount) * 100);
+
+                document.getElementById('completed-count').textContent = `${completedCount}/${totalCount}`;
+                document.getElementById('progress-percent').textContent = `${progressPercent}%`;
+                document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+                if (completedCount === totalCount) {
+                    document.getElementById('progress-status').innerHTML = `
+                        <span class="material-symbols-outlined text-[16px] text-green-500">check_circle</span>
+                        <span class="text-green-500">Complete!</span>
+                    `;
+                } else {
+                    document.getElementById('progress-status').innerHTML = `
+                        <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                        In Progress
+                    `;
+                }
+
+                // Render active challenges
+                const activeChallenges = dailyChallenges.filter(c => !c.completed);
+                if (activeChallenges.length > 0) {
+                    container.innerHTML = activeChallenges.map((c, i) => createChallengeCard(c, i, false)).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="col-span-full text-center py-10">
+                            <span class="material-symbols-outlined text-green-500 text-6xl mb-4">emoji_events</span>
+                            <p class="text-xl font-bold text-white mb-2">All Done!</p>
+                            <p class="text-gray-400">You've completed all challenges for today. Come back tomorrow!</p>
+                        </div>
+                    `;
+                }
+
+                // Render completed
+                if (completed.length > 0) {
+                    completedContainer.innerHTML = completed.map((c, i) => createChallengeCard(c, i, true)).join('');
+                } else {
+                    completedContainer.innerHTML = '<p class="text-gray-500 text-sm">No challenges completed yet today.</p>';
+                }
             }
         }
 
-        // Update timer
-        function updateTimer() {
-            if (!window.ChallengesSystem) return;
-            const time = ChallengesSystem.formatTimeRemaining();
-            document.getElementById('reset-timer').textContent = time;
-        }
-
-        // Initialize
-        window.addEventListener('authStateChanged', () => {
-            setTimeout(loadChallenges, 300);
-        });
-
+        // Load on auth change
+        window.addEventListener('authStateChanged', loadChallenges);
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(loadChallenges, 1000);
-            updateTimer();
-            setInterval(updateTimer, 1000);
+            if (window.currentUser !== undefined) loadChallenges();
         });
     </script>
 </body>

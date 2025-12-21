@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Rase Games - Home</title>
+    <title>RaseGames - Home</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -21,11 +21,11 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#4f46e5",
-                        "primary-glow": "#6366f1",
+                        "primary": "#0f49bd",
+                        "primary-glow": "#2f70ff",
                         "background-light": "#f6f6f8",
-                        "background-dark": "#0a0a0f",
-                        "surface-dark": "#12121a",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1a2230",
                     },
                     fontFamily: {
                         "display": ["Space Grotesk", "sans-serif"]
@@ -42,8 +42,8 @@
                     },
                     keyframes: {
                         'pulse-glow': {
-                            '0%, 100%': { opacity: 1, boxShadow: '0 0 15px rgba(79, 70, 229, 0.3)' },
-                            '50%': { opacity: .8, boxShadow: '0 0 30px rgba(79, 70, 229, 0.6)' },
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 15px rgba(15, 73, 189, 0.3)' },
+                            '50%': { opacity: .8, boxShadow: '0 0 30px rgba(15, 73, 189, 0.6)' },
                         },
                         'float': {
                             '0%, 100%': { transform: 'translateY(0)' },
@@ -55,14 +55,13 @@
         }
     </script>
     <style>
-        /* Custom Scrollbar for Webkit */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #0a0a0f;
+            background: #101622;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -75,7 +74,7 @@
         }
 
         .text-glow {
-            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+            text-shadow: 0 0 10px rgba(47, 112, 255, 0.5);
         }
 
         .card-hover-effect {
@@ -84,7 +83,7 @@
 
         .card-hover-effect:hover {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(15, 73, 189, 0.5);
             z-index: 10;
         }
 
@@ -92,7 +91,7 @@
             display: inline-block;
             overflow: hidden;
             white-space: nowrap;
-            border-right: 2px solid #4f46e5;
+            border-right: 2px solid #0f49bd;
             animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
         }
 
@@ -114,57 +113,37 @@
             }
 
             50% {
-                border-color: #4f46e5
+                border-color: #0f49bd
             }
-        }
-
-        /* Particle Canvas */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.3;
         }
     </style>
     <link rel="stylesheet" href="styles/auth.css">
 </head>
 
-<body class="bg-background-dark font-display text-white antialiased overflow-x-hidden">
-    <!-- Particle Canvas Container -->
-    <div class="background-effects">
-        <div class="glow-orb"></div>
-    </div>
-
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden">
     <div class="relative flex min-h-screen w-full flex-col">
         <!-- Navigation -->
         <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
             <div class="flex h-16 items-center justify-between px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
                 <!-- Logo -->
-                <div class="flex items-center gap-3">
+                <a href="/" class="flex items-center gap-3 no-underline">
                     <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
                         <span class="material-symbols-outlined" style="font-size: 20px;">sports_esports</span>
                     </div>
-                    <a href="/" class="no-underline">
-                        <h2 class="text-white text-xl font-bold tracking-tight">Rase<span
-                                class="text-primary">Games</span></h2>
-                    </a>
-                </div>
+                    <h2 class="text-white text-xl font-bold tracking-tight">Rase<span class="text-primary">Games</span>
+                    </h2>
+                </a>
                 <!-- Nav Links (Desktop) -->
                 <div class="hidden md:flex items-center gap-8">
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
                         href="/pages/games">Games</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
                         href="/pages/challenges">Challenges</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
-                        href="/pages/leaderboard">Leaderboards</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
+                        href="/pages/leaderboard">Leaderboard</a>
+                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
                         href="/pages/community">Community</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
-                        href="/pages/about">About</a>
                 </div>
                 <!-- Actions -->
                 <div class="flex items-center gap-4">
@@ -172,28 +151,32 @@
                         class="hidden md:flex h-9 items-center px-4 rounded-lg bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary text-sm font-bold transition-all no-underline">
                         All Games
                     </a>
-                    <div id="user-display"></div>
+                    <!-- User Display (dynamic) -->
+                    <div id="user-display" class="flex items-center gap-3">
+                        <button onclick="showAuthModal()"
+                            class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                            Sign In
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col items-center w-full relative z-10">
+        <main class="flex-1 flex flex-col items-center w-full">
             <!-- Hero Section -->
             <div class="w-full relative px-6 lg:px-20 py-10 max-w-[1440px]">
                 <div class="relative overflow-hidden rounded-2xl bg-surface-dark border border-white/5 shadow-2xl">
-                    <!-- Background Image with Gradient Overlay -->
-                    <div class="absolute inset-0 bg-cover bg-center"
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDiAtvz8T_MO7ZvbTAOeIkwYmSVVBT7UOO-juXyhaD5c4TotaTq-ozohvT6-yrAOUGQYQgXt9-Lf09JRLVEjmZ6VqYxXNJIGBMt8yZKBO_hbAIJfANPUJ7USGyEGe1inq1gRaaVH6rI7bvgJb3QObMW6HD8TccqOHSx_JOorDqVAAvSa_Q2SnmXJK5svKdm3YcznnsGXHQrfR9CEZpX2xl6qZhbuimOlJl6nX-JBoi1XsIOaK87FwKokkW7CTaKucUxPa-HV8AhmB2u");'>
+                    <!-- Background -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary/30 via-purple-600/20 to-transparent">
                     </div>
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/90 to-transparent">
                     </div>
 
-                    <!-- Content for LOGGED-IN users -->
+                    <!-- Content - Logged In -->
                     <div id="hero-logged-in"
-                        class="relative z-10 flex flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl"
-                        style="display: none;">
+                        class="relative z-10 flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl hidden">
                         <div
                             class="mb-2 flex items-center gap-2 text-primary font-bold text-sm tracking-wider uppercase">
                             <span class="material-symbols-outlined text-sm">bolt</span>
@@ -208,7 +191,7 @@
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a href="/pages/profile"
-                                class="h-12 px-8 rounded-lg bg-primary hover:bg-primary-glow text-white font-bold tracking-wide transition-all shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] flex items-center gap-2 no-underline">
+                                class="h-12 px-8 rounded-lg bg-primary hover:bg-primary-glow text-white font-bold tracking-wide transition-all shadow-[0_0_20px_rgba(15,73,189,0.3)] hover:shadow-[0_0_30px_rgba(15,73,189,0.6)] flex items-center gap-2 no-underline">
                                 <span class="material-symbols-outlined">query_stats</span>
                                 View Stats
                             </a>
@@ -220,32 +203,31 @@
                         </div>
                     </div>
 
-                    <!-- Content for GUEST users -->
+                    <!-- Content - Guest -->
                     <div id="hero-guest"
-                        class="relative z-10 flex flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl"
-                        style="display: none;">
+                        class="relative z-10 flex flex-col justify-center min-h-[480px] p-8 md:p-16 max-w-3xl">
                         <div
                             class="mb-2 flex items-center gap-2 text-primary font-bold text-sm tracking-wider uppercase">
                             <span class="material-symbols-outlined text-sm">sports_esports</span>
-                            Ready to Play
+                            Welcome to RaseGames
                         </div>
                         <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-4 tracking-tight">
-                            Experience Gaming<br><span class="text-primary">Beyond Limits</span>
+                            PLAY. COMPETE.<br>CONQUER.
                         </h1>
                         <p class="text-gray-400 text-lg md:text-xl max-w-lg mb-8 font-light">
-                            Dive into our universe of micro-games. <span class="text-white font-medium">Sign in</span>
-                            to track your progress and compete on leaderboards.
+                            10+ browser games, daily challenges, and global leaderboards. <span
+                                class="text-white font-medium">No downloads required.</span>
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <a href="/pages/games"
-                                class="h-12 px-8 rounded-lg bg-primary hover:bg-primary-glow text-white font-bold tracking-wide transition-all shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] flex items-center gap-2 no-underline">
+                                class="h-12 px-8 rounded-lg bg-primary hover:bg-primary-glow text-white font-bold tracking-wide transition-all shadow-[0_0_20px_rgba(15,73,189,0.3)] hover:shadow-[0_0_30px_rgba(15,73,189,0.6)] flex items-center gap-2 no-underline">
                                 <span class="material-symbols-outlined">sports_esports</span>
                                 Browse Games
                             </a>
                             <button onclick="showAuthModal()"
                                 class="h-12 px-8 rounded-lg bg-white/5 hover:bg-white/10 text-white font-bold tracking-wide transition-all border border-white/10 flex items-center gap-2">
-                                <span class="material-symbols-outlined">login</span>
-                                Sign In
+                                <span class="material-symbols-outlined">person_add</span>
+                                Sign Up Free
                             </button>
                         </div>
                     </div>
@@ -254,28 +236,21 @@
 
             <!-- Featured Games Section -->
             <div class="w-full px-6 lg:px-20 py-8 max-w-[1440px] flex flex-col gap-6">
-                <!-- Section Header -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div class="h-8 w-1 bg-primary rounded-full"></div>
                         <h2 class="text-2xl md:text-3xl font-bold text-white">Featured Games</h2>
                     </div>
-                    <div class="flex gap-2">
-                        <button
-                            class="size-10 rounded-full bg-surface-dark border border-white/10 text-white flex items-center justify-center hover:bg-white/5 transition-colors">
-                            <span class="material-symbols-outlined">arrow_back</span>
-                        </button>
-                        <button
-                            class="size-10 rounded-full bg-surface-dark border border-white/10 text-white flex items-center justify-center hover:bg-white/5 transition-colors">
-                            <span class="material-symbols-outlined">arrow_forward</span>
-                        </button>
-                    </div>
+                    <a href="/pages/games"
+                        class="text-sm text-primary hover:text-primary-glow font-bold flex items-center gap-1 transition-colors no-underline">
+                        View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
                 </div>
 
                 <!-- Game Cards Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Card 1 - Rase Clicker -->
-                    <a href="/games/raseClicker/" data-game-id="rase-clicker"
+                    <!-- Rase Clicker -->
+                    <a href="/games/raseClicker/"
                         class="card-hover-effect group relative flex flex-col gap-4 rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center">
@@ -284,7 +259,6 @@
                                     class="px-2 py-1 rounded bg-primary text-xs font-bold text-white shadow-lg">POPULAR</span>
                             </div>
                             <span class="text-7xl">💎</span>
-                            <!-- Overlay on hover -->
                             <div
                                 class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
@@ -296,35 +270,29 @@
                                         Rase Clicker</h3>
                                     <p class="text-gray-500 text-sm">Idle, Clicker</p>
                                 </div>
-                                <div class="game-rating-display flex gap-1 items-center text-yellow-500"
-                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <div class="flex gap-1 text-yellow-500">
                                     <span class="material-symbols-outlined text-[16px]">star</span>
-                                    <span class="rating-avg text-white text-sm font-bold">-</span>
-                                    <span class="rating-count text-gray-500 text-xs"></span>
+                                    <span class="text-white text-sm font-bold">4.8</span>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm mb-2">Click your way to server domination!</p>
-                            <!-- Rating Stars -->
-                            <div class="rating-stars-container mb-3" data-game="rase-clicker"
-                                onclick="event.preventDefault(); event.stopPropagation();"></div>
-                            <div class="mt-auto">
-                                <div
-                                    class="w-full h-10 rounded-lg bg-white/5 hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 hover:border-primary group-hover:bg-primary flex items-center justify-center gap-2">
+                            <div class="mt-auto pt-4">
+                                <span
+                                    class="w-full h-10 rounded-lg bg-white/5 group-hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 group-hover:border-primary flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[18px]">play_arrow</span>
                                     Play Now
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Card 2 - Fight Arena -->
-                    <a href="/games/fightArena/" data-game-id="fight-arena"
+                    <!-- Fight Arena -->
+                    <a href="/games/fightArena/"
                         class="card-hover-effect group relative flex flex-col gap-4 rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-red-500/20 to-orange-600/20 flex items-center justify-center">
                             <div class="absolute top-3 right-3 z-20">
                                 <span
-                                    class="px-2 py-1 rounded bg-green-600 text-xs font-bold text-white shadow-lg">MULTIPLAYER</span>
+                                    class="px-2 py-1 rounded bg-green-500 text-xs font-bold text-white shadow-lg">MULTIPLAYER</span>
                             </div>
                             <span class="text-7xl">⚔️</span>
                             <div
@@ -338,35 +306,29 @@
                                         Fight Arena</h3>
                                     <p class="text-gray-500 text-sm">Fighting, PvP</p>
                                 </div>
-                                <div class="game-rating-display flex gap-1 items-center text-yellow-500"
-                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <div class="flex gap-1 text-yellow-500">
                                     <span class="material-symbols-outlined text-[16px]">star</span>
-                                    <span class="rating-avg text-white text-sm font-bold">-</span>
-                                    <span class="rating-count text-gray-500 text-xs"></span>
+                                    <span class="text-white text-sm font-bold">4.9</span>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm mb-2">2D fighting game with online multiplayer!</p>
-                            <!-- Rating Stars -->
-                            <div class="rating-stars-container mb-3" data-game="fight-arena"
-                                onclick="event.preventDefault(); event.stopPropagation();"></div>
-                            <div class="mt-auto">
-                                <div
-                                    class="w-full h-10 rounded-lg bg-white/5 hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 hover:border-primary group-hover:bg-primary flex items-center justify-center gap-2">
+                            <div class="mt-auto pt-4">
+                                <span
+                                    class="w-full h-10 rounded-lg bg-white/5 group-hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 group-hover:border-primary flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[18px]">play_arrow</span>
                                     Play Now
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Card 3 - Cyber Runner -->
-                    <a href="/games/runnerGame/" data-game-id="cyber-runner"
+                    <!-- Cyber Runner -->
+                    <a href="/games/runnerGame/"
                         class="card-hover-effect group relative flex flex-col gap-4 rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-600/20 flex items-center justify-center">
                             <div class="absolute top-3 right-3 z-20">
                                 <span
-                                    class="px-2 py-1 rounded bg-black/60 text-xs font-bold text-white backdrop-blur-sm border border-white/10">NEW</span>
+                                    class="px-2 py-1 rounded bg-orange-500 text-xs font-bold text-white shadow-lg">HOT</span>
                             </div>
                             <span class="text-7xl">🏃</span>
                             <div
@@ -378,44 +340,108 @@
                                 <div>
                                     <h3 class="text-white text-lg font-bold group-hover:text-primary transition-colors">
                                         Cyber Runner</h3>
-                                    <p class="text-gray-500 text-sm">Endless Runner, Action</p>
+                                    <p class="text-gray-500 text-sm">Platformer, Endless</p>
                                 </div>
-                                <div class="game-rating-display flex gap-1 items-center text-yellow-500"
-                                    onclick="event.preventDefault(); event.stopPropagation();">
+                                <div class="flex gap-1 text-yellow-500">
                                     <span class="material-symbols-outlined text-[16px]">star</span>
-                                    <span class="rating-avg text-white text-sm font-bold">-</span>
-                                    <span class="rating-count text-gray-500 text-xs"></span>
+                                    <span class="text-white text-sm font-bold">4.7</span>
                                 </div>
                             </div>
-                            <p class="text-gray-400 text-sm mb-2">Infinite runner with upgrades. Escape the system!</p>
-                            <!-- Rating Stars -->
-                            <div class="rating-stars-container mb-3" data-game="cyber-runner"
-                                onclick="event.preventDefault(); event.stopPropagation();"></div>
-                            <div class="mt-auto">
-                                <div
-                                    class="w-full h-10 rounded-lg bg-white/5 hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 hover:border-primary group-hover:bg-primary flex items-center justify-center gap-2">
+                            <div class="mt-auto pt-4">
+                                <span
+                                    class="w-full h-10 rounded-lg bg-white/5 group-hover:bg-primary text-white text-sm font-bold transition-all border border-white/10 group-hover:border-primary flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[18px]">play_arrow</span>
                                     Play Now
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
 
-            <!-- Recently Played Section (Dynamic - Only for logged-in users) -->
-            <div id="recently-played-section" class="w-full px-6 lg:px-20 py-8 max-w-[1440px] mb-20"
-                style="display: none;">
-                <!-- Content will be dynamically populated by gameHistory.js -->
+            <!-- More Games Section -->
+            <div class="w-full px-6 lg:px-20 py-8 max-w-[1440px] flex flex-col gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-1 bg-red-500 rounded-full"></div>
+                    <h2 class="text-2xl font-bold text-white">More Games</h2>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <!-- Snake -->
+                    <a href="/games/snakeGame/"
+                        class="flex flex-col items-center gap-3 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/50 transition-all group no-underline">
+                        <span class="text-4xl">🐍</span>
+                        <span class="text-white font-bold text-sm group-hover:text-primary transition-colors">Neon
+                            Snake</span>
+                    </a>
+                    <!-- Tetris -->
+                    <a href="/games/tetrisGame/"
+                        class="flex flex-col items-center gap-3 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/50 transition-all group no-underline">
+                        <span class="text-4xl">🧱</span>
+                        <span class="text-white font-bold text-sm group-hover:text-primary transition-colors">Cyber
+                            Blocks</span>
+                    </a>
+                    <!-- 2048 -->
+                    <a href="/games/game2048/"
+                        class="flex flex-col items-center gap-3 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/50 transition-all group no-underline">
+                        <span class="text-4xl">🔢</span>
+                        <span class="text-white font-bold text-sm group-hover:text-primary transition-colors">Power
+                            2048</span>
+                    </a>
+                    <!-- Flappy -->
+                    <a href="/games/flappyGame/"
+                        class="flex flex-col items-center gap-3 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/50 transition-all group no-underline">
+                        <span class="text-4xl">🐦</span>
+                        <span class="text-white font-bold text-sm group-hover:text-primary transition-colors">Pixel
+                            Bird</span>
+                    </a>
+                    <!-- Memory -->
+                    <a href="/games/memoryGame/"
+                        class="flex flex-col items-center gap-3 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/50 transition-all group no-underline">
+                        <span class="text-4xl">🃏</span>
+                        <span class="text-white font-bold text-sm group-hover:text-primary transition-colors">Mind
+                            Match</span>
+                    </a>
+                    <!-- Minesweeper -->
+                    <a href="/games/minesweeperGame/"
+                        class="flex flex-col items-center gap-3 p-4 rounded-xl bg-surface-dark border border-white/5 hover:border-primary/50 transition-all group no-underline">
+                        <span class="text-4xl">💣</span>
+                        <span class="text-white font-bold text-sm group-hover:text-primary transition-colors">Bomb
+                            Squad</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="w-full px-6 lg:px-20 py-8 max-w-[1440px] mb-10">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-surface-dark border border-white/5 rounded-xl p-6 text-center">
+                        <p class="text-3xl md:text-4xl font-bold text-primary mb-2">10+</p>
+                        <p class="text-gray-400 text-sm">Browser Games</p>
+                    </div>
+                    <div class="bg-surface-dark border border-white/5 rounded-xl p-6 text-center">
+                        <p class="text-3xl md:text-4xl font-bold text-green-400 mb-2">∞</p>
+                        <p class="text-gray-400 text-sm">Free to Play</p>
+                    </div>
+                    <div class="bg-surface-dark border border-white/5 rounded-xl p-6 text-center">
+                        <p class="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">24/7</p>
+                        <p class="text-gray-400 text-sm">Available</p>
+                    </div>
+                    <div class="bg-surface-dark border border-white/5 rounded-xl p-6 text-center">
+                        <p class="text-3xl md:text-4xl font-bold text-purple-400 mb-2">🏆</p>
+                        <p class="text-gray-400 text-sm">Leaderboards</p>
+                    </div>
+                </div>
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="w-full border-t border-white/5 bg-[#06060a] py-8">
+        <footer class="w-full border-t border-white/5 bg-[#0b0f17] py-8">
             <div
                 class="px-6 lg:px-20 max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex flex-col gap-2 text-center md:text-left">
+                <div class="flex flex-col gap-2">
                     <h3 class="text-white font-bold text-lg">Rase<span class="text-primary">Games</span></h3>
+                    <p class="text-gray-500 text-sm">© 2024 Rase Corporation</p>
                 </div>
                 <div class="flex gap-8">
                     <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
@@ -423,21 +449,13 @@
                     <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
                         href="/pages/community">Community</a>
                 </div>
-                <div class="flex gap-4">
-                    <a class="text-gray-500 hover:text-primary transition-colors" href="#">
-                        <span class="material-symbols-outlined">chat</span>
-                    </a>
-                    <a class="text-gray-500 hover:text-primary transition-colors" href="#">
-                        <span class="material-symbols-outlined">forum</span>
-                    </a>
-                </div>
             </div>
         </footer>
 
-        <!-- Floating Action Button (FAB) -->
+        <!-- Floating Action Button -->
         <div class="fixed bottom-8 right-8 z-50">
             <a href="/pages/games"
-                class="animate-float hover:animate-none group flex items-center gap-3 bg-primary hover:bg-primary-glow text-white px-6 py-4 rounded-full shadow-[0_0_20px_rgba(79,70,229,0.5)] hover:shadow-[0_0_30px_rgba(79,70,229,0.7)] transition-all transform hover:scale-105 no-underline">
+                class="animate-float hover:animate-none group flex items-center gap-3 bg-primary hover:bg-primary-glow text-white px-6 py-4 rounded-full shadow-[0_0_20px_rgba(15,73,189,0.5)] hover:shadow-[0_0_30px_rgba(15,73,189,0.7)] transition-all transform hover:scale-105 no-underline">
                 <span class="material-symbols-outlined">grid_view</span>
                 <span
                     class="font-bold text-sm tracking-wide hidden group-hover:inline-block transition-all duration-300">Browse
@@ -446,88 +464,34 @@
         </div>
     </div>
 
-    <script src="scripts/particles.js"></script>
-    <script src="scripts/rating.js"></script>
-    <script src="scripts/gameHistory.js"></script>
+    <!-- Scripts -->
     <script src="scripts/challenges.js"></script>
     <script src="scripts/auth.js"></script>
     <script>
-        // Initialize rating system on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            // Game IDs mapping
-            const games = ['rase-clicker', 'fight-arena', 'cyber-runner'];
-
-            // Create stars for each game
-            games.forEach(gameId => {
-                const container = document.querySelector(`.rating-stars-container[data-game="${gameId}"]`);
-                if (container && window.RatingSystem) {
-                    const ratingUI = RatingSystem.createRatingUI(gameId, {
-                        showCount: false,
-                        size: 'small',
-                        interactive: true
-                    });
-                    container.appendChild(ratingUI);
-
-                    // Update the card's rating display
-                    updateCardRating(gameId);
-                }
-            });
-
-            function updateCardRating(gameId) {
-                const card = document.querySelector(`[data-game-id="${gameId}"]`);
-                if (card && window.RatingSystem) {
-                    const rating = RatingSystem.getGameRating(gameId);
-                    const avgEl = card.querySelector('.rating-avg');
-                    const countEl = card.querySelector('.rating-count');
-
-                    if (avgEl) avgEl.textContent = rating.average > 0 ? rating.average.toFixed(1) : '-';
-                    if (countEl) countEl.textContent = rating.totalRatings > 0 ? `(${rating.totalRatings})` : '';
-                }
-            }
-
-            // Initialize Recently Played section (only for logged-in users)
-            if (window.GameHistory) {
-                GameHistory.renderRecentlyPlayed('recently-played-section');
-            }
-
-            // Initialize Hero section based on auth state
-            initHeroSection();
-        });
-
-        // Hero section toggle based on login status
-        function initHeroSection() {
+        // Update hero display based on auth state
+        function updateHeroDisplay() {
             const heroLoggedIn = document.getElementById('hero-logged-in');
             const heroGuest = document.getElementById('hero-guest');
             const heroUsername = document.getElementById('hero-username');
 
-            function updateHeroDisplay() {
-                const user = window.currentUser;
+            if (window.currentUser && !window.currentUser.isAnonymous) {
+                heroLoggedIn.classList.remove('hidden');
+                heroLoggedIn.classList.add('flex');
+                heroGuest.classList.add('hidden');
 
-                if (user && !user.isAnonymous) {
-                    // Logged-in user
-                    heroLoggedIn.style.display = 'flex';
-                    heroGuest.style.display = 'none';
-
-                    // Update username
-                    if (heroUsername && user.displayName) {
-                        heroUsername.textContent = user.displayName.toUpperCase();
-                    }
-                } else {
-                    // Guest or not logged in
-                    heroLoggedIn.style.display = 'none';
-                    heroGuest.style.display = 'flex';
+                if (heroUsername && window.currentUser.displayName) {
+                    heroUsername.textContent = window.currentUser.displayName.toUpperCase();
                 }
+            } else {
+                heroLoggedIn.classList.add('hidden');
+                heroLoggedIn.classList.remove('flex');
+                heroGuest.classList.remove('hidden');
             }
+        }
 
-            // Listen for auth state changes from auth.js
-            window.addEventListener('authStateChanged', () => {
-                updateHeroDisplay();
-            });
-
-            // Also check immediately if auth is already loaded
-            if (window.currentUser !== undefined) {
-                updateHeroDisplay();
-            }
+        window.addEventListener('authStateChanged', updateHeroDisplay);
+        if (window.currentUser !== undefined) {
+            updateHeroDisplay();
         }
     </script>
 </body>

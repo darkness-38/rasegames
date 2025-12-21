@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html class="dark" lang="tr">
+<html class="dark" lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level Leaderboard - Rase Games</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>RaseGames - Leaderboard</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
@@ -20,29 +20,17 @@
                     colors: {
                         "primary": "#0f49bd",
                         "primary-glow": "#2f70ff",
-                        "background-light": "#f6f6f8",
                         "background-dark": "#101622",
                         "surface-dark": "#1a2230",
-                        "gold": "#FFD700",
-                        "silver": "#C0C0C0",
-                        "bronze": "#CD7F32",
+                        "rank-gold": "#FFD700",
+                        "rank-silver": "#C0C0C0",
+                        "rank-bronze": "#CD7F32",
                     },
-                    fontFamily: {
-                        "display": ["Space Grotesk", "sans-serif"]
-                    },
-                    animation: {
-                        'pulse-glow': 'pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        'pulse-glow': {
-                            '0%, 100%': { opacity: 1, boxShadow: '0 0 15px rgba(15, 73, 189, 0.3)' },
-                            '50%': { opacity: .8, boxShadow: '0 0 30px rgba(15, 73, 189, 0.6)' },
-                        },
-                        'float': {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(180deg, rgba(255, 215, 0, 0.15) 0%, rgba(26, 34, 48, 0) 100%)',
+                        'silver-gradient': 'linear-gradient(180deg, rgba(192, 192, 192, 0.15) 0%, rgba(26, 34, 48, 0) 100%)',
+                        'bronze-gradient': 'linear-gradient(180deg, rgba(205, 127, 50, 0.15) 0%, rgba(26, 34, 48, 0) 100%)',
                     }
                 },
             },
@@ -51,7 +39,6 @@
     <style>
         ::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -63,213 +50,127 @@
             border-radius: 4px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #374151;
-        }
-
         .text-glow {
             text-shadow: 0 0 10px rgba(47, 112, 255, 0.5);
         }
 
-        .level-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
-            border-radius: 999px;
-            font-weight: 600;
-            font-size: 12px;
+        .gold-glow {
+            box-shadow: 0 0 30px -5px rgba(255, 215, 0, 0.3);
+        }
+
+        .silver-glow {
+            box-shadow: 0 0 30px -5px rgba(192, 192, 192, 0.2);
+        }
+
+        .bronze-glow {
+            box-shadow: 0 0 30px -5px rgba(205, 127, 50, 0.2);
+        }
+
+        .card-hover-effect {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            z-index: 10;
         }
     </style>
+    <link rel="stylesheet" href="../styles/auth.css">
 </head>
 
 <body class="bg-background-dark font-display text-white antialiased overflow-x-hidden">
     <div class="relative flex min-h-screen w-full flex-col">
-        <!-- Navbar -->
+        <!-- Navigation -->
         <div class="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/90 backdrop-blur-md">
             <div class="flex h-16 items-center justify-between px-6 lg:px-20 max-w-[1440px] mx-auto w-full">
-                <div class="flex items-center gap-3">
+                <a href="/" class="flex items-center gap-3 no-underline">
                     <div class="flex items-center justify-center size-8 rounded-lg bg-primary/20 text-primary">
                         <span class="material-symbols-outlined" style="font-size: 20px;">sports_esports</span>
                     </div>
-                    <a class="text-white text-xl font-bold tracking-tight" href="/">Rase<span
-                            class="text-primary">Games</span></a>
-                </div>
+                    <span class="text-white text-xl font-bold tracking-tight">Rase<span
+                            class="text-primary">Games</span></span>
+                </a>
                 <div class="hidden md:flex items-center gap-8">
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
-                        href="/">Home</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
                         href="/pages/games">Games</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
-                        href="/pages/challenges">Challenges</a>
-                    <a class="text-white text-glow text-sm font-medium transition-colors"
+                    <a class="text-white text-glow text-sm font-bold border-b-2 border-primary py-5 no-underline"
                         href="/pages/leaderboard">Leaderboard</a>
-                    <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors"
+                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
+                        href="/pages/challenges">Challenges</a>
+                    <a class="text-gray-300 hover:text-white text-sm font-medium transition-colors no-underline"
                         href="/pages/community">Community</a>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div id="user-display"></div>
+                <div id="user-display" class="flex items-center gap-4">
+                    <button onclick="showAuthModal()"
+                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                        Sign In
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content -->
         <main class="flex-1 flex flex-col items-center w-full">
             <div class="w-full relative px-6 lg:px-20 pt-10 pb-6 max-w-[1440px]">
                 <!-- Header -->
-                <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-8">
                     <div>
                         <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
-                            <span class="material-symbols-outlined text-[18px]">home</span>
+                            <a href="/" class="hover:text-white no-underline">Home</a>
                             <span>/</span>
-                            <span class="text-primary">Rankings</span>
+                            <span class="text-primary">Leaderboard</span>
                         </div>
-                        <h1 class="text-4xl font-bold text-white tracking-tight">Level Leaderboard</h1>
-                        <p class="text-gray-400 mt-2">Complete daily challenges, earn XP and level up!</p>
+                        <h1 class="text-4xl font-bold text-white tracking-tight">Global Rankings</h1>
+                        <p class="text-gray-400 mt-2">Compete with players worldwide</p>
+                    </div>
+                </div>
+
+                <!-- Game Filter -->
+                <div class="mb-8">
+                    <div class="flex flex-wrap gap-3" id="game-filters">
+                        <button onclick="loadLeaderboard('all')"
+                            class="game-filter-btn active px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold"
+                            data-game="all">All Games</button>
+                        <button onclick="loadLeaderboard('snake')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="snake">🐍 Snake</button>
+                        <button onclick="loadLeaderboard('tetris')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="tetris">🧱 Tetris</button>
+                        <button onclick="loadLeaderboard('2048')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="2048">🔢 2048</button>
+                        <button onclick="loadLeaderboard('flappy')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="flappy">🐦 Flappy</button>
+                        <button onclick="loadLeaderboard('runner')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="runner">🏃 Runner</button>
+                        <button onclick="loadLeaderboard('fightarena')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="fightarena">⚔️ Fight Arena</button>
                     </div>
                 </div>
 
                 <!-- Top 3 Podium -->
-                <div id="top-3-container" class="flex flex-col md:flex-row justify-center items-end gap-6 mb-16 px-4"
-                    style="display: none;">
-                    <!-- 2nd Place -->
-                    <div id="podium-2"
-                        class="flex flex-col items-center w-full md:w-1/3 max-w-[280px] order-2 md:order-1 animate-float"
-                        style="animation-delay: 1s;">
-                        <div class="relative mb-4">
-                            <div
-                                class="size-24 rounded-full border-4 border-silver overflow-hidden shadow-[0_0_20px_rgba(192,192,192,0.3)] bg-surface-dark flex items-center justify-center">
-                                <span id="avatar-2" class="text-4xl">🥈</span>
-                            </div>
-                            <div
-                                class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-silver text-background-dark font-bold px-3 py-0.5 rounded-full text-sm shadow-lg">
-                                #2
-                            </div>
-                        </div>
-                        <div
-                            class="text-center w-full bg-surface-dark/50 border border-white/5 rounded-xl p-4 backdrop-blur-sm">
-                            <h3 id="name-2" class="text-white font-bold text-lg truncate">-</h3>
-                            <div id="level-badge-2" class="level-badge mt-2 mx-auto"
-                                style="background: rgba(107, 114, 128, 0.2); color: #9ca3af;">
-                                <span id="level-emoji-2">🌱</span>
-                                <span>Level <span id="level-2">1</span></span>
-                            </div>
-                            <p id="title-2" class="text-gray-500 text-xs mt-2">Çaylak</p>
-                        </div>
-                    </div>
-
-                    <!-- 1st Place -->
-                    <div id="podium-1"
-                        class="flex flex-col items-center w-full md:w-1/3 max-w-[320px] order-1 md:order-2 z-10 animate-float">
-                        <div class="relative mb-6">
-                            <div class="absolute -top-10 left-1/2 -translate-x-1/2 text-gold animate-bounce">
-                                <span class="material-symbols-outlined text-[40px]">emoji_events</span>
-                            </div>
-                            <div
-                                class="size-32 rounded-full border-4 border-gold overflow-hidden shadow-[0_0_30px_rgba(255,215,0,0.4)] ring-4 ring-gold/20 bg-surface-dark flex items-center justify-center">
-                                <span id="avatar-1" class="text-5xl">👑</span>
-                            </div>
-                            <div
-                                class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-gold text-background-dark font-bold px-4 py-1 rounded-full text-base shadow-xl flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">military_tech</span>
-                                <span>#1</span>
-                            </div>
-                        </div>
-                        <div
-                            class="text-center w-full bg-gradient-to-b from-surface-dark to-background-dark border border-gold/30 rounded-xl p-6 shadow-2xl relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gold"></div>
-                            <h3 id="name-1" class="text-2xl font-bold text-white mb-1 truncate">-</h3>
-                            <div id="level-badge-1" class="level-badge mt-2 mx-auto"
-                                style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
-                                <span id="level-emoji-1">👑</span>
-                                <span>Level <span id="level-1">1</span></span>
-                            </div>
-                            <p id="title-1" class="text-gold text-sm mt-2 font-medium">Efsane</p>
-                        </div>
-                    </div>
-
-                    <!-- 3rd Place -->
-                    <div id="podium-3"
-                        class="flex flex-col items-center w-full md:w-1/3 max-w-[280px] order-3 md:order-3 animate-float"
-                        style="animation-delay: 2s;">
-                        <div class="relative mb-4">
-                            <div
-                                class="size-24 rounded-full border-4 border-bronze overflow-hidden shadow-[0_0_20px_rgba(205,127,50,0.3)] bg-surface-dark flex items-center justify-center">
-                                <span id="avatar-3" class="text-4xl">🥉</span>
-                            </div>
-                            <div
-                                class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-bronze text-white font-bold px-3 py-0.5 rounded-full text-sm shadow-lg">
-                                #3
-                            </div>
-                        </div>
-                        <div
-                            class="text-center w-full bg-surface-dark/50 border border-white/5 rounded-xl p-4 backdrop-blur-sm">
-                            <h3 id="name-3" class="text-white font-bold text-lg truncate">-</h3>
-                            <div id="level-badge-3" class="level-badge mt-2 mx-auto"
-                                style="background: rgba(107, 114, 128, 0.2); color: #9ca3af;">
-                                <span id="level-emoji-3">🌱</span>
-                                <span>Level <span id="level-3">1</span></span>
-                            </div>
-                            <p id="title-3" class="text-gray-500 text-xs mt-2">Çaylak</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Your Rank (if logged in) -->
-                <div id="your-rank"
-                    class="w-full bg-surface-dark border border-white/5 rounded-xl overflow-hidden shadow-lg mb-6"
-                    style="display: none;">
-                    <div
-                        class="grid grid-cols-12 gap-4 px-6 py-4 bg-primary/10 border-l-4 border-l-primary items-center relative group">
-                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div id="your-rank-number" class="col-span-1 text-center font-bold text-primary-glow text-lg">#?
-                        </div>
-                        <div class="col-span-6 md:col-span-7 flex items-center gap-3">
-                            <div
-                                class="size-10 rounded-full bg-primary/20 overflow-hidden border border-primary/30 flex items-center justify-center">
-                                <span id="your-avatar" class="text-xl">👤</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-white font-bold flex items-center gap-2">
-                                    <span id="your-name">You</span>
-                                    <span
-                                        class="text-[10px] bg-primary/20 text-primary px-1.5 rounded uppercase">Me</span>
-                                </span>
-                                <span id="your-level-text" class="text-gray-400 text-xs">Level 1 • Rookie</span>
-                            </div>
-                        </div>
-                        <div class="col-span-5 md:col-span-4 flex items-center justify-end gap-3">
-                            <div class="hidden sm:block">
-                                <div class="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
-                                    <div id="your-progress-bar" class="h-full bg-primary" style="width: 0%;"></div>
-                                </div>
-                                <p id="your-xp-text" class="text-gray-500 text-[10px] mt-1 text-right">0 / 100 XP</p>
-                            </div>
-                            <div id="your-level-badge" class="level-badge"
-                                style="background: rgba(107, 114, 128, 0.2); color: #9ca3af;">
-                                <span id="your-level-emoji">🌱</span>
-                                <span>Lv.<span id="your-level">1</span></span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="flex flex-col md:flex-row items-end justify-center gap-6 mb-16 px-4" id="podium-container">
+                    <!-- Will be populated by JS -->
                 </div>
 
                 <!-- Leaderboard Table -->
-                <div class="w-full bg-surface-dark border border-white/5 rounded-xl overflow-hidden shadow-lg mb-12">
-                    <!-- Table Header -->
+                <div class="w-full flex flex-col gap-4">
                     <div
-                        class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/5 bg-background-dark/50 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                        class="hidden md:grid grid-cols-12 gap-4 px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">
                         <div class="col-span-1 text-center">Rank</div>
-                        <div class="col-span-6 md:col-span-7">Player</div>
-                        <div class="col-span-5 md:col-span-4 text-right">Level</div>
+                        <div class="col-span-5">Player</div>
+                        <div class="col-span-3">Game</div>
+                        <div class="col-span-3 text-right">Score</div>
                     </div>
 
-                    <!-- Table Body -->
-                    <div id="leaderboard-list" class="divide-y divide-white/5">
-                        <div class="px-6 py-12 text-center text-gray-500">
-                            <span class="material-symbols-outlined text-4xl mb-2 block">hourglass_empty</span>
-                            Loading...
+                    <div id="leaderboard-list" class="flex flex-col gap-2">
+                        <!-- Will be populated by JS -->
+                        <div class="text-center py-10 text-gray-500">
+                            <span class="material-symbols-outlined text-4xl mb-2">hourglass_empty</span>
+                            <p>Loading leaderboard...</p>
                         </div>
                     </div>
                 </div>
@@ -277,188 +178,158 @@
         </main>
 
         <!-- Footer -->
-        <footer class="w-full border-t border-white/5 bg-[#0b0f17] py-8">
+        <footer class="w-full border-t border-white/5 bg-[#0b0f17] py-8 mt-12">
             <div
                 class="px-6 lg:px-20 max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex flex-col gap-2">
-                    <h3 class="text-white font-bold text-lg">Rase Games</h3>
-
+                    <h3 class="text-white font-bold text-lg">Rase<span class="text-primary">Games</span></h3>
+                    <p class="text-gray-500 text-sm">© 2024 Rase Corporation</p>
                 </div>
                 <div class="flex gap-8">
-                    <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/pages/about">About</a>
-                    <a class="text-gray-500 hover:text-white transition-colors text-sm" href="/pages/community">Community</a>
-                    <a class="text-gray-500 hover:text-white transition-colors text-sm"
-                        href="/pages/challenges">Challenges</a>
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
+                        href="/pages/about">About</a>
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
+                        href="/pages/community">Community</a>
                 </div>
             </div>
         </footer>
-
-        <!-- Scroll to Top -->
-        <div class="fixed bottom-8 right-8 z-50">
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-                class="bg-surface-dark border border-white/10 hover:border-primary text-white p-3 rounded-full shadow-lg transition-all hover:-translate-y-1 hover:shadow-primary/20">
-                <span class="material-symbols-outlined">arrow_upward</span>
-            </button>
-        </div>
     </div>
 
+    <script src="../scripts/firebase-config.js"></script>
     <script src="../scripts/challenges.js"></script>
     <script src="../scripts/auth.js"></script>
+    <script src="../scripts/leaderboard.js"></script>
     <script>
-        async function loadLeaderboard() {
-            if (!window.ChallengesSystem) {
-                setTimeout(loadLeaderboard, 500);
-                return;
-            }
+        const gameIcons = {
+            'snake': '🐍', 'tetris': '🧱', 'runner': '🏃', 'clicker': '💎',
+            'flappy': '🐦', '2048': '🔢', 'memory': '🃏', 'minesweeper': '💣',
+            'tictactoe': '⭕', 'fightarena': '⚔️', 'all': '🎮'
+        };
 
-            const leaderboard = await ChallengesSystem.getXPLeaderboard(10);
-            const listEl = document.getElementById('leaderboard-list');
-            const top3Container = document.getElementById('top-3-container');
+        function createPodiumCard(entry, rank) {
+            const colors = {
+                1: { border: 'border-t-rank-gold', bg: 'bg-gold-gradient', glow: 'gold-glow', size: 'h-[400px]', avatar: 'size-28', badge: 'bg-rank-gold text-black' },
+                2: { border: 'border-t-rank-silver', bg: 'bg-silver-gradient', glow: 'silver-glow', size: 'h-[340px]', avatar: 'size-20', badge: 'bg-rank-silver text-black' },
+                3: { border: 'border-t-rank-bronze', bg: 'bg-bronze-gradient', glow: 'bronze-glow', size: 'h-[320px]', avatar: 'size-20', badge: 'bg-rank-bronze text-white' }
+            };
+            const c = colors[rank];
+            const icon = rank === 1 ? 'emoji_events' : 'military_tech';
+            const iconColor = rank === 1 ? 'text-rank-gold' : rank === 2 ? 'text-rank-silver' : 'text-rank-bronze';
 
-            if (leaderboard.length === 0) {
-                listEl.innerHTML = `
-                    <div class="px-6 py-12 text-center text-gray-500">
-                        <span class="material-symbols-outlined text-4xl mb-2 block">sentiment_dissatisfied</span>
-                        <p>No one has leveled up yet.</p>
-                        <p class="text-sm mt-2">Be the first by completing challenges!</p>
-                        <a href="/pages/challenges" class="inline-block mt-4 px-6 py-2 bg-primary hover:bg-primary-glow text-white rounded-lg no-underline transition-colors">
-                            Go to Challenges
-                        </a>
-                    </div>
-                `;
-                return;
-            }
-
-            // Show top 3 podium
-            if (leaderboard.length >= 1) {
-                top3Container.style.display = 'flex';
-                const levelInfo1 = ChallengesSystem.getLevelFromXP(leaderboard[0].xp);
-                document.getElementById('name-1').textContent = leaderboard[0].username;
-                document.getElementById('level-1').textContent = levelInfo1.level;
-                document.getElementById('level-emoji-1').textContent = levelInfo1.emoji;
-                document.getElementById('title-1').textContent = levelInfo1.title;
-                const badge1 = document.getElementById('level-badge-1');
-                badge1.style.background = `${levelInfo1.color}20`;
-                badge1.style.color = levelInfo1.color;
-            }
-            if (leaderboard.length >= 2) {
-                const levelInfo2 = ChallengesSystem.getLevelFromXP(leaderboard[1].xp);
-                document.getElementById('name-2').textContent = leaderboard[1].username;
-                document.getElementById('level-2').textContent = levelInfo2.level;
-                document.getElementById('level-emoji-2').textContent = levelInfo2.emoji;
-                document.getElementById('title-2').textContent = levelInfo2.title;
-                const badge2 = document.getElementById('level-badge-2');
-                badge2.style.background = `${levelInfo2.color}20`;
-                badge2.style.color = levelInfo2.color;
-            }
-            if (leaderboard.length >= 3) {
-                const levelInfo3 = ChallengesSystem.getLevelFromXP(leaderboard[2].xp);
-                document.getElementById('name-3').textContent = leaderboard[2].username;
-                document.getElementById('level-3').textContent = levelInfo3.level;
-                document.getElementById('level-emoji-3').textContent = levelInfo3.emoji;
-                document.getElementById('title-3').textContent = levelInfo3.title;
-                const badge3 = document.getElementById('level-badge-3');
-                badge3.style.background = `${levelInfo3.color}20`;
-                badge3.style.color = levelInfo3.color;
-            }
-
-            // Build list (show 4-10)
-            const currentUserId = window.currentUser?.uid;
-            let html = '';
-
-            leaderboard.slice(3).forEach((entry, index) => {
-                const rank = index + 4;
-                const isCurrentUser = entry.uid === currentUserId;
-                const levelInfo = ChallengesSystem.getLevelFromXP(entry.xp);
-
-                html += `
-                    <div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-white/5 transition-colors items-center ${isCurrentUser ? 'bg-primary/10 border-l-4 border-l-primary' : ''}">
-                        <div class="col-span-1 text-center font-medium text-gray-500">${rank}</div>
-                        <div class="col-span-6 md:col-span-7 flex items-center gap-3">
-                            <div class="size-10 rounded-full bg-surface-dark overflow-hidden border border-white/10 flex items-center justify-center">
-                                <span class="text-xl">${levelInfo.emoji}</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-white font-medium ${isCurrentUser ? 'text-primary' : ''}">${entry.username}</span>
-                                <span class="text-gray-500 text-xs">${levelInfo.title}</span>
-                            </div>
+            return `
+                <div class="w-full md:w-[${rank === 1 ? '320' : '280'}px] relative ${rank === 1 ? 'z-10 -mt-10 md:-mt-0' : ''} order-${rank === 1 ? '1 md:order-2' : rank === 2 ? '2 md:order-1' : '3'}">
+                    <div class="flex flex-col items-center bg-surface-dark ${c.bg} border border-t-4 border-white/10 ${c.border} rounded-xl p-6 ${c.glow} card-hover-effect ${c.size}">
+                        <div class="absolute -top-6">
+                            <span class="material-symbols-outlined ${iconColor} text-[40px] drop-shadow-lg">${icon}</span>
                         </div>
-                        <div class="col-span-5 md:col-span-4 flex items-center justify-end">
-                            <div class="level-badge" style="background: ${levelInfo.color}20; color: ${levelInfo.color};">
-                                <span>${levelInfo.emoji}</span>
-                                <span>Level ${levelInfo.level}</span>
+                        <div class="mt-8 mb-4 relative">
+                            <div class="${c.avatar} rounded-full bg-primary/20 flex items-center justify-center text-4xl border-2 ${c.border.replace('border-t-', 'border-')}">
+                                ${entry.username?.charAt(0)?.toUpperCase() || '?'}
+                            </div>
+                            <div class="absolute -bottom-2 -right-2 ${c.badge} font-bold size-6 flex items-center justify-center rounded-full border border-surface-dark">${rank}</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">${entry.username || 'Anonymous'}</h3>
+                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-4">${gameIcons[entry.gameId] || '🎮'} ${entry.gameName || 'Game'}</p>
+                        <div class="w-full grid grid-cols-1 gap-2 mt-auto">
+                            <div class="bg-background-dark/50 rounded-lg p-3 text-center">
+                                <p class="text-[10px] text-gray-500 uppercase">Score</p>
+                                <p class="text-2xl text-white font-bold">${entry.score?.toLocaleString() || 0}</p>
                             </div>
                         </div>
                     </div>
-                `;
+                </div>
+            `;
+        }
+
+        function createLeaderboardRow(entry, rank) {
+            const bgColors = ['bg-red-900/50', 'bg-blue-900/50', 'bg-green-900/50', 'bg-yellow-900/50', 'bg-purple-900/50'];
+            const bgColor = bgColors[rank % bgColors.length];
+
+            return `
+                <div class="group flex flex-col md:grid md:grid-cols-12 gap-4 items-center bg-surface-dark hover:bg-white/5 border border-white/5 rounded-lg p-4 transition-all duration-200 hover:border-primary/30 hover:translate-x-1">
+                    <div class="col-span-1 flex justify-center w-full md:w-auto mb-2 md:mb-0">
+                        <span class="text-white font-bold text-lg">${rank}</span>
+                    </div>
+                    <div class="col-span-5 flex items-center gap-3 w-full md:w-auto">
+                        <div class="size-10 rounded-full ${bgColor} flex items-center justify-center text-white font-bold border border-white/10">
+                            ${entry.username?.substring(0, 2)?.toUpperCase() || '??'}
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold group-hover:text-primary transition-colors">${entry.username || 'Anonymous'}</h4>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex col-span-3 items-center gap-2">
+                        <span class="text-2xl">${gameIcons[entry.gameId] || '🎮'}</span>
+                        <span class="text-gray-300 text-sm">${entry.gameName || 'Game'}</span>
+                    </div>
+                    <div class="hidden md:block col-span-3 text-right text-white font-bold">${entry.score?.toLocaleString() || 0}</div>
+                </div>
+            `;
+        }
+
+        async function loadLeaderboard(gameFilter = 'all') {
+            // Update active button
+            document.querySelectorAll('.game-filter-btn').forEach(btn => {
+                if (btn.dataset.game === gameFilter) {
+                    btn.classList.add('bg-primary', 'text-white');
+                    btn.classList.remove('bg-white/5', 'text-gray-300');
+                } else {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-white/5', 'text-gray-300');
+                }
             });
 
-            // If we only have top 3, show message
-            if (leaderboard.length <= 3) {
-                html = `
-                    <div class="px-6 py-8 text-center text-gray-500">
-                        <p>Only this many players so far.</p>
-                        <p class="text-sm mt-1">Join them!</p>
-                    </div>
-                `;
-            }
+            const podiumContainer = document.getElementById('podium-container');
+            const listContainer = document.getElementById('leaderboard-list');
 
-            listEl.innerHTML = html;
+            podiumContainer.innerHTML = '<p class="text-gray-500">Loading...</p>';
+            listContainer.innerHTML = '<p class="text-gray-500 text-center py-10">Loading...</p>';
 
-            // Show current user's rank
-            if (currentUserId) {
-                const userRankEl = document.getElementById('your-rank');
-                const userIndex = leaderboard.findIndex(e => e.uid === currentUserId);
-                const progress = ChallengesSystem.getUserProgress(currentUserId);
-                const userXP = progress.totalXP || 0;
-
-                if (userXP > 0 || userIndex !== -1) {
-                    userRankEl.style.display = 'block';
-
-                    const levelInfo = ChallengesSystem.getLevelFromXP(userXP);
-                    const nextLevelInfo = ChallengesSystem.getXPForNextLevel(userXP);
-                    const levelProgress = ChallengesSystem.getLevelProgress(userXP);
-
-                    // Rank number
-                    if (userIndex !== -1) {
-                        document.getElementById('your-rank-number').textContent = `#${userIndex + 1}`;
+            try {
+                // Use LeaderboardSystem if available
+                let entries = [];
+                if (window.LeaderboardSystem && typeof window.LeaderboardSystem.getLeaderboard === 'function') {
+                    if (gameFilter === 'all') {
+                        entries = await LeaderboardSystem.getLeaderboard('all', 50);
                     } else {
-                        document.getElementById('your-rank-number').textContent = `#${leaderboard.length + 1}+`;
-                    }
-
-                    // Name
-                    document.getElementById('your-name').textContent = window.currentUser?.displayName || 'You';
-
-                    // Level text
-                    document.getElementById('your-level-text').textContent = `Level ${levelInfo.level} • ${levelInfo.title}`;
-
-                    // Level badge
-                    document.getElementById('your-level').textContent = levelInfo.level;
-                    document.getElementById('your-level-emoji').textContent = levelInfo.emoji;
-                    const yourBadge = document.getElementById('your-level-badge');
-                    yourBadge.style.background = `${levelInfo.color}20`;
-                    yourBadge.style.color = levelInfo.color;
-
-                    // Progress bar
-                    document.getElementById('your-progress-bar').style.width = `${levelProgress}%`;
-                    document.getElementById('your-progress-bar').style.background = levelInfo.color;
-
-                    if (nextLevelInfo.isMax) {
-                        document.getElementById('your-xp-text').textContent = 'MAX LEVEL';
-                    } else {
-                        document.getElementById('your-xp-text').textContent = `${userXP - levelInfo.xp} / ${nextLevelInfo.total} XP`;
+                        entries = await LeaderboardSystem.getLeaderboard(gameFilter, 50);
                     }
                 }
+
+                if (entries.length === 0) {
+                    podiumContainer.innerHTML = `
+                        <div class="text-center py-10 text-gray-500">
+                            <span class="material-symbols-outlined text-6xl mb-4">leaderboard</span>
+                            <p class="text-xl">No scores yet</p>
+                            <p class="text-sm">Be the first to set a high score!</p>
+                        </div>
+                    `;
+                    listContainer.innerHTML = '';
+                    return;
+                }
+
+                // Top 3 for podium
+                const top3 = entries.slice(0, 3);
+                podiumContainer.innerHTML = top3.map((e, i) => createPodiumCard(e, i + 1)).join('');
+
+                // Rest for list
+                const rest = entries.slice(3);
+                if (rest.length > 0) {
+                    listContainer.innerHTML = rest.map((e, i) => createLeaderboardRow(e, i + 4)).join('');
+                } else {
+                    listContainer.innerHTML = '';
+                }
+
+            } catch (error) {
+                console.error('Failed to load leaderboard:', error);
+                podiumContainer.innerHTML = '<p class="text-red-500">Failed to load leaderboard</p>';
+                listContainer.innerHTML = '';
             }
         }
 
-        // Wait for auth then load
-        window.addEventListener('authStateChanged', () => {
-            setTimeout(loadLeaderboard, 500);
-        });
-
+        // Load on page load
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(loadLeaderboard, 1000);
+            loadLeaderboard('all');
         });
     </script>
 </body>

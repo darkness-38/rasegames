@@ -274,11 +274,25 @@
             if (window.ChallengesSystem) {
                 await ChallengesSystem.ensureDailyInit(window.currentUser.uid);
                 const progress = ChallengesSystem.getUserProgress(window.currentUser.uid);
-                const dailyChallenges = progress?.dailyChallenges || [];
+
+                // Get today's challenges from the system and merge with user progress
+                const levelInfo = ChallengesSystem.getLevelFromXP(progress?.totalXP || 0);
+                const rawChallenges = ChallengesSystem.getDailyChallenges(progress?.dayStartLevel || levelInfo.level);
+
+                // Merge challenge definitions with user progress
+                const dailyChallenges = rawChallenges.map(challenge => {
+                    const userProgress = progress?.challenges?.[challenge.id] || { current: 0, completed: false };
+                    return {
+                        ...challenge,
+                        current: userProgress.current,
+                        target: challenge.goal,
+                        completed: userProgress.completed,
+                        gameName: challenge.game?.name || 'Game'
+                    };
+                });
 
                 // Update stats
                 const totalXP = progress?.totalXP || 0;
-                const levelInfo = ChallengesSystem.getLevelFromXP(totalXP);
                 const levelProgress = ChallengesSystem.getLevelProgress(totalXP);
 
                 document.getElementById('total-xp').textContent = `${totalXP} XP`;

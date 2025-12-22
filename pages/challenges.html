@@ -249,11 +249,14 @@
             const completedContainer = document.getElementById('completed-container');
             const guestWarning = document.getElementById('guest-warning');
 
-            // Wait for auth
-            if (!window.authStateChecked) {
-                await new Promise(resolve => {
-                    window.addEventListener('authStateChanged', resolve, { once: true });
-                });
+            // Wait for auth with timeout
+            if (!window.authStateChecked && window.currentUser === undefined) {
+                await Promise.race([
+                    new Promise(resolve => {
+                        window.addEventListener('authStateChanged', resolve, { once: true });
+                    }),
+                    new Promise(resolve => setTimeout(resolve, 5000)) // 5 second timeout
+                ]);
             }
 
             if (!window.currentUser || window.currentUser.isAnonymous) {

@@ -109,20 +109,20 @@
                     </div>
 
                     <!-- Category Filters -->
-                    <div class="flex flex-wrap gap-3">
-                        <button
-                            class="px-5 py-2 rounded-full bg-primary text-white font-medium text-sm shadow-[0_0_15px_rgba(15,73,189,0.4)]">All
+                    <div id="category-filters" class="flex flex-wrap gap-3">
+                        <button data-category="all"
+                            class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium text-sm shadow-[0_0_15px_rgba(15,73,189,0.4)] transition-all">All
                             Games</button>
-                        <button
-                            class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Arcade</button>
-                        <button
-                            class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Puzzle</button>
-                        <button
-                            class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Strategy</button>
-                        <button
-                            class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Action</button>
-                        <button
-                            class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Multiplayer</button>
+                        <button data-category="arcade"
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Arcade</button>
+                        <button data-category="puzzle"
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Puzzle</button>
+                        <button data-category="strategy"
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Strategy</button>
+                        <button data-category="action"
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Action</button>
+                        <button data-category="multiplayer"
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Multiplayer</button>
                     </div>
                 </div>
             </div>
@@ -132,8 +132,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
                     <!-- Rase Clicker -->
-                    <a href="/games/raseClicker/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/raseClicker/" data-categories="arcade action"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center">
                             <div class="absolute top-2 right-2 z-20">
@@ -157,8 +157,8 @@
                     </a>
 
                     <!-- Fight Arena -->
-                    <a href="/games/fightArena/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/fightArena/" data-categories="action multiplayer"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-red-500/20 to-orange-600/20 flex items-center justify-center">
                             <div class="absolute top-2 right-2 z-20">
@@ -182,8 +182,8 @@
                     </a>
 
                     <!-- Cyber Runner -->
-                    <a href="/games/runnerGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/runnerGame/" data-categories="arcade action"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-600/20 flex items-center justify-center">
                             <span class="text-6xl">🏃</span>
@@ -203,8 +203,8 @@
                     </a>
 
                     <!-- Neon Snake -->
-                    <a href="/games/snakeGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/snakeGame/" data-categories="arcade"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center">
                             <span class="text-6xl">🐍</span>
@@ -224,8 +224,8 @@
                     </a>
 
                     <!-- Cyber Blocks (Tetris) -->
-                    <a href="/games/tetrisGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/tetrisGame/" data-categories="puzzle arcade"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-blue-500/20 to-indigo-600/20 flex items-center justify-center">
                             <span class="text-6xl">🧱</span>
@@ -245,8 +245,8 @@
                     </a>
 
                     <!-- Power 2048 -->
-                    <a href="/games/game2048/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/game2048/" data-categories="puzzle strategy"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-yellow-500/20 to-orange-600/20 flex items-center justify-center">
                             <span class="text-6xl">🔢</span>
@@ -266,8 +266,8 @@
                     </a>
 
                     <!-- Pixel Bird -->
-                    <a href="/games/flappyGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/flappyGame/" data-categories="arcade"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-sky-500/20 to-cyan-600/20 flex items-center justify-center">
                             <span class="text-6xl">🐦</span>
@@ -287,8 +287,8 @@
                     </a>
 
                     <!-- Mind Match -->
-                    <a href="/games/memoryGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/memoryGame/" data-categories="puzzle"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-pink-500/20 to-rose-600/20 flex items-center justify-center">
                             <span class="text-6xl">🃏</span>
@@ -308,8 +308,8 @@
                     </a>
 
                     <!-- Bomb Squad -->
-                    <a href="/games/minesweeperGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/minesweeperGame/" data-categories="puzzle strategy"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-gray-500/20 to-slate-600/20 flex items-center justify-center">
                             <span class="text-6xl">💣</span>
@@ -329,8 +329,8 @@
                     </a>
 
                     <!-- Tic Tac Pro -->
-                    <a href="/games/tictactoeGame/"
-                        class="card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
+                    <a href="/games/tictactoeGame/" data-categories="strategy multiplayer"
+                        class="game-card card-hover-effect group flex flex-col rounded-xl bg-surface-dark p-3 border border-white/5 shadow-lg no-underline">
                         <div
                             class="relative w-full aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-violet-500/20 to-purple-600/20 flex items-center justify-center">
                             <span class="text-6xl">⭕</span>
@@ -371,6 +371,50 @@
     <script src="../scripts/ratings.js"></script>
     <script src="../scripts/challenges.js"></script>
     <script src="../scripts/auth.js"></script>
+    <script>
+        // Category filtering
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const gameCards = document.querySelectorAll('.game-card');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const category = btn.dataset.category;
+
+                    // Update button styles
+                    filterButtons.forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white', 'shadow-[0_0_15px_rgba(15,73,189,0.4)]');
+                        b.classList.add('bg-white/5', 'text-gray-300', 'border', 'border-white/10');
+                    });
+                    btn.classList.remove('bg-white/5', 'text-gray-300', 'border', 'border-white/10');
+                    btn.classList.add('active', 'bg-primary', 'text-white', 'shadow-[0_0_15px_rgba(15,73,189,0.4)]');
+
+                    // Filter games
+                    gameCards.forEach(card => {
+                        const categories = card.dataset.categories?.split(' ') || [];
+
+                        if (category === 'all' || categories.includes(category)) {
+                            card.style.display = '';
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.9)';
+                            setTimeout(() => {
+                                card.style.transition = 'opacity 0.3s, transform 0.3s';
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 50);
+                        } else {
+                            card.style.transition = 'opacity 0.2s, transform 0.2s';
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.9)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 200);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

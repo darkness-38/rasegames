@@ -19,101 +19,101 @@ let currentOrbital = '1s';
 
 // Elements data (first 20)
 const elements = [
-    { symbol: 'H', name: 'Hidrojen', number: 1 },
-    { symbol: 'He', name: 'Helyum', number: 2 },
-    { symbol: 'Li', name: 'Lityum', number: 3 },
-    { symbol: 'Be', name: 'Berilyum', number: 4 },
-    { symbol: 'B', name: 'Bor', number: 5 },
-    { symbol: 'C', name: 'Karbon', number: 6 },
-    { symbol: 'N', name: 'Azot', number: 7 },
-    { symbol: 'O', name: 'Oksijen', number: 8 },
-    { symbol: 'F', name: 'Flor', number: 9 },
+    { symbol: 'H', name: 'Hydrogen', number: 1 },
+    { symbol: 'He', name: 'Helium', number: 2 },
+    { symbol: 'Li', name: 'Lithium', number: 3 },
+    { symbol: 'Be', name: 'Beryllium', number: 4 },
+    { symbol: 'B', name: 'Boron', number: 5 },
+    { symbol: 'C', name: 'Carbon', number: 6 },
+    { symbol: 'N', name: 'Nitrogen', number: 7 },
+    { symbol: 'O', name: 'Oxygen', number: 8 },
+    { symbol: 'F', name: 'Fluorine', number: 9 },
     { symbol: 'Ne', name: 'Neon', number: 10 },
-    { symbol: 'Na', name: 'Sodyum', number: 11 },
-    { symbol: 'Mg', name: 'Magnezyum', number: 12 },
-    { symbol: 'Al', name: 'Alüminyum', number: 13 },
-    { symbol: 'Si', name: 'Silisyum', number: 14 },
-    { symbol: 'P', name: 'Fosfor', number: 15 },
-    { symbol: 'S', name: 'Kükürt', number: 16 },
-    { symbol: 'Cl', name: 'Klor', number: 17 },
+    { symbol: 'Na', name: 'Sodium', number: 11 },
+    { symbol: 'Mg', name: 'Magnesium', number: 12 },
+    { symbol: 'Al', name: 'Aluminum', number: 13 },
+    { symbol: 'Si', name: 'Silicon', number: 14 },
+    { symbol: 'P', name: 'Phosphorus', number: 15 },
+    { symbol: 'S', name: 'Sulfur', number: 16 },
+    { symbol: 'Cl', name: 'Chlorine', number: 17 },
     { symbol: 'Ar', name: 'Argon', number: 18 },
-    { symbol: 'K', name: 'Potasyum', number: 19 },
-    { symbol: 'Ca', name: 'Kalsiyum', number: 20 }
+    { symbol: 'K', name: 'Potassium', number: 19 },
+    { symbol: 'Ca', name: 'Calcium', number: 20 }
 ];
 
 // Orbital information
 const orbitalInfo = {
     '1s': {
         n: 1, l: 0, ml: 0, maxElectrons: 2,
-        shape: 'Küresel (Spherical)',
-        nodes: '0 radyal düğüm',
-        description: 'En düşük enerjili orbital. Küresel simetrik şekle sahiptir ve çekirdek etrafında elektron yoğunluğu en yüksek noktadadır.'
+        shape: 'Spherical',
+        nodes: '0 radial nodes',
+        description: 'The lowest energy orbital. It has spherical symmetry with highest electron density near the nucleus.'
     },
     '2s': {
         n: 2, l: 0, ml: 0, maxElectrons: 2,
-        shape: 'Küresel (Spherical)',
-        nodes: '1 radyal düğüm',
-        description: '1s\'den daha büyük küresel orbital. Bir radyal düğüme sahiptir ve elektron yoğunluğu iki bölgede yoğunlaşır.'
+        shape: 'Spherical',
+        nodes: '1 radial node',
+        description: 'A larger spherical orbital than 1s. It has one radial node and electron density is concentrated in two regions.'
     },
     '3s': {
         n: 3, l: 0, ml: 0, maxElectrons: 2,
-        shape: 'Küresel (Spherical)',
-        nodes: '2 radyal düğüm',
-        description: 'En büyük s orbitali. İki radyal düğüme sahiptir ve üç konsantrik küresel bölgede elektron yoğunluğu bulunur.'
+        shape: 'Spherical',
+        nodes: '2 radial nodes',
+        description: 'The largest s orbital. It has two radial nodes with electron density in three concentric spherical regions.'
     },
     '2px': {
         n: 2, l: 1, ml: 1, maxElectrons: 2,
-        shape: 'Dumbbell (Halter)',
-        nodes: '1 açısal düğüm (xy düzlemi)',
-        description: 'p orbitalleri halter şeklindedir. 2px orbitali x ekseni boyunca uzanır.'
+        shape: 'Dumbbell',
+        nodes: '1 angular node (xy plane)',
+        description: 'p orbitals have a dumbbell shape. The 2px orbital extends along the x-axis.'
     },
     '2py': {
         n: 2, l: 1, ml: -1, maxElectrons: 2,
-        shape: 'Dumbbell (Halter)',
-        nodes: '1 açısal düğüm (xz düzlemi)',
-        description: 'p orbitalleri halter şeklindedir. 2py orbitali y ekseni boyunca uzanır.'
+        shape: 'Dumbbell',
+        nodes: '1 angular node (xz plane)',
+        description: 'p orbitals have a dumbbell shape. The 2py orbital extends along the y-axis.'
     },
     '2pz': {
         n: 2, l: 1, ml: 0, maxElectrons: 2,
-        shape: 'Dumbbell (Halter)',
-        nodes: '1 açısal düğüm (xy düzlemi)',
-        description: 'p orbitalleri halter şeklindedir. 2pz orbitali z ekseni boyunca uzanır.'
+        shape: 'Dumbbell',
+        nodes: '1 angular node (xy plane)',
+        description: 'p orbitals have a dumbbell shape. The 2pz orbital extends along the z-axis.'
     },
     '3px': {
         n: 3, l: 1, ml: 1, maxElectrons: 2,
-        shape: 'Dumbbell (Halter)',
-        nodes: '1 radyal + 1 açısal düğüm',
-        description: '3p orbitalleri 2p\'den daha büyüktür ve bir radyal düğüme sahiptir.'
+        shape: 'Dumbbell',
+        nodes: '1 radial + 1 angular node',
+        description: '3p orbitals are larger than 2p and have one radial node.'
     },
     '3py': {
         n: 3, l: 1, ml: -1, maxElectrons: 2,
-        shape: 'Dumbbell (Halter)',
-        nodes: '1 radyal + 1 açısal düğüm',
-        description: '3p orbitalleri 2p\'den daha büyüktür ve bir radyal düğüme sahiptir.'
+        shape: 'Dumbbell',
+        nodes: '1 radial + 1 angular node',
+        description: '3p orbitals are larger than 2p and have one radial node.'
     },
     '3pz': {
         n: 3, l: 1, ml: 0, maxElectrons: 2,
-        shape: 'Dumbbell (Halter)',
-        nodes: '1 radyal + 1 açısal düğüm',
-        description: '3p orbitalleri 2p\'den daha büyüktür ve bir radyal düğüme sahiptir.'
+        shape: 'Dumbbell',
+        nodes: '1 radial + 1 angular node',
+        description: '3p orbitals are larger than 2p and have one radial node.'
     },
     '3dxy': {
         n: 3, l: 2, ml: -2, maxElectrons: 2,
-        shape: 'Dört Loblu (Cloverleaf)',
-        nodes: '2 açısal düğüm düzlemi',
-        description: 'd orbitalleri karmaşık şekillere sahiptir. dxy orbitali xy düzleminde 4 lobludur.'
+        shape: 'Cloverleaf (Four-lobed)',
+        nodes: '2 angular nodal planes',
+        description: 'd orbitals have complex shapes. The dxy orbital has 4 lobes in the xy plane.'
     },
     '3dxz': {
         n: 3, l: 2, ml: -1, maxElectrons: 2,
-        shape: 'Dört Loblu (Cloverleaf)',
-        nodes: '2 açısal düğüm düzlemi',
-        description: 'd orbitalleri karmaşık şekillere sahiptir. dxz orbitali xz düzleminde 4 lobludur.'
+        shape: 'Cloverleaf (Four-lobed)',
+        nodes: '2 angular nodal planes',
+        description: 'd orbitals have complex shapes. The dxz orbital has 4 lobes in the xz plane.'
     },
     '3dz2': {
         n: 3, l: 2, ml: 0, maxElectrons: 2,
         shape: 'Dumbbell + Torus',
-        nodes: '2 konik düğüm yüzeyi',
-        description: 'dz² orbitali benzersiz bir şekle sahiptir: z ekseni boyunca halter ve ortada bir torus (halka).'
+        nodes: '2 conical nodal surfaces',
+        description: 'The dz² orbital has a unique shape: a dumbbell along the z-axis with a torus (ring) in the middle.'
     }
 };
 
@@ -258,9 +258,9 @@ function updateOrbital(orbital) {
     // Update orbital info
     const infoDiv = document.getElementById('orbital-info');
     infoDiv.innerHTML = `
-        <p class="mb-3"><strong class="text-white">${orbital.toUpperCase()} Orbitali:</strong> ${info.description}</p>
-        <p class="mb-3"><strong class="text-purple-400">Şekil:</strong> ${info.shape}</p>
-        <p><strong class="text-teal-400">Düğüm Sayısı:</strong> ${info.nodes}</p>
+        <p class="mb-3"><strong class="text-white">${orbital.toUpperCase()} Orbital:</strong> ${info.description}</p>
+        <p class="mb-3"><strong class="text-purple-400">Shape:</strong> ${info.shape}</p>
+        <p><strong class="text-teal-400">Nodes:</strong> ${info.nodes}</p>
     `;
 }
 
@@ -297,12 +297,32 @@ function updateElectronConfiguration(atomicNumber) {
         const boxes = document.createElement('div');
         boxes.className = 'flex gap-1';
 
-        const numBoxes = d.capacity / 2;
+        const numBoxes = d.capacity / 2; // Each box holds 2 electrons max
+
+        // Hund's Rule: First fill each box with one electron (up arrow),
+        // then go back and add the second electron (down arrow)
+        // Example: 3 electrons in p orbital (3 boxes) = ↑ ↑ ↑ (not ↑↓ ↑ empty)
+        // Example: 4 electrons in p orbital = ↑↓ ↑ ↑
+
         for (let i = 0; i < numBoxes; i++) {
             const box = document.createElement('div');
             box.className = 'w-8 h-8 rounded border-2 border-[#3f4756] flex items-center justify-center text-xs gap-0.5';
 
-            const electronsInBox = Math.min(2, d.electrons - (i * 2));
+            // Calculate electrons for this box following Hund's Rule
+            // First pass: each box gets 1 electron (up to numBoxes electrons)
+            // Second pass: remaining electrons pair up from the first box
+
+            let electronsInBox = 0;
+
+            if (d.electrons > i) {
+                // First electron (up arrow) - fill one per box first
+                electronsInBox = 1;
+            }
+
+            if (d.electrons > numBoxes + i) {
+                // Second electron (down arrow) - after all boxes have one
+                electronsInBox = 2;
+            }
 
             if (electronsInBox >= 1) {
                 const arrow1 = document.createElement('span');

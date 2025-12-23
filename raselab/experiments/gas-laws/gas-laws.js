@@ -24,10 +24,10 @@ const maxGraphPoints = 50;
 // Law configurations
 const lawConfig = {
     boyle: {
-        title: 'Boyle Yasası',
+        title: "Boyle's Law",
         formula: 'P₁V₁ = P₂V₂',
-        description: 'Sabit sıcaklıkta, gazın basıncı ile hacmi ters orantılıdır.',
-        graphTitle: 'P-V Grafiği (Boyle)',
+        description: 'At constant temperature, pressure and volume are inversely proportional.',
+        graphTitle: 'P-V Graph (Boyle)',
         graphX: 'V (L)',
         graphY: 'P (atm)',
         controls: {
@@ -36,15 +36,15 @@ const lawConfig = {
             temperature: false,
             moles: false
         },
-        info: `<p class="mb-3"><strong class="text-white">Boyle Yasası (1662):</strong> Robert Boyle tarafından keşfedilmiştir.</p>
-               <p class="mb-3">Sabit sıcaklıkta, ideal bir gazın basıncı ile hacmi ters orantılıdır. Basınç artarsa hacim azalır.</p>
-               <p><strong class="text-teal-400">Örnek:</strong> Şırıngadaki havayı sıkıştırdığınızda hacim azalır ve basınç artar.</p>`
+        info: `<p class="mb-3"><strong class="text-white">Boyle's Law (1662):</strong> Discovered by Robert Boyle.</p>
+               <p class="mb-3">At constant temperature, pressure and volume of an ideal gas are inversely proportional. As pressure increases, volume decreases.</p>
+               <p><strong class="text-teal-400">Example:</strong> When you compress air in a syringe, volume decreases and pressure increases.</p>`
     },
     charles: {
-        title: 'Charles Yasası',
+        title: "Charles's Law",
         formula: 'V₁/T₁ = V₂/T₂',
-        description: 'Sabit basınçta, gazın hacmi sıcaklık ile doğru orantılıdır.',
-        graphTitle: 'V-T Grafiği (Charles)',
+        description: 'At constant pressure, volume is directly proportional to temperature.',
+        graphTitle: 'V-T Graph (Charles)',
         graphX: 'T (K)',
         graphY: 'V (L)',
         controls: {
@@ -53,15 +53,15 @@ const lawConfig = {
             temperature: true,
             moles: false
         },
-        info: `<p class="mb-3"><strong class="text-white">Charles Yasası (1787):</strong> Jacques Charles tarafından keşfedilmiştir.</p>
-               <p class="mb-3">Sabit basınçta, ideal bir gazın hacmi mutlak sıcaklık ile doğru orantılıdır.</p>
-               <p><strong class="text-teal-400">Örnek:</strong> Sıcak hava balonu, hava ısındığında genişler ve yükselir.</p>`
+        info: `<p class="mb-3"><strong class="text-white">Charles's Law (1787):</strong> Discovered by Jacques Charles.</p>
+               <p class="mb-3">At constant pressure, volume of an ideal gas is directly proportional to absolute temperature.</p>
+               <p><strong class="text-teal-400">Example:</strong> A hot air balloon expands and rises as the air heats up.</p>`
     },
     'gay-lussac': {
-        title: 'Gay-Lussac Yasası',
+        title: "Gay-Lussac's Law",
         formula: 'P₁/T₁ = P₂/T₂',
-        description: 'Sabit hacimde, gazın basıncı sıcaklık ile doğru orantılıdır.',
-        graphTitle: 'P-T Grafiği (Gay-Lussac)',
+        description: 'At constant volume, pressure is directly proportional to temperature.',
+        graphTitle: 'P-T Graph (Gay-Lussac)',
         graphX: 'T (K)',
         graphY: 'P (atm)',
         controls: {
@@ -70,15 +70,15 @@ const lawConfig = {
             temperature: true,
             moles: false
         },
-        info: `<p class="mb-3"><strong class="text-white">Gay-Lussac Yasası (1809):</strong> Joseph Louis Gay-Lussac tarafından keşfedilmiştir.</p>
-               <p class="mb-3">Sabit hacimde, ideal bir gazın basıncı mutlak sıcaklık ile doğru orantılıdır.</p>
-               <p><strong class="text-teal-400">Örnek:</strong> Lastik içindeki hava ısındığında basınç artar.</p>`
+        info: `<p class="mb-3"><strong class="text-white">Gay-Lussac's Law (1809):</strong> Discovered by Joseph Louis Gay-Lussac.</p>
+               <p class="mb-3">At constant volume, pressure of an ideal gas is directly proportional to absolute temperature.</p>
+               <p><strong class="text-teal-400">Example:</strong> Pressure inside a tire increases as the air heats up.</p>`
     },
     ideal: {
-        title: 'İdeal Gaz Yasası',
+        title: 'Ideal Gas Law',
         formula: 'PV = nRT',
-        description: 'Basınç, hacim, mol sayısı ve sıcaklık arasındaki ilişkiyi tanımlar.',
-        graphTitle: 'PV vs nRT Grafiği',
+        description: 'Describes the relationship between pressure, volume, moles, and temperature.',
+        graphTitle: 'PV vs nRT Graph',
         graphX: 'nRT',
         graphY: 'PV',
         controls: {
@@ -87,10 +87,10 @@ const lawConfig = {
             temperature: true,
             moles: true
         },
-        info: `<p class="mb-3"><strong class="text-white">İdeal Gaz Yasası:</strong> Tüm gaz yasalarını birleştiren genel denklem.</p>
-               <p class="mb-3">PV = nRT, burada R = 0.0821 L·atm/(mol·K) evrensel gaz sabitidir.</p>
-               <p class="mb-3"><strong class="text-purple-400">P:</strong> Basınç (atm), <strong class="text-blue-400">V:</strong> Hacim (L), <strong class="text-green-400">n:</strong> Mol sayısı, <strong class="text-orange-400">T:</strong> Sıcaklık (K)</p>
-               <p><strong class="text-teal-400">Not:</strong> Gerçek gazlar düşük basınç ve yüksek sıcaklıkta ideal gaza yakın davranır.</p>`
+        info: `<p class="mb-3"><strong class="text-white">Ideal Gas Law:</strong> A general equation combining all gas laws.</p>
+               <p class="mb-3">PV = nRT, where R = 0.0821 L·atm/(mol·K) is the universal gas constant.</p>
+               <p class="mb-3"><strong class="text-purple-400">P:</strong> Pressure (atm), <strong class="text-blue-400">V:</strong> Volume (L), <strong class="text-green-400">n:</strong> Moles, <strong class="text-orange-400">T:</strong> Temperature (K)</p>
+               <p><strong class="text-teal-400">Note:</strong> Real gases behave close to ideal at low pressure and high temperature.</p>`
     }
 };
 
@@ -286,15 +286,15 @@ function updateCalculation() {
     switch (currentLaw) {
         case 'boyle':
             const pv = pressure * volume;
-            calc.textContent = `P × V = ${pressure.toFixed(2)} × ${volume.toFixed(2)} = ${pv.toFixed(2)} L·atm = sabit`;
+            calc.textContent = `P × V = ${pressure.toFixed(2)} × ${volume.toFixed(2)} = ${pv.toFixed(2)} L·atm = constant`;
             break;
         case 'charles':
             const vt = volume / temperature;
-            calc.textContent = `V / T = ${volume.toFixed(2)} / ${temperature.toFixed(0)} = ${vt.toFixed(4)} L/K = sabit`;
+            calc.textContent = `V / T = ${volume.toFixed(2)} / ${temperature.toFixed(0)} = ${vt.toFixed(4)} L/K = constant`;
             break;
         case 'gay-lussac':
             const pt = pressure / temperature;
-            calc.textContent = `P / T = ${pressure.toFixed(2)} / ${temperature.toFixed(0)} = ${pt.toFixed(5)} atm/K = sabit`;
+            calc.textContent = `P / T = ${pressure.toFixed(2)} / ${temperature.toFixed(0)} = ${pt.toFixed(5)} atm/K = constant`;
             break;
         case 'ideal':
             const pvLeft = pressure * volume;

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html class="dark" lang="tr">
+<html class="dark" lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Atomik Orbitaller - RaseLab</title>
+    <title>Atomic Orbitals - RaseLab</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -112,18 +112,18 @@
                 <a href="../../index.html"
                     class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span class="hidden sm:inline">Deneyler</span>
+                    <span class="hidden sm:inline">Experiments</span>
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-purple-400">blur_circular</span>
-                    <h1 class="text-xl font-bold">Atomik Orbitaller</h1>
+                    <h1 class="text-xl font-bold">Atomic Orbitals</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
                 <span
                     class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-500/30">
-                    Kimya
+                    Chemistry
                 </span>
             </div>
         </div>
@@ -138,11 +138,11 @@
                     <span class="material-symbols-outlined text-purple-400 text-3xl">info</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">Atomik Orbitaller Nedir?</h2>
+                    <h2 class="text-lg font-bold text-white mb-2">What are Atomic Orbitals?</h2>
                     <p class="text-[#9da6b9] leading-relaxed">
-                        Orbitaller, elektronların atom çekirdeği etrafında bulunma olasılığının en yüksek olduğu
-                        bölgelerdir.
-                        Her orbital, belirli kuantum sayıları ile tanımlanır ve farklı şekillere sahiptir.
+                        Orbitals are regions around the atomic nucleus where electrons have the highest probability
+                        of being found.
+                        Each orbital is defined by specific quantum numbers and has different shapes.
                     </p>
                 </div>
             </div>
@@ -156,7 +156,7 @@
                     <div
                         class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
                         <span class="material-symbols-outlined text-purple-400">3d_rotation</span>
-                        <span class="text-sm font-medium text-white">3D Görünüm</span>
+                        <span class="text-sm font-medium text-white">3D View</span>
                     </div>
                     <canvas id="orbital-canvas"
                         class="w-full aspect-square cursor-grab active:cursor-grabbing"></canvas>
@@ -181,7 +181,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-purple-400">category</span>
-                        Orbital Seçimi
+                        Orbital Selection
                     </h3>
                     <div class="grid grid-cols-4 sm:grid-cols-6 gap-3" id="orbital-buttons">
                         <!-- s orbitals -->
@@ -233,28 +233,28 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-teal-400">functions</span>
-                        Kuantum Sayıları
+                        Quantum Numbers
                     </h3>
                     <div class="grid grid-cols-2 gap-4" id="quantum-numbers">
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Baş Kuantum Sayısı (n)</div>
+                            <div class="text-sm text-[#9da6b9] mb-1">Principal Quantum Number (n)</div>
                             <div class="text-3xl font-bold text-purple-400" id="quantum-n">1</div>
-                            <div class="text-xs text-[#637588] mt-1">Enerji seviyesi</div>
+                            <div class="text-xs text-[#637588] mt-1">Energy level</div>
                         </div>
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Açısal Momentum (l)</div>
+                            <div class="text-sm text-[#9da6b9] mb-1">Angular Momentum (l)</div>
                             <div class="text-3xl font-bold text-blue-400" id="quantum-l">0</div>
-                            <div class="text-xs text-[#637588] mt-1">Orbital şekli (s=0, p=1, d=2)</div>
+                            <div class="text-xs text-[#637588] mt-1">Orbital shape (s=0, p=1, d=2)</div>
                         </div>
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Manyetik (m<sub>l</sub>)</div>
+                            <div class="text-sm text-[#9da6b9] mb-1">Magnetic (m<sub>l</sub>)</div>
                             <div class="text-3xl font-bold text-teal-400" id="quantum-ml">0</div>
-                            <div class="text-xs text-[#637588] mt-1">Orbital yönelimi</div>
+                            <div class="text-xs text-[#637588] mt-1">Orbital orientation</div>
                         </div>
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Max Elektron</div>
+                            <div class="text-sm text-[#9da6b9] mb-1">Max Electrons</div>
                             <div class="text-3xl font-bold text-pink-400" id="max-electrons">2</div>
-                            <div class="text-xs text-[#637588] mt-1">Bu orbitaldeki</div>
+                            <div class="text-xs text-[#637588] mt-1">In this orbital</div>
                         </div>
                     </div>
                 </div>
@@ -263,12 +263,12 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-pink-400">science</span>
-                        Elektron Konfigürasyonu
+                        Electron Configuration
                     </h3>
 
                     <!-- Element Selector -->
                     <div class="mb-4">
-                        <label class="text-sm text-[#9da6b9] mb-2 block">Element Seçin:</label>
+                        <label class="text-sm text-[#9da6b9] mb-2 block">Select Element:</label>
                         <div class="grid grid-cols-6 sm:grid-cols-9 gap-2" id="element-selector">
                             <!-- First 20 elements -->
                         </div>
@@ -276,13 +276,13 @@
 
                     <!-- Configuration Display -->
                     <div class="p-4 rounded-xl bg-[#282e39] border border-[#3f4756]">
-                        <div class="text-sm text-[#9da6b9] mb-2">Elektron Konfigürasyonu:</div>
+                        <div class="text-sm text-[#9da6b9] mb-2">Electron Configuration:</div>
                         <div class="text-xl font-mono text-white" id="config-display">1s<sup>1</sup></div>
                     </div>
 
                     <!-- Visual Orbital Diagram -->
                     <div class="mt-4 p-4 rounded-xl bg-[#282e39] border border-[#3f4756]">
-                        <div class="text-sm text-[#9da6b9] mb-3">Orbital Diyagramı:</div>
+                        <div class="text-sm text-[#9da6b9] mb-3">Orbital Diagram:</div>
                         <div id="orbital-diagram" class="flex flex-wrap gap-3">
                             <!-- Dynamic orbital boxes -->
                         </div>
@@ -293,13 +293,13 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
-                        Orbital Bilgisi
+                        Orbital Information
                     </h3>
                     <div id="orbital-info" class="text-[#9da6b9] leading-relaxed">
-                        <p class="mb-3"><strong class="text-white">1s Orbitali:</strong> En düşük enerjili orbital.
-                            Küresel simetrik şekle sahiptir.</p>
-                        <p class="mb-3"><strong class="text-purple-400">Şekil:</strong> Küresel (Spherical)</p>
-                        <p><strong class="text-teal-400">Düğüm Sayısı:</strong> 0 radyal düğüm</p>
+                        <p class="mb-3"><strong class="text-white">1S Orbital:</strong> The lowest energy orbital.
+                            It has spherical symmetry.</p>
+                        <p class="mb-3"><strong class="text-purple-400">Shape:</strong> Spherical</p>
+                        <p><strong class="text-teal-400">Nodes:</strong> 0 radial nodes</p>
                     </div>
                 </div>
             </div>

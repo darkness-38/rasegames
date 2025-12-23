@@ -65,8 +65,10 @@ class DiffusionSimulation {
 
         // Gas 1 controls
         document.getElementById('gas1-count-slider').addEventListener('input', (e) => {
-            this.settings.gas1.count = parseInt(e.target.value);
-            document.getElementById('gas1-count').textContent = e.target.value;
+            const count = parseInt(e.target.value);
+            this.settings.gas1.count = count;
+            document.getElementById('gas1-count').textContent = count;
+            this.updateParticleCount(1, count);
         });
         document.getElementById('gas1-mass-slider').addEventListener('input', (e) => {
             this.settings.gas1.mass = parseInt(e.target.value);
@@ -81,8 +83,10 @@ class DiffusionSimulation {
 
         // Gas 2 controls
         document.getElementById('gas2-count-slider').addEventListener('input', (e) => {
-            this.settings.gas2.count = parseInt(e.target.value);
-            document.getElementById('gas2-count').textContent = e.target.value;
+            const count = parseInt(e.target.value);
+            this.settings.gas2.count = count;
+            document.getElementById('gas2-count').textContent = count;
+            this.updateParticleCount(2, count);
         });
         document.getElementById('gas2-mass-slider').addEventListener('input', (e) => {
             this.settings.gas2.mass = parseInt(e.target.value);
@@ -132,6 +136,66 @@ class DiffusionSimulation {
                 color1: '#f87171',
                 color2: '#dc2626'
             });
+        }
+    }
+
+    updateParticleCount(type, targetCount) {
+        const currentParticles = this.particles.filter(p => p.type === type);
+        const currentCount = currentParticles.length;
+        const diff = targetCount - currentCount;
+
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        const dividerX = width / 2;
+
+        if (diff > 0) {
+            // Add particles
+            for (let i = 0; i < diff; i++) {
+                if (type === 1) {
+                    // Add Gas 1 (Left)
+                    const radius = this.scaleRadius(this.settings.gas1.radius);
+                    this.particles.push({
+                        x: Math.random() * (dividerX - radius * 2 - 10) + radius + 5,
+                        y: Math.random() * (height - radius * 2 - 10) + radius + 5,
+                        vx: this.getRandomVelocity(this.settings.gas1.mass),
+                        vy: this.getRandomVelocity(this.settings.gas1.mass),
+                        radius: radius,
+                        type: 1,
+                        mass: this.settings.gas1.mass,
+                        color1: '#60a5fa',
+                        color2: '#2563eb'
+                    });
+                } else {
+                    // Add Gas 2 (Right)
+                    const radius = this.scaleRadius(this.settings.gas2.radius);
+                    this.particles.push({
+                        x: dividerX + Math.random() * (dividerX - radius * 2 - 10) + radius + 10,
+                        y: Math.random() * (height - radius * 2 - 10) + radius + 5,
+                        vx: this.getRandomVelocity(this.settings.gas2.mass),
+                        vy: this.getRandomVelocity(this.settings.gas2.mass),
+                        radius: radius,
+                        type: 2,
+                        mass: this.settings.gas2.mass,
+                        color1: '#f87171',
+                        color2: '#dc2626'
+                    });
+                }
+            }
+        } else if (diff < 0) {
+            // Remove particles (remove last added of that type)
+            let removedCount = 0;
+            const toRemove = Math.abs(diff);
+
+            // Filter out particles of this type starting from the end of the array
+            // Optimization: Rebuilding the array is safer than splicing in loop
+            const newParticles = [];
+            const otherParticles = this.particles.filter(p => p.type !== type);
+            const myParticles = this.particles.filter(p => p.type === type);
+
+            // Keep the first (targetCount) particles
+            const keepParticles = myParticles.slice(0, targetCount);
+
+            this.particles = [...otherParticles, ...keepParticles];
         }
     }
 
@@ -278,10 +342,16 @@ class DiffusionSimulation {
     checkCollision(p1, p2) {
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const distSq = dx * dx + dy * dy; // Optimization: Use squared distance first
         const minDist = p1.radius + p2.radius;
+        const minDistSq = minDist * minDist;
 
-        if (dist < minDist) {
+        if (distSq < minDistSq) {
+            const dist = Math.sqrt(distSq);
+
+            // Prevent NaN/Infinity if particles are exactly on top of each other
+            if (dist < 0.001) return;
+
             // Elastic collision
             const nx = dx / dist;
             const ny = dy / dist;
@@ -361,14 +431,16 @@ class DiffusionSimulation {
         document.getElementById('right-blue-count').textContent = rightBlue;
         document.getElementById('right-red-count').textContent = rightRed;
 
-        const avgSpeed = (totalSpeed / this.particles.length * 100).toFixed(0);
+        const avgSpeed = (this.particles.length > 0)
+            ? (totalSpeed / this.particles.length * 100).toFixed(0)
+            : 0;
         document.getElementById('avg-speed').textContent = `${avgSpeed} m/s`;
     }
 
     recordGraphData() {
         const dividerX = this.canvas.width / 2;
-        const gas1Total = this.particles.filter(p => p.type === 1).length;
-        const gas2Total = this.particles.filter(p => p.type === 2).length;
+        const gas1Total = this.particles.filter(p => p.type === 1).length || 1; // Prevent div by zero
+        const gas2Total = this.particles.filter(p => p.type === 2).length || 1;
 
         let gas1Left = 0, gas2Right = 0;
         this.particles.forEach(p => {
@@ -381,7 +453,7 @@ class DiffusionSimulation {
         this.graphData.time.push(this.elapsedTime);
 
         // Keep only last 60 data points (30 seconds)
-        if (this.graphData.time.length > 60) {
+        if (this.graphData.time.length > 61) { // Keep slightly more to smooth scroll
             this.graphData.gas1Left.shift();
             this.graphData.gas2Right.shift();
             this.graphData.time.shift();
@@ -433,18 +505,30 @@ class DiffusionSimulation {
 
         if (this.graphData.time.length < 2) return;
 
-        const xScale = (width - 50) / Math.max(30, this.graphData.time[this.graphData.time.length - 1]);
+        // Sliding window calculation
+        const lastTime = this.graphData.time[this.graphData.time.length - 1];
+        const timeWindow = 30; // Show last 30 seconds
+        const startTime = Math.max(0, lastTime - timeWindow);
+        const xScale = (width - 50) / timeWindow;
+
         const yScale = (height - 20) / 100;
+
+        // Helper to get X position
+        const getX = (t) => 40 + (t - startTime) * xScale;
 
         // Draw Gas 1 concentration in left chamber
         ctx.strokeStyle = '#3b82f6';
         ctx.lineWidth = 2;
         ctx.beginPath();
         this.graphData.gas1Left.forEach((val, i) => {
-            const x = 40 + this.graphData.time[i] * xScale;
-            const y = height - 10 - val * yScale;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+            const t = this.graphData.time[i];
+            const x = getX(t);
+            // Only draw lines if within or just outside the visible window
+            if (x >= 40 - xScale && x <= width + xScale) {
+                const y = height - 10 - val * yScale;
+                if (i === 0 || getX(this.graphData.time[i - 1]) < 40) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
         });
         ctx.stroke();
 
@@ -452,10 +536,13 @@ class DiffusionSimulation {
         ctx.strokeStyle = '#ef4444';
         ctx.beginPath();
         this.graphData.gas2Right.forEach((val, i) => {
-            const x = 40 + this.graphData.time[i] * xScale;
-            const y = height - 10 - val * yScale;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+            const t = this.graphData.time[i];
+            const x = getX(t);
+            if (x >= 40 - xScale && x <= width + xScale) {
+                const y = height - 10 - val * yScale;
+                if (i === 0 || getX(this.graphData.time[i - 1]) < 40) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
         });
         ctx.stroke();
     }

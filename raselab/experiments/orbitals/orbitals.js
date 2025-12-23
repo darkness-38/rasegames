@@ -377,7 +377,7 @@ function project(x, y, z) {
 // Generate orbital points based on probability density
 function generateOrbitalPoints(orbital) {
     const points = [];
-    const numPoints = 2000;
+    const numPoints = 5000;
 
     for (let i = 0; i < numPoints; i++) {
         let x, y, z, probability;
@@ -538,8 +538,8 @@ function animate() {
     // Draw orbital points
     const color = getOrbitalColor(currentOrbital);
     projectedPoints.forEach(p => {
-        const size = Math.max(1, 3 * p.factor * zoom);
-        const alpha = Math.min(0.8, p.probability * 2) * p.factor;
+        const size = Math.max(2, 4 * p.factor * zoom);
+        const alpha = Math.min(0.9, p.probability * 3) * p.factor;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, size, 0, Math.PI * 2);

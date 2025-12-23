@@ -265,8 +265,13 @@ function updateSimulation() {
     const volumeRatio = (volume - 3) / (20 - 3);
     const chamberHeight = minHeight + volumeRatio * (maxHeight - minHeight);
 
-    piston.style.top = `${300 - chamberHeight - 32}px`;
-    gasChamber.style.height = `${chamberHeight}px`;
+    // Calculate piston position (moves UP when volume increases)
+    const pistonTop = 300 - chamberHeight - 32;
+    piston.style.top = `${pistonTop}px`;
+
+    // Gas chamber follows piston (top of chamber = bottom of piston)
+    gasChamber.style.top = `${pistonTop + 32}px`;
+    gasChamber.style.height = `${chamberHeight - 12}px`; // -12 for bottom wall
 
     // Update labels
     document.getElementById('volume-label').textContent = `V = ${volume.toFixed(1)} L`;

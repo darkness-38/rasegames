@@ -77,20 +77,21 @@ const lawConfig = {
     ideal: {
         title: 'Ideal Gas Law',
         formula: 'PV = nRT',
-        description: 'Describes the relationship between pressure, volume, moles, and temperature.',
-        graphTitle: 'PV vs nRT Graph',
-        graphX: 'nRT',
-        graphY: 'PV',
+        description: 'Z = PV/nRT. For ideal gas Z = 1. Deviations show real gas behavior.',
+        graphTitle: 'Compressibility Factor (Z = PV/nRT)',
+        graphX: 'P (atm)',
+        graphY: 'Z',
         controls: {
             pressure: true,
             volume: true,
             temperature: true,
             moles: true
         },
-        info: `<p class="mb-3"><strong class="text-white">Ideal Gas Law:</strong> A general equation combining all gas laws.</p>
-               <p class="mb-3">PV = nRT, where R = 0.0821 L·atm/(mol·K) is the universal gas constant.</p>
-               <p class="mb-3"><strong class="text-purple-400">P:</strong> Pressure (atm), <strong class="text-blue-400">V:</strong> Volume (L), <strong class="text-green-400">n:</strong> Moles, <strong class="text-orange-400">T:</strong> Temperature (K)</p>
-               <p><strong class="text-teal-400">Note:</strong> Real gases behave close to ideal at low pressure and high temperature.</p>`
+        info: `<p class="mb-3"><strong class="text-white">Ideal Gas Law & Compressibility Factor:</strong></p>
+               <p class="mb-3">Z = PV/nRT is the compressibility factor. For an <strong class="text-teal-400">ideal gas, Z = 1</strong> always.</p>
+               <p class="mb-3"><strong class="text-yellow-400">Z > 1:</strong> Repulsive forces dominate (high pressure)</p>
+               <p class="mb-3"><strong class="text-blue-400">Z < 1:</strong> Attractive forces dominate (intermediate pressure)</p>
+               <p><strong class="text-purple-400">The dashed line at Z = 1</strong> represents ideal gas behavior.</p>`
     }
 };
 
@@ -304,7 +305,8 @@ function updateCalculation() {
         case 'ideal':
             const pvLeft = pressure * volume;
             const nrtRight = moles * R * temperature;
-            calc.innerHTML = `PV = ${pvLeft.toFixed(2)} L·atm<br>nRT = ${moles.toFixed(2)} × 0.0821 × ${temperature.toFixed(0)} = ${nrtRight.toFixed(2)} L·atm`;
+            const zFactor = pvLeft / nrtRight;
+            calc.innerHTML = `PV = ${pvLeft.toFixed(2)} L·atm<br>nRT = ${nrtRight.toFixed(2)} L·atm<br><strong class="text-teal-400">Z = PV/nRT = ${zFactor.toFixed(3)}</strong> ${Math.abs(zFactor - 1) < 0.01 ? '(Ideal!)' : zFactor > 1 ? '(Repulsion)' : '(Attraction)'}`;
             break;
     }
 }
@@ -326,8 +328,8 @@ function addGraphPoint() {
             y = pressure;
             break;
         case 'ideal':
-            x = moles * R * temperature;
-            y = pressure * volume;
+            x = pressure;
+            y = (pressure * volume) / (moles * R * temperature); // Z = PV/nRT
             break;
     }
 
@@ -382,6 +384,24 @@ function drawGraph() {
         ctx.moveTo(padding, y);
         ctx.lineTo(width - padding, y);
         ctx.stroke();
+    }
+
+    // Draw Z=1 reference line for ideal gas (dashed)
+    if (currentLaw === 'ideal' && yMin < 1 && yMax > 1) {
+        const refY = height - padding - (1 - yMin) / (yMax - yMin) * (height - 2 * padding);
+        ctx.strokeStyle = '#fbbf24'; // Yellow dashed line
+        ctx.lineWidth = 2;
+        ctx.setLineDash([8, 4]);
+        ctx.beginPath();
+        ctx.moveTo(padding, refY);
+        ctx.lineTo(width - padding, refY);
+        ctx.stroke();
+        ctx.setLineDash([]); // Reset dash
+
+        // Label
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 11px Space Grotesk';
+        ctx.fillText('Z=1 (Ideal)', width - padding - 60, refY - 5);
     }
 
     // Draw data points and line

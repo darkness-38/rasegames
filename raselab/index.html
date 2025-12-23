@@ -81,11 +81,7 @@
                             Science</p>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#1e2330] transition-colors"
-                            href="./dashboard.html">
-                            <span class="material-symbols-outlined" style="font-size: 24px;">grid_view</span>
-                            <p class="text-sm font-medium leading-normal">Dashboard</p>
-                        </a>
+
                         <!-- Active State -->
                         <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-white"
                             href="#">
@@ -96,19 +92,37 @@
                         </a>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2">
-                    <div class="h-px bg-[#e5e7eb] dark:bg-[#282e39] my-2"></div>
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#1e2330] transition-colors"
-                        href="./settings.html">
-                        <span class="material-symbols-outlined" style="font-size: 24px;">settings</span>
-                        <p class="text-sm font-medium leading-normal">Settings</p>
-                    </a>
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-[#9da6b9] hover:bg-slate-100 dark:hover:bg-[#1e2330] transition-colors"
-                        href="./help.html">
-                        <span class="material-symbols-outlined" style="font-size: 24px;">help</span>
-                        <p class="text-sm font-medium leading-normal">Help &amp; Support</p>
+
+                <!-- Switch to RaseGames Button -->
+                <div class="mt-auto px-3 pb-4">
+                    <a href="/index.html"
+                        class="group relative flex items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white font-bold text-base shadow-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.6)]"
+                        style="animation: pulse-glow 2s ease-in-out infinite;">
+                        <!-- Animated shine effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700">
+                        </div>
+                        <span class="material-symbols-outlined text-2xl drop-shadow-lg"
+                            style="font-variation-settings: 'FILL' 1;">sports_esports</span>
+                        <span class="drop-shadow-lg">Switch to RaseGames</span>
+                        <span
+                            class="material-symbols-outlined text-lg opacity-70 group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </a>
                 </div>
+                <style>
+                    @keyframes pulse-glow {
+
+                        0%,
+                        100% {
+                            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+                        }
+
+                        50% {
+                            box-shadow: 0 4px 30px rgba(236, 72, 153, 0.6);
+                        }
+                    }
+                </style>
+
             </div>
         </aside>
         <!-- Main Content Area -->
@@ -137,10 +151,7 @@
                             <span class="material-symbols-outlined" style="font-size: 20px;">dark_mode</span>
                         </button>
                     </div>
-                    <div class="h-10 w-10 bg-center bg-no-repeat bg-cover rounded-full border-2 border-primary"
-                        data-alt="Student profile avatar showing a smiling young person"
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_snsh1nI3_Qp8e4qFaEnQIk__Rq3ke-itlaupHzqvE6h72G6z5AdfwR44E-y39KlpKrwqzQFHr_by3nSx5NPn8NVfJo0QItmscomK5d64-YEzy-K2-BP0XaxaRNAqqrSMmT6--uMPhrCg5ijOGcjbApo7yRaO7qNtCeCr51VOme6W_QRSgmmOACe_vHssNq4VNxA71IpLZIz9te6JRhRM62J0WG9udn25Y2eWMhnU9RlHtGm0b3oMoaeP-KJLIrjw1EHVUOWL1t_g");'>
-                    </div>
+
                 </div>
             </header>
             <!-- Scrollable Content -->

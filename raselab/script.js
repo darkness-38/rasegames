@@ -230,13 +230,21 @@ const experimentsData = [
 ];
 
 function initExperiments() {
+    console.log('initExperiments called');
     const grid = document.getElementById('experiments-grid');
     const searchInput = document.getElementById('search-input');
     const filterBtns = document.querySelectorAll('.filter-btn');
 
-    if (!grid) return; // Not on experiments page
+    console.log('Grid element:', grid);
+    console.log('Experiments data:', experimentsData);
+
+    if (!grid) {
+        console.log('Grid not found, returning');
+        return;
+    }
 
     // Initial Render
+    console.log('Rendering experiments...');
     renderExperiments(experimentsData);
 
     // Search Listener

@@ -2,6 +2,7 @@
  * RaseLab Shared Logic
  * Handles Dark Mode, Search, Filtering, and Mobile Sidebar
  */
+console.log('Script.js loaded!');
 
 document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
@@ -287,8 +288,16 @@ function initExperiments() {
 }
 
 function renderExperiments(experiments) {
+    console.log('Starting renderExperiments with', experiments.length, 'items');
     const grid = document.getElementById('experiments-grid');
-    if (!grid) return;
+    if (!grid) {
+        console.error('Grid element not found in renderExperiments');
+        return;
+    }
+
+    // VISUAL DEBUGGING: Add a red border to see if the grid has size
+    grid.style.border = "2px dashed red";
+    grid.style.minHeight = "100px";
 
     grid.innerHTML = '';
 
@@ -297,47 +306,55 @@ function renderExperiments(experiments) {
         return;
     }
 
-    experiments.forEach(ex => {
-        const card = document.createElement('div');
-        card.className = "group flex flex-col rounded-xl bg-white dark:bg-[#1e2330] overflow-hidden border border-[#e5e7eb] dark:border-[#2a3140] hover:border-primary/50 dark:hover:border-primary/50 transition-all shadow-sm hover:shadow-lg hover:shadow-primary/10";
+    try {
+        experiments.forEach((ex, index) => {
+            console.log(`Rendering item ${index + 1}: ${ex.title}`);
+            const card = document.createElement('div');
+            card.className = "group flex flex-col rounded-xl bg-white dark:bg-[#1e2330] overflow-hidden border border-[#e5e7eb] dark:border-[#2a3140] hover:border-primary/50 dark:hover:border-primary/50 transition-all shadow-sm hover:shadow-lg hover:shadow-primary/10";
 
-        const buttonContent = ex.link
-            ? `<a href="${ex.link}" class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
-                    <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                    Start Experiment
-                </a>`
-            : `<button class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
-                    <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                    Start Experiment
-                </button>`;
+            const buttonContent = ex.link
+                ? `<a href="${ex.link}" class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
+                        <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                        Start Experiment
+                    </a>`
+                : `<button class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
+                        <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                        Start Experiment
+                    </button>`;
 
-        // Use static color classes for Chemistry (teal) - Tailwind JIT doesn't support dynamic class names
-        const subjectBadgeClass = ex.subject === 'Physics'
-            ? 'bg-purple-500/20 text-purple-200 border-purple-500/30'
-            : 'bg-teal-500/20 text-teal-200 border-teal-500/30';
+            const subjectBadgeClass = ex.subject === 'Physics'
+                ? 'bg-purple-500/20 text-purple-200 border-purple-500/30'
+                : 'bg-teal-500/20 text-teal-200 border-teal-500/30';
 
-        card.innerHTML = `
-            <div class="h-48 w-full bg-cover bg-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-500" style='background-image: url("${ex.image}");'></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#1e2330] to-transparent opacity-60"></div>
-                <div class="absolute top-3 left-3 flex gap-2">
-                    <span class="px-2.5 py-1 rounded-md ${subjectBadgeClass} text-xs font-bold backdrop-blur-md flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">${ex.icon}</span> ${ex.subject}
-                    </span>
+            card.innerHTML = `
+                <div class="h-48 w-full bg-cover bg-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-500" style='background-image: url("${ex.image}");'></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#1e2330] to-transparent opacity-60"></div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="px-2.5 py-1 rounded-md ${subjectBadgeClass} text-xs font-bold backdrop-blur-md flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">${ex.icon}</span> ${ex.subject}
+                        </span>
+                    </div>
+                    <div class="absolute top-3 right-3">
+                        <span class="px-2 py-1 rounded-md bg-black/40 text-white/80 text-xs font-medium backdrop-blur-md">${ex.difficulty}</span>
+                    </div>
                 </div>
-                <div class="absolute top-3 right-3">
-                    <span class="px-2 py-1 rounded-md bg-black/40 text-white/80 text-xs font-medium backdrop-blur-md">${ex.difficulty}</span>
+                <div class="flex flex-col p-5 gap-3 flex-1 relative bg-white dark:bg-[#1e2330]">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">${ex.title}</h3>
+                    <p class="text-sm text-[#637588] dark:text-[#9da6b9] leading-relaxed line-clamp-2">${ex.desc}</p>
+                    <div class="mt-auto pt-4 w-full">
+                        ${buttonContent}
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-col p-5 gap-3 flex-1 relative bg-white dark:bg-[#1e2330]">
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">${ex.title}</h3>
-                <p class="text-sm text-[#637588] dark:text-[#9da6b9] leading-relaxed line-clamp-2">${ex.desc}</p>
-                <div class="mt-auto pt-4 w-full">
-                    ${buttonContent}
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
+            `;
+            grid.appendChild(card);
+        });
+        console.log('Render loop finished. Grid children count:', grid.children.length);
+    } catch (e) {
+        console.error('Error rendering experiments:', e);
+        grid.innerHTML = `<div class="col-span-full text-red-500">Error rendering: ${e.message}</div>`;
+    }
 }
 
+
+console.log('Script.js execution finished!');

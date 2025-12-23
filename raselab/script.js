@@ -120,16 +120,6 @@ function initNavigationHighlighter() {
 const experimentsData = [
     {
         id: 1,
-        title: "Newton's Laws",
-        subject: "Physics",
-        difficulty: "Easy",
-        desc: "Visualize force, mass, and acceleration relationships in a frictionless environment with interactive blocks.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDklBeLiXq8CLzTzBkUWYqr1YJlFj8VtuCIkxv-BB7tOO3Phu5RHlqtzDdBMrgo_F4GB8Ir6uMsbtEumppkBLR-JmUYlKopAG6Aa_Yxda0YTjmn2iEDVv1QYKenniq67e9ua1-YGsuyrC5ctosLJVzWIFw4nwSLQ9ECcdl5qmsZ2b51clHEnbtCzkWkAn2BEycoKbRyBF9Dx4I-k7naswa-11s-8BMO7hbcc8quQ1VTjJYVaFT_fzBslN-Suhn-j-P2Wf7QTDb7is_4",
-        colorClass: "purple",
-        icon: "rocket_launch"
-    },
-    {
-        id: 2,
         title: "Acid-Base Titration",
         subject: "Chemistry",
         difficulty: "Medium",
@@ -139,66 +129,37 @@ const experimentsData = [
         icon: "science"
     },
     {
-        id: 3,
-        title: "Circuit Builder",
-        subject: "Physics",
-        difficulty: "Medium",
-        desc: "Drag and drop components to build series and parallel circuits. Measure voltage and current in real-time.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCXm2yVHkKHgWo_twvK54gCxIIw02t3h6ztzAP68V7T9mRmzWoub-q7t3YnOQpWbDCprpdhZV88soBjjHP6VgGGxL0pihmqeywteFEuSMVnGf-zgDzKagh8DoYBT1wP_5fyGqA2yJnRJd2hB79a3hEJ0lxbtguj1wSPT6l7NesofIkqUtBikiyXZKNSwxE1iBlp93vAcjy3VijdavKtSaon6K9WUUmMHK1u0uHDHOCASGzAPOD2uTjN5bPkNJFdDkcn9FjM2A42pS2N",
-        colorClass: "purple",
-        icon: "rocket_launch"
-    },
-    {
-        id: 4,
-        title: "Periodic Trends",
-        subject: "Chemistry",
-        difficulty: "Hard",
-        desc: "Investigate electronegativity, ionization energy, and atomic radius across different groups and periods.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDh7qOiYnfPksqfORzYjODHCkEeiso_2DA5rhlldCIZtDqsvru2BFklDL9fIZUhE7kt80bNKyLGb1U44YFSb4zTIv5gHAxMoTA-qRTV9A1apUScuvNCW54tlAezfe5xOAD0gGAqz49R_vCpYfdtDvAxLdDUVVTOjZiZlLvvotyI3HuTiObiEiw6TTkk4lRg_-wuL6EQz64fJCi5oziuGmX8JSkQPLc-gEMttqvDEhvT6eYaepLPPhMjcx-zi9YWqxeWhdiXtBUqRke0",
-        colorClass: "teal",
-        icon: "science"
-    },
-    {
-        id: 5,
-        title: "Projectile Motion",
-        subject: "Physics",
-        difficulty: "Hard",
-        desc: "Launch objects at various angles and speeds. Analyze the trajectory, range, and height data.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCDp2e9vxabBVT9K3I1kOfNrFfn3MpZKRFQ5Us6PzAkKCwCPQACwaikMrdewKtGA-rXJyOeOlP4YzJmpfxz2bKfOeY8n6peVF2jNUOMxOvc52MWUk8milGRXzEtvtCuSP1TLAupdXjBfcvOGI9uOkFC6nnz0jkPw0tpSQxYMV27Nmf035hTSANv21_nrUqLcWBuXMhrTK3A9Rodva0LgIaQhdpf2pQb5GlCnmfKQsYnuXAKmVX3j3o7tKwho6BTNHI0ZDGqzO5GLgqP",
-        colorClass: "purple",
-        icon: "rocket_launch"
-    },
-    {
-        id: 6,
-        title: "Molecular Geometry",
+        id: 2,
+        title: "Atomic Orbitals",
         subject: "Chemistry",
         difficulty: "Medium",
-        desc: "Explore VSEPR theory by building molecules and observing their 3D shapes and bond angles.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzQdXU1MVjQdjud1UBj5mtTWMjDAzJ8M73E392VL4DjuWvzmDdKrH5mASqjP8-Zl6Tb6dxklKxln-z7LLWEV7_fxNI0B3ZGQghfzUzJQKu3LxpmwIw8fezt1I3NC28QifM1jukaLWudQTX5OV9NApmRGh8UvXB-OLCc5I83Izff9_0-mx1Fgvkf7-9zj9DsP4FyxtBnO6GfSxeQerYFKgKs5if8IHo2XBJshbYBENbsg3a6A1y3KiVkx9kKAttqP2PIBgYWTWWRbpO",
-        colorClass: "teal",
-        icon: "science"
-    },
-    {
-        id: 7,
-        title: "Atomik Orbitaller",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "3D orbital görselleştirme ile s, p, d orbitallerini keşfedin. Elektron konfigürasyonları oluşturun.",
+        desc: "Explore s, p, d orbitals with 3D visualization. Build electron configurations and understand quantum numbers.",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDh7qOiYnfPksqfORzYjODHCkEeiso_2DA5rhlldCIZtDqsvru2BFklDL9fIZUhE7kt80bNKyLGb1U44YFSb4zTIv5gHAxMoTA-qRTV9A1apUScuvNCW54tlAezfe5xOAD0gGAqz49R_vCpYfdtDvAxLdDUVVTOjZiZlLvvotyI3HuTiObiEiw6TTkk4lRg_-wuL6EQz64fJCi5oziuGmX8JSkQPLc-gEMttqvDEhvT6eYaepLPPhMjcx-zi9YWqxeWhdiXtBUqRke0",
         colorClass: "teal",
         icon: "blur_circular",
         link: "./experiments/orbitals/index.html"
     },
     {
-        id: 8,
-        title: "Gaz Yasaları",
+        id: 3,
+        title: "Gas Laws",
         subject: "Chemistry",
         difficulty: "Medium",
-        desc: "Boyle, Charles, Gay-Lussac ve İdeal Gaz yasalarını interaktif simülasyonlarla keşfedin.",
+        desc: "Explore Boyle's, Charles's, Gay-Lussac's and Ideal Gas laws with interactive simulations.",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA7q-cQM4gEbGALjdnYckYd-LOaqPdCf9l6-k0_SZPO2utwQeIvb_hVyqPwzalAUFxvMflZFR2_K9cJM8nVjsUk5GA2tMfK554uh73P8kx23PX_aN77pArjj1L6FukhTiB6b5mLa68-1Vwfx7uMfxJb9gRkEUq5Q3dyv-_mzEddkGtIlQJHMsGQhCrWoB-XKusyGR_1XtdCQyUnT--zYNfJ50uvOGHPPmTGQES9UQ4HIV2e99oypu3lBzeKD8x4eBOk1JbT3PBDzb0M",
         colorClass: "teal",
         icon: "bubble_chart",
         link: "./experiments/gas-laws/index.html"
+    },
+    {
+        id: 4,
+        title: "Diffusion",
+        subject: "Chemistry",
+        difficulty: "Medium",
+        desc: "Mix two gases to explore diffusion! Experiment with concentration, temperature, mass, and radius to see how they affect diffusion rate.",
+        image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800",
+        colorClass: "teal",
+        icon: "blur_on",
+        link: "./experiments/diffusion/index.html"
     }
 ];
 

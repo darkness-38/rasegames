@@ -32,6 +32,10 @@ const handleLocation = async () => {
         fileToFetch = "leaderboard.html";
     } else if (normalizedPath === "/profile" || normalizedPath === "/profile.html") {
         fileToFetch = "profile.html";
+    } else if (normalizedPath.startsWith("/raselab")) {
+        // RaseLab has its own complete pages, navigate directly
+        window.location.href = normalizedPath.endsWith("/") ? normalizedPath + "index.html" : normalizedPath + "/index.html";
+        return;
     } else {
         // Unknown route - show 404
         fileToFetch = "404.html";

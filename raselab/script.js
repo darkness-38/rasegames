@@ -126,7 +126,8 @@ const experimentsData = [
         desc: "Simulate pH changes in real-time as you mix acids and bases. Identify the equivalence point accurately.",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA7q-cQM4gEbGALjdnYckYd-LOaqPdCf9l6-k0_SZPO2utwQeIvb_hVyqPwzalAUFxvMflZFR2_K9cJM8nVjsUk5GA2tMfK554uh73P8kx23PX_aN77pArjj1L6FukhTiB6b5mLa68-1Vwfx7uMfxJb9gRkEUq5Q3dyv-_mzEddkGtIlQJHMsGQhCrWoB-XKusyGR_1XtdCQyUnT--zYNfJ50uvOGHPPmTGQES9UQ4HIV2e99oypu3lBzeKD8x4eBOk1JbT3PBDzb0M",
         colorClass: "teal",
-        icon: "science"
+        icon: "science",
+        link: "./experiments/titration/index.html"
     },
     {
         id: 2,

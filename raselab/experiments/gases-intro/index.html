@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gases Intro - RaseLab</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "background-dark": "#101622" },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .container-box {
+            background: linear-gradient(180deg, rgba(30, 35, 48, 1) 0%, rgba(40, 46, 57, 1) 100%);
+            border: 3px solid #4b5563;
+            border-radius: 8px;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+        }
+
+        .pump-handle {
+            background: linear-gradient(90deg, #6b7280, #9ca3af, #6b7280);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .pump-handle:hover {
+            background: linear-gradient(90deg, #9ca3af, #d1d5db, #9ca3af);
+        }
+
+        .pump-handle:active {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="../../index.html"
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="hidden sm:inline">Experiments</span>
+                </a>
+                <div class="h-6 w-px bg-[#282e39]"></div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-400">bubble_chart</span>
+                    <h1 class="text-xl font-bold">Gases Intro</h1>
+                </div>
+            </div>
+            <span
+                class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-sm font-medium border border-blue-500/30">Chemistry</span>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="mb-8 p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+            <h2 class="text-2xl font-bold mb-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-blue-400 text-3xl">cloud</span>
+                Introduction to Gases
+            </h2>
+            <p class="text-[#9da6b9]">Pump gas particles into the container and observe their behavior. See how pressure
+                changes with the number of particles!</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Gas Container -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-400">science</span>
+                        Gas Container
+                    </h3>
+
+                    <div class="flex items-center gap-6">
+                        <!-- Pump -->
+                        <div class="flex flex-col items-center">
+                            <div class="text-sm text-[#9da6b9] mb-2">Pump</div>
+                            <div class="relative w-16 h-48 bg-[#282e39] rounded-lg overflow-hidden" id="pump">
+                                <div class="pump-handle absolute top-4 left-2 right-2 h-8 rounded" onclick="pumpGas()">
+                                </div>
+                                <div class="absolute bottom-0 left-1/2 w-4 h-20 bg-gray-600 -translate-x-1/2"></div>
+                            </div>
+                            <button onclick="pumpGas()"
+                                class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-bold text-sm">
+                                Add Gas
+                            </button>
+                            <button onclick="releaseGas()"
+                                class="mt-2 px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg font-bold text-sm">
+                                Release
+                            </button>
+                        </div>
+
+                        <!-- Container -->
+                        <div class="flex-1">
+                            <div class="container-box relative h-72 overflow-hidden" id="gas-container">
+                                <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-4 mt-6">
+                        <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-center">
+                            <div class="text-blue-400 font-bold text-2xl" id="particle-count">0</div>
+                            <div class="text-sm text-[#9da6b9]">Particles</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-orange-500/10 border border-orange-500/30 text-center">
+                            <div class="text-orange-400 font-bold text-2xl" id="pressure-display">1.0</div>
+                            <div class="text-sm text-[#9da6b9]">Pressure (atm)</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-center">
+                            <div class="text-red-400 font-bold text-2xl" id="temp-display">300</div>
+                            <div class="text-sm text-[#9da6b9]">Temperature (K)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pressure Gauge -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4">Pressure Gauge</h3>
+                    <div class="relative h-8 bg-[#282e39] rounded-full overflow-hidden">
+                        <div id="pressure-bar"
+                            class="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 transition-all duration-300"
+                            style="width: 10%;"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-[#9da6b9]">
+                        <span>0 atm</span>
+                        <span>5 atm</span>
+                        <span>10 atm</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls & Info -->
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-400">thermostat</span>
+                        Temperature
+                    </h3>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-[#9da6b9]">Cold</span>
+                        <span class="text-white font-bold" id="temp-value">300 K</span>
+                        <span class="text-[#9da6b9]">Hot</span>
+                    </div>
+                    <input type="range" id="temperature" min="100" max="600" value="300" class="w-full">
+                </div>
+
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4">Gas Properties</h3>
+                    <div class="space-y-3 text-sm text-[#9da6b9]">
+                        <p>• Gas particles move randomly in all directions</p>
+                        <p>• Particles collide with walls, creating pressure</p>
+                        <p>• More particles = more collisions = higher pressure</p>
+                        <p>• Higher temperature = faster particles = higher pressure</p>
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4">Kinetic Theory</h3>
+                    <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-center">
+                        <div class="text-lg font-bold mb-2">PV = nRT</div>
+                        <p class="text-sm text-[#9da6b9]">Pressure × Volume = moles × R × Temperature</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let temperature = 300;
+
+        function resizeCanvas() {
+            const container = document.getElementById('gas-container');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function pumpGas() {
+            const count = 5;
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: 20 + Math.random() * 40,
+                    y: canvas.height / 2 + (Math.random() - 0.5) * 50,
+                    vx: 2 + Math.random() * 2,
+                    vy: (Math.random() - 0.5) * 4,
+                    radius: 6
+                });
+            }
+            updateStats();
+        }
+
+        function releaseGas() {
+            if (particles.length > 0) {
+                particles = particles.slice(0, Math.max(0, particles.length - 5));
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            const count = particles.length;
+            document.getElementById('particle-count').textContent = count;
+
+            const pressure = Math.max(1, count * 0.1 * (temperature / 300)).toFixed(1);
+            document.getElementById('pressure-display').textContent = pressure;
+            document.getElementById('pressure-bar').style.width = `${Math.min(100, pressure * 10)}%`;
+        }
+
+        document.getElementById('temperature').addEventListener('input', (e) => {
+            temperature = parseInt(e.target.value);
+            document.getElementById('temp-value').textContent = temperature + ' K';
+            document.getElementById('temp-display').textContent = temperature;
+
+            // Adjust particle speeds
+            const speedFactor = Math.sqrt(temperature / 300);
+            particles.forEach(p => {
+                const currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+                const targetSpeed = currentSpeed * speedFactor / (currentSpeed > 0 ? currentSpeed : 1) * 3;
+                if (currentSpeed > 0) {
+                    p.vx = (p.vx / currentSpeed) * targetSpeed;
+                    p.vy = (p.vy / currentSpeed) * targetSpeed;
+                }
+            });
+            updateStats();
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const speedFactor = Math.sqrt(temperature / 300);
+
+            particles.forEach(p => {
+                // Move
+                p.x += p.vx * speedFactor;
+                p.y += p.vy * speedFactor;
+
+                // Bounce off walls
+                if (p.x - p.radius < 0 || p.x + p.radius > canvas.width) {
+                    p.vx *= -1;
+                    p.x = Math.max(p.radius, Math.min(canvas.width - p.radius, p.x));
+                }
+                if (p.y - p.radius < 0 || p.y + p.radius > canvas.height) {
+                    p.vy *= -1;
+                    p.y = Math.max(p.radius, Math.min(canvas.height - p.radius, p.y));
+                }
+
+                // Draw
+                const gradient = ctx.createRadialGradient(p.x - 2, p.y - 2, 0, p.x, p.y, p.radius);
+                gradient.addColorStop(0, '#93c5fd');
+                gradient.addColorStop(1, '#2563eb');
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>

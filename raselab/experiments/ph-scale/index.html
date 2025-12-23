@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>pH Scale - RaseLab</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .ph-gradient {
+            background: linear-gradient(to right,
+                    #ff0000 0%, #ff4500 7%, #ff8c00 14%, #ffd700 21%,
+                    #9acd32 28%, #32cd32 35%, #00fa9a 42%, #00ced1 50%,
+                    #1e90ff 57%, #4169e1 64%, #8a2be2 71%, #9400d3 78%,
+                    #800080 85%, #4b0082 100%);
+        }
+
+        .beaker {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .solution-acidic {
+            background: linear-gradient(180deg, #ff6b6b 0%, #ee5a5a 100%);
+        }
+
+        .solution-neutral {
+            background: linear-gradient(180deg, #51cf66 0%, #40c057 100%);
+        }
+
+        .solution-basic {
+            background: linear-gradient(180deg, #748ffc 0%, #5c7cfa 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="../../index.html"
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="hidden sm:inline">Experiments</span>
+                </a>
+                <div class="h-6 w-px bg-[#282e39]"></div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-green-400">science</span>
+                    <h1 class="text-xl font-bold">pH Scale</h1>
+                </div>
+            </div>
+            <span
+                class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm font-medium border border-green-500/30">Chemistry</span>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="mb-8 p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+            <h2 class="text-2xl font-bold mb-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-green-400 text-3xl">water_drop</span>
+                pH Scale Basics
+            </h2>
+            <p class="text-[#9da6b9]">Test the pH of common solutions! Drag substances into the beaker and observe how
+                the pH changes.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Left: Beaker and pH Display -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-400">science</span>
+                            pH Meter
+                        </h3>
+                        <div class="text-4xl font-bold" id="ph-display">7.0</div>
+                    </div>
+
+                    <!-- pH Scale Bar -->
+                    <div class="relative mb-8">
+                        <div class="ph-gradient h-12 rounded-lg relative">
+                            <div id="ph-indicator"
+                                class="absolute top-0 bottom-0 w-1 bg-white shadow-lg transition-all duration-300"
+                                style="left: 50%;"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-sm text-[#9da6b9]">
+                            <span>0 (Acidic)</span>
+                            <span>7 (Neutral)</span>
+                            <span>14 (Basic)</span>
+                        </div>
+                    </div>
+
+                    <!-- Beaker -->
+                    <div class="flex justify-center">
+                        <div class="relative">
+                            <div class="beaker w-48 h-64 relative overflow-hidden">
+                                <div id="solution"
+                                    class="absolute bottom-0 left-0 right-0 solution-neutral transition-all duration-500"
+                                    style="height: 70%;"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span id="solution-name"
+                                        class="text-white font-bold text-lg drop-shadow-lg">Water</span>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4 text-[#9da6b9]" id="ph-category">Neutral</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- pH Info -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-yellow-400">info</span>
+                        About pH
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30">
+                            <div class="font-bold text-red-400 mb-2">Acidic (pH 0-6)</div>
+                            <p class="text-[#9da6b9]">High H⁺ concentration. Sour taste, corrosive.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-green-500/10 border border-green-500/30">
+                            <div class="font-bold text-green-400 mb-2">Neutral (pH 7)</div>
+                            <p class="text-[#9da6b9]">Equal H⁺ and OH⁻. Pure water.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+                            <div class="font-bold text-blue-400 mb-2">Basic (pH 8-14)</div>
+                            <p class="text-[#9da6b9]">High OH⁻ concentration. Bitter, slippery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Solutions to Test -->
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-purple-400">science</span>
+                        Test Solutions
+                    </h3>
+                    <div class="space-y-2" id="solutions-list">
+                        <!-- Solutions will be rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4">pH Formula</h3>
+                    <div class="p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-center">
+                        <div class="text-2xl font-bold mb-2">pH = -log[H⁺]</div>
+                        <p class="text-sm text-[#9da6b9]">pH is the negative logarithm of hydrogen ion concentration</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const solutions = [
+            { name: "Battery Acid", ph: 0.5, color: "solution-acidic" },
+            { name: "Stomach Acid", ph: 1.5, color: "solution-acidic" },
+            { name: "Lemon Juice", ph: 2.0, color: "solution-acidic" },
+            { name: "Vinegar", ph: 2.9, color: "solution-acidic" },
+            { name: "Orange Juice", ph: 3.5, color: "solution-acidic" },
+            { name: "Coffee", ph: 5.0, color: "solution-acidic" },
+            { name: "Milk", ph: 6.5, color: "solution-acidic" },
+            { name: "Pure Water", ph: 7.0, color: "solution-neutral" },
+            { name: "Blood", ph: 7.4, color: "solution-neutral" },
+            { name: "Sea Water", ph: 8.0, color: "solution-basic" },
+            { name: "Baking Soda", ph: 8.5, color: "solution-basic" },
+            { name: "Milk of Magnesia", ph: 10.5, color: "solution-basic" },
+            { name: "Ammonia", ph: 11.5, color: "solution-basic" },
+            { name: "Bleach", ph: 12.5, color: "solution-basic" },
+            { name: "Drain Cleaner", ph: 14.0, color: "solution-basic" }
+        ];
+
+        function renderSolutions() {
+            const list = document.getElementById('solutions-list');
+            list.innerHTML = solutions.map((sol, i) => `
+                <button onclick="selectSolution(${i})" 
+                    class="w-full p-3 rounded-lg ${sol.ph < 7 ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/30' : sol.ph > 7 ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30' : 'bg-green-500/10 hover:bg-green-500/20 border-green-500/30'} border text-left transition-all flex justify-between items-center">
+                    <span class="font-medium">${sol.name}</span>
+                    <span class="text-sm opacity-70">pH ${sol.ph}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectSolution(index) {
+            const sol = solutions[index];
+            document.getElementById('ph-display').textContent = sol.ph.toFixed(1);
+            document.getElementById('solution-name').textContent = sol.name;
+
+            const solution = document.getElementById('solution');
+            solution.className = `absolute bottom-0 left-0 right-0 ${sol.color} transition-all duration-500`;
+
+            const indicator = document.getElementById('ph-indicator');
+            indicator.style.left = `${(sol.ph / 14) * 100}%`;
+
+            const category = document.getElementById('ph-category');
+            if (sol.ph < 7) category.textContent = 'Acidic';
+            else if (sol.ph > 7) category.textContent = 'Basic';
+            else category.textContent = 'Neutral';
+        }
+
+        renderSolutions();
+        selectSolution(7); // Start with water
+    </script>
+</body>
+
+</html>

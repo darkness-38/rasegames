@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Acid-Base Solutions - RaseLab</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "background-dark": "#101622" },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .beaker {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 0 20px 20px;
+            border-top: none;
+        }
+
+        .ion {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .h-ion {
+            color: #f87171;
+        }
+
+        .oh-ion {
+            color: #60a5fa;
+        }
+
+        .molecule-ion {
+            color: #a78bfa;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="../../index.html"
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="hidden sm:inline">Experiments</span>
+                </a>
+                <div class="h-6 w-px bg-[#282e39]"></div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-purple-400">science</span>
+                    <h1 class="text-xl font-bold">Acid-Base Solutions</h1>
+                </div>
+            </div>
+            <span
+                class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm font-medium border border-purple-500/30">Chemistry</span>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="mb-8 p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+            <h2 class="text-2xl font-bold mb-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-purple-400 text-3xl">water_drop</span>
+                Acid-Base Solutions
+            </h2>
+            <p class="text-[#9da6b9]">Explore how acids and bases dissociate in water. See the difference between strong
+                and weak acids/bases!</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Beaker Visualization -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-400">science</span>
+                            <span id="solution-name">Water</span>
+                        </h3>
+                        <div class="flex items-center gap-4">
+                            <div class="text-right">
+                                <div class="text-xs text-[#9da6b9]">pH</div>
+                                <div class="text-2xl font-bold" id="ph-value">7.0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Beaker with ions -->
+                    <div class="flex justify-center">
+                        <div class="relative">
+                            <div id="beaker" class="beaker w-72 h-80 relative overflow-hidden">
+                                <div id="solution-liquid"
+                                    class="absolute bottom-0 left-0 right-0 transition-all duration-500"
+                                    style="height: 75%; background: rgba(100, 200, 255, 0.3);"></div>
+                                <div id="ions-container" class="absolute inset-0"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ion Counts -->
+                    <div class="grid grid-cols-3 gap-4 mt-6">
+                        <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-center">
+                            <div class="text-red-400 font-bold text-2xl" id="h-count">0</div>
+                            <div class="text-sm text-[#9da6b9]">H⁺ ions</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-center">
+                            <div class="text-blue-400 font-bold text-2xl" id="oh-count">0</div>
+                            <div class="text-sm text-[#9da6b9]">OH⁻ ions</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 text-center">
+                            <div class="text-purple-400 font-bold text-2xl" id="mol-count">0</div>
+                            <div class="text-sm text-[#9da6b9]">Molecules</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dissociation Info -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4">Dissociation Equation</h3>
+                    <div class="p-4 rounded-xl bg-[#282e39] text-center">
+                        <div class="text-xl font-mono" id="equation">H₂O ⇌ H⁺ + OH⁻</div>
+                    </div>
+                    <div class="mt-4 text-sm text-[#9da6b9]" id="explanation">
+                        Pure water has equal concentrations of H⁺ and OH⁻ ions, making it neutral (pH 7).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solution Selector -->
+            <div class="space-y-6">
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-green-400">list</span>
+                        Select Solution
+                    </h3>
+
+                    <div class="mb-4">
+                        <div class="text-sm text-[#9da6b9] mb-2">Strong Acids</div>
+                        <div class="space-y-2" id="strong-acids"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="text-sm text-[#9da6b9] mb-2">Weak Acids</div>
+                        <div class="space-y-2" id="weak-acids"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="text-sm text-[#9da6b9] mb-2">Strong Bases</div>
+                        <div class="space-y-2" id="strong-bases"></div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="text-sm text-[#9da6b9] mb-2">Weak Bases</div>
+                        <div class="space-y-2" id="weak-bases"></div>
+                    </div>
+
+                    <div>
+                        <div class="text-sm text-[#9da6b9] mb-2">Neutral</div>
+                        <div class="space-y-2" id="neutral"></div>
+                    </div>
+                </div>
+
+                <!-- Concentration Slider -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold mb-4">Concentration</h3>
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-[#9da6b9]">Dilute</span>
+                        <span class="text-white font-bold" id="conc-value">0.1 M</span>
+                        <span class="text-[#9da6b9]">Concentrated</span>
+                    </div>
+                    <input type="range" id="concentration" min="0.01" max="1" step="0.01" value="0.1" class="w-full">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const solutions = {
+            strongAcids: [
+                { name: "Hydrochloric Acid (HCl)", formula: "HCl → H⁺ + Cl⁻", dissociation: 1, baseH: 50, baseOH: 1, baseMol: 0 },
+                { name: "Sulfuric Acid (H₂SO₄)", formula: "H₂SO₄ → 2H⁺ + SO₄²⁻", dissociation: 1, baseH: 60, baseOH: 1, baseMol: 0 },
+                { name: "Nitric Acid (HNO₃)", formula: "HNO₃ → H⁺ + NO₃⁻", dissociation: 1, baseH: 50, baseOH: 1, baseMol: 0 }
+            ],
+            weakAcids: [
+                { name: "Acetic Acid (CH₃COOH)", formula: "CH₃COOH ⇌ H⁺ + CH₃COO⁻", dissociation: 0.04, baseH: 15, baseOH: 2, baseMol: 35 },
+                { name: "Carbonic Acid (H₂CO₃)", formula: "H₂CO₃ ⇌ H⁺ + HCO₃⁻", dissociation: 0.02, baseH: 8, baseOH: 2, baseMol: 40 }
+            ],
+            strongBases: [
+                { name: "Sodium Hydroxide (NaOH)", formula: "NaOH → Na⁺ + OH⁻", dissociation: 1, baseH: 1, baseOH: 50, baseMol: 0 },
+                { name: "Potassium Hydroxide (KOH)", formula: "KOH → K⁺ + OH⁻", dissociation: 1, baseH: 1, baseOH: 50, baseMol: 0 }
+            ],
+            weakBases: [
+                { name: "Ammonia (NH₃)", formula: "NH₃ + H₂O ⇌ NH₄⁺ + OH⁻", dissociation: 0.04, baseH: 2, baseOH: 12, baseMol: 35 }
+            ],
+            neutral: [
+                { name: "Water (H₂O)", formula: "H₂O ⇌ H⁺ + OH⁻", dissociation: 0.0000001, baseH: 3, baseOH: 3, baseMol: 0 }
+            ]
+        };
+
+        let currentSolution = solutions.neutral[0];
+        let concentration = 0.1;
+
+        function renderSolutionLists() {
+            const categories = ['strongAcids', 'weakAcids', 'strongBases', 'weakBases', 'neutral'];
+            const ids = ['strong-acids', 'weak-acids', 'strong-bases', 'weak-bases', 'neutral'];
+
+            categories.forEach((cat, i) => {
+                document.getElementById(ids[i]).innerHTML = solutions[cat].map((sol, j) => `
+                    <button onclick="selectSolution('${cat}', ${j})" 
+                        class="w-full p-2 rounded-lg bg-[#282e39] hover:bg-[#3f4756] text-left text-sm transition-all">
+                        ${sol.name}
+                    </button>
+                `).join('');
+            });
+        }
+
+        function selectSolution(category, index) {
+            currentSolution = solutions[category][index];
+            updateVisualization();
+        }
+
+        function updateVisualization() {
+            const conc = concentration;
+            const sol = currentSolution;
+
+            document.getElementById('solution-name').textContent = sol.name;
+            document.getElementById('equation').textContent = sol.formula;
+
+            // Calculate pH
+            let ph;
+            if (sol.baseH > sol.baseOH) {
+                ph = -Math.log10(sol.dissociation * conc * 10);
+                ph = Math.max(0, Math.min(6.9, ph));
+            } else if (sol.baseOH > sol.baseH) {
+                const pOH = -Math.log10(sol.dissociation * conc * 10);
+                ph = 14 - Math.max(0, Math.min(6.9, pOH));
+            } else {
+                ph = 7;
+            }
+            document.getElementById('ph-value').textContent = ph.toFixed(1);
+
+            // Update liquid color
+            const liquid = document.getElementById('solution-liquid');
+            if (ph < 7) {
+                liquid.style.background = `rgba(248, 113, 113, ${0.2 + (7 - ph) / 7 * 0.4})`;
+            } else if (ph > 7) {
+                liquid.style.background = `rgba(96, 165, 250, ${0.2 + (ph - 7) / 7 * 0.4})`;
+            } else {
+                liquid.style.background = 'rgba(100, 200, 255, 0.3)';
+            }
+
+            // Generate ions
+            const hCount = Math.round(sol.baseH * conc * 10);
+            const ohCount = Math.round(sol.baseOH * conc * 10);
+            const molCount = Math.round(sol.baseMol * conc * 10);
+
+            document.getElementById('h-count').textContent = hCount;
+            document.getElementById('oh-count').textContent = ohCount;
+            document.getElementById('mol-count').textContent = molCount;
+
+            // Render ions
+            const container = document.getElementById('ions-container');
+            let ionsHtml = '';
+
+            for (let i = 0; i < Math.min(hCount, 30); i++) {
+                const x = 10 + Math.random() * 80;
+                const y = 25 + Math.random() * 50;
+                const delay = Math.random() * 3;
+                ionsHtml += `<div class="ion h-ion" style="left: ${x}%; top: ${y}%; animation-delay: ${delay}s;">H⁺</div>`;
+            }
+
+            for (let i = 0; i < Math.min(ohCount, 30); i++) {
+                const x = 10 + Math.random() * 80;
+                const y = 25 + Math.random() * 50;
+                const delay = Math.random() * 3;
+                ionsHtml += `<div class="ion oh-ion" style="left: ${x}%; top: ${y}%; animation-delay: ${delay}s;">OH⁻</div>`;
+            }
+
+            for (let i = 0; i < Math.min(molCount, 20); i++) {
+                const x = 10 + Math.random() * 80;
+                const y = 25 + Math.random() * 50;
+                const delay = Math.random() * 3;
+                ionsHtml += `<div class="ion molecule-ion" style="left: ${x}%; top: ${y}%; animation-delay: ${delay}s; font-size: 10px;">HA</div>`;
+            }
+
+            container.innerHTML = ionsHtml;
+
+            // Update explanation
+            let explanation = '';
+            if (sol.dissociation === 1) {
+                explanation = 'Strong acids/bases dissociate completely (100%) in water.';
+            } else if (sol.dissociation > 0.01) {
+                explanation = 'Weak acids/bases only partially dissociate. Equilibrium exists between ions and molecules.';
+            } else {
+                explanation = 'Pure water has equal, tiny concentrations of H⁺ and OH⁻ ions.';
+            }
+            document.getElementById('explanation').textContent = explanation;
+        }
+
+        document.getElementById('concentration').addEventListener('input', (e) => {
+            concentration = parseFloat(e.target.value);
+            document.getElementById('conc-value').textContent = concentration.toFixed(2) + ' M';
+            updateVisualization();
+        });
+
+        renderSolutionLists();
+        updateVisualization();
+    </script>
+</body>
+
+</html>

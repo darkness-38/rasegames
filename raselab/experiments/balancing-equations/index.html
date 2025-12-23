@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Balancing Chemical Equations - RaseLab</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "background-dark": "#101622" },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .coef-btn {
+            transition: all 0.15s ease;
+        }
+
+        .coef-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .coef-btn:active {
+            transform: scale(0.95);
+        }
+
+        .molecule {
+            transition: all 0.3s ease;
+        }
+
+        .balanced {
+            animation: pulse-green 1s ease;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 20px 10px rgba(34, 197, 94, 0.3);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-white min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="../../index.html"
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="hidden sm:inline">Experiments</span>
+                </a>
+                <div class="h-6 w-px bg-[#282e39]"></div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-orange-400">balance</span>
+                    <h1 class="text-xl font-bold">Balancing Equations</h1>
+                </div>
+            </div>
+            <span
+                class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 text-sm font-medium border border-orange-500/30">Chemistry</span>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <div class="mb-8 p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+            <h2 class="text-2xl font-bold mb-3 flex items-center gap-3">
+                <span class="material-symbols-outlined text-orange-400 text-3xl">science</span>
+                Balance Chemical Equations
+            </h2>
+            <p class="text-[#9da6b9]">Adjust the coefficients to balance atoms on both sides. Conservation of mass means
+                atoms in = atoms out!</p>
+        </div>
+
+        <!-- Equation Display -->
+        <div id="equation-container" class="p-8 rounded-2xl bg-[#1e2330] border border-[#282e39] mb-6">
+            <div class="flex items-center justify-center gap-4 flex-wrap text-2xl" id="equation-display">
+                <!-- Equation will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Atom Count -->
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+            <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <h3 class="text-lg font-bold mb-4 text-blue-400">Reactants (Left Side)</h3>
+                <div id="reactant-atoms" class="space-y-2"></div>
+            </div>
+            <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <h3 class="text-lg font-bold mb-4 text-green-400">Products (Right Side)</h3>
+                <div id="product-atoms" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- Status & Controls -->
+        <div
+            class="flex flex-col md:flex-row gap-4 items-center justify-between p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+            <div id="status" class="text-xl font-bold text-yellow-400">
+                <span class="material-symbols-outlined align-middle">pending</span>
+                Not Balanced
+            </div>
+            <div class="flex gap-3">
+                <button onclick="resetEquation()"
+                    class="px-4 py-2 rounded-lg bg-[#282e39] hover:bg-[#3f4756] font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined">refresh</span>Reset
+                </button>
+                <button onclick="nextEquation()"
+                    class="px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_forward</span>Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Score -->
+        <div class="mt-6 text-center text-[#9da6b9]">
+            Balanced: <span id="score" class="text-white font-bold">0</span> equations
+        </div>
+    </main>
+
+    <script>
+        const equations = [
+            {
+                reactants: [{ formula: "H₂", atoms: { H: 2 } }, { formula: "O₂", atoms: { O: 2 } }],
+                products: [{ formula: "H₂O", atoms: { H: 2, O: 1 } }],
+                solution: [2, 1, 2]
+            },
+            {
+                reactants: [{ formula: "N₂", atoms: { N: 2 } }, { formula: "H₂", atoms: { H: 2 } }],
+                products: [{ formula: "NH₃", atoms: { N: 1, H: 3 } }],
+                solution: [1, 3, 2]
+            },
+            {
+                reactants: [{ formula: "Fe", atoms: { Fe: 1 } }, { formula: "O₂", atoms: { O: 2 } }],
+                products: [{ formula: "Fe₂O₃", atoms: { Fe: 2, O: 3 } }],
+                solution: [4, 3, 2]
+            },
+            {
+                reactants: [{ formula: "CH₄", atoms: { C: 1, H: 4 } }, { formula: "O₂", atoms: { O: 2 } }],
+                products: [{ formula: "CO₂", atoms: { C: 1, O: 2 } }, { formula: "H₂O", atoms: { H: 2, O: 1 } }],
+                solution: [1, 2, 1, 2]
+            },
+            {
+                reactants: [{ formula: "Na", atoms: { Na: 1 } }, { formula: "Cl₂", atoms: { Cl: 2 } }],
+                products: [{ formula: "NaCl", atoms: { Na: 1, Cl: 1 } }],
+                solution: [2, 1, 2]
+            },
+        ];
+
+        let currentEq = 0;
+        let coefficients = [];
+        let score = 0;
+
+        function renderEquation() {
+            const eq = equations[currentEq];
+            const all = [...eq.reactants, ...eq.products];
+            coefficients = all.map(() => 1);
+
+            let html = '';
+            eq.reactants.forEach((mol, i) => {
+                if (i > 0) html += '<span class="text-[#9da6b9]">+</span>';
+                html += renderMolecule(i, mol.formula);
+            });
+            html += '<span class="text-2xl text-[#9da6b9] mx-4">→</span>';
+            eq.products.forEach((mol, i) => {
+                if (i > 0) html += '<span class="text-[#9da6b9]">+</span>';
+                html += renderMolecule(eq.reactants.length + i, mol.formula);
+            });
+
+            document.getElementById('equation-display').innerHTML = html;
+            updateAtomCounts();
+        }
+
+        function renderMolecule(index, formula) {
+            return `
+                <div class="molecule flex items-center gap-2 p-3 rounded-xl bg-[#282e39]">
+                    <button onclick="changeCoef(${index}, -1)" class="coef-btn w-8 h-8 rounded-full bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30">-</button>
+                    <span class="font-bold text-xl min-w-[24px] text-center" id="coef-${index}">${coefficients[index]}</span>
+                    <span class="font-mono">${formula}</span>
+                    <button onclick="changeCoef(${index}, 1)" class="coef-btn w-8 h-8 rounded-full bg-green-500/20 text-green-400 font-bold hover:bg-green-500/30">+</button>
+                </div>
+            `;
+        }
+
+        function changeCoef(index, delta) {
+            coefficients[index] = Math.max(1, Math.min(10, coefficients[index] + delta));
+            document.getElementById(`coef-${index}`).textContent = coefficients[index];
+            updateAtomCounts();
+        }
+
+        function updateAtomCounts() {
+            const eq = equations[currentEq];
+            const reactantAtoms = {};
+            const productAtoms = {};
+
+            eq.reactants.forEach((mol, i) => {
+                Object.entries(mol.atoms).forEach(([atom, count]) => {
+                    reactantAtoms[atom] = (reactantAtoms[atom] || 0) + count * coefficients[i];
+                });
+            });
+
+            eq.products.forEach((mol, i) => {
+                const idx = eq.reactants.length + i;
+                Object.entries(mol.atoms).forEach(([atom, count]) => {
+                    productAtoms[atom] = (productAtoms[atom] || 0) + count * coefficients[idx];
+                });
+            });
+
+            const allAtoms = [...new Set([...Object.keys(reactantAtoms), ...Object.keys(productAtoms)])];
+
+            document.getElementById('reactant-atoms').innerHTML = allAtoms.map(atom =>
+                `<div class="flex justify-between p-2 rounded bg-[#282e39]"><span>${atom}</span><span class="font-bold">${reactantAtoms[atom] || 0}</span></div>`
+            ).join('');
+
+            document.getElementById('product-atoms').innerHTML = allAtoms.map(atom => {
+                const match = reactantAtoms[atom] === productAtoms[atom];
+                return `<div class="flex justify-between p-2 rounded ${match ? 'bg-green-500/20' : 'bg-[#282e39]'}"><span>${atom}</span><span class="font-bold">${productAtoms[atom] || 0}</span></div>`;
+            }).join('');
+
+            const balanced = allAtoms.every(atom => reactantAtoms[atom] === productAtoms[atom]);
+            const status = document.getElementById('status');
+            if (balanced) {
+                status.innerHTML = '<span class="material-symbols-outlined align-middle">check_circle</span> Balanced!';
+                status.className = 'text-xl font-bold text-green-400';
+                document.getElementById('equation-container').classList.add('balanced');
+            } else {
+                status.innerHTML = '<span class="material-symbols-outlined align-middle">pending</span> Not Balanced';
+                status.className = 'text-xl font-bold text-yellow-400';
+                document.getElementById('equation-container').classList.remove('balanced');
+            }
+        }
+
+        function resetEquation() {
+            renderEquation();
+        }
+
+        function nextEquation() {
+            const eq = equations[currentEq];
+            const all = [...eq.reactants, ...eq.products];
+            const allAtoms = {};
+            eq.reactants.forEach((mol, i) => {
+                Object.entries(mol.atoms).forEach(([atom, count]) => {
+                    allAtoms[atom] = (allAtoms[atom] || 0) + count * coefficients[i];
+                });
+            });
+            const productAtoms = {};
+            eq.products.forEach((mol, i) => {
+                const idx = eq.reactants.length + i;
+                Object.entries(mol.atoms).forEach(([atom, count]) => {
+                    productAtoms[atom] = (productAtoms[atom] || 0) + count * coefficients[idx];
+                });
+            });
+            const balanced = Object.keys(allAtoms).every(atom => allAtoms[atom] === productAtoms[atom]);
+            if (balanced) score++;
+            document.getElementById('score').textContent = score;
+
+            currentEq = (currentEq + 1) % equations.length;
+            renderEquation();
+        }
+
+        renderEquation();
+    </script>
+</body>
+
+</html>

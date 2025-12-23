@@ -160,6 +160,72 @@ const experimentsData = [
         colorClass: "teal",
         icon: "blur_on",
         link: "./experiments/diffusion/index.html"
+    },
+    {
+        id: 5,
+        title: "Gases Intro",
+        subject: "Chemistry",
+        difficulty: "Easy",
+        desc: "Pump gas particles into a container and observe their behavior. See how pressure changes with the number of particles!",
+        image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
+        colorClass: "teal",
+        icon: "cloud",
+        link: "./experiments/gases-intro/index.html"
+    },
+    {
+        id: 6,
+        title: "Gas Properties",
+        subject: "Chemistry",
+        difficulty: "Medium",
+        desc: "Control pressure, volume, and temperature with a movable piston and heater. Watch P-V and P-T graphs update in real-time!",
+        image: "https://images.unsplash.com/photo-1628595351029-c2bf17511435?w=800",
+        colorClass: "teal",
+        icon: "compress",
+        link: "./experiments/gas-properties/index.html"
+    },
+    {
+        id: 7,
+        title: "Molecule Polarity",
+        subject: "Chemistry",
+        difficulty: "Medium",
+        desc: "See how electronegativity differences create polar bonds and molecular dipoles. Explore H₂O, CO₂, NH₃, and more!",
+        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800",
+        colorClass: "teal",
+        icon: "hub",
+        link: "./experiments/molecule-polarity/index.html"
+    },
+    {
+        id: 8,
+        title: "Balancing Equations",
+        subject: "Chemistry",
+        difficulty: "Easy",
+        desc: "Practice balancing chemical equations interactively! Adjust coefficients and watch atom counts update in real-time.",
+        image: "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=800",
+        colorClass: "teal",
+        icon: "balance",
+        link: "./experiments/balancing-equations/index.html"
+    },
+    {
+        id: 9,
+        title: "pH Scale",
+        subject: "Chemistry",
+        difficulty: "Easy",
+        desc: "Test the pH of common solutions from battery acid to drain cleaner. See the color changes and understand acidity!",
+        image: "https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?w=800",
+        colorClass: "teal",
+        icon: "water_drop",
+        link: "./experiments/ph-scale/index.html"
+    },
+    {
+        id: 10,
+        title: "Acid-Base Solutions",
+        subject: "Chemistry",
+        difficulty: "Medium",
+        desc: "Explore how acids and bases dissociate in water. See the difference between strong and weak acids/bases!",
+        image: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=800",
+        colorClass: "teal",
+        icon: "science",
+        link: "./experiments/acid-base/index.html"
     }
 ];
 
@@ -214,6 +280,8 @@ function initExperiments() {
 
 function renderExperiments(experiments) {
     const grid = document.getElementById('experiments-grid');
+    if (!grid) return;
+
     grid.innerHTML = '';
 
     if (experiments.length === 0) {
@@ -228,19 +296,24 @@ function renderExperiments(experiments) {
         const buttonContent = ex.link
             ? `<a href="${ex.link}" class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
                     <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                    Deneyi Başlat
+                    Start Experiment
                 </a>`
             : `<button class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
                     <span class="material-symbols-outlined text-[20px]">play_arrow</span>
                     Start Experiment
                 </button>`;
 
+        // Use static color classes for Chemistry (teal) - Tailwind JIT doesn't support dynamic class names
+        const subjectBadgeClass = ex.subject === 'Physics'
+            ? 'bg-purple-500/20 text-purple-200 border-purple-500/30'
+            : 'bg-teal-500/20 text-teal-200 border-teal-500/30';
+
         card.innerHTML = `
-            <div class="h-48 w-full bg-cover bg-center relative group-hover:scale-105 transition-transform duration-500"
-                style='background-image: url("${ex.image}");'>
+            <div class="h-48 w-full bg-cover bg-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-500" style='background-image: url("${ex.image}");'></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-[#1e2330] to-transparent opacity-60"></div>
                 <div class="absolute top-3 left-3 flex gap-2">
-                    <span class="px-2.5 py-1 rounded-md bg-${ex.colorClass}-500/20 text-${ex.colorClass}-200 border border-${ex.colorClass}-500/30 text-xs font-bold backdrop-blur-md flex items-center gap-1">
+                    <span class="px-2.5 py-1 rounded-md ${subjectBadgeClass} text-xs font-bold backdrop-blur-md flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">${ex.icon}</span> ${ex.subject}
                     </span>
                 </div>
@@ -259,3 +332,4 @@ function renderExperiments(experiments) {
         grid.appendChild(card);
     });
 }
+

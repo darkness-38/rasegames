@@ -177,6 +177,28 @@ const experimentsData = [
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzQdXU1MVjQdjud1UBj5mtTWMjDAzJ8M73E392VL4DjuWvzmDdKrH5mASqjP8-Zl6Tb6dxklKxln-z7LLWEV7_fxNI0B3ZGQghfzUzJQKu3LxpmwIw8fezt1I3NC28QifM1jukaLWudQTX5OV9NApmRGh8UvXB-OLCc5I83Izff9_0-mx1Fgvkf7-9zj9DsP4FyxtBnO6GfSxeQerYFKgKs5if8IHo2XBJshbYBENbsg3a6A1y3KiVkx9kKAttqP2PIBgYWTWWRbpO",
         colorClass: "teal",
         icon: "science"
+    },
+    {
+        id: 7,
+        title: "Atomik Orbitaller",
+        subject: "Chemistry",
+        difficulty: "Medium",
+        desc: "3D orbital görselleştirme ile s, p, d orbitallerini keşfedin. Elektron konfigürasyonları oluşturun.",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDh7qOiYnfPksqfORzYjODHCkEeiso_2DA5rhlldCIZtDqsvru2BFklDL9fIZUhE7kt80bNKyLGb1U44YFSb4zTIv5gHAxMoTA-qRTV9A1apUScuvNCW54tlAezfe5xOAD0gGAqz49R_vCpYfdtDvAxLdDUVVTOjZiZlLvvotyI3HuTiObiEiw6TTkk4lRg_-wuL6EQz64fJCi5oziuGmX8JSkQPLc-gEMttqvDEhvT6eYaepLPPhMjcx-zi9YWqxeWhdiXtBUqRke0",
+        colorClass: "teal",
+        icon: "blur_circular",
+        link: "./experiments/orbitals/index.html"
+    },
+    {
+        id: 8,
+        title: "Gaz Yasaları",
+        subject: "Chemistry",
+        difficulty: "Medium",
+        desc: "Boyle, Charles, Gay-Lussac ve İdeal Gaz yasalarını interaktif simülasyonlarla keşfedin.",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA7q-cQM4gEbGALjdnYckYd-LOaqPdCf9l6-k0_SZPO2utwQeIvb_hVyqPwzalAUFxvMflZFR2_K9cJM8nVjsUk5GA2tMfK554uh73P8kx23PX_aN77pArjj1L6FukhTiB6b5mLa68-1Vwfx7uMfxJb9gRkEUq5Q3dyv-_mzEddkGtIlQJHMsGQhCrWoB-XKusyGR_1XtdCQyUnT--zYNfJ50uvOGHPPmTGQES9UQ4HIV2e99oypu3lBzeKD8x4eBOk1JbT3PBDzb0M",
+        colorClass: "teal",
+        icon: "bubble_chart",
+        link: "./experiments/gas-laws/index.html"
     }
 ];
 
@@ -242,6 +264,16 @@ function renderExperiments(experiments) {
         const card = document.createElement('div');
         card.className = "group flex flex-col rounded-xl bg-white dark:bg-[#1e2330] overflow-hidden border border-[#e5e7eb] dark:border-[#2a3140] hover:border-primary/50 dark:hover:border-primary/50 transition-all shadow-sm hover:shadow-lg hover:shadow-primary/10";
 
+        const buttonContent = ex.link
+            ? `<a href="${ex.link}" class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
+                    <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                    Deneyi Başlat
+                </a>`
+            : `<button class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
+                    <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                    Start Experiment
+                </button>`;
+
         card.innerHTML = `
             <div class="h-48 w-full bg-cover bg-center relative group-hover:scale-105 transition-transform duration-500"
                 style='background-image: url("${ex.image}");'>
@@ -259,10 +291,7 @@ function renderExperiments(experiments) {
                 <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">${ex.title}</h3>
                 <p class="text-sm text-[#637588] dark:text-[#9da6b9] leading-relaxed line-clamp-2">${ex.desc}</p>
                 <div class="mt-auto pt-4 w-full">
-                    <button class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
-                        <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                        Start Experiment
-                    </button>
+                    ${buttonContent}
                 </div>
             </div>
         `;

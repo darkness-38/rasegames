@@ -105,6 +105,7 @@
             animation: fadeIn 0.3s ease-out forwards;
         }
     </style>
+    <script src="/scripts/i18n.js"></script>
     <script src="/scripts/challenges.js"></script>
     <script src="/scripts/auth.js"></script>
     <script src="/scripts/leaderboard.js"></script>
@@ -129,7 +130,12 @@
                 <span class="material-symbols-outlined text-[14px]">science</span>
                 RaseLab
             </a>
-            <div id="user-display"></div>
+            <!-- Language Toggle -->
+                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                </div>
+                <div id="user-display"></div>
         </div>
     </nav>
 

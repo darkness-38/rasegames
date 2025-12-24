@@ -92,11 +92,11 @@
                 </a>
                 <div class="hidden md:flex items-center gap-8">
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                        href="/pages/games">Games</a>
+                        href="/pages/games" data-i18n="nav.games">Games</a>
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                        href="/pages/challenges">Challenges</a>
+                        href="/pages/challenges" data-i18n="nav.challenges">Challenges</a>
                     <a class="text-white text-glow text-sm font-medium transition-colors no-underline border-b-2 border-primary py-5"
-                        href="/pages/leaderboard">Leaderboard</a>
+                        href="/pages/leaderboard" data-i18n="nav.leaderboard">Leaderboard</a>
                     <a class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all duration-300 no-underline hover:scale-105"
                         href="/raselab/">
                         <span class="material-symbols-outlined text-[16px]">science</span>
@@ -104,9 +104,17 @@
                     </a>
                 </div>
                 <div class="flex items-center gap-4">
+                    <!-- Language Toggle -->
+                    <div class="flex items-center gap-1 bg-white/5 rounded-full p-1">
+                        <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                        <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                    </div>
                     <div id="user-display" class="flex items-center gap-3">
                         <button onclick="showAuthModal()"
-                            class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                            class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all"
+                            data-i18n="nav.signIn">
                             Sign In
                         </button>
                     </div>
@@ -120,12 +128,14 @@
                 <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-8">
                     <div>
                         <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
-                            <a href="/" class="hover:text-white no-underline">Home</a>
+                            <a href="/" class="hover:text-white no-underline" data-i18n="nav.home">Home</a>
                             <span>/</span>
-                            <span class="text-primary">Leaderboard</span>
+                            <span class="text-primary" data-i18n="nav.leaderboard">Leaderboard</span>
                         </div>
-                        <h1 class="text-4xl font-bold text-white tracking-tight">Global Rankings</h1>
-                        <p class="text-gray-400 mt-2">Compete with players worldwide</p>
+                        <h1 class="text-4xl font-bold text-white tracking-tight" data-i18n="leaderboard.globalRankings">
+                            Global Rankings</h1>
+                        <p class="text-gray-400 mt-2" data-i18n="leaderboard.competeWorldwide">Compete with players
+                            worldwide</p>
                     </div>
                 </div>
 
@@ -134,7 +144,7 @@
                     <div class="flex flex-wrap gap-3" id="game-filters">
                         <button onclick="loadLeaderboard('all')"
                             class="game-filter-btn active px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold"
-                            data-game="all">All Games</button>
+                            data-game="all" data-i18n="filters.allGames">All Games</button>
                         <button onclick="loadLeaderboard('snake')"
                             class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
                             data-game="snake">🐍 Snake</button>
@@ -165,17 +175,17 @@
                 <div class="w-full flex flex-col gap-4">
                     <div
                         class="hidden md:grid grid-cols-12 gap-4 px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                        <div class="col-span-1 text-center">Rank</div>
-                        <div class="col-span-5">Player</div>
-                        <div class="col-span-3">Game</div>
-                        <div class="col-span-3 text-right">Score</div>
+                        <div class="col-span-1 text-center" data-i18n="leaderboard.rank">Rank</div>
+                        <div class="col-span-5" data-i18n="leaderboard.player">Player</div>
+                        <div class="col-span-3" data-i18n="leaderboard.game">Game</div>
+                        <div class="col-span-3 text-right" data-i18n="leaderboard.score">Score</div>
                     </div>
 
                     <div id="leaderboard-list" class="flex flex-col gap-2">
                         <!-- Will be populated by JS -->
                         <div class="text-center py-10 text-gray-500">
                             <span class="material-symbols-outlined text-4xl mb-2">hourglass_empty</span>
-                            <p>Loading leaderboard...</p>
+                            <p data-i18n="common.loadingLeaderboard">Loading leaderboard...</p>
                         </div>
                     </div>
                 </div>
@@ -190,13 +200,14 @@
                     <h3 class="text-white font-bold text-lg">Rase<span class="text-primary">Games</span></h3>
                 </div>
                 <div class="flex gap-8">
-                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
-                        href="/pages/about">About</a>
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline" href="/pages/about"
+                        data-i18n="footer.about">About</a>
                 </div>
             </div>
         </footer>
     </div>
 
+    <script src="/scripts/i18n.js"></script>
     <script src="../scripts/firebase-config.js"></script>
     <script src="../scripts/challenges.js"></script>
     <script src="../scripts/auth.js"></script>

@@ -77,7 +77,7 @@
                     <div class="size-8 rounded bg-primary/20 flex items-center justify-center text-primary neon-border">
                         <span class="material-symbols-outlined">arrow_back</span>
                     </div>
-                    <span class="text-sm text-[#9da6b9]">Back to Games</span>
+                    <span class="text-sm text-[#9da6b9]" data-i18n="common.backToGames">Back to Games</span>
                 </a>
             </div>
             <div class="flex items-center gap-3">
@@ -86,7 +86,14 @@
                 </div>
                 <h1 class="text-xl font-bold tracking-wider text-white neon-text">NEON SNAKE</h1>
             </div>
-            <div class="flex gap-3">
+            <div class="flex gap-3 items-center">
+                <!-- Language Toggle -->
+                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                    <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                        class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                        class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                </div>
                 <div id="user-display"></div>
                 <button
                     class="flex items-center justify-center rounded-lg size-10 bg-[#282e39] hover:bg-[#3b4354] text-white transition-colors">
@@ -104,13 +111,15 @@
                 <!-- Stats Component -->
                 <div class="flex flex-col gap-4 rounded-xl border border-[#282e39] bg-[#151a23] p-6 neon-box">
                     <div class="flex flex-col gap-1">
-                        <p class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase">Current Score</p>
+                        <p class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase"
+                            data-i18n="common.currentScore">Current Score</p>
                         <p id="score"
                             class="text-white text-4xl font-mono font-bold tracking-tight text-primary neon-text">0</p>
                     </div>
                     <div class="h-px bg-[#282e39] w-full"></div>
                     <div class="flex flex-col gap-1">
-                        <p class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase">High Score</p>
+                        <p class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase"
+                            data-i18n="common.highScore">High Score</p>
                         <p id="highScore" class="text-white text-2xl font-mono font-bold tracking-tight">0</p>
                     </div>
                 </div>
@@ -118,7 +127,8 @@
                 <!-- Speed Level -->
                 <div class="flex flex-col gap-4 rounded-xl border border-[#282e39] bg-[#151a23] p-6">
                     <div class="flex items-center justify-between">
-                        <span class="text-white text-sm font-bold uppercase tracking-wider">Speed Level</span>
+                        <span class="text-white text-sm font-bold uppercase tracking-wider"
+                            data-i18n="snake.speedLevel">Speed Level</span>
                         <span id="speedLevel" class="text-primary font-mono font-bold neon-text">01</span>
                     </div>
                     <div class="relative h-2 w-full rounded-full bg-[#282e39] overflow-hidden">
@@ -137,7 +147,7 @@
                             <span class="border border-[#3b4354] rounded px-1.5 py-0.5 bg-[#1c212b]">S</span>
                             <span class="border border-[#3b4354] rounded px-1.5 py-0.5 bg-[#1c212b]">D</span>
                         </div>
-                        <span>to Move</span>
+                        <span data-i18n="snake.toMove">to Move</span>
                     </div>
                     <div class="flex items-center gap-3 text-sm text-[#9da6b9]">
                         <div class="flex gap-1">
@@ -146,7 +156,7 @@
                             <span class="border border-[#3b4354] rounded px-1.5 py-0.5 bg-[#1c212b]">↓</span>
                             <span class="border border-[#3b4354] rounded px-1.5 py-0.5 bg-[#1c212b]">→</span>
                         </div>
-                        <span>Arrow Keys</span>
+                        <span data-i18n="snake.arrowKeys">Arrow Keys</span>
                     </div>
                 </div>
             </aside>
@@ -186,11 +196,14 @@
                                 <span class="material-symbols-outlined text-primary text-3xl">play_arrow</span>
                             </div>
                             <div class="space-y-1 relative z-10">
-                                <h3 class="text-white text-xl font-bold tracking-tight">Ready to Play?</h3>
-                                <p class="text-[#9da6b9] text-sm">Press any key or tap to start</p>
+                                <h3 class="text-white text-xl font-bold tracking-tight" data-i18n="common.readyToPlay">
+                                    Ready to Play?</h3>
+                                <p class="text-[#9da6b9] text-sm" data-i18n="common.pressStart">Press any key or tap to
+                                    start</p>
                             </div>
                             <button onclick="initGame()"
-                                class="w-full cursor-pointer items-center justify-center rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-[0_0_15px_rgba(15,73,189,0.4)] hover:shadow-[0_0_20px_rgba(15,73,189,0.6)] text-white text-sm font-bold tracking-wide transition-all">
+                                class="w-full cursor-pointer items-center justify-center rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-[0_0_15px_rgba(15,73,189,0.4)] hover:shadow-[0_0_20px_rgba(15,73,189,0.6)] text-white text-sm font-bold tracking-wide transition-all"
+                                data-i18n="common.startGame">
                                 START GAME
                             </button>
                         </div>
@@ -209,12 +222,14 @@
                                 <span class="material-symbols-outlined text-red-500 text-3xl">skull</span>
                             </div>
                             <div class="space-y-1 relative z-10">
-                                <h3 class="text-white text-xl font-bold tracking-tight">Game Over!</h3>
+                                <h3 class="text-white text-xl font-bold tracking-tight" data-i18n="common.gameOver">Game
+                                    Over!</h3>
                                 <p class="text-[#9da6b9] text-sm">Your Score: <span id="finalScore"
                                         class="text-primary font-bold">0</span></p>
                             </div>
                             <button id="restartBtn"
-                                class="w-full cursor-pointer items-center justify-center rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-[0_0_15px_rgba(15,73,189,0.4)] hover:shadow-[0_0_20px_rgba(15,73,189,0.6)] text-white text-sm font-bold tracking-wide transition-all">
+                                class="w-full cursor-pointer items-center justify-center rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-[0_0_15px_rgba(15,73,189,0.4)] hover:shadow-[0_0_20px_rgba(15,73,189,0.6)] text-white text-sm font-bold tracking-wide transition-all"
+                                data-i18n="common.playAgain">
                                 PLAY AGAIN
                             </button>
                         </div>
@@ -251,6 +266,7 @@
 
     <script src="/scripts/leaderboard.js"></script>
     <script src="game.js"></script>
+    <script src="/scripts/i18n.js"></script>
     <script src="/scripts/challenges.js"></script>
     <script src="/scripts/auth.js"></script>
 </body>

@@ -1,0 +1,292 @@
+{
+    "nav": {
+        "home": "Home",
+        "games": "Games",
+        "challenges": "Challenges",
+        "leaderboard": "Leaderboard",
+        "about": "About",
+        "profile": "Profile",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "signOut": "Sign Out",
+        "allGames": "All Games"
+    },
+    "hero": {
+        "welcome": "Welcome to RaseGames",
+        "tagline": "PLAY. COMPETE. CONQUER.",
+        "description": "10+ browser games, daily challenges, and global leaderboards.",
+        "noDownload": "No downloads required.",
+        "browseGames": "Browse Games",
+        "signUpFree": "Sign Up Free",
+        "welcomeBack": "WELCOME BACK,",
+        "dailyStats": "Your daily stats are waiting.",
+        "newChallenges": "3 New challenges",
+        "availableToday": "available in the arena today.",
+        "viewStats": "View Stats",
+        "systemOnline": "System Online"
+    },
+    "sections": {
+        "featuredGames": "Featured Games",
+        "moreGames": "More Games",
+        "viewAll": "View All",
+        "playNow": "Play Now",
+        "browseAll": "Browse All"
+    },
+    "games": {
+        "raseClicker": "Rase Clicker",
+        "fightArena": "Fight Arena",
+        "cyberRunner": "Cyber Runner",
+        "neonSnake": "Neon Snake",
+        "cyberBlocks": "Cyber Blocks",
+        "power2048": "Power 2048",
+        "pixelBird": "Pixel Bird",
+        "mindMatch": "Mind Match",
+        "bombSquad": "Bomb Squad",
+        "ticTacToe": "Tic Tac Toe"
+    },
+    "gameTypes": {
+        "idle": "Idle",
+        "clicker": "Clicker",
+        "fighting": "Fighting",
+        "pvp": "PvP",
+        "platformer": "Platformer",
+        "endless": "Endless",
+        "puzzle": "Puzzle",
+        "arcade": "Arcade",
+        "strategy": "Strategy",
+        "multiplayer": "Multiplayer"
+    },
+    "badges": {
+        "popular": "POPULAR",
+        "hot": "HOT",
+        "new": "NEW",
+        "multiplayer": "MULTIPLAYER"
+    },
+    "stats": {
+        "browserGames": "Browser Games",
+        "freeToPlay": "Free to Play",
+        "available": "Available",
+        "leaderboards": "Leaderboards"
+    },
+    "raselab": {
+        "title": "RaseLab",
+        "subtitle": "Interactive Experiments",
+        "experiments": "Experiments",
+        "switchToGames": "RaseGames",
+        "backToExperiments": "Experiments",
+        "searchPlaceholder": "Search experiments...",
+        "allTopics": "All Topics",
+        "physics": "Physics",
+        "chemistry": "Chemistry",
+        "biology": "Biology",
+        "startExperiment": "Start Experiment",
+        "highSchoolScience": "High School Science",
+        "pageDescription": "Explore our comprehensive library of physics and chemistry simulations."
+    },
+    "experiments": {
+        "orbitals": {
+            "title": "Atomic Orbitals",
+            "description": "Visualize electron probability distributions in atoms"
+        },
+        "statesOfMatter": {
+            "title": "States of Matter",
+            "description": "Explore solid, liquid, and gas states at molecular level"
+        },
+        "coulombsLaw": {
+            "title": "Coulomb's Law",
+            "description": "Investigate electric forces between charged particles"
+        },
+        "phScale": {
+            "title": "pH Scale",
+            "description": "Mix solutions and observe pH changes"
+        },
+        "balancingEquations": {
+            "title": "Balancing Equations",
+            "description": "Practice balancing chemical equations"
+        },
+        "gasProperties": {
+            "title": "Gas Properties",
+            "description": "Explore pressure, volume, and temperature relationships"
+        },
+        "diffusion": {
+            "title": "Diffusion",
+            "description": "Watch molecules spread and mix"
+        }
+    },
+    "footer": {
+        "about": "About"
+    },
+    "gamesPage": {
+        "title": "Browse All Games",
+        "subtitle": "Discover your next favorite game from our collection."
+    },
+    "filters": {
+        "allGames": "All Games"
+    },
+    "challenges": {
+        "title": "Daily Challenges",
+        "description": "Complete tasks to earn XP and level up. Challenges reset at",
+        "todaysProgress": "Today's Progress",
+        "completed": "Completed",
+        "completedToday": "Completed Today",
+        "timeRemaining": "Time Remaining",
+        "newChallengesIn": "New challenges in:",
+        "allCompleted": "All challenges completed!",
+        "comeBackTomorrow": "Come back tomorrow for more.",
+        "waiting": "Waiting"
+    },
+    "leaderboard": {
+        "title": "Global Leaderboard",
+        "subtitle": "Compete with players worldwide for the top spot.",
+        "globalRankings": "Global Rankings",
+        "competeWorldwide": "Compete with players worldwide",
+        "rank": "Rank",
+        "player": "Player",
+        "game": "Game",
+        "score": "Score",
+        "gamesPlayed": "Games Played",
+        "winRate": "Win Rate"
+    },
+    "about": {
+        "title": "About RaseGames",
+        "subtitle": "Building the future of browser gaming. No downloads, no paywalls, just pure fun.",
+        "missionTitle": "Our Mission",
+        "missionText": "At RaseGames, we believe gaming should be accessible to everyone. Our mission is to create high-quality, lightweight browser games that run smoothly on any device.",
+        "technologyTitle": "Technology",
+        "technologyText": "Built with modern web technologies including HTML5 Canvas, Tailwind CSS, and Firebase. Our games are optimized for performance.",
+        "communityTitle": "Community",
+        "communityText": "Join thousands of players competing on our global leaderboards. Complete daily challenges to earn XP and unlock new ranks."
+    },
+    "profile": {
+        "title": "Player Profile",
+        "signInTitle": "Sign In to View Profile",
+        "signInText": "Track your stats, earn XP, and compete on leaderboards by signing in to your account.",
+        "level": "Level",
+        "totalXP": "Total XP",
+        "challenges": "Challenges",
+        "currentLevel": "Current Level",
+        "today": "Today",
+        "recentActivity": "Recent Activity",
+        "noActivity": "No activity yet",
+        "editProfile": "Edit Profile",
+        "username": "Username",
+        "avatar": "Avatar",
+        "levelBadge": "Level Badge",
+        "quickPlay": "Quick Play",
+        "quickLinks": "Quick Links",
+        "currentProgress": "Current Progress"
+    },
+    "auth": {
+        "signInRequired": "Sign In Required",
+        "signInDescription": "Create an account to save your progress and compete on leaderboards.",
+        "signInSignUp": "Sign In / Sign Up"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "retry": "Retry",
+        "back": "Back",
+        "next": "Next",
+        "save": "Save",
+        "cancel": "Cancel",
+        "reset": "Reset",
+        "start": "Start",
+        "stop": "Stop",
+        "pause": "Pause",
+        "resume": "Resume",
+        "close": "Close",
+        "loadingChallenges": "Loading challenges...",
+        "loadingLeaderboard": "Loading leaderboard...",
+        "loadingGames": "Loading games...",
+        "saveChanges": "Save Changes",
+        "loadMore": "Load More",
+        "backToGames": "Back to Games",
+        "currentScore": "Current Score",
+        "highScore": "High Score",
+        "startGame": "Start Game",
+        "gameOver": "Game Over!",
+        "playAgain": "Play Again",
+        "readyToPlay": "Ready to Play?",
+        "pressStart": "Press any key or tap to start"
+    },
+    "404": {
+        "title": "Page Not Found",
+        "subtitle": "Page Not Found",
+        "description": "The page you're looking for might have been moved, deleted, or never existed in the first place.",
+        "message": "The page you're looking for doesn't exist.",
+        "goHome": "Go Home",
+        "returnHome": "Return to Home",
+        "browseGames": "Browse Games",
+        "secretTitle": "SECRET LEVEL UNLOCKED!",
+        "secretDescription": "You found the easter egg! Enjoy this mini space shooter.",
+        "controls": "Use ← → to move, SPACE to shoot"
+    },
+    "snake": {
+        "speedLevel": "Speed Level",
+        "toMove": "to Move",
+        "arrowKeys": "Arrow Keys"
+    },
+    "raseClickerGame": {
+        "currentLoc": "Current LOC",
+        "rate": "Rate",
+        "clickToCode": "CLICK TO CODE",
+        "coffeeBreak": "Coffee Break",
+        "debugMode": "Debug Mode",
+        "upgrades": "Upgrades",
+        "tools": "Tools",
+        "awards": "Awards",
+        "infrastructure": "Infrastructure",
+        "certifications": "Certifications"
+    },
+    "fightArenaGame": {
+        "title": "FIGHT ARENA",
+        "subtitle": "Ultimate Kombat Simulator",
+        "onlineMatch": "Online Match",
+        "localMatch": "Local Match",
+        "trainingMode": "Training Mode",
+        "controls": "Controls",
+        "back": "Back",
+        "online": "ONLINE",
+        "selectFighter": "SELECT YOUR FIGHTER",
+        "characterSelect": "Character Select",
+        "player1": "Player 1",
+        "player2": "Player 2",
+        "characters": {
+            "warrior": "Shadow Warrior",
+            "ninja": "Phantom Ninja",
+            "mage": "Arcane Mage"
+        },
+        "classes": {
+            "tank": "Tank",
+            "melee": "Melee",
+            "assassin": "Assassin",
+            "fast": "Fast",
+            "mage": "Mage",
+            "ranged": "Ranged"
+        },
+        "stats": {
+            "power": "Power",
+            "speed": "Speed",
+            "defense": "Defense"
+        },
+        "fight": "FIGHT!",
+        "controlsScreen": {
+            "title": "CONTROLS",
+            "subtitle": "How Will You Control Your Fighter?",
+            "keyboardLayout": "Keyboard Layout",
+            "p1Controls": "Player 1: WASD + F/G/H + SPACE",
+            "p2Controls": "Player 2: Arrow Keys + J/K/L + ENTER",
+            "p1Movement": "PLAYER 1 - MOVEMENT",
+            "p1Attack": "PLAYER 1 - ATTACK",
+            "action": "Action",
+            "key": "Key",
+            "moveLeft": "Move Left",
+            "moveRight": "Move Right",
+            "jump": "Jump",
+            "crouch": "Crouch",
+            "lightAttack": "Light Attack",
+            "heavyAttack": "Heavy Attack",
+            "specialAbility": "Special Ability"
+        }
+    }
+}

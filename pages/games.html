@@ -79,11 +79,11 @@
                 </a>
                 <div class="hidden md:flex items-center gap-8">
                     <a class="text-white text-glow text-sm font-medium transition-colors no-underline border-b-2 border-primary py-5"
-                        href="/pages/games">Games</a>
+                        href="/pages/games" data-i18n="nav.games">Games</a>
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                        href="/pages/challenges">Challenges</a>
+                        href="/pages/challenges" data-i18n="nav.challenges">Challenges</a>
                     <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                        href="/pages/leaderboard">Leaderboard</a>
+                        href="/pages/leaderboard" data-i18n="nav.leaderboard">Leaderboard</a>
                     <a class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all duration-300 no-underline hover:scale-105"
                         href="/raselab/">
                         <span class="material-symbols-outlined text-[16px]">science</span>
@@ -91,9 +91,17 @@
                     </a>
                 </div>
                 <div class="flex items-center gap-4">
+                    <!-- Language Toggle -->
+                    <div class="flex items-center gap-1 bg-white/5 rounded-full p-1">
+                        <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                        <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                    </div>
                     <div id="user-display" class="flex items-center gap-3">
                         <button onclick="showAuthModal()"
-                            class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                            class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all"
+                            data-i18n="nav.signIn">
                             Sign In
                         </button>
                     </div>
@@ -108,26 +116,34 @@
                 <div class="relative z-10 px-6 lg:px-20 py-12 max-w-[1440px] mx-auto w-full">
                     <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-8">
                         <div>
-                            <h1 class="text-4xl font-bold text-white mb-2">Browse All Games</h1>
-                            <p class="text-gray-400">Discover your next favorite game from our collection.</p>
+                            <h1 class="text-4xl font-bold text-white mb-2" data-i18n="gamesPage.title">Browse All Games
+                            </h1>
+                            <p class="text-gray-400" data-i18n="gamesPage.subtitle">Discover your next favorite game
+                                from our collection.</p>
                         </div>
                     </div>
 
                     <!-- Category Filters -->
                     <div id="category-filters" class="flex flex-wrap gap-3">
                         <button data-category="all"
-                            class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium text-sm shadow-[0_0_15px_rgba(15,73,189,0.4)] transition-all">All
+                            class="filter-btn active px-5 py-2 rounded-full bg-primary text-white font-medium text-sm shadow-[0_0_15px_rgba(15,73,189,0.4)] transition-all"
+                            data-i18n="filters.allGames">All
                             Games</button>
                         <button data-category="arcade"
-                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Arcade</button>
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all"
+                            data-i18n="gameTypes.arcade">Arcade</button>
                         <button data-category="puzzle"
-                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Puzzle</button>
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all"
+                            data-i18n="gameTypes.puzzle">Puzzle</button>
                         <button data-category="strategy"
-                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Strategy</button>
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all"
+                            data-i18n="gameTypes.strategy">Strategy</button>
                         <button data-category="action"
-                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Action</button>
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all"
+                            data-i18n="gameTypes.action">Action</button>
                         <button data-category="multiplayer"
-                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all">Multiplayer</button>
+                            class="filter-btn px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-medium text-sm transition-all"
+                            data-i18n="gameTypes.multiplayer">Multiplayer</button>
                     </div>
                 </div>
             </div>
@@ -138,7 +154,7 @@
                     <!-- Games will be loaded dynamically from games-data.js -->
                     <div class="col-span-full text-center py-10 text-gray-500">
                         <span class="material-symbols-outlined text-4xl mb-2">hourglass_empty</span>
-                        <p>Loading games...</p>
+                        <p data-i18n="common.loadingGames">Loading games...</p>
                     </div>
                 </div>
             </div>
@@ -152,13 +168,14 @@
                     <h3 class="text-white font-bold text-lg">Rase<span class="text-primary">Games</span></h3>
                 </div>
                 <div class="flex gap-8">
-                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline"
-                        href="/pages/about">About</a>
+                    <a class="text-gray-500 hover:text-white transition-colors text-sm no-underline" href="/pages/about"
+                        data-i18n="footer.about">About</a>
                 </div>
             </div>
         </footer>
     </div>
 
+    <script src="/scripts/i18n.js"></script>
     <script src="../scripts/games-data.js"></script>
     <script src="../scripts/ratings.js"></script>
     <script src="../scripts/challenges.js"></script>

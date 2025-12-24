@@ -61,11 +61,11 @@
             </a>
             <div class="hidden md:flex items-center gap-8">
                 <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                    href="/pages/games">Games</a>
+                    href="/pages/games" data-i18n="nav.games">Games</a>
                 <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                    href="/pages/challenges">Challenges</a>
+                    href="/pages/challenges" data-i18n="nav.challenges">Challenges</a>
                 <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                    href="/pages/leaderboard">Leaderboard</a>
+                    href="/pages/leaderboard" data-i18n="nav.leaderboard">Leaderboard</a>
                 <a class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all duration-300 no-underline hover:scale-105"
                     href="/raselab/">
                     <span class="material-symbols-outlined text-[16px]">science</span>
@@ -73,9 +73,17 @@
                 </a>
             </div>
             <div class="flex items-center gap-4">
+                <!-- Language Toggle -->
+                <div class="flex items-center gap-1 bg-white/5 rounded-full p-1">
+                    <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                        class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                        class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                </div>
                 <div id="user-display" class="flex items-center gap-3">
                     <button onclick="showAuthModal()"
-                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all"
+                        data-i18n="nav.signIn">
                         Sign In
                     </button>
                 </div>
@@ -138,6 +146,7 @@
         </div>
     </footer>
 
+    <script src="/scripts/i18n.js"></script>
     <script src="../scripts/challenges.js"></script>
     <script src="../scripts/auth.js"></script>
 </body>

@@ -1,0 +1,292 @@
+{
+    "nav": {
+        "home": "Ana Sayfa",
+        "games": "Oyunlar",
+        "challenges": "Görevler",
+        "leaderboard": "Sıralama",
+        "about": "Hakkında",
+        "profile": "Profil",
+        "signIn": "Giriş Yap",
+        "signUp": "Kayıt Ol",
+        "signOut": "Çıkış Yap",
+        "allGames": "Tüm Oyunlar"
+    },
+    "hero": {
+        "welcome": "RaseGames'e Hoş Geldiniz",
+        "tagline": "OYNA. YARIŞI. FETHET.",
+        "description": "10+ tarayıcı oyunu, günlük görevler ve global sıralamalar.",
+        "noDownload": "İndirme gerektirmez.",
+        "browseGames": "Oyunlara Göz At",
+        "signUpFree": "Ücretsiz Kayıt Ol",
+        "welcomeBack": "HOŞ GELDİN,",
+        "dailyStats": "Günlük istatistiklerin seni bekliyor.",
+        "newChallenges": "3 Yeni görev",
+        "availableToday": "bugün arenada mevcut.",
+        "viewStats": "İstatistikleri Gör",
+        "systemOnline": "Sistem Aktif"
+    },
+    "sections": {
+        "featuredGames": "Öne Çıkan Oyunlar",
+        "moreGames": "Daha Fazla Oyun",
+        "viewAll": "Tümünü Gör",
+        "playNow": "Şimdi Oyna",
+        "browseAll": "Tümüne Göz At"
+    },
+    "games": {
+        "raseClicker": "Rase Clicker",
+        "fightArena": "Dövüş Arenası",
+        "cyberRunner": "Siber Koşucu",
+        "neonSnake": "Neon Yılan",
+        "cyberBlocks": "Siber Bloklar",
+        "power2048": "Güç 2048",
+        "pixelBird": "Piksel Kuş",
+        "mindMatch": "Hafıza Eşleştirme",
+        "bombSquad": "Bomba Timi",
+        "ticTacToe": "XOX"
+    },
+    "gameTypes": {
+        "idle": "Boşta",
+        "clicker": "Tıklama",
+        "fighting": "Dövüş",
+        "pvp": "PvP",
+        "platformer": "Platform",
+        "endless": "Sonsuz",
+        "puzzle": "Bulmaca",
+        "arcade": "Arcade",
+        "strategy": "Strateji",
+        "multiplayer": "Çok Oyunculu"
+    },
+    "badges": {
+        "popular": "POPÜLER",
+        "hot": "SICAK",
+        "new": "YENİ",
+        "multiplayer": "ÇOK OYUNCULU"
+    },
+    "stats": {
+        "browserGames": "Tarayıcı Oyunu",
+        "freeToPlay": "Ücretsiz",
+        "available": "Erişilebilir",
+        "leaderboards": "Sıralamalar"
+    },
+    "raselab": {
+        "title": "RaseLab",
+        "subtitle": "İnteraktif Deneyler",
+        "experiments": "Deneyler",
+        "switchToGames": "RaseGames",
+        "backToExperiments": "Deneyler",
+        "searchPlaceholder": "Deney ara...",
+        "allTopics": "Tüm Konular",
+        "physics": "Fizik",
+        "chemistry": "Kimya",
+        "biology": "Biyoloji",
+        "startExperiment": "Deneye Başla",
+        "highSchoolScience": "Lise Fen Bilimleri",
+        "pageDescription": "Fizik ve kimya simülasyonlarından oluşan kapsamlı kütüphanemizi keşfedin."
+    },
+    "experiments": {
+        "orbitals": {
+            "title": "Atomik Orbitaller",
+            "description": "Atomlardaki elektron olasılık dağılımlarını görselleştirin"
+        },
+        "statesOfMatter": {
+            "title": "Maddenin Halleri",
+            "description": "Moleküler düzeyde katı, sıvı ve gaz hallerini keşfedin"
+        },
+        "coulombsLaw": {
+            "title": "Coulomb Yasası",
+            "description": "Yüklü parçacıklar arasındaki elektrik kuvvetlerini inceleyin"
+        },
+        "phScale": {
+            "title": "pH Skalası",
+            "description": "Çözeltileri karıştırın ve pH değişimlerini gözlemleyin"
+        },
+        "balancingEquations": {
+            "title": "Denklem Denkleştirme",
+            "description": "Kimyasal denklemleri denkleştirme pratiği yapın"
+        },
+        "gasProperties": {
+            "title": "Gaz Özellikleri",
+            "description": "Basınç, hacim ve sıcaklık ilişkilerini keşfedin"
+        },
+        "diffusion": {
+            "title": "Difüzyon",
+            "description": "Moleküllerin yayılmasını ve karışmasını izleyin"
+        }
+    },
+    "common": {
+        "loading": "Yükleniyor...",
+        "error": "Hata",
+        "retry": "Tekrar Dene",
+        "back": "Geri",
+        "next": "İleri",
+        "save": "Kaydet",
+        "cancel": "İptal",
+        "reset": "Sıfırla",
+        "start": "Başlat",
+        "stop": "Durdur",
+        "pause": "Duraklat",
+        "resume": "Devam Et",
+        "close": "Kapat",
+        "loadingChallenges": "Görevler yükleniyor...",
+        "loadingLeaderboard": "Sıralama yükleniyor...",
+        "loadingGames": "Oyunlar yükleniyor...",
+        "saveChanges": "Değişiklikleri Kaydet",
+        "loadMore": "Daha Fazla Yükle",
+        "backToGames": "Oyunlara Dön",
+        "currentScore": "Mevcut Skor",
+        "highScore": "En Yüksek Skor",
+        "startGame": "Oyunu Başlat",
+        "gameOver": "Oyun Bitti!",
+        "playAgain": "Tekrar Oyna",
+        "readyToPlay": "Oynamaya Hazır mısın?",
+        "pressStart": "Başlamak için bir tuşa bas veya dokun"
+    },
+    "footer": {
+        "about": "Hakkında"
+    },
+    "gamesPage": {
+        "title": "Tüm Oyunlara Göz At",
+        "subtitle": "Koleksiyonumuzdan yeni favori oyununu keşfet."
+    },
+    "filters": {
+        "allGames": "Tüm Oyunlar"
+    },
+    "challenges": {
+        "title": "Günlük Görevler",
+        "description": "XP kazanmak ve seviye atlamak için görevleri tamamla. Görevler şu saatte sıfırlanır:",
+        "todaysProgress": "Bugünün İlerlemesi",
+        "completed": "Tamamlandı",
+        "completedToday": "Bugün Tamamlanan",
+        "timeRemaining": "Kalan Süre",
+        "newChallengesIn": "Yeni görevler için:",
+        "allCompleted": "Tüm görevler tamamlandı!",
+        "comeBackTomorrow": "Daha fazlası için yarın gel.",
+        "waiting": "Bekleniyor"
+    },
+    "leaderboard": {
+        "title": "Global Sıralama",
+        "subtitle": "Zirve için dünya çapında oyuncularla rekabet et.",
+        "globalRankings": "Global Sıralamalar",
+        "competeWorldwide": "Dünya çapında oyuncularla yarış",
+        "rank": "Sıra",
+        "player": "Oyuncu",
+        "game": "Oyun",
+        "score": "Puan",
+        "gamesPlayed": "Oynanan Oyun",
+        "winRate": "Kazanma Oranı"
+    },
+    "about": {
+        "title": "RaseGames Hakkında",
+        "subtitle": "Tarayıcı oyunlarının geleceğini inşa ediyoruz. İndirme yok, ödeme yok, sadece saf eğlence.",
+        "missionTitle": "Misyonumuz",
+        "missionText": "RaseGames'te oyunun herkes için erişilebilir olması gerektiğine inanıyoruz. Misyonumuz, her cihazda sorunsuz çalışan yüksek kaliteli, hafif tarayıcı oyunları oluşturmaktır.",
+        "technologyTitle": "Teknoloji",
+        "technologyText": "HTML5 Canvas, Tailwind CSS ve Firebase dahil olmak üzere modern web teknolojileriyle oluşturulmuştur. Oyunlarımız performans için optimize edilmiştir.",
+        "communityTitle": "Topluluk",
+        "communityText": "Global sıralamalarımızda yarışan binlerce oyuncuya katılın. XP kazanmak ve yeni rütbelerin kilidini açmak için günlük görevleri tamamlayın."
+    },
+    "profile": {
+        "title": "Oyuncu Profili",
+        "signInTitle": "Profili Görüntülemek İçin Giriş Yap",
+        "signInText": "İstatistiklerini takip etmek, XP kazanmak ve sıralamalarda yarışmak için hesabına giriş yap.",
+        "level": "Seviye",
+        "totalXP": "Toplam XP",
+        "challenges": "Görevler",
+        "currentLevel": "Mevcut Seviye",
+        "today": "Bugün",
+        "recentActivity": "Son Aktivite",
+        "noActivity": "Henüz aktivite yok",
+        "editProfile": "Profili Düzenle",
+        "username": "Kullanıcı Adı",
+        "avatar": "Avatar",
+        "levelBadge": "Seviye Rozeti",
+        "quickPlay": "Hızlı Oyna",
+        "quickLinks": "Hızlı Bağlantılar",
+        "currentProgress": "Mevcut İlerleme"
+    },
+    "auth": {
+        "signInRequired": "Giriş Yapılması Gerekiyor",
+        "signInDescription": "İlerlemeni kaydetmek ve sıralamalarda yarışmak için hesap oluştur.",
+        "signInSignUp": "Giriş Yap / Kayıt Ol"
+    },
+    "404": {
+        "title": "Sayfa Bulunamadı",
+        "subtitle": "Sayfa Bulunamadı",
+        "description": "Aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir.",
+        "message": "Aradığınız sayfa mevcut değil.",
+        "goHome": "Ana Sayfaya Git",
+        "returnHome": "Ana Sayfaya Dön",
+        "browseGames": "Oyunlara Göz At",
+        "secretTitle": "GİZLİ SEVİYE AÇILDI!",
+        "secretDescription": "Sürpriz yumurtayı buldun! Bu mini uzay oyununun tadını çıkar.",
+        "controls": "Hareket için ← →, Ateş için BOŞLUK tuşunu kullan"
+    },
+    "snake": {
+        "speedLevel": "Hız Seviyesi",
+        "toMove": "Hareket Etmek İçin",
+        "arrowKeys": "Yön Tuşları"
+    },
+    "raseClickerGame": {
+        "currentLoc": "Mevcut Satır Sayısı",
+        "rate": "Hız",
+        "clickToCode": "KODLAMAK İÇİN TIKLA",
+        "coffeeBreak": "Kahve Molası",
+        "debugMode": "Hata Ayıklama",
+        "upgrades": "Yükseltmeler",
+        "tools": "Araçlar",
+        "awards": "Ödüller",
+        "infrastructure": "Altyapı",
+        "certifications": "Sertifikalar"
+    },
+    "fightArenaGame": {
+        "title": "FIGHT ARENA",
+        "subtitle": "Nihai Dövüş Simülatörü",
+        "onlineMatch": "Çevrimiçi Maç",
+        "localMatch": "Yerel Maç",
+        "trainingMode": "Antrenman Modu",
+        "controls": "Kontroller",
+        "back": "Geri",
+        "online": "ÇEVRİMİÇİ",
+        "selectFighter": "DÖVÜŞÇÜNÜ SEÇ",
+        "characterSelect": "Karakter Seçimi",
+        "player1": "Oyuncu 1",
+        "player2": "Oyuncu 2",
+        "characters": {
+            "warrior": "Gölge Savaşçı",
+            "ninja": "Hayalet Ninja",
+            "mage": "Gizemli Büyücü"
+        },
+        "classes": {
+            "tank": "Tank",
+            "melee": "Yakın Dövüş",
+            "assassin": "Suikastçı",
+            "fast": "Hızlı",
+            "mage": "Büyücü",
+            "ranged": "Menzilli"
+        },
+        "stats": {
+            "power": "Güç",
+            "speed": "Hız",
+            "defense": "Savunma"
+        },
+        "fight": "DÖVÜŞ!",
+        "controlsScreen": {
+            "title": "KONTROLLER",
+            "subtitle": "Dövüşçünü Nasıl Kontrol Edeceksin?",
+            "keyboardLayout": "Klavye Düzeni",
+            "p1Controls": "Oyuncu 1: WASD + F/G/H + BOŞLUK",
+            "p2Controls": "Oyuncu 2: Ok Tuşları + J/K/L + ENTER",
+            "p1Movement": "OYUNCU 1 - HAREKET",
+            "p1Attack": "OYUNCU 1 - SALDIRI",
+            "action": "Eylem",
+            "key": "Tuş",
+            "moveLeft": "Sola Git",
+            "moveRight": "Sağa Git",
+            "jump": "Zıpla",
+            "crouch": "Eğil",
+            "lightAttack": "Hafif Saldırı",
+            "heavyAttack": "Ağır Saldırı",
+            "specialAbility": "Özel Yetenek"
+        }
+    }
+}

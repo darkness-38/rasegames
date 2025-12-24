@@ -63,11 +63,11 @@
             </a>
             <div class="hidden md:flex items-center gap-8">
                 <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                    href="/pages/games">Games</a>
+                    href="/pages/games" data-i18n="nav.games">Games</a>
                 <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                    href="/pages/challenges">Challenges</a>
+                    href="/pages/challenges" data-i18n="nav.challenges">Challenges</a>
                 <a class="text-gray-300 hover:text-white hover:text-glow text-sm font-medium transition-colors no-underline"
-                    href="/pages/leaderboard">Leaderboard</a>
+                    href="/pages/leaderboard" data-i18n="nav.leaderboard">Leaderboard</a>
                 <a class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-sm font-bold shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] transition-all duration-300 no-underline hover:scale-105"
                     href="/raselab/">
                     <span class="material-symbols-outlined text-[16px]">science</span>
@@ -75,9 +75,17 @@
                 </a>
             </div>
             <div class="flex items-center gap-4">
+                <!-- Language Toggle -->
+                <div class="flex items-center gap-1 bg-white/5 rounded-full p-1">
+                    <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                        class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                        class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                </div>
                 <div id="user-display" class="flex items-center gap-3">
                     <button onclick="showAuthModal()"
-                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all">
+                        class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-glow text-white text-sm font-bold transition-all"
+                        data-i18n="nav.signIn">
                         Sign In
                     </button>
                 </div>
@@ -99,11 +107,13 @@
         <div id="guest-state" class="hidden flex-1 flex items-center justify-center">
             <div class="text-center max-w-md">
                 <span class="material-symbols-outlined text-8xl text-primary mb-6">person_off</span>
-                <h2 class="text-3xl font-bold mb-4">Sign In Required</h2>
-                <p class="text-gray-400 mb-6">Create an account to track your progress, complete challenges, and compete
+                <h2 class="text-3xl font-bold mb-4" data-i18n="auth.signInRequired">Sign In Required</h2>
+                <p class="text-gray-400 mb-6" data-i18n="auth.signInDescription">Create an account to track your
+                    progress, complete challenges, and compete
                     on leaderboards.</p>
                 <button onclick="showAuthModal()"
-                    class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-bold transition-all shadow-[0_0_15px_rgba(15,73,189,0.3)]">
+                    class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-bold transition-all shadow-[0_0_15px_rgba(15,73,189,0.3)]"
+                    data-i18n="auth.signInSignUp">
                     Sign In / Sign Up
                 </button>
             </div>
@@ -180,7 +190,8 @@
                     <div class="bg-card-dark border border-border-dark rounded-xl p-6">
                         <div class="flex justify-between items-end mb-2">
                             <div>
-                                <p class="text-text-secondary text-sm font-medium mb-1">Current Progress</p>
+                                <p class="text-text-secondary text-sm font-medium mb-1"
+                                    data-i18n="profile.currentProgress">Current Progress</p>
                                 <h3 id="level-display" class="text-white text-xl font-bold">Level 1</h3>
                             </div>
                             <p id="level-percent" class="text-primary text-sm font-bold">0%</p>
@@ -247,7 +258,7 @@
 
                     <!-- Quick Play -->
                     <div class="bg-card-dark border border-border-dark rounded-xl p-6">
-                        <h3 class="text-lg font-bold text-white mb-4">Quick Play</h3>
+                        <h3 class="text-lg font-bold text-white mb-4" data-i18n="profile.quickPlay">Quick Play</h3>
                         <div class="grid grid-cols-5 gap-3">
                             <a href="/games/snakeGame/"
                                 class="flex flex-col items-center gap-2 p-3 rounded-lg bg-background-dark hover:bg-primary/20 transition-colors no-underline">
@@ -282,7 +293,8 @@
                 <div class="lg:col-span-3 flex flex-col gap-6">
                     <!-- Level Badge -->
                     <div class="bg-card-dark border border-border-dark rounded-xl p-6">
-                        <h3 class="text-lg font-bold text-white mb-4 text-center">Level Badge</h3>
+                        <h3 class="text-lg font-bold text-white mb-4 text-center" data-i18n="profile.levelBadge">Level
+                            Badge</h3>
                         <div class="flex flex-col items-center">
                             <div id="badge-emoji" class="text-8xl mb-4">🌱</div>
                             <span id="badge-title" class="text-xl font-bold text-white">Seedling</span>
@@ -292,13 +304,14 @@
 
                     <!-- Quick Links -->
                     <div class="bg-card-dark border border-border-dark rounded-xl p-6">
-                        <h3 class="text-lg font-bold text-white mb-4">Quick Links</h3>
+                        <h3 class="text-lg font-bold text-white mb-4" data-i18n="profile.quickLinks">Quick Links</h3>
                         <div class="flex flex-col gap-3">
                             <a href="/pages/challenges"
                                 class="flex items-center justify-between p-3 rounded-lg bg-background-dark hover:bg-primary/20 transition-colors no-underline">
                                 <span class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-primary">emoji_events</span>
-                                    <span class="text-white font-medium">Daily Challenges</span>
+                                    <span class="text-white font-medium" data-i18n="nav.challenges">Daily
+                                        Challenges</span>
                                 </span>
                                 <span class="material-symbols-outlined text-gray-500">chevron_right</span>
                             </a>
@@ -306,7 +319,7 @@
                                 class="flex items-center justify-between p-3 rounded-lg bg-background-dark hover:bg-primary/20 transition-colors no-underline">
                                 <span class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-yellow-500">leaderboard</span>
-                                    <span class="text-white font-medium">Leaderboard</span>
+                                    <span class="text-white font-medium" data-i18n="nav.leaderboard">Leaderboard</span>
                                 </span>
                                 <span class="material-symbols-outlined text-gray-500">chevron_right</span>
                             </a>
@@ -314,7 +327,7 @@
                                 class="flex items-center justify-between p-3 rounded-lg bg-background-dark hover:bg-primary/20 transition-colors no-underline">
                                 <span class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-green-500">sports_esports</span>
-                                    <span class="text-white font-medium">All Games</span>
+                                    <span class="text-white font-medium" data-i18n="filters.allGames">All Games</span>
                                 </span>
                                 <span class="material-symbols-outlined text-gray-500">chevron_right</span>
                             </a>
@@ -329,32 +342,34 @@
     <div id="edit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center">
         <div class="bg-card-dark border border-border-dark rounded-xl p-6 max-w-md w-full mx-4">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-white">Edit Profile</h3>
+                <h3 class="text-xl font-bold text-white" data-i18n="profile.editProfile">Edit Profile</h3>
                 <button onclick="closeEditModal()" class="text-gray-400 hover:text-white">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm text-gray-400 mb-2">Username</label>
+                    <label class="block text-sm text-gray-400 mb-2" data-i18n="profile.username">Username</label>
                     <input id="edit-username" type="text"
                         class="w-full bg-background-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
                         placeholder="Enter username">
                 </div>
                 <div>
-                    <label class="block text-sm text-gray-400 mb-2">Avatar</label>
+                    <label class="block text-sm text-gray-400 mb-2" data-i18n="profile.avatar">Avatar</label>
                     <div id="avatar-picker" class="grid grid-cols-6 gap-2">
                         <!-- Avatars will be populated by JS -->
                     </div>
                 </div>
                 <button onclick="saveProfile()"
-                    class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition-colors">
+                    class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition-colors"
+                    data-i18n="common.saveChanges">
                     Save Changes
                 </button>
             </div>
         </div>
     </div>
 
+    <script src="/scripts/i18n.js"></script>
     <script src="../scripts/challenges.js"></script>
     <script src="../scripts/auth.js"></script>
     <script>

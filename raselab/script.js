@@ -125,8 +125,7 @@ const experimentFolders = [
     'ph-scale',
     'balancing-equations',
     'gas-properties',
-    'diffusion',
-    'molecule-polarity'
+    'diffusion'
 ];
 
 let experimentsData = [];

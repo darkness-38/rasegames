@@ -20,7 +20,6 @@
                 extend: {
                     colors: {
                         "primary": "#0f49bd",
-                        "background-light": "#f6f6f8",
                         "background-dark": "#101622",
                     },
                     fontFamily: {
@@ -37,60 +36,150 @@
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #101622;
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #282e39;
+            background: #3f4756;
+            border-radius: 3px;
+        }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(30, 35, 48, 0.95) 0%, rgba(40, 46, 57, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(63, 71, 86, 0.5);
+        }
+
+        .value-card {
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn {
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px var(--glow-color);
+            }
+
+            50% {
+                box-shadow: 0 0 40px var(--glow-color);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
             border-radius: 4px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f4756;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .graph-canvas {
+            background: linear-gradient(180deg, rgba(15, 73, 189, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
         }
     </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<body class="bg-background-dark text-white min-h-screen">
     <!-- Header -->
-    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+    <header class="sticky top-0 z-50 border-b border-[#282e39]/50 bg-[#111318]/90 backdrop-blur-xl">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <a href="../../index.html"
-                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
-                    <span class="material-symbols-outlined">arrow_back</span>
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors group">
+                    <span
+                        class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     <span class="hidden sm:inline">Experiments</span>
                 </a>
-                <div class="h-6 w-px bg-[#282e39]"></div>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-cyan-400">compress</span>
-                    <h1 class="text-xl font-bold">Gas Properties</h1>
+                <div class="h-6 w-px bg-gradient-to-b from-transparent via-[#3f4756] to-transparent"></div>
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
+                        <span class="material-symbols-outlined text-cyan-400">compress</span>
+                    </div>
+                    <h1
+                        class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                        Gas Properties</h1>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <span
-                    class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-500/30">Chemistry</span>
-            </div>
+            <span
+                class="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 text-sm font-medium border border-cyan-500/30 shadow-lg shadow-cyan-500/10">Physics</span>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- Info Banner -->
-        <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
-            <div class="flex items-start gap-4">
-                <div class="p-3 rounded-xl bg-cyan-500/20">
-                    <span class="material-symbols-outlined text-cyan-400 text-3xl">info</span>
+        <div
+            class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-purple-500/10 border border-cyan-500/20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\" 60\" height=\"60\" viewBox=\"0 0 60
+                60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg
+                fill=\"%2306b6d4\" fill-opacity=\"0.05\"%3E%3Ccircle cx=\"30\" cy=\"30\"
+                r=\"4\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+            <div class="flex items-start gap-4 relative">
+                <div
+                    class="p-3 rounded-xl bg-gradient-to-br from-cyan-500/30 to-blue-500/30 shadow-lg shadow-cyan-500/20 float-anim">
+                    <span class="material-symbols-outlined text-cyan-400 text-3xl">science</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">Gas Properties</h2>
+                    <h2 class="text-xl font-bold text-white mb-2">Gas Properties Lab</h2>
                     <p class="text-[#9da6b9] leading-relaxed">
-                        Pump gas molecules into a container and explore P-V-T relationships.
-                        Control volume with the piston and temperature with the heater. Watch real-time graphs!
+                        🔬 Pump molecules into a container. Drag the piston to change volume. Heat or cool to change
+                        temperature!
                     </p>
                 </div>
             </div>
@@ -99,34 +188,60 @@
         <div class="grid lg:grid-cols-3 gap-8">
             <!-- Left: Container with Piston -->
             <div class="lg:col-span-2 flex flex-col gap-6">
-                <div class="relative rounded-2xl bg-[#1e2330] border border-[#282e39] overflow-hidden">
+                <div class="glass-panel rounded-3xl overflow-hidden relative">
                     <div
-                        class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 opacity-50">
+                    </div>
+                    <div
+                        class="absolute top-4 left-4 z-10 flex items-center gap-2 px-4 py-2 rounded-xl bg-black/50 backdrop-blur-md border border-white/10">
                         <span class="material-symbols-outlined text-cyan-400">science</span>
-                        <span class="text-sm font-medium text-white">Gas Chamber</span>
+                        <span class="text-sm font-bold text-white">Gas Chamber</span>
                     </div>
                     <canvas id="simulation-canvas" class="w-full aspect-video cursor-ns-resize"></canvas>
-                    <div class="absolute bottom-4 left-4 text-sm text-[#9da6b9]">
-                        <span class="material-symbols-outlined text-xs align-middle">mouse</span>
-                        Drag piston to change volume
+                    <div
+                        class="absolute bottom-4 left-4 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md text-sm text-[#9da6b9] flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">pan_tool</span>
+                        Drag piston up/down
                     </div>
                 </div>
 
                 <!-- Graphs -->
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="p-4 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                        <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-blue-400 text-lg">show_chart</span>
-                            Pressure vs Volume
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-3 rounded-2xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500">
+                        </div>
+                        <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            P vs V
                         </h3>
-                        <canvas id="pv-graph" class="w-full h-32"></canvas>
+                        <canvas id="pv-graph" class="w-full h-24 graph-canvas"></canvas>
                     </div>
-                    <div class="p-4 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                        <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-red-400 text-lg">show_chart</span>
-                            Pressure vs Temperature
+                    <div class="glass-panel p-3 rounded-2xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500">
+                        </div>
+                        <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                            P vs T
                         </h3>
-                        <canvas id="pt-graph" class="w-full h-32"></canvas>
+                        <canvas id="pt-graph" class="w-full h-24 graph-canvas"></canvas>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-500 to-pink-500">
+                        </div>
+                        <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                            P vs n
+                        </h3>
+                        <canvas id="pn-graph" class="w-full h-24 graph-canvas"></canvas>
+                    </div>
+                    <div class="glass-panel p-3 rounded-2xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-500 to-emerald-500">
+                        </div>
+                        <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                            Z = PV/nRT
+                        </h3>
+                        <canvas id="z-graph" class="w-full h-24 graph-canvas"></canvas>
                     </div>
                 </div>
             </div>
@@ -134,77 +249,98 @@
             <!-- Right: Controls -->
             <div class="flex flex-col gap-6">
                 <!-- Values Display -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                    <h3 class="text-lg font-bold text-white mb-4">Current Values</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
-                            <span class="text-[#9da6b9]">Pressure (P)</span>
-                            <span class="text-xl font-bold text-blue-400" id="pressure-display">1.0 atm</span>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-yellow-400">monitoring</span>
+                        Live Values
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            class="value-card p-4 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/20 text-center">
+                            <div class="text-xs text-blue-300 mb-1">PRESSURE</div>
+                            <div class="text-2xl font-black text-blue-400" id="pressure-display">1.0</div>
+                            <div class="text-xs text-blue-300/60">atm</div>
                         </div>
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
-                            <span class="text-[#9da6b9]">Volume (V)</span>
-                            <span class="text-xl font-bold text-green-400" id="volume-display">10.0 L</span>
+                        <div
+                            class="value-card p-4 rounded-xl bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/20 text-center">
+                            <div class="text-xs text-green-300 mb-1">VOLUME</div>
+                            <div class="text-2xl font-black text-green-400" id="volume-display">10.0</div>
+                            <div class="text-xs text-green-300/60">L</div>
                         </div>
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
-                            <span class="text-[#9da6b9]">Temperature (T)</span>
-                            <span class="text-xl font-bold text-red-400" id="temperature-display">300 K</span>
+                        <div
+                            class="value-card p-4 rounded-xl bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/20 text-center">
+                            <div class="text-xs text-red-300 mb-1">TEMP</div>
+                            <div class="text-2xl font-black text-red-400" id="temperature-display">300</div>
+                            <div class="text-xs text-red-300/60">K</div>
                         </div>
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
-                            <span class="text-[#9da6b9]">Particles (n)</span>
-                            <span class="text-xl font-bold text-purple-400" id="particles-display">50</span>
+                        <div
+                            class="value-card p-4 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/20 text-center">
+                            <div class="text-xs text-purple-300 mb-1">PARTICLES</div>
+                            <div class="text-2xl font-black text-purple-400" id="particles-display">50</div>
+                            <div class="text-xs text-purple-300/60">mol</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Temperature Control -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <div class="glass-panel p-6 rounded-2xl">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-orange-400">thermostat</span>
                         Temperature
                     </h3>
-                    <div class="flex items-center gap-4">
-                        <button id="cool-btn" class="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">
+                    <div class="flex items-center gap-3">
+                        <button id="cool-btn"
+                            class="control-btn p-3 rounded-xl bg-gradient-to-br from-blue-500/30 to-cyan-500/20 text-blue-400 border border-blue-500/30 hover:border-blue-400">
                             <span class="material-symbols-outlined">ac_unit</span>
                         </button>
                         <input type="range" id="temp-slider" min="100" max="600" value="300"
-                            class="flex-1 h-3 bg-gradient-to-r from-blue-500 via-yellow-500 to-red-500 rounded-lg appearance-none cursor-pointer">
-                        <button id="heat-btn" class="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30">
+                            class="flex-1 bg-gradient-to-r from-blue-500 via-yellow-500 to-red-500">
+                        <button id="heat-btn"
+                            class="control-btn p-3 rounded-xl bg-gradient-to-br from-red-500/30 to-orange-500/20 text-red-400 border border-red-500/30 hover:border-red-400">
                             <span class="material-symbols-outlined">local_fire_department</span>
                         </button>
                     </div>
+                    <div class="text-center mt-2 text-xs text-[#637588]">100 K — 600 K</div>
                 </div>
 
                 <!-- Particle Control -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <div class="glass-panel p-6 rounded-2xl">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-purple-400">bubble_chart</span>
                         Particles
                     </h3>
-                    <div class="flex items-center gap-4">
-                        <button id="remove-btn" class="p-2 rounded-lg bg-[#282e39] text-white hover:bg-[#3f4756]">
+                    <div class="flex items-center gap-3">
+                        <button id="remove-btn"
+                            class="control-btn p-3 rounded-xl bg-[#282e39] text-white border border-[#3f4756] hover:border-red-400 hover:text-red-400">
                             <span class="material-symbols-outlined">remove</span>
                         </button>
                         <input type="range" id="particle-slider" min="10" max="100" value="50"
-                            class="flex-1 h-3 bg-[#282e39] rounded-lg appearance-none cursor-pointer">
-                        <button id="add-btn" class="p-2 rounded-lg bg-primary text-white hover:bg-blue-600">
+                            class="flex-1 bg-gradient-to-r from-purple-900 to-purple-500">
+                        <button id="add-btn"
+                            class="control-btn p-3 rounded-xl bg-gradient-to-br from-purple-500/30 to-blue-500/20 text-purple-400 border border-purple-500/30 hover:border-purple-400">
                             <span class="material-symbols-outlined">add</span>
                         </button>
                     </div>
+                    <div class="text-center mt-2 text-xs text-[#637588]">10 — 100 molecules</div>
                 </div>
 
                 <!-- Ideal Gas Law -->
-                <div class="p-6 rounded-2xl bg-gradient-to-r from-primary/20 to-purple-500/20 border border-primary/30">
-                    <div class="text-center">
-                        <div class="text-2xl font-mono font-bold text-white mb-2">PV = nRT</div>
-                        <div class="text-sm text-[#9da6b9]">Ideal Gas Law</div>
-                        <div class="text-xs text-[#637588] mt-2">R = 0.0821 L⋅atm/(mol⋅K)</div>
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden pulse-glow"
+                    style="--glow-color: rgba(15, 73, 189, 0.3)">
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/10"></div>
+                    <div class="text-center relative">
+                        <div class="text-4xl font-mono font-black text-white mb-2 tracking-wider">PV = nRT</div>
+                        <div class="text-sm text-cyan-300 font-medium">Ideal Gas Law</div>
+                        <div class="text-xs text-[#637588] mt-3 p-2 rounded-lg bg-black/20">R = 0.0821 L·atm/(mol·K)
+                        </div>
                     </div>
                 </div>
 
                 <!-- Reset -->
                 <button id="reset-btn"
-                    class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined">restart_alt</span>
+                    class="w-full p-4 rounded-xl bg-gradient-to-r from-primary to-blue-600 text-white font-bold hover:from-blue-600 hover:to-primary transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2 group">
+                    <span
+                        class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">restart_alt</span>
                     Reset Simulation
                 </button>
             </div>

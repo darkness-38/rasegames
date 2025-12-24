@@ -75,9 +75,29 @@ class DiffusionSimulation {
     }
 
     bindEvents() {
+        const gas1Slider = document.getElementById('gas1-slider');
+        const gas2Slider = document.getElementById('gas2-slider');
+        const gas1MassSlider = document.getElementById('gas1-mass-slider');
+        const gas2MassSlider = document.getElementById('gas2-mass-slider');
+
+        const setControlsEnabled = (enabled) => {
+            const opacity = enabled ? '1' : '0.5';
+            gas1Slider.disabled = !enabled;
+            gas2Slider.disabled = !enabled;
+            gas1MassSlider.disabled = !enabled;
+            gas2MassSlider.disabled = !enabled;
+            gas1Slider.style.opacity = opacity;
+            gas2Slider.style.opacity = opacity;
+            gas1MassSlider.style.opacity = opacity;
+            gas2MassSlider.style.opacity = opacity;
+        };
+
         document.getElementById('toggle-divider').addEventListener('click', () => {
             this.dividerOpen = !this.dividerOpen;
             document.getElementById('divider-text').textContent = this.dividerOpen ? 'Add Divider' : 'Remove Divider';
+
+            // Disable/enable controls based on divider state (only temp works without divider)
+            setControlsEnabled(!this.dividerOpen);
         });
 
         document.getElementById('temp-slider').addEventListener('input', (e) => {
@@ -85,24 +105,28 @@ class DiffusionSimulation {
             document.getElementById('temp-display').textContent = `${this.temperature} K`;
         });
 
-        document.getElementById('gas1-slider').addEventListener('input', (e) => {
-            this.gas1Count = parseInt(e.target.value);
-            document.getElementById('gas1-count').textContent = this.gas1Count;
-            this.init();
+        gas1Slider.addEventListener('input', (e) => {
+            if (this.dividerOpen) return;
+            const newCount = parseInt(e.target.value);
+            document.getElementById('gas1-count').textContent = newCount;
+            this.adjustGasCount('gas1', newCount);
         });
 
-        document.getElementById('gas1-mass-slider').addEventListener('input', (e) => {
+        gas1MassSlider.addEventListener('input', (e) => {
+            if (this.dividerOpen) return;
             this.gas1Mass = parseInt(e.target.value);
             document.getElementById('gas1-mass').textContent = this.gas1Mass;
         });
 
-        document.getElementById('gas2-slider').addEventListener('input', (e) => {
-            this.gas2Count = parseInt(e.target.value);
-            document.getElementById('gas2-count').textContent = this.gas2Count;
-            this.init();
+        gas2Slider.addEventListener('input', (e) => {
+            if (this.dividerOpen) return;
+            const newCount = parseInt(e.target.value);
+            document.getElementById('gas2-count').textContent = newCount;
+            this.adjustGasCount('gas2', newCount);
         });
 
-        document.getElementById('gas2-mass-slider').addEventListener('input', (e) => {
+        gas2MassSlider.addEventListener('input', (e) => {
+            if (this.dividerOpen) return;
             this.gas2Mass = parseInt(e.target.value);
             document.getElementById('gas2-mass').textContent = this.gas2Mass;
         });
@@ -112,17 +136,69 @@ class DiffusionSimulation {
             this.temperature = 300;
             this.gas1Count = 50;
             this.gas2Count = 50;
+            this.gas1Mass = 28;
+            this.gas2Mass = 44;
             document.getElementById('temp-slider').value = 300;
             document.getElementById('temp-display').textContent = '300 K';
-            document.getElementById('gas1-slider').value = 50;
-            document.getElementById('gas2-slider').value = 50;
+            gas1Slider.value = 50;
+            gas2Slider.value = 50;
+            gas1MassSlider.value = 28;
+            gas2MassSlider.value = 44;
             document.getElementById('gas1-count').textContent = '50';
             document.getElementById('gas2-count').textContent = '50';
+            document.getElementById('gas1-mass').textContent = '28';
+            document.getElementById('gas2-mass').textContent = '44';
             document.getElementById('divider-text').textContent = 'Remove Divider';
+            setControlsEnabled(true);
             this.init();
         });
 
         window.addEventListener('resize', () => { this.resize(); this.init(); });
+    }
+
+    adjustGasCount(type, newCount) {
+        const currentParticles = this.particles.filter(p => p.type === type);
+        const currentCount = currentParticles.length;
+        const m = 20;
+
+        if (newCount > currentCount) {
+            // Add particles
+            const mass = type === 'gas1' ? this.gas1Mass : this.gas2Mass;
+            const s = Math.sqrt(this.temperature / mass) * 0.5;
+
+            for (let i = currentCount; i < newCount; i++) {
+                let x;
+                if (type === 'gas1') {
+                    x = m + Math.random() * (this.dividerX - 2 * m);
+                } else {
+                    x = this.dividerX + m + Math.random() * (this.width - this.dividerX - 2 * m);
+                }
+
+                this.particles.push({
+                    x: x,
+                    y: m + Math.random() * (this.height - 2 * m),
+                    vx: (Math.random() - 0.5) * s * 4,
+                    vy: (Math.random() - 0.5) * s * 4,
+                    radius: 5 + (mass / 100) * 3,
+                    type: type, mass: mass
+                });
+            }
+        } else if (newCount < currentCount) {
+            // Remove particles of this type
+            let removed = 0;
+            const toRemove = currentCount - newCount;
+            this.particles = this.particles.filter(p => {
+                if (p.type === type && removed < toRemove) {
+                    removed++;
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        // Update counts
+        if (type === 'gas1') this.gas1Count = newCount;
+        else this.gas2Count = newCount;
     }
 
     update() {

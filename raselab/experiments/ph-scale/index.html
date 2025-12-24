@@ -37,66 +37,170 @@
         }
 
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #101622;
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #282e39;
-            border-radius: 4px;
+            background: #3f4756;
+            border-radius: 3px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f4756;
+        .solution-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .solution-btn:hover {
+            transform: translateX(4px);
+            border-color: #22d3ee;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
         }
 
         .solution-btn.active {
             background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
             border-color: #22d3ee;
-            box-shadow: 0 0 15px rgba(20, 184, 166, 0.5);
+            box-shadow: 0 0 25px rgba(20, 184, 166, 0.4);
+            transform: translateX(4px);
+        }
+
+        .beaker-glow {
+            filter: drop-shadow(0 0 20px var(--glow-color, rgba(34, 197, 94, 0.4)));
+            transition: filter 0.5s ease;
+        }
+
+        .ph-display {
+            background: linear-gradient(135deg, #1e2330 0%, #282e39 100%);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .liquid-wave {
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                d: path("M44 75 Q70 70 100 75 Q130 80 156 75 L156 196 Q156 226 128 226 L72 226 Q44 226 44 196 Z");
+            }
+
+            50% {
+                d: path("M44 75 Q70 80 100 75 Q130 70 156 75 L156 196 Q156 226 128 226 L72 226 Q44 226 44 196 Z");
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px var(--glow-color, rgba(34, 197, 94, 0.3));
+            }
+
+            50% {
+                box-shadow: 0 0 40px var(--glow-color, rgba(34, 197, 94, 0.5));
+            }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(30, 35, 48, 0.9) 0%, rgba(40, 46, 57, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(63, 71, 86, 0.5);
+        }
+
+        .drop-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .drop-btn:active::after {
+            width: 200px;
+            height: 200px;
         }
     </style>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<body class="bg-background-dark text-white min-h-screen">
     <!-- Header -->
-    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+    <header class="sticky top-0 z-50 border-b border-[#282e39]/50 bg-[#111318]/90 backdrop-blur-xl">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <a href="../../index.html"
-                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
-                    <span class="material-symbols-outlined">arrow_back</span>
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors group">
+                    <span
+                        class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
                     <span class="hidden sm:inline">Experiments</span>
                 </a>
-                <div class="h-6 w-px bg-[#282e39]"></div>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-teal-400">water_drop</span>
-                    <h1 class="text-xl font-bold">pH Scale</h1>
+                <div class="h-6 w-px bg-gradient-to-b from-transparent via-[#3f4756] to-transparent"></div>
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20">
+                        <span class="material-symbols-outlined text-teal-400">water_drop</span>
+                    </div>
+                    <h1
+                        class="text-xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                        pH Scale Lab</h1>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <span
-                    class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-500/30">Chemistry</span>
-            </div>
+            <span
+                class="px-4 py-1.5 rounded-full bg-gradient-to-r from-teal-500/20 to-cyan-500/20 text-teal-300 text-sm font-medium border border-teal-500/30 shadow-lg shadow-teal-500/10">Chemistry</span>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- Info Banner -->
-        <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20">
-            <div class="flex items-start gap-4">
-                <div class="p-3 rounded-xl bg-teal-500/20">
-                    <span class="material-symbols-outlined text-teal-400 text-3xl">info</span>
+        <div
+            class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-teal-500/10 via-cyan-500/5 to-blue-500/10 border border-teal-500/20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\" 60\" height=\"60\" viewBox=\"0 0 60
+                60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg
+                fill=\"%2314b8a6\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36
+                34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6
+                4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+            <div class="flex items-start gap-4 relative">
+                <div
+                    class="p-3 rounded-xl bg-gradient-to-br from-teal-500/30 to-cyan-500/30 shadow-lg shadow-teal-500/20">
+                    <span class="material-symbols-outlined text-teal-400 text-3xl">science</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">pH Scale</h2>
+                    <h2 class="text-xl font-bold text-white mb-2">pH Mixing Laboratory</h2>
                     <p class="text-[#9da6b9] leading-relaxed">
-                        Test the pH of common solutions. pH measures the concentration of hydrogen ions (H⁺).
-                        Values below 7 are acidic, 7 is neutral, and above 7 are basic.
+                        Mix solutions drop by drop and watch the pH change! Click any solution to add a drop to the
+                        beaker.
                     </p>
                 </div>
             </div>
@@ -106,21 +210,56 @@
             <!-- Left: Beaker & pH Scale -->
             <div class="lg:col-span-2 flex flex-col gap-6">
                 <!-- Beaker Visualization -->
-                <div class="relative rounded-2xl bg-[#1e2330] border border-[#282e39] overflow-hidden p-8">
-                    <div class="flex items-center justify-center gap-12">
+                <div class="glass-panel rounded-3xl p-8 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-green-500 to-purple-500 opacity-50">
+                    </div>
+
+                    <div class="flex items-center justify-center gap-16">
                         <!-- Beaker -->
-                        <div class="relative">
-                            <svg width="200" height="250" viewBox="0 0 200 250">
-                                <!-- Beaker outline -->
+                        <div class="relative beaker-glow float-anim" id="beaker-container">
+                            <svg width="220" height="270" viewBox="0 0 200 250">
+                                <!-- Beaker bg glow -->
+                                <defs>
+                                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                    <linearGradient id="liquidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" id="liquid-stop-1"
+                                            style="stop-color:#22c55e;stop-opacity:0.9" />
+                                        <stop offset="100%" id="liquid-stop-2"
+                                            style="stop-color:#16a34a;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+
+                                <!-- Beaker glass effect -->
                                 <path d="M40 20 L40 200 Q40 230 70 230 L130 230 Q160 230 160 200 L160 20" fill="none"
-                                    stroke="#3f4756" stroke-width="4" />
-                                <!-- Liquid -->
-                                <path id="beaker-liquid"
-                                    d="M44 80 L44 196 Q44 226 72 226 L128 226 Q156 226 156 196 L156 80 Z" fill="#22c55e"
-                                    opacity="0.8" />
-                                <!-- Spout lines -->
-                                <line x1="35" y1="20" x2="45" y2="20" stroke="#3f4756" stroke-width="3" />
-                                <line x1="155" y1="20" x2="165" y2="20" stroke="#3f4756" stroke-width="3" />
+                                    stroke="rgba(255,255,255,0.1)" stroke-width="8" />
+                                <path d="M40 20 L40 200 Q40 230 70 230 L130 230 Q160 230 160 200 L160 20" fill="none"
+                                    stroke="#4b5563" stroke-width="3" />
+
+                                <!-- Liquid with wave -->
+                                <path id="beaker-liquid" class="liquid-wave"
+                                    d="M44 75 Q70 70 100 75 Q130 80 156 75 L156 196 Q156 226 128 226 L72 226 Q44 226 44 196 Z"
+                                    fill="url(#liquidGrad)" filter="url(#glow)" />
+
+                                <!-- Measurement lines -->
+                                <g stroke="#6b7280" stroke-width="1" opacity="0.5">
+                                    <line x1="42" y1="80" x2="55" y2="80" />
+                                    <line x1="42" y1="120" x2="50" y2="120" />
+                                    <line x1="42" y1="160" x2="55" y2="160" />
+                                    <line x1="42" y1="200" x2="50" y2="200" />
+                                </g>
+
+                                <!-- Spout -->
+                                <line x1="32" y1="20" x2="48" y2="20" stroke="#4b5563" stroke-width="4"
+                                    stroke-linecap="round" />
+                                <line x1="152" y1="20" x2="168" y2="20" stroke="#4b5563" stroke-width="4"
+                                    stroke-linecap="round" />
                             </svg>
                             <!-- Bubbles -->
                             <div id="bubbles-container" class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -128,85 +267,111 @@
                         </div>
 
                         <!-- pH Meter -->
-                        <div class="flex flex-col items-center gap-4">
-                            <div class="w-32 p-4 rounded-xl bg-[#282e39] text-center">
-                                <div class="text-sm text-[#9da6b9] mb-1">pH Value</div>
-                                <div class="text-5xl font-black" id="ph-value" style="color: #22c55e">7.0</div>
+                        <div class="flex flex-col items-center gap-6">
+                            <div class="ph-display w-36 p-5 rounded-2xl text-center pulse-glow" id="ph-meter"
+                                style="--glow-color: rgba(34, 197, 94, 0.3)">
+                                <div class="text-xs text-[#9da6b9] mb-1 uppercase tracking-wider">pH Value</div>
+                                <div class="text-6xl font-black" id="ph-value" style="color: #22c55e">7.0</div>
                             </div>
-                            <div
-                                class="w-8 h-40 rounded-full bg-gradient-to-b from-red-500 via-green-500 to-blue-500 relative">
+
+                            <div class="relative">
+                                <div
+                                    class="w-10 h-48 rounded-full bg-gradient-to-b from-red-500 via-yellow-500 via-green-500 via-cyan-500 to-purple-500 shadow-lg relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
+                                </div>
                                 <div id="ph-indicator"
-                                    class="absolute left-1/2 -translate-x-1/2 w-12 h-3 bg-white rounded-full shadow-lg transition-all"
-                                    style="top: 50%"></div>
-                            </div>
-                            <div class="flex justify-between w-12 text-xs text-[#9da6b9]">
-                                <span>0</span>
-                                <span>14</span>
+                                    class="absolute left-1/2 -translate-x-1/2 w-16 h-4 bg-white rounded-full shadow-xl transition-all duration-500 flex items-center justify-center"
+                                    style="top: 50%">
+                                    <div class="w-2 h-2 rounded-full bg-gray-800"></div>
+                                </div>
+                                <div class="absolute -left-4 top-0 text-xs font-bold text-red-400">0</div>
+                                <div class="absolute -left-4 top-1/2 -translate-y-1/2 text-xs font-bold text-green-400">
+                                    7</div>
+                                <div class="absolute -left-6 bottom-0 text-xs font-bold text-purple-400">14</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- pH Scale Visual -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <div class="glass-panel p-6 rounded-2xl">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-yellow-400">straighten</span>
-                        pH Scale Reference
+                        pH Scale
                     </h3>
-                    <div class="relative h-12 rounded-lg overflow-hidden"
-                        style="background: linear-gradient(to right, #ef4444, #f97316, #eab308, #84cc16, #22c55e, #14b8a6, #06b6d4, #3b82f6, #8b5cf6, #a855f7)">
-                        <div id="ph-marker" class="absolute top-0 bottom-0 w-1 bg-white shadow-lg transition-all"
-                            style="left: 50%"></div>
+                    <div class="relative h-14 rounded-xl overflow-hidden shadow-inner"
+                        style="background: linear-gradient(to right, #dc2626, #f97316, #eab308, #84cc16, #22c55e, #14b8a6, #06b6d4, #3b82f6, #8b5cf6, #a855f7, #c026d3)">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent"></div>
+                        <div id="ph-marker"
+                            class="absolute top-0 bottom-0 w-1.5 bg-white rounded-full shadow-lg transition-all duration-500"
+                            style="left: 50%">
+                            <div
+                                class="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-white">
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex justify-between mt-2 text-xs">
-                        <span class="text-red-400 font-bold">0 - Acidic</span>
-                        <span class="text-green-400 font-bold">7 - Neutral</span>
-                        <span class="text-purple-400 font-bold">14 - Basic</span>
+                    <div class="flex justify-between mt-3 text-sm font-bold">
+                        <span class="text-red-400">🔴 Acidic</span>
+                        <span class="text-green-400">🟢 Neutral</span>
+                        <span class="text-purple-400">🟣 Basic</span>
                     </div>
                 </div>
 
-                <!-- Ion Counts -->
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39] text-center">
-                        <div class="text-sm text-[#9da6b9] mb-2">Hydronium Ions (H₃O⁺)</div>
-                        <div class="text-3xl font-black text-red-400" id="h-count">10⁻⁷ M</div>
-                    </div>
-                    <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39] text-center">
-                        <div class="text-sm text-[#9da6b9] mb-2">Hydroxide Ions (OH⁻)</div>
-                        <div class="text-3xl font-black text-blue-400" id="oh-count">10⁻⁷ M</div>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Right: Solution Selector -->
             <div class="flex flex-col gap-6">
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <div class="glass-panel p-6 rounded-2xl">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-purple-400">science</span>
-                        Select Solution
+                        <span class="material-symbols-outlined text-purple-400">colorize</span>
+                        Add Drops
                     </h3>
-                    <div class="grid grid-cols-1 gap-3" id="solution-buttons">
+                    <p class="text-xs text-[#637588] mb-4">Click to add a drop to the beaker</p>
+                    <div class="grid grid-cols-1 gap-2 max-h-[400px] overflow-y-auto pr-2" id="solution-buttons">
                         <!-- Solutions will be generated by JS -->
                     </div>
                 </div>
 
                 <!-- Current Solution Info -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-yellow-500/10 to-transparent rounded-bl-full">
+                    </div>
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
-                        Solution Info
+                        <span class="material-symbols-outlined text-yellow-400">info</span>
+                        Mixture Info
                     </h3>
                     <div id="solution-info" class="text-[#9da6b9]">
-                        <p class="font-bold text-white text-lg mb-2">Pure Water</p>
-                        <p class="text-sm leading-relaxed">Neutral solution with equal H⁺ and OH⁻ concentrations.</p>
+                        <p class="font-bold text-white text-lg mb-2">Empty Beaker</p>
+                        <p class="text-sm leading-relaxed">Click solutions to add drops to the beaker!</p>
+                    </div>
+                </div>
+
+                <!-- Beaker Contents -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-cyan-400">science</span>
+                            Contents
+                        </h3>
+                        <button id="clear-btn"
+                            class="px-4 py-2 rounded-xl bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-400 text-sm font-bold hover:from-red-500/30 hover:to-orange-500/30 transition-all border border-red-500/30 flex items-center gap-2 drop-btn">
+                            <span class="material-symbols-outlined text-sm">delete_sweep</span>
+                            Clear All
+                        </button>
+                    </div>
+                    <div id="beaker-contents" class="space-y-2 max-h-32 overflow-y-auto">
+                        <p class="text-[#637588] text-sm text-center py-4">🧪 Beaker is empty</p>
                     </div>
                 </div>
 
                 <!-- Type Indicator -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                    <div id="type-display" class="text-center">
-                        <div class="text-3xl font-black text-green-400 mb-2">NEUTRAL</div>
-                        <p class="text-[#9da6b9] text-sm">pH = 7</p>
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20" id="type-bg"></div>
+                    <div id="type-display" class="text-center relative">
+                        <div class="text-4xl font-black text-green-400 mb-2">NEUTRAL</div>
+                        <p class="text-[#9da6b9] text-sm">Equal H⁺ and OH⁻ ions</p>
                     </div>
                 </div>
             </div>

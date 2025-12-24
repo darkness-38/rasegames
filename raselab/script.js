@@ -124,7 +124,6 @@ const experimentFolders = [
     'coulombs-law',
     'ph-scale',
     'balancing-equations',
-    'acid-base',
     'gas-properties',
     'diffusion',
     'molecule-polarity'

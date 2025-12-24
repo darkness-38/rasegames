@@ -1,0 +1,10 @@
+{
+    "title": "States of Matter",
+    "subject": "Chemistry",
+    "difficulty": "Medium",
+    "desc": "Watch molecules form a solid, liquid, or gas. Add or remove heat and observe phase changes at the molecular level.",
+    "image": "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800",
+    "colorClass": "teal",
+    "icon": "ac_unit",
+    "order": 2
+}

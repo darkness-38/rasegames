@@ -1,0 +1,10 @@
+{
+    "title": "Molecule Polarity",
+    "subject": "Chemistry",
+    "difficulty": "Medium",
+    "desc": "See how electronegativity differences create polar bonds and molecular dipoles. Explore H₂O, CO₂, NH₃, and more!",
+    "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800",
+    "colorClass": "teal",
+    "icon": "hub",
+    "order": 9
+}

@@ -7,60 +7,57 @@
     <title>Gas Properties - RaseLab</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    colors: { "background-dark": "#101622" },
-                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                    colors: {
+                        "primary": "#0f49bd",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
                 },
             },
         }
     </script>
     <style>
         body {
-            font-family: "Space Grotesk", sans-serif;
+            font-family: "Space Grotesk", "Noto Sans", sans-serif;
         }
 
-        .container-walls {
-            background: transparent;
-            border: 4px solid #6b7280;
-            border-radius: 0 0 8px 8px;
-            border-top: none;
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        .piston {
-            background: linear-gradient(180deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
-            cursor: ns-resize;
+        ::-webkit-scrollbar-track {
+            background: #101622;
         }
 
-        .heater {
-            background: linear-gradient(0deg, #ef4444 0%, #f97316 50%, #fbbf24 100%);
+        ::-webkit-scrollbar-thumb {
+            background: #282e39;
+            border-radius: 4px;
         }
 
-        .heater.active {
-            animation: glow 1s infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 10px #ef4444;
-            }
-
-            to {
-                box-shadow: 0 0 30px #f97316;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f4756;
         }
     </style>
 </head>
 
-<body class="bg-background-dark text-white min-h-screen">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+    <!-- Header -->
     <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
@@ -71,346 +68,150 @@
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-teal-400">science</span>
+                    <span class="material-symbols-outlined text-cyan-400">compress</span>
                     <h1 class="text-xl font-bold">Gas Properties</h1>
                 </div>
             </div>
-            <span
-                class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-500/30">Chemistry</span>
+            <div class="flex items-center gap-3">
+                <span
+                    class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-500/30">Chemistry</span>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8">
-        <div class="mb-8 p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-            <h2 class="text-2xl font-bold mb-3 flex items-center gap-3">
-                <span class="material-symbols-outlined text-teal-400 text-3xl">compress</span>
-                Gas Properties Explorer
-            </h2>
-            <p class="text-[#9da6b9]">Control pressure, volume, and temperature to see how gas behaves. Push the piston
-                or heat the container!</p>
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Info Banner -->
+        <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+            <div class="flex items-start gap-4">
+                <div class="p-3 rounded-xl bg-cyan-500/20">
+                    <span class="material-symbols-outlined text-cyan-400 text-3xl">info</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-white mb-2">Gas Properties</h2>
+                    <p class="text-[#9da6b9] leading-relaxed">
+                        Pump gas molecules into a container and explore P-V-T relationships.
+                        Control volume with the piston and temperature with the heater. Watch real-time graphs!
+                    </p>
+                </div>
+            </div>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
-            <!-- Gas Container with Piston -->
-            <div class="lg:col-span-2 space-y-6">
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-teal-400">science</span>
-                        Gas Container with Piston
-                    </h3>
-
-                    <div class="flex justify-center">
-                        <div class="relative" style="width: 250px;">
-                            <!-- Piston -->
-                            <div id="piston"
-                                class="piston w-full h-8 rounded-t-lg flex items-center justify-center cursor-ns-resize select-none"
-                                style="margin-bottom: -4px;">
-                                <span class="material-symbols-outlined text-gray-800">unfold_less</span>
-                            </div>
-
-                            <!-- Container -->
-                            <div class="container-walls relative overflow-hidden" id="gas-container"
-                                style="height: 250px;">
-                                <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
-                            </div>
-
-                            <!-- Heater -->
-                            <div id="heater" class="heater h-4 rounded-b-lg mt-1 cursor-pointer"
-                                onclick="toggleHeater()"></div>
-                        </div>
+            <!-- Left: Container with Piston -->
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <div class="relative rounded-2xl bg-[#1e2330] border border-[#282e39] overflow-hidden">
+                    <div
+                        class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
+                        <span class="material-symbols-outlined text-cyan-400">science</span>
+                        <span class="text-sm font-medium text-white">Gas Chamber</span>
                     </div>
-
-                    <!-- Live Stats -->
-                    <div class="grid grid-cols-4 gap-3 mt-6">
-                        <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-center">
-                            <div class="text-red-400 font-bold text-xl" id="pressure-val">1.0</div>
-                            <div class="text-xs text-[#9da6b9]">P (atm)</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 text-center">
-                            <div class="text-blue-400 font-bold text-xl" id="volume-val">10.0</div>
-                            <div class="text-xs text-[#9da6b9]">V (L)</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-orange-500/10 border border-orange-500/30 text-center">
-                            <div class="text-orange-400 font-bold text-xl" id="temp-val">300</div>
-                            <div class="text-xs text-[#9da6b9]">T (K)</div>
-                        </div>
-                        <div class="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-center">
-                            <div class="text-green-400 font-bold text-xl" id="particles-val">50</div>
-                            <div class="text-xs text-[#9da6b9]">n</div>
-                        </div>
-                    </div>
-
-                    <!-- Instructions -->
-                    <div class="mt-4 text-center text-sm text-[#9da6b9]">
-                        <span class="material-symbols-outlined align-middle text-base">info</span>
-                        Drag piston up/down to change volume • Click heater to change temperature
+                    <canvas id="simulation-canvas" class="w-full aspect-video cursor-ns-resize"></canvas>
+                    <div class="absolute bottom-4 left-4 text-sm text-[#9da6b9]">
+                        <span class="material-symbols-outlined text-xs align-middle">mouse</span>
+                        Drag piston to change volume
                     </div>
                 </div>
 
                 <!-- Graphs -->
-                <div class="grid md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-6">
                     <div class="p-4 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                        <h4 class="text-sm font-bold mb-2">P-V Relationship</h4>
-                        <canvas id="pv-graph" class="w-full h-32 bg-[#0a0f1a] rounded-lg"></canvas>
+                        <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-400 text-lg">show_chart</span>
+                            Pressure vs Volume
+                        </h3>
+                        <canvas id="pv-graph" class="w-full h-32"></canvas>
                     </div>
                     <div class="p-4 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                        <h4 class="text-sm font-bold mb-2">P-T Relationship</h4>
-                        <canvas id="pt-graph" class="w-full h-32 bg-[#0a0f1a] rounded-lg"></canvas>
+                        <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-red-400 text-lg">show_chart</span>
+                            Pressure vs Temperature
+                        </h3>
+                        <canvas id="pt-graph" class="w-full h-32"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Controls -->
-            <div class="space-y-6">
+            <!-- Right: Controls -->
+            <div class="flex flex-col gap-6">
+                <!-- Values Display -->
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                    <h3 class="text-lg font-bold mb-4">Controls</h3>
-
+                    <h3 class="text-lg font-bold text-white mb-4">Current Values</h3>
                     <div class="space-y-4">
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-[#9da6b9]">Particles</span>
-                                <span class="font-bold" id="n-display">50</span>
-                            </div>
-                            <input type="range" id="particles-slider" min="10" max="100" value="50" class="w-full">
+                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
+                            <span class="text-[#9da6b9]">Pressure (P)</span>
+                            <span class="text-xl font-bold text-blue-400" id="pressure-display">1.0 atm</span>
                         </div>
-
-                        <div>
-                            <div class="flex justify-between text-sm mb-1">
-                                <span class="text-[#9da6b9]">Temperature</span>
-                                <span class="font-bold" id="t-display">300 K</span>
-                            </div>
-                            <input type="range" id="temp-slider" min="100" max="600" value="300" class="w-full">
+                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
+                            <span class="text-[#9da6b9]">Volume (V)</span>
+                            <span class="text-xl font-bold text-green-400" id="volume-display">10.0 L</span>
                         </div>
+                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
+                            <span class="text-[#9da6b9]">Temperature (T)</span>
+                            <span class="text-xl font-bold text-red-400" id="temperature-display">300 K</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 rounded-xl bg-[#282e39]">
+                            <span class="text-[#9da6b9]">Particles (n)</span>
+                            <span class="text-xl font-bold text-purple-400" id="particles-display">50</span>
+                        </div>
+                    </div>
+                </div>
 
-                        <button onclick="resetSimulation()"
-                            class="w-full px-4 py-2 bg-[#282e39] hover:bg-[#3f4756] rounded-lg font-bold">
-                            <span class="material-symbols-outlined align-middle">refresh</span> Reset
+                <!-- Temperature Control -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-400">thermostat</span>
+                        Temperature
+                    </h3>
+                    <div class="flex items-center gap-4">
+                        <button id="cool-btn" class="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">
+                            <span class="material-symbols-outlined">ac_unit</span>
+                        </button>
+                        <input type="range" id="temp-slider" min="100" max="600" value="300"
+                            class="flex-1 h-3 bg-gradient-to-r from-blue-500 via-yellow-500 to-red-500 rounded-lg appearance-none cursor-pointer">
+                        <button id="heat-btn" class="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30">
+                            <span class="material-symbols-outlined">local_fire_department</span>
                         </button>
                     </div>
                 </div>
 
+                <!-- Particle Control -->
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                    <h3 class="text-lg font-bold mb-4">Gas Laws</h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/30">
-                            <div class="font-bold text-red-400">Boyle's Law</div>
-                            <div class="text-xs text-[#9da6b9]">P₁V₁ = P₂V₂ (T constant)</div>
-                        </div>
-                        <div class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/30">
-                            <div class="font-bold text-orange-400">Charles's Law</div>
-                            <div class="text-xs text-[#9da6b9]">V₁/T₁ = V₂/T₂ (P constant)</div>
-                        </div>
-                        <div class="p-3 rounded-lg bg-purple-500/10 border border-purple-500/30">
-                            <div class="font-bold text-purple-400">Gay-Lussac's Law</div>
-                            <div class="text-xs text-[#9da6b9]">P₁/T₁ = P₂/T₂ (V constant)</div>
-                        </div>
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-purple-400">bubble_chart</span>
+                        Particles
+                    </h3>
+                    <div class="flex items-center gap-4">
+                        <button id="remove-btn" class="p-2 rounded-lg bg-[#282e39] text-white hover:bg-[#3f4756]">
+                            <span class="material-symbols-outlined">remove</span>
+                        </button>
+                        <input type="range" id="particle-slider" min="10" max="100" value="50"
+                            class="flex-1 h-3 bg-[#282e39] rounded-lg appearance-none cursor-pointer">
+                        <button id="add-btn" class="p-2 rounded-lg bg-primary text-white hover:bg-blue-600">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
                     </div>
                 </div>
+
+                <!-- Ideal Gas Law -->
+                <div class="p-6 rounded-2xl bg-gradient-to-r from-primary/20 to-purple-500/20 border border-primary/30">
+                    <div class="text-center">
+                        <div class="text-2xl font-mono font-bold text-white mb-2">PV = nRT</div>
+                        <div class="text-sm text-[#9da6b9]">Ideal Gas Law</div>
+                        <div class="text-xs text-[#637588] mt-2">R = 0.0821 L⋅atm/(mol⋅K)</div>
+                    </div>
+                </div>
+
+                <!-- Reset -->
+                <button id="reset-btn"
+                    class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                    Reset Simulation
+                </button>
             </div>
         </div>
     </main>
 
-    <script>
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        const container = document.getElementById('gas-container');
-        const piston = document.getElementById('piston');
-
-        let particles = [];
-        let numParticles = 50;
-        let temperature = 300;
-        let containerHeight = 250;
-        let heaterActive = false;
-        let pvData = [], ptData = [];
-
-        function init() {
-            resizeCanvas();
-            createParticles();
-            setupPiston();
-            animate();
-        }
-
-        function resizeCanvas() {
-            canvas.width = container.offsetWidth;
-            canvas.height = containerHeight;
-        }
-
-        function createParticles() {
-            particles = [];
-            for (let i = 0; i < numParticles; i++) {
-                particles.push({
-                    x: Math.random() * (canvas.width - 20) + 10,
-                    y: Math.random() * (containerHeight - 20) + 10,
-                    vx: (Math.random() - 0.5) * 4,
-                    vy: (Math.random() - 0.5) * 4,
-                    radius: 5
-                });
-            }
-        }
-
-        function setupPiston() {
-            let isDragging = false;
-            let startY, startHeight;
-
-            piston.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startY = e.clientY;
-                startHeight = containerHeight;
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const deltaY = e.clientY - startY;
-                containerHeight = Math.max(80, Math.min(300, startHeight + deltaY));
-                container.style.height = containerHeight + 'px';
-                resizeCanvas();
-                updateStats();
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-        }
-
-        function toggleHeater() {
-            heaterActive = !heaterActive;
-            document.getElementById('heater').classList.toggle('active', heaterActive);
-        }
-
-        function updateStats() {
-            const volume = (containerHeight / 25).toFixed(1);
-            const pressure = ((numParticles * temperature) / (containerHeight * 10)).toFixed(1);
-
-            document.getElementById('pressure-val').textContent = pressure;
-            document.getElementById('volume-val').textContent = volume;
-            document.getElementById('temp-val').textContent = temperature;
-            document.getElementById('particles-val').textContent = numParticles;
-
-            // Record for graphs
-            if (pvData.length > 50) pvData.shift();
-            if (ptData.length > 50) ptData.shift();
-            pvData.push({ p: parseFloat(pressure), v: parseFloat(volume) });
-            ptData.push({ p: parseFloat(pressure), t: temperature });
-
-            drawGraphs();
-        }
-
-        function drawGraphs() {
-            // P-V Graph
-            const pvCanvas = document.getElementById('pv-graph');
-            const pvCtx = pvCanvas.getContext('2d');
-            pvCanvas.width = pvCanvas.offsetWidth;
-            pvCanvas.height = 128;
-
-            pvCtx.fillStyle = '#0a0f1a';
-            pvCtx.fillRect(0, 0, pvCanvas.width, pvCanvas.height);
-
-            if (pvData.length > 1) {
-                pvCtx.strokeStyle = '#ef4444';
-                pvCtx.lineWidth = 2;
-                pvCtx.beginPath();
-                pvData.forEach((d, i) => {
-                    const x = (d.v / 12) * pvCanvas.width;
-                    const y = pvCanvas.height - (d.p / 10) * pvCanvas.height;
-                    if (i === 0) pvCtx.moveTo(x, y);
-                    else pvCtx.lineTo(x, y);
-                });
-                pvCtx.stroke();
-            }
-
-            // P-T Graph
-            const ptCanvas = document.getElementById('pt-graph');
-            const ptCtx = ptCanvas.getContext('2d');
-            ptCanvas.width = ptCanvas.offsetWidth;
-            ptCanvas.height = 128;
-
-            ptCtx.fillStyle = '#0a0f1a';
-            ptCtx.fillRect(0, 0, ptCanvas.width, ptCanvas.height);
-
-            if (ptData.length > 1) {
-                ptCtx.strokeStyle = '#f97316';
-                ptCtx.lineWidth = 2;
-                ptCtx.beginPath();
-                ptData.forEach((d, i) => {
-                    const x = ((d.t - 100) / 500) * ptCanvas.width;
-                    const y = ptCanvas.height - (d.p / 10) * ptCanvas.height;
-                    if (i === 0) ptCtx.moveTo(x, y);
-                    else ptCtx.lineTo(x, y);
-                });
-                ptCtx.stroke();
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Heat effect
-            if (heaterActive && temperature < 600) {
-                temperature += 0.5;
-                document.getElementById('temp-slider').value = temperature;
-                document.getElementById('t-display').textContent = Math.round(temperature) + ' K';
-            }
-
-            const speedFactor = Math.sqrt(temperature / 300);
-
-            particles.forEach(p => {
-                p.x += p.vx * speedFactor;
-                p.y += p.vy * speedFactor;
-
-                if (p.x - p.radius < 0 || p.x + p.radius > canvas.width) p.vx *= -1;
-                if (p.y - p.radius < 0 || p.y + p.radius > containerHeight) p.vy *= -1;
-
-                p.x = Math.max(p.radius, Math.min(canvas.width - p.radius, p.x));
-                p.y = Math.max(p.radius, Math.min(containerHeight - p.radius, p.y));
-
-                // Color based on speed
-                const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy) * speedFactor;
-                const hue = 200 - speed * 20;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `hsl(${Math.max(0, hue)}, 80%, 60%)`;
-                ctx.fill();
-            });
-
-            updateStats();
-            requestAnimationFrame(animate);
-        }
-
-        function resetSimulation() {
-            containerHeight = 250;
-            temperature = 300;
-            numParticles = 50;
-            heaterActive = false;
-
-            container.style.height = containerHeight + 'px';
-            document.getElementById('temp-slider').value = 300;
-            document.getElementById('particles-slider').value = 50;
-            document.getElementById('t-display').textContent = '300 K';
-            document.getElementById('n-display').textContent = '50';
-            document.getElementById('heater').classList.remove('active');
-
-            pvData = [];
-            ptData = [];
-
-            resizeCanvas();
-            createParticles();
-        }
-
-        document.getElementById('particles-slider').addEventListener('input', (e) => {
-            numParticles = parseInt(e.target.value);
-            document.getElementById('n-display').textContent = numParticles;
-            createParticles();
-        });
-
-        document.getElementById('temp-slider').addEventListener('input', (e) => {
-            temperature = parseInt(e.target.value);
-            document.getElementById('t-display').textContent = temperature + ' K';
-        });
-
-        window.addEventListener('resize', resizeCanvas);
-        init();
-    </script>
+    <script src="simulation.js"></script>
 </body>
 
 </html>

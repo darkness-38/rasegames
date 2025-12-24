@@ -1,0 +1,10 @@
+{
+    "title": "Coulomb's Law",
+    "subject": "Physics",
+    "difficulty": "Medium",
+    "desc": "Visualize the electrostatic force between two charges. Drag charges and adjust magnitudes to see how force changes.",
+    "image": "https://images.unsplash.com/photo-1509475826633-fed577a2c71b?w=800",
+    "colorClass": "purple",
+    "icon": "electric_bolt",
+    "order": 3
+}

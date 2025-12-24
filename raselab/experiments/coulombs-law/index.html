@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Coulomb's Law - RaseLab</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: "Space Grotesk", "Noto Sans", sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #101622;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #282e39;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f4756;
+        }
+
+        .glow-effect {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+            }
+
+            to {
+                box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-[#282e39] bg-[#111318]/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="../../index.html"
+                    class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="hidden sm:inline">Experiments</span>
+                </a>
+                <div class="h-6 w-px bg-[#282e39]"></div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-purple-400">electric_bolt</span>
+                    <h1 class="text-xl font-bold">Coulomb's Law</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span
+                    class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm font-medium border border-purple-500/30">Physics</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Info Banner -->
+        <div
+            class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
+            <div class="flex items-start gap-4">
+                <div class="p-3 rounded-xl bg-purple-500/20">
+                    <span class="material-symbols-outlined text-purple-400 text-3xl">info</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-white mb-2">Coulomb's Law</h2>
+                    <p class="text-[#9da6b9] leading-relaxed">
+                        Visualize the electrostatic force between two charges. Drag the charges to change distance,
+                        and adjust their magnitudes to see how the force changes. F = k × q₁ × q₂ / r²
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Left: Simulation Canvas -->
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <div class="relative rounded-2xl bg-[#1e2330] border border-[#282e39] overflow-hidden glow-effect">
+                    <div
+                        class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
+                        <span class="material-symbols-outlined text-purple-400">electric_bolt</span>
+                        <span class="text-sm font-medium text-white">Electric Field</span>
+                    </div>
+                    <canvas id="simulation-canvas"
+                        class="w-full aspect-video cursor-grab active:cursor-grabbing"></canvas>
+                </div>
+
+                <!-- Force Display -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-yellow-400">calculate</span>
+                        Force Calculation
+                    </h3>
+                    <div class="text-center p-6 rounded-xl bg-[#282e39]">
+                        <div class="text-sm text-[#9da6b9] mb-2">Electrostatic Force (F)</div>
+                        <div class="text-4xl font-black text-yellow-400" id="force-display">0.00 N</div>
+                        <div class="text-sm text-[#9da6b9] mt-4 font-mono" id="formula-display">
+                            F = k × |q₁| × |q₂| / r²
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Controls -->
+            <div class="flex flex-col gap-6">
+                <!-- Charge 1 Controls -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-red-400">add_circle</span>
+                        Charge 1
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-[#9da6b9] block mb-2">Magnitude (μC)</label>
+                            <input type="range" id="charge1-slider" min="-10" max="10" value="5"
+                                class="w-full h-3 bg-[#282e39] rounded-lg appearance-none cursor-pointer">
+                            <div class="text-center text-2xl font-bold text-red-400 mt-2" id="charge1-display">+5 μC
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charge 2 Controls -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-400">remove_circle</span>
+                        Charge 2
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-[#9da6b9] block mb-2">Magnitude (μC)</label>
+                            <input type="range" id="charge2-slider" min="-10" max="10" value="-3"
+                                class="w-full h-3 bg-[#282e39] rounded-lg appearance-none cursor-pointer">
+                            <div class="text-center text-2xl font-bold text-blue-400 mt-2" id="charge2-display">-3 μC
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distance Display -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-teal-400">straighten</span>
+                        Distance
+                    </h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-teal-400" id="distance-display">1.00 m</div>
+                        <p class="text-[#9da6b9] text-sm mt-2">Drag charges to change</p>
+                    </div>
+                </div>
+
+                <!-- Force Type Indicator -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <div id="force-type" class="text-center">
+                        <div class="text-2xl font-bold text-green-400 mb-2">ATTRACTIVE</div>
+                        <p class="text-[#9da6b9] text-sm">Opposite charges attract</p>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <button id="reset-btn"
+                    class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                    Reset Simulation
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="simulation.js"></script>
+</body>
+
+</html>

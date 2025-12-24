@@ -116,127 +116,56 @@ function initNavigationHighlighter() {
 }
 
 
-/* --- Experiments Data & Search --- */
-const experimentsData = [
-    {
-        id: 1,
-        title: "Acid-Base Titration",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "Simulate pH changes in real-time as you mix acids and bases. Identify the equivalence point accurately.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA7q-cQM4gEbGALjdnYckYd-LOaqPdCf9l6-k0_SZPO2utwQeIvb_hVyqPwzalAUFxvMflZFR2_K9cJM8nVjsUk5GA2tMfK554uh73P8kx23PX_aN77pArjj1L6FukhTiB6b5mLa68-1Vwfx7uMfxJb9gRkEUq5Q3dyv-_mzEddkGtIlQJHMsGQhCrWoB-XKusyGR_1XtdCQyUnT--zYNfJ50uvOGHPPmTGQES9UQ4HIV2e99oypu3lBzeKD8x4eBOk1JbT3PBDzb0M",
-        colorClass: "teal",
-        icon: "science",
-        link: "./experiments/titration/index.html"
-    },
-    {
-        id: 2,
-        title: "Atomic Orbitals",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "Explore s, p, d orbitals with 3D visualization. Build electron configurations and understand quantum numbers.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDh7qOiYnfPksqfORzYjODHCkEeiso_2DA5rhlldCIZtDqsvru2BFklDL9fIZUhE7kt80bNKyLGb1U44YFSb4zTIv5gHAxMoTA-qRTV9A1apUScuvNCW54tlAezfe5xOAD0gGAqz49R_vCpYfdtDvAxLdDUVVTOjZiZlLvvotyI3HuTiObiEiw6TTkk4lRg_-wuL6EQz64fJCi5oziuGmX8JSkQPLc-gEMttqvDEhvT6eYaepLPPhMjcx-zi9YWqxeWhdiXtBUqRke0",
-        colorClass: "teal",
-        icon: "blur_circular",
-        link: "./experiments/orbitals/index.html"
-    },
-    {
-        id: 3,
-        title: "Gas Laws",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "Explore Boyle's, Charles's, Gay-Lussac's and Ideal Gas laws with interactive simulations.",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA7q-cQM4gEbGALjdnYckYd-LOaqPdCf9l6-k0_SZPO2utwQeIvb_hVyqPwzalAUFxvMflZFR2_K9cJM8nVjsUk5GA2tMfK554uh73P8kx23PX_aN77pArjj1L6FukhTiB6b5mLa68-1Vwfx7uMfxJb9gRkEUq5Q3dyv-_mzEddkGtIlQJHMsGQhCrWoB-XKusyGR_1XtdCQyUnT--zYNfJ50uvOGHPPmTGQES9UQ4HIV2e99oypu3lBzeKD8x4eBOk1JbT3PBDzb0M",
-        colorClass: "teal",
-        icon: "bubble_chart",
-        link: "./experiments/gas-laws/index.html"
-    },
-    {
-        id: 4,
-        title: "Diffusion",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "Mix two gases to explore diffusion! Experiment with concentration, temperature, mass, and radius to see how they affect diffusion rate.",
-        image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800",
-        colorClass: "teal",
-        icon: "blur_on",
-        link: "./experiments/diffusion/index.html"
-    },
-    {
-        id: 5,
-        title: "Gases Intro",
-        subject: "Chemistry",
-        difficulty: "Easy",
-        desc: "Pump gas particles into a container and observe their behavior. See how pressure changes with the number of particles!",
-        image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
-        colorClass: "teal",
-        icon: "cloud",
-        link: "./experiments/gases-intro/index.html"
-    },
-    {
-        id: 6,
-        title: "Gas Properties",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "Control pressure, volume, and temperature with a movable piston and heater. Watch P-V and P-T graphs update in real-time!",
-        image: "https://images.unsplash.com/photo-1628595351029-c2bf17511435?w=800",
-        colorClass: "teal",
-        icon: "compress",
-        link: "./experiments/gas-properties/index.html"
-    },
-    {
-        id: 7,
-        title: "Molecule Polarity",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "See how electronegativity differences create polar bonds and molecular dipoles. Explore H₂O, CO₂, NH₃, and more!",
-        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800",
-        colorClass: "teal",
-        icon: "hub",
-        link: "./experiments/molecule-polarity/index.html"
-    },
-    {
-        id: 8,
-        title: "Balancing Equations",
-        subject: "Chemistry",
-        difficulty: "Easy",
-        desc: "Practice balancing chemical equations interactively! Adjust coefficients and watch atom counts update in real-time.",
-        image: "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?w=800",
-        colorClass: "teal",
-        icon: "balance",
-        link: "./experiments/balancing-equations/index.html"
-    },
-    {
-        id: 9,
-        title: "pH Scale",
-        subject: "Chemistry",
-        difficulty: "Easy",
-        desc: "Test the pH of common solutions from battery acid to drain cleaner. See the color changes and understand acidity!",
-        image: "https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?w=800",
-        colorClass: "teal",
-        icon: "water_drop",
-        link: "./experiments/ph-scale/index.html"
-    },
-    {
-        id: 10,
-        title: "Acid-Base Solutions",
-        subject: "Chemistry",
-        difficulty: "Medium",
-        desc: "Explore how acids and bases dissociate in water. See the difference between strong and weak acids/bases!",
-        image: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=800",
-        colorClass: "teal",
-        icon: "science",
-        link: "./experiments/acid-base/index.html"
-    }
+/* --- Experiments Auto-Discovery --- */
+// List of experiment folder names - add new experiments here
+const experimentFolders = [
+    'orbitals',
+    'states-of-matter',
+    'coulombs-law',
+    'ph-scale',
+    'balancing-equations',
+    'acid-base',
+    'gas-properties',
+    'diffusion',
+    'molecule-polarity'
 ];
 
-function initExperiments() {
+let experimentsData = [];
+
+async function loadExperiments() {
+    const experiments = [];
+
+    for (const folder of experimentFolders) {
+        try {
+            const response = await fetch(`./experiments/${folder}/manifest.json`);
+            if (response.ok) {
+                const manifest = await response.json();
+                experiments.push({
+                    id: experiments.length + 1,
+                    ...manifest,
+                    link: `./experiments/${folder}/index.html`
+                });
+            }
+        } catch (err) {
+            console.warn(`Could not load manifest for ${folder}:`, err);
+        }
+    }
+
+    // Sort by order if specified
+    experiments.sort((a, b) => (a.order || a.id) - (b.order || b.id));
+
+    return experiments;
+}
+
+async function initExperiments() {
     const grid = document.getElementById('experiments-grid');
     const searchInput = document.getElementById('search-input');
     const filterBtns = document.querySelectorAll('.filter-btn');
 
     if (!grid) return;
 
+    // Load experiments from manifest files
+    experimentsData = await loadExperiments();
     renderExperiments(experimentsData);
 
     // Search Listener

@@ -1,0 +1,10 @@
+{
+    "title": "pH Scale",
+    "subject": "Chemistry",
+    "difficulty": "Easy",
+    "desc": "Test the pH of common solutions from battery acid to drain cleaner. See the color changes and understand acidity!",
+    "image": "https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?w=800",
+    "colorClass": "teal",
+    "icon": "water_drop",
+    "order": 4
+}

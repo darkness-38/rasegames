@@ -53,97 +53,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #3f4756;
         }
-
-        .glow-container {
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-        }
-
-        .slider-container {
-            background: linear-gradient(135deg, #1e2330 0%, #282e39 100%);
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-        }
-
-        input[type="range"]::-webkit-slider-track {
-            height: 8px;
-            background: #3f4756;
-            border-radius: 4px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
-            border-radius: 50%;
-            cursor: pointer;
-            margin-top: -8px;
-            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-        }
-
-        .container-wall {
-            background: linear-gradient(90deg, #374151 0%, #4b5563 50%, #374151 100%);
-        }
-
-        .divider-wall {
-            background: linear-gradient(180deg, #6b7280 0%, #4b5563 100%);
-            transition: opacity 0.5s ease;
-        }
-
-        .formula-box {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            transition: none;
-        }
-
-        .particle-type1 {
-            background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
-            box-shadow: 0 0 6px rgba(37, 99, 235, 0.6);
-        }
-
-        .particle-type2 {
-            background: radial-gradient(circle at 30% 30%, #f87171, #dc2626);
-            box-shadow: 0 0 6px rgba(220, 38, 38, 0.6);
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #1e2330 0%, #282e39 100%);
-        }
-
-        .remove-btn {
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .remove-btn:hover {
-            transform: scale(1.05);
-        }
-
-        @keyframes pulse-glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-            }
-
-            50% {
-                box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
-            }
-        }
-
-        .pulse-glow {
-            animation: pulse-glow 2s infinite;
-        }
     </style>
 </head>
 
@@ -165,247 +74,161 @@
             </div>
             <div class="flex items-center gap-3">
                 <span
-                    class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm font-medium border border-purple-500/30">
-                    Chemistry
-                </span>
+                    class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-500/30">Chemistry</span>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Intro -->
-        <div class="mb-8 p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-            <h2 class="text-2xl font-bold text-white mb-3 flex items-center gap-3">
-                <span class="material-symbols-outlined text-purple-400 text-3xl">science</span>
-                Gas Diffusion Simulation
-            </h2>
-            <p class="text-[#9da6b9] leading-relaxed">
-                Mix two gases to explore diffusion! Experiment with concentration, temperature, mass, and radius
-                to determine how these factors affect the rate of diffusion.
-            </p>
+        <!-- Info Banner -->
+        <div
+            class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20">
+            <div class="flex items-start gap-4">
+                <div class="p-3 rounded-xl bg-purple-500/20">
+                    <span class="material-symbols-outlined text-purple-400 text-3xl">info</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-white mb-2">Diffusion</h2>
+                    <p class="text-[#9da6b9] leading-relaxed">
+                        Mix two gases and watch them diffuse! Experiment with concentration, temperature,
+                        mass, and radius to see how these factors affect the rate of diffusion.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
-            <!-- Left Column: Container Simulation -->
+            <!-- Left: Chamber -->
             <div class="lg:col-span-2 flex flex-col gap-6">
-                <!-- Gas Container with Removable Divider -->
-                <div class="relative rounded-2xl bg-[#1e2330] border border-[#282e39] p-6 glow-container">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined text-purple-400">science</span>
-                            Gas Chamber
-                        </h3>
-                        <button id="remove-divider-btn"
-                            class="remove-btn px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm flex items-center gap-2 pulse-glow">
-                            <span class="material-symbols-outlined text-lg">vertical_split</span>
-                            Remove Divider
-                        </button>
-                    </div>
-
-                    <div class="relative mx-auto bg-[#0a0f1a] rounded-xl overflow-hidden"
-                        style="width: 100%; height: 400px;" id="chamber-container">
-                        <!-- Left Chamber -->
-                        <div id="left-chamber" class="absolute top-0 left-0 bottom-0" style="width: 50%;">
-                            <div class="absolute top-2 left-2 flex items-center gap-2">
-                                <div class="w-4 h-4 rounded-full bg-blue-500"></div>
-                                <span class="text-xs text-blue-300 font-bold">Gas 1</span>
-                            </div>
+                <div class="relative rounded-2xl bg-[#1e2330] border border-[#282e39] overflow-hidden">
+                    <div
+                        class="absolute top-4 left-4 z-10 flex items-center gap-4 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span class="text-sm text-white">Gas 1</span>
                         </div>
-
-                        <!-- Right Chamber -->
-                        <div id="right-chamber" class="absolute top-0 right-0 bottom-0" style="width: 50%;">
-                            <div class="absolute top-2 right-2 flex items-center gap-2">
-                                <span class="text-xs text-red-300 font-bold">Gas 2</span>
-                                <div class="w-4 h-4 rounded-full bg-red-500"></div>
-                            </div>
-                        </div>
-
-                        <!-- Divider -->
-                        <div id="divider"
-                            class="divider-wall absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-2 z-10">
-                        </div>
-
-                        <!-- Particle Canvas -->
-                        <canvas id="particle-canvas" class="absolute inset-0 w-full h-full"></canvas>
-                    </div>
-
-                    <!-- Stats Row -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                        <div class="stat-card p-4 rounded-xl text-center">
-                            <div class="text-xs text-[#9da6b9] mb-1">Left Chamber</div>
-                            <div class="flex items-center justify-center gap-2">
-                                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                                <span id="left-blue-count" class="text-xl font-bold text-blue-400">50</span>
-                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                <span id="left-red-count" class="text-xl font-bold text-red-400">0</span>
-                            </div>
-                        </div>
-                        <div class="stat-card p-4 rounded-xl text-center">
-                            <div class="text-xs text-[#9da6b9] mb-1">Right Chamber</div>
-                            <div class="flex items-center justify-center gap-2">
-                                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                                <span id="right-blue-count" class="text-xl font-bold text-blue-400">0</span>
-                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                <span id="right-red-count" class="text-xl font-bold text-red-400">50</span>
-                            </div>
-                        </div>
-                        <div class="stat-card p-4 rounded-xl text-center">
-                            <div class="text-xs text-[#9da6b9] mb-1">Avg Speed</div>
-                            <div class="text-xl font-bold text-purple-400" id="avg-speed">0 m/s</div>
-                        </div>
-                        <div class="stat-card p-4 rounded-xl text-center">
-                            <div class="text-xs text-[#9da6b9] mb-1">Time</div>
-                            <div class="text-xl font-bold text-green-400" id="elapsed-time">0.0 s</div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <span class="text-sm text-white">Gas 2</span>
                         </div>
                     </div>
+                    <canvas id="simulation-canvas" class="w-full aspect-video"></canvas>
                 </div>
 
-                <!-- Concentration Graph -->
-                <div class="rounded-2xl bg-[#1e2330] border border-[#282e39] p-6">
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-purple-400">show_chart</span>
-                        Concentration Over Time
-                    </h3>
-                    <canvas id="graph-canvas" class="w-full rounded-xl bg-[#282e39]" height="200"></canvas>
-                    <div class="flex justify-center gap-6 mt-4 text-sm">
-                        <div class="flex items-center gap-2">
-                            <div class="w-4 h-1 bg-blue-500 rounded"></div>
-                            <span class="text-[#9da6b9]">Gas 1 (Left)</span>
+                <!-- Particle Counts -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                        <h3 class="text-sm font-bold text-white mb-4 text-center">Left Chamber</h3>
+                        <div class="flex justify-around">
+                            <div class="text-center">
+                                <div class="text-3xl font-black text-blue-400" id="left-gas1">50</div>
+                                <div class="text-xs text-[#9da6b9]">Gas 1</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-black text-red-400" id="left-gas2">0</div>
+                                <div class="text-xs text-[#9da6b9]">Gas 2</div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-4 h-1 bg-red-500 rounded"></div>
-                            <span class="text-[#9da6b9]">Gas 2 (Right)</span>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                        <h3 class="text-sm font-bold text-white mb-4 text-center">Right Chamber</h3>
+                        <div class="flex justify-around">
+                            <div class="text-center">
+                                <div class="text-3xl font-black text-blue-400" id="right-gas1">0</div>
+                                <div class="text-xs text-[#9da6b9]">Gas 1</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-black text-red-400" id="right-gas2">50</div>
+                                <div class="text-xs text-[#9da6b9]">Gas 2</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Column: Controls & Info -->
+            <!-- Right: Controls -->
             <div class="flex flex-col gap-6">
-                <!-- Controls Panel -->
-                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                    <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-purple-400">tune</span>
-                        Controls
-                    </h3>
-
-                    <!-- Temperature Slider -->
-                    <div class="slider-container p-4 rounded-xl mb-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="text-sm text-[#9da6b9] flex items-center gap-2">
-                                <span class="material-symbols-outlined text-orange-400">thermostat</span>
-                                Temperature
-                            </label>
-                            <span class="text-white font-bold" id="temperature-value">300 K</span>
-                        </div>
-                        <input type="range" id="temperature-slider" min="100" max="600" step="10" value="300"
-                            class="w-full">
-                    </div>
-
-                    <!-- Gas 1 Settings -->
-                    <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 mb-4">
-                        <div class="flex items-center gap-2 mb-3">
-                            <div class="w-4 h-4 rounded-full bg-blue-500"></div>
-                            <span class="text-white font-bold">Gas 1 (Blue)</span>
-                        </div>
-                        <div class="space-y-3">
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-[#9da6b9]">Number of Particles</span>
-                                    <span class="text-blue-400 font-bold" id="gas1-count">50</span>
-                                </div>
-                                <input type="range" id="gas1-count-slider" min="10" max="100" step="5" value="50"
-                                    class="w-full">
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-[#9da6b9]">Mass (amu)</span>
-                                    <span class="text-blue-400 font-bold" id="gas1-mass">28</span>
-                                </div>
-                                <input type="range" id="gas1-mass-slider" min="2" max="100" step="1" value="28"
-                                    class="w-full">
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-[#9da6b9]">Radius (pm)</span>
-                                    <span class="text-blue-400 font-bold" id="gas1-radius">150</span>
-                                </div>
-                                <input type="range" id="gas1-radius-slider" min="50" max="300" step="10" value="150"
-                                    class="w-full">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Gas 2 Settings -->
-                    <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 mb-4">
-                        <div class="flex items-center gap-2 mb-3">
-                            <div class="w-4 h-4 rounded-full bg-red-500"></div>
-                            <span class="text-white font-bold">Gas 2 (Red)</span>
-                        </div>
-                        <div class="space-y-3">
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-[#9da6b9]">Number of Particles</span>
-                                    <span class="text-red-400 font-bold" id="gas2-count">50</span>
-                                </div>
-                                <input type="range" id="gas2-count-slider" min="10" max="100" step="5" value="50"
-                                    class="w-full">
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-[#9da6b9]">Mass (amu)</span>
-                                    <span class="text-red-400 font-bold" id="gas2-mass">44</span>
-                                </div>
-                                <input type="range" id="gas2-mass-slider" min="2" max="100" step="1" value="44"
-                                    class="w-full">
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-[#9da6b9]">Radius (pm)</span>
-                                    <span class="text-red-400 font-bold" id="gas2-radius">200</span>
-                                </div>
-                                <input type="range" id="gas2-radius-slider" min="50" max="300" step="10" value="200"
-                                    class="w-full">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex gap-3">
-                        <button id="reset-btn"
-                            class="flex-1 px-4 py-3 rounded-xl bg-[#282e39] hover:bg-[#3f4756] text-white font-bold flex items-center justify-center gap-2 transition-colors">
-                            <span class="material-symbols-outlined">refresh</span>
-                            Reset
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Info Panel -->
+                <!-- Divider Control -->
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
-                        About Diffusion
+                        <span class="material-symbols-outlined text-yellow-400">vertical_split</span>
+                        Divider
                     </h3>
-                    <div class="text-[#9da6b9] leading-relaxed space-y-3">
-                        <p><strong class="text-white">Graham's Law:</strong> The rate of diffusion is inversely
-                            proportional to the square root of the molar mass.</p>
-                        <div class="formula-box p-4 rounded-xl text-center">
-                            <div class="text-xl font-bold text-white">r₁/r₂ = √(M₂/M₁)</div>
+                    <button id="toggle-divider"
+                        class="w-full p-4 rounded-xl bg-yellow-500/20 text-yellow-400 font-bold hover:bg-yellow-500/30 transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">lock_open</span>
+                        <span id="divider-text">Remove Divider</span>
+                    </button>
+                </div>
+
+                <!-- Temperature -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-400">thermostat</span>
+                        Temperature
+                    </h3>
+                    <input type="range" id="temp-slider" min="100" max="500" value="300"
+                        class="w-full h-3 bg-gradient-to-r from-blue-500 to-red-500 rounded-lg appearance-none cursor-pointer">
+                    <div class="text-center text-xl font-bold text-orange-400 mt-2" id="temp-display">300 K</div>
+                </div>
+
+                <!-- Gas 1 Properties -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-blue-500/30">
+                    <h3 class="text-lg font-bold text-blue-400 mb-4">Gas 1 (Blue)</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-[#9da6b9] flex justify-between">
+                                <span>Particles</span>
+                                <span id="gas1-count">50</span>
+                            </label>
+                            <input type="range" id="gas1-slider" min="10" max="100" value="50"
+                                class="w-full h-2 bg-[#282e39] rounded-lg cursor-pointer">
                         </div>
-                        <p><strong class="text-purple-400">Key Factors:</strong></p>
-                        <ul class="list-disc list-inside text-sm space-y-1">
-                            <li>Higher temperature → faster diffusion</li>
-                            <li>Lower mass → faster diffusion</li>
-                            <li>Smaller radius → faster diffusion</li>
-                            <li>Higher concentration gradient → faster diffusion</li>
-                        </ul>
+                        <div>
+                            <label class="text-sm text-[#9da6b9] flex justify-between">
+                                <span>Mass (amu)</span>
+                                <span id="gas1-mass">28</span>
+                            </label>
+                            <input type="range" id="gas1-mass-slider" min="2" max="100" value="28"
+                                class="w-full h-2 bg-[#282e39] rounded-lg cursor-pointer">
+                        </div>
                     </div>
                 </div>
+
+                <!-- Gas 2 Properties -->
+                <div class="p-6 rounded-2xl bg-[#1e2330] border border-red-500/30">
+                    <h3 class="text-lg font-bold text-red-400 mb-4">Gas 2 (Red)</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-[#9da6b9] flex justify-between">
+                                <span>Particles</span>
+                                <span id="gas2-count">50</span>
+                            </label>
+                            <input type="range" id="gas2-slider" min="10" max="100" value="50"
+                                class="w-full h-2 bg-[#282e39] rounded-lg cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="text-sm text-[#9da6b9] flex justify-between">
+                                <span>Mass (amu)</span>
+                                <span id="gas2-mass">44</span>
+                            </label>
+                            <input type="range" id="gas2-mass-slider" min="2" max="100" value="44"
+                                class="w-full h-2 bg-[#282e39] rounded-lg cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset -->
+                <button id="reset-btn"
+                    class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                    Reset Simulation
+                </button>
             </div>
         </div>
     </main>
 
-    <script src="diffusion.js"></script>
+    <script src="simulation.js"></script>
 </body>
 
 </html>

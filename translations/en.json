@@ -223,6 +223,8 @@
         "newGame": "New Game",
         "finalScore": "Final Score",
         "statistics": "Statistics",
+        "score": "Score",
+        "difficulty": "Difficulty",
         "bestScore": "Best Score",
         "tips": "Tips",
         "resetSimulation": "Reset Simulation",

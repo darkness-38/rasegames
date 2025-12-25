@@ -272,9 +272,9 @@ const RatingSystem = {
                 const showCount = element.dataset.ratingCount !== undefined;
 
                 if (compact) {
-                    element.innerHTML = this.renderCompactStars(rating.average);
+                    element.innerHTML = this.renderCompactStars(Number(rating.average));
                 } else {
-                    element.innerHTML = this.renderStars(rating.average, showCount, rating.count);
+                    element.innerHTML = this.renderStars(Number(rating.average), showCount, Number(rating.count));
                 }
             }
         });
@@ -297,7 +297,7 @@ const RatingSystem = {
                         <div class="text-xs text-gray-500">${gameRating.count} ratings</div>
                     </div>
                     <div class="flex items-center gap-2 mb-3">
-                        ${this.renderStars(gameRating.average)}
+                        ${this.renderStars(Number(gameRating.average))}
                     </div>
                     ${isLoggedIn ? `
                         <div class="flex gap-1 rating-stars-input">
@@ -307,7 +307,7 @@ const RatingSystem = {
                                 </button>
                             `).join('')}
                         </div>
-                        ${userRating ? `<p class="text-xs text-green-500 mt-2">Your rating: ${userRating}/5</p>` : ''}
+                        ${userRating ? `<p class="text-xs text-green-500 mt-2">Your rating: ${Number(userRating).toFixed(0)}/5</p>` : ''}
                     ` : `
                         <p class="text-xs text-gray-500 mt-2">Sign in to rate this game</p>
                     `}

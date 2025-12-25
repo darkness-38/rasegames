@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const fs = require('fs');
+const rateLimit = require('express-rate-limit');
 const { filterBadWords } = require('./utils/profanityFilter');
 
 const app = express();
@@ -20,72 +21,46 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
-// Redirect .html URLs to clean URLs (with validation to prevent open redirects)
+// Security: Rate Limiting (Applied globally at the top)
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 200, // Limit each IP to 200 requests per windowMs
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    message: 'Too many requests from this IP, please try again later.'
+});
+app.use(limiter);
+
+// Security: Redirect .html URLs to clean URLs
 app.use((req, res, next) => {
     const url = req.url;
 
-    // Security: Only process paths, not full URLs with protocols
     // Reject any URL that looks like an absolute URL or contains dangerous characters
     if (url.includes('://') || url.includes('//') || url.startsWith('\\')) {
         return next();
     }
 
+    let cleanPath = '';
+
     // Redirect /path/index.html to /path/
     if (url.endsWith('/index.html')) {
-        const cleanPath = url.slice(0, -10);
-        // Validate the resulting path is safe (starts with / and has no protocol)
-        if (cleanPath.startsWith('/') && !cleanPath.includes('://')) {
-            return res.redirect(301, cleanPath);
-        }
+        cleanPath = url.slice(0, -10);
+    }
+    // Redirect /path.html to /path
+    else if (url.endsWith('.html')) {
+        cleanPath = url.slice(0, -5);
     }
 
-    // Redirect /path.html to /path
-    if (url.endsWith('.html') && !url.includes('/index.html')) {
-        const cleanPath = url.slice(0, -5);
-        if (cleanPath.startsWith('/') && !cleanPath.includes('://')) {
+    if (cleanPath) {
+        // Strict Validation: Only allow alphanumeric, slashes, hyphens, and underscores
+        // This effectively prevents open redirects to arbitrary domains
+        if (/^[a-zA-Z0-9/\-_]+$/.test(cleanPath)) {
             return res.redirect(301, cleanPath);
         }
     }
 
     next();
 });
-
-// Simple in-memory rate limiting for DoS protection
-const rateLimit = new Map();
-const RATE_LIMIT_WINDOW = 60000; // 1 minute
-const RATE_LIMIT_MAX = 200; // max requests per window per IP
-
-const rateLimiter = (req, res, next) => {
-    const ip = req.ip || req.connection.remoteAddress;
-    const now = Date.now();
-
-    if (!rateLimit.has(ip)) {
-        rateLimit.set(ip, { count: 1, startTime: now });
-    } else {
-        const record = rateLimit.get(ip);
-        if (now - record.startTime > RATE_LIMIT_WINDOW) {
-            rateLimit.set(ip, { count: 1, startTime: now });
-        } else if (record.count >= RATE_LIMIT_MAX) {
-            return res.status(429).send('Too many requests');
-        } else {
-            record.count++;
-        }
-    }
-    next();
-};
-
-// Cleanup old entries every 5 minutes
-setInterval(() => {
-    const now = Date.now();
-    for (const [ip, record] of rateLimit.entries()) {
-        if (now - record.startTime > RATE_LIMIT_WINDOW * 2) {
-            rateLimit.delete(ip);
-        }
-    }
-}, 300000);
-
-// Apply rate limiting
-app.use(rateLimiter);
 
 // Redirect old page URLs to new pages/ folder
 const pageRedirects = ['profile', 'games', 'challenges', 'leaderboard', 'about'];
@@ -95,8 +70,8 @@ pageRedirects.forEach(page => {
     });
 });
 
-// Redirect old game URLs to new games/ folder
-const gameRedirects = ['game2048', 'snakeGame', 'tetrisGame', 'flappyGame', 'memoryGame', 'minesweeperGame', 'tictactoeGame', 'raseClicker', 'runnerGame', 'fightArena', 'battleshipGame'];
+// Redirect old game URLs to new games/ folder (Updated list)
+const gameRedirects = ['game2048', 'snakeGame', 'tetrisGame', 'flappyGame', 'memoryGame', 'minesweeperGame', 'tictactoeGame', 'raseClicker', 'runnerGame', 'fightArena', 'battleshipGame', 'sudokuGame'];
 gameRedirects.forEach(game => {
     app.get(`/${game}`, (req, res) => {
         res.redirect(301, `/games/${game}`);

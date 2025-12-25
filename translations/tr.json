@@ -695,10 +695,11 @@
         },
         "victory": "Bulmaca Çözüldü!",
         "victoryMessage": "Harika bir zihin egzersizi!",
-        "mistakes": "Hatalar: {current}/{max}",
-        "time": "Süre: {time}",
+        "mistakes": "Hatalar",
+        "time": "Süre",
         "noteOn": "Not Modu: AÇIK",
-        "noteOff": "Not Modu: KAPALI"
+        "noteOff": "Not Modu: KAPALI",
+        "hint": "İpucu"
     },
     "orbitals": {
         "title": "Atomik Orbitaller",

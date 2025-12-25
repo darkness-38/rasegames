@@ -694,10 +694,11 @@
         },
         "victory": "Puzzle Solved!",
         "victoryMessage": "Excellent mental exercise!",
-        "mistakes": "Mistakes: {current}/{max}",
-        "time": "Time: {time}",
+        "mistakes": "Mistakes",
+        "time": "Time",
         "noteOn": "Note Mode: ON",
-        "noteOff": "Note Mode: OFF"
+        "noteOff": "Note Mode: OFF",
+        "hint": "Hint"
     },
     "orbitals": {
         "title": "Atomic Orbitals",

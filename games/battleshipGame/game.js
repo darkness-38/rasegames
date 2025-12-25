@@ -811,11 +811,6 @@ class BattleshipGame {
         document.getElementById('battle-log').innerHTML = '<p class="text-gray-600">Battle begins!</p>';
         this.updateOpponentStatus(false);
     }
-    // End of init/constructor logic
-    // Chat methods follow
-
-
-
 
     // Chat Methods
     setupChat() {
@@ -883,3 +878,10 @@ class BattleshipGame {
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
     }
+}
+
+// Initialize game when DOM is ready
+let game;
+document.addEventListener('DOMContentLoaded', () => {
+    game = new BattleshipGame();
+});

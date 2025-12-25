@@ -166,6 +166,9 @@
                         <button onclick="loadLeaderboard('battleship')"
                             class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
                             data-game="battleship">🚢 Battleship</button>
+                        <button onclick="loadLeaderboard('sudoku')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="sudoku">🧩 Sudoku</button>
                     </div>
                 </div>
 
@@ -218,14 +221,14 @@
     <script>
         const gameIcons = {
             'snake': '🐍', 'tetris': '🧱', 'runner': '🏃', 'clicker': '💎',
-            'flappy': '🐦', '2048': '🔢', 'memory': '🃏', 'minesweeper': '💣',
-            'tictactoe': '⭕', 'fightarena': '⚔️', 'battleship': '🚢', 'pong': '🏓', 'all': '🎮'
+            'flappy': '🐦', '2048': '🔢', 'game2048': '🔢', 'memory': '🃏', 'minesweeper': '💣',
+            'tictactoe': '⭕', 'fightarena': '⚔️', 'battleship': '🚢', 'pong': '🏓', 'sudoku': '🧩', 'all': '🎮'
         };
 
         const gameNames = {
             'snake': 'Snake', 'tetris': 'Tetris', 'runner': 'Cyber Runner', 'clicker': 'Rase Clicker',
-            'flappy': 'Pixel Bird', '2048': 'Power 2048', 'memory': 'Mind Match', 'minesweeper': 'Bomb Squad',
-            'tictactoe': 'Tic Tac Toe', 'fightarena': 'Fight Arena', 'battleship': 'Battleship', 'pong': 'Pong'
+            'flappy': 'Pixel Bird', '2048': 'Power 2048', 'game2048': 'Power 2048', 'memory': 'Mind Match', 'minesweeper': 'Bomb Squad',
+            'tictactoe': 'Tic Tac Toe', 'fightarena': 'Fight Arena', 'battleship': 'Battleship', 'pong': 'Pong', 'sudoku': 'Sudoku'
         };
 
         function createPodiumCard(entry, rank, gameId) {

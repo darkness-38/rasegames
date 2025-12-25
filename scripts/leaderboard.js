@@ -206,7 +206,7 @@ async function getLeaderboard(game, limit = 10) {
 
     // Handle "all" games request
     if (game === 'all') {
-        const games = ['snake', 'tetris', 'runner', 'flappy', 'fightarena', 'battleship', 'game2048', 'minesweeper', 'memory', 'tictactoe', 'clicker', 'pong'];
+        const games = ['snake', 'tetris', 'runner', 'flappy', 'fightarena', 'battleship', 'game2048', 'minesweeper', 'memory', 'tictactoe', 'clicker', 'pong', 'sudoku'];
         try {
             const promises = games.map(g => getLeaderboard(g, 5)); // Get top 5 from each
             const results = await Promise.all(promises);
@@ -297,7 +297,8 @@ async function loadAllLeaderboards() {
         getLeaderboard('memory'),
         getLeaderboard('game2048'),
         getLeaderboard('tictactoe'),
-        getLeaderboard('battleship')
+        getLeaderboard('battleship'),
+        getLeaderboard('sudoku')
     ]);
 
     renderLeaderboard('snake-leaderboard', snake);

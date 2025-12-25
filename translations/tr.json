@@ -678,6 +678,28 @@
             "sunk": "BATTI!"
         }
     },
+    "sudoku": {
+        "title": "SUDOKU",
+        "subtitle": "Klasik Mantık Bulmacası",
+        "newGame": "Yeni Oyun",
+        "restart": "Yeniden Başlat",
+        "check": "Kontrol Et",
+        "notes": "Notlar",
+        "undo": "Geri Al",
+        "erase": "Sil",
+        "difficulty": {
+            "easy": "Kolay",
+            "medium": "Orta",
+            "hard": "Zor",
+            "expert": "Uzman"
+        },
+        "victory": "Bulmaca Çözüldü!",
+        "victoryMessage": "Harika bir zihin egzersizi!",
+        "mistakes": "Hatalar: {current}/{max}",
+        "time": "Süre: {time}",
+        "noteOn": "Not Modu: AÇIK",
+        "noteOff": "Not Modu: KAPALI"
+    },
     "orbitals": {
         "title": "Atomik Orbitaller",
         "whatAre": "Atomik Orbitaller Nedir?",

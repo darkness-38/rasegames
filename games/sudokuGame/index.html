@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku - Rase Games</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link crossorigin rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Auth & i18n -->
+    <script src="/scripts/i18n.js"></script>
+    <script src="/scripts/auth.js"></script>
+    <script src="/scripts/firebase-config.js"></script>
+    <script src="/scripts/leaderboard.js"></script>
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "primary-dark": "#0a3690",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a1628",
+                        "surface-dark": "#0f1d32",
+                        "surface-light": "#ffffff",
+                        "ocean": "#0d2847",
+                        "ocean-light": "#1a3a5c",
+                        "ocean-accent": "#00d4ff",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/auth.css">
+    <style>
+        .sudoku-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            border-right: 1px solid rgba(148, 163, 184, 0.1);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        /* 3x3 Block Borders - Vertical */
+        .sudoku-cell:nth-child(3n) {
+            border-right: 2px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .sudoku-cell:nth-child(9n) {
+            border-right: none;
+        }
+
+        /* 3x3 Block Borders - Horizontal */
+        /* Applied via 'border-b-2' class in JS/HTML for specific rows */
+        .sudoku-cell.bottom-border {
+            border-bottom: 2px solid rgba(148, 163, 184, 0.4);
+        }
+
+        .sudoku-cell:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .sudoku-cell.selected {
+            background-color: rgba(15, 73, 189, 0.2);
+            border: 2px solid #0f49bd;
+            z-index: 10;
+        }
+
+        .sudoku-cell.highlight {
+            background-color: rgba(15, 73, 189, 0.1);
+        }
+
+        .sudoku-cell.same-number {
+            background-color: rgba(15, 73, 189, 0.3);
+        }
+
+        .sudoku-cell.initial {
+            color: #94a3b8;
+            /* gray-400 */
+        }
+
+        .sudoku-cell.error {
+            color: #ef4444;
+            /* red-500 */
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .sudoku-cell.success {
+            animation: success-pulse 0.5s ease-in-out;
+        }
+
+        /* Notes */
+        .note-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .note-num {
+            font-size: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-dark text-white font-display min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200">
+
+    <!-- RaseGames Header -->
+    <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
+        <div class="logo">
+            <a href="/pages/games" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/pages/games" class="nav-link" data-i18n="nav.games">Games</a>
+            <a href="/pages/about" class="nav-link" data-i18n="nav.about">About</a>
+            <a href="/pages/leaderboard" class="nav-link" data-i18n="nav.leaderboard">Leaderboards</a>
+            <a href="/raselab/"
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
+                <span class="material-symbols-outlined text-[14px]">science</span>
+                RaseLab
+            </a>
+            <!-- Language Toggle -->
+            <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+            </div>
+            <div id="user-display"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main
+        class="flex-grow flex flex-col items-center justify-center p-4 pt-24 max-w-7xl mx-auto w-full lg:flex-row lg:items-start lg:gap-12">
+
+        <!-- Left Column: The Grid -->
+        <div class="flex-1 w-full max-w-[600px] mx-auto lg:mx-0 flex flex-col gap-6">
+            <!-- Mobile/Tablet Status Bar -->
+            <div
+                class="flex items-center justify-between lg:hidden w-full bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                <div class="flex flex-col">
+                    <span class="text-xs text-slate-500 font-medium uppercase tracking-wider"
+                        data-i18n="sudoku.time">Time</span>
+                    <span class="text-xl font-bold font-mono text-white" id="timer-mobile">00:00</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-xs text-slate-500 font-medium uppercase tracking-wider"
+                        data-i18n="sudoku.difficulty">Difficulty</span>
+                    <span class="text-primary font-bold capitalize" id="difficulty-display-mobile">Easy</span>
+                </div>
+            </div>
+
+            <!-- Sudoku Board Container -->
+            <div
+                class="relative w-full aspect-square bg-surface-light dark:bg-[#151921] rounded-xl shadow-2xl dark:shadow-black/50 border-4 border-slate-300 dark:border-slate-700 overflow-hidden">
+                <div id="game-board" class="grid grid-cols-9 h-full w-full">
+                    <!-- Cells generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Controls -->
+        <aside class="w-full lg:w-96 flex flex-col gap-6 lg:gap-8">
+            <!-- Difficulty Selector -->
+            <div
+                class="w-full bg-surface-light dark:bg-surface-dark p-1 rounded-xl flex shadow-sm border border-slate-200 dark:border-slate-800">
+                <button
+                    class="difficulty-btn flex-1 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                    data-diff="easy" data-i18n="sudoku.difficulty.easy">Easy</button>
+                <button
+                    class="difficulty-btn flex-1 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                    data-diff="medium" data-i18n="sudoku.difficulty.medium">Medium</button>
+                <button
+                    class="difficulty-btn flex-1 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                    data-diff="hard" data-i18n="sudoku.difficulty.hard">Hard</button>
+                <button
+                    class="difficulty-btn flex-1 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                    data-diff="expert" data-i18n="sudoku.difficulty.expert">Expert</button>
+            </div>
+
+            <!-- Stats & Timer Panel (Desktop) -->
+            <div class="hidden lg:grid grid-cols-2 gap-4">
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center gap-1 shadow-sm">
+                    <span class="text-xs font-bold uppercase text-slate-400 tracking-widest"
+                        data-i18n="sudoku.time">Time</span>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white font-mono flex items-center gap-2">
+                        <span id="timer">00:00</span>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-xl p-4 border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center gap-1 shadow-sm relative overflow-hidden group">
+                    <span class="text-xs font-bold uppercase text-slate-400 tracking-widest"
+                        data-i18n="sudoku.mistakes">Mistakes</span>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white">
+                        <span id="mistakes-count" class="text-red-500">0</span>/3
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 h-1 bg-slate-800">
+                        <div id="mistakes-bar" class="h-full bg-red-500 transition-all duration-300" style="width: 0%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Action Buttons -->
+            <div class="grid grid-cols-4 gap-2">
+                <!-- Undo -->
+                <div class="flex flex-col items-center gap-2">
+                    <button id="undo-btn"
+                        class="w-full aspect-square rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 flex items-center justify-center transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-2xl">undo</span>
+                    </button>
+                    <span class="text-xs font-medium text-slate-500" data-i18n="sudoku.undo">Undo</span>
+                </div>
+                <!-- Erase -->
+                <div class="flex flex-col items-center gap-2">
+                    <button id="erase-btn"
+                        class="w-full aspect-square rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 flex items-center justify-center transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-2xl">ink_eraser</span>
+                    </button>
+                    <span class="text-xs font-medium text-slate-500" data-i18n="sudoku.erase">Erase</span>
+                </div>
+                <!-- Notes Toggle -->
+                <div class="flex flex-col items-center gap-2">
+                    <button id="note-btn"
+                        class="w-full aspect-square rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 flex items-center justify-center transition-all shadow-sm relative">
+                        <span class="material-symbols-outlined text-2xl">edit_note</span>
+                        <div id="note-indicator"
+                            class="absolute top-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-slate-800 hidden">
+                        </div>
+                    </button>
+                    <span class="text-xs font-medium text-slate-500" data-i18n="sudoku.notes">Notes</span>
+                </div>
+                <!-- Hint -->
+                <div class="flex flex-col items-center gap-2">
+                    <button id="hint-btn"
+                        class="w-full aspect-square rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 flex items-center justify-center transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-2xl">lightbulb</span>
+                    </button>
+                    <span class="text-xs font-medium text-slate-500">Hint</span>
+                </div>
+            </div>
+
+            <!-- Number Pad -->
+            <div class="grid grid-cols-3 gap-3">
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="1">1</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="2">2</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="3">3</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="4">4</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="5">5</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="6">6</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="7">7</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="8">8</button>
+                <button
+                    class="numpad-btn aspect-[5/3] rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-primary dark:text-blue-400 text-3xl font-bold hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all shadow-sm hover:shadow-lg hover:shadow-primary/30 active:scale-95"
+                    data-num="9">9</button>
+            </div>
+
+            <!-- New Game Button -->
+            <button id="new-game-btn"
+                class="w-full py-4 rounded-xl bg-primary hover:bg-blue-700 text-white font-bold text-lg shadow-lg shadow-primary/25 transition-all active:scale-[0.98] mt-auto">
+                <span data-i18n="sudoku.newGame">New Game</span>
+            </button>
+        </aside>
+    </main>
+
+    <!-- Win Modal -->
+    <div id="win-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-surface-dark border border-gray-700 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <div class="text-6xl mb-4">🏆</div>
+            <h2 class="text-3xl font-black text-white mb-2" data-i18n="sudoku.victory">Victory!</h2>
+            <p class="text-gray-400 mb-6" data-i18n="sudoku.victoryMessage">Excellent!</p>
+
+            <div class="bg-black/30 rounded-xl p-4 mb-6">
+                <p class="text-2xl font-mono text-yellow-400 font-bold" id="final-time">05:23</p>
+                <p class="text-xs text-gray-500 uppercase tracking-wider" data-i18n="sudoku.time">Time</p>
+            </div>
+
+            <button onclick="document.getElementById('win-modal').classList.add('hidden'); game.newGame();"
+                class="w-full py-3 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold transition-all">
+                <span data-i18n="sudoku.newGame">New Game</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

@@ -666,16 +666,38 @@
             "destroyer": "Destroyer"
         },
         "log": {
+            "hit": "HIT!",
+            "miss": "MISS",
+            "sunk": "SUNK!",
             "youHitTheir": "You hit their {ship}!",
             "youSunkTheir": "You sunk their {ship}!",
             "shotMissedAt": "Shot missed at {coord}",
             "theyHitYour": "They hit your {ship}!",
             "theySunkYour": "They sunk your {ship}!",
-            "theirShotMissed": "Their shot missed at {coord}",
-            "hit": "HIT!",
-            "miss": "MISS",
-            "sunk": "SUNK!"
+            "theirShotMissed": "Their shot missed at {coord}"
         }
+    },
+    "sudoku": {
+        "title": "SUDOKU",
+        "subtitle": "Classic Logic Puzzle",
+        "newGame": "New Game",
+        "restart": "Restart",
+        "check": "Check",
+        "notes": "Notes",
+        "undo": "Undo",
+        "erase": "Erase",
+        "difficulty": {
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard",
+            "expert": "Expert"
+        },
+        "victory": "Puzzle Solved!",
+        "victoryMessage": "Excellent mental exercise!",
+        "mistakes": "Mistakes: {current}/{max}",
+        "time": "Time: {time}",
+        "noteOn": "Note Mode: ON",
+        "noteOff": "Note Mode: OFF"
     },
     "orbitals": {
         "title": "Atomic Orbitals",

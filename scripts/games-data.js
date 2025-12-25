@@ -100,6 +100,15 @@ const GAMES_DATA = {
         tags: 'Strategy, Naval',
         gradient: 'from-cyan-600/20 to-blue-700/20',
         badge: { text: 'MULTIPLAYER', color: 'bg-green-500' }
+    },
+    'sudoku': {
+        name: 'Sudoku',
+        path: '/games/sudokuGame/',
+        emoji: '🧩',
+        categories: ['puzzle', 'strategy'],
+        tags: 'Logic, Brain',
+        gradient: 'from-teal-500/20 to-emerald-600/20',
+        badge: { text: 'NEW', color: 'bg-purple-500' }
     }
 };
 

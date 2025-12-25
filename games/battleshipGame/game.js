@@ -47,6 +47,14 @@ class BattleshipGame {
         return Array(10).fill(null).map(() => Array(10).fill({ type: 'empty', shipId: null }));
     }
 
+    // Translation helper
+    t(key) {
+        if (window.i18n && window.i18n.t) {
+            return window.i18n.t(key);
+        }
+        return null;
+    }
+
     init() {
         this.connectSocket();
         this.setupEventListeners();
@@ -105,6 +113,13 @@ class BattleshipGame {
             this.gamePhase = 'battle';
             this.isMyTurn = data.firstTurn === this.playerId;
             this.showScreen('battle');
+
+            // Update room code in battle header
+            const roomCodeEl = document.getElementById('battle-room-code');
+            if (roomCodeEl && this.roomCode) {
+                roomCodeEl.textContent = this.roomCode;
+            }
+
             this.renderBattleGrids();
             this.updateTurnIndicator();
         });
@@ -175,7 +190,8 @@ class BattleshipGame {
             if (this.ships.every(s => s.placed)) {
                 this.socket.emit('battleship:ready', { grid: this.myGrid, ships: this.ships });
                 document.getElementById('ready-btn').disabled = true;
-                document.getElementById('ready-btn').innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Waiting...';
+                const waitingText = this.t('battleship.waitingForOpponent') || 'Waiting...';
+                document.getElementById('ready-btn').innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> ${waitingText}`;
             }
         });
 
@@ -257,6 +273,10 @@ class BattleshipGame {
     }
 
     getShipDisplayName(shipId) {
+        // Use i18n if available, otherwise fallback to English
+        if (window.i18n && window.i18n.t) {
+            return window.i18n.t(`battleship.ships.${shipId}`) || shipId;
+        }
         const names = {
             carrier: 'Carrier',
             battleship: 'Battleship',
@@ -420,10 +440,11 @@ class BattleshipGame {
     updateOpponentStatus(ready) {
         const statusEl = document.getElementById('opponent-status');
         if (ready) {
+            const readyText = this.t('battleship.ready') || 'Ready!';
             statusEl.innerHTML = `
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400">
                     <span class="material-symbols-outlined">check_circle</span>
-                    <span>Ready!</span>
+                    <span>${readyText}</span>
                 </div>
             `;
         }
@@ -489,21 +510,53 @@ class BattleshipGame {
     }
 
     renderFleetStatus() {
-        // Enemy fleet status
-        const enemyStatus = document.getElementById('enemy-fleet-status');
-        enemyStatus.innerHTML = this.ships.map(ship => `
-            <span class="fleet-ship-status ${this.enemySunkShips.includes(ship.id) ? 'sunk' : ''}">
-                ${this.getShipDisplayName(ship.id)} (${ship.size})
-            </span>
-        `).join('');
+        // Fleet Status Cards (New Command Center Style)
+        const cardsContainer = document.getElementById('fleet-status-cards');
+        if (cardsContainer) {
+            cardsContainer.innerHTML = this.ships.map(ship => {
+                const isSunk = this.mySunkShips.includes(ship.id);
+                const hitsOnShip = ship.cells.filter(([r, c]) => this.myGrid[r][c].hit).length;
 
-        // Your fleet status
-        const yourStatus = document.getElementById('your-fleet-status');
-        yourStatus.innerHTML = this.ships.map(ship => `
-            <span class="fleet-ship-status ${this.mySunkShips.includes(ship.id) ? 'sunk' : ''}">
-                ${this.getShipDisplayName(ship.id)} (${ship.size})
-            </span>
-        `).join('');
+                let borderClass = 'border-gray-700';
+                let bgClass = 'bg-surface-dark';
+                let statusHtml = '';
+
+                if (isSunk) {
+                    borderClass = 'border-red-500/40';
+                    bgClass = 'bg-red-500/10';
+                    statusHtml = `<p class="text-red-400 text-xs font-bold uppercase">${this.t('battleship.sunk') || 'SUNK'}</p>`;
+                } else {
+                    // Generate health bars
+                    const bars = [];
+                    for (let i = 0; i < ship.size; i++) {
+                        const isHit = i < hitsOnShip;
+                        bars.push(`<div class="${isHit ? 'bg-red-500' : 'bg-green-500'} w-full rounded-full"></div>`);
+                    }
+                    statusHtml = `<div class="flex gap-1 h-2 mt-1">${bars.join('')}</div>`;
+                }
+
+                return `
+                    <div class="flex flex-col gap-1 rounded-lg p-3 border ${borderClass} ${bgClass}">
+                        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">${this.getShipDisplayName(ship.id)} (${ship.size})</p>
+                        ${statusHtml}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update enemy health bar
+        const healthBar = document.getElementById('enemy-health-bar');
+        if (healthBar) {
+            const remainingPercent = (this.enemyShipsRemaining / 5) * 100;
+            healthBar.style.width = `${remainingPercent}%`;
+        }
+
+        // Update enemy ships remaining text
+        const shipsRemainingEl = document.getElementById('enemy-ships-remaining');
+        if (shipsRemainingEl) {
+            const shipsText = this.t('battleship.shipsRemaining') || 'Ships Remaining';
+            shipsRemainingEl.innerHTML = `${this.enemyShipsRemaining} ${shipsText}`;
+        }
     }
 
     handleAttack(row, col) {
@@ -520,20 +573,29 @@ class BattleshipGame {
         if (result === 'hit') {
             this.opponentGrid[row][col] = { type: 'hit', shipId };
             this.hitsLanded++;
-            this.showAnimation('hit', 'HIT!');
-            this.addBattleLog('hit', `You hit their ${this.getShipDisplayName(shipId)}!`);
+            const hitText = this.t('battleship.log.hit') || 'HIT!';
+            this.showAnimation('hit', hitText);
+
+            const shipName = this.getShipDisplayName(shipId);
+            const youHitMsg = (this.t('battleship.log.youHitTheir') || 'You hit their {ship}!').replace('{ship}', shipName);
+            this.addBattleLog('hit', youHitMsg);
 
             if (sunk) {
                 this.enemySunkShips.push(shipId);
                 this.enemyShipsRemaining--;
                 this.markShipSunk(shipId, 'attack');
-                setTimeout(() => this.showAnimation('sunk', 'SUNK!'), 500);
-                this.addBattleLog('sunk', `You sunk their ${this.getShipDisplayName(shipId)}!`);
+                const sunkText = this.t('battleship.log.sunk') || 'SUNK!';
+                setTimeout(() => this.showAnimation('sunk', sunkText), 500);
+                const youSunkMsg = (this.t('battleship.log.youSunkTheir') || 'You sunk their {ship}!').replace('{ship}', shipName);
+                this.addBattleLog('sunk', youSunkMsg);
             }
         } else {
             this.opponentGrid[row][col] = { type: 'miss' };
-            this.showAnimation('miss', 'MISS');
-            this.addBattleLog('miss', `Shot missed at ${String.fromCharCode(65 + col)}${row + 1}`);
+            const missText = this.t('battleship.log.miss') || 'MISS';
+            this.showAnimation('miss', missText);
+            const coord = `${String.fromCharCode(65 + col)}${row + 1}`;
+            const missMsg = (this.t('battleship.log.shotMissedAt') || 'Shot missed at {coord}').replace('{coord}', coord);
+            this.addBattleLog('miss', missMsg);
         }
 
         this.isMyTurn = false;
@@ -546,7 +608,9 @@ class BattleshipGame {
 
         if (result === 'hit') {
             this.myGrid[row][col].hit = true;
-            this.addBattleLog('hit', `They hit your ${this.getShipDisplayName(shipId)}!`);
+            const shipName = this.getShipDisplayName(shipId);
+            const theyHitMsg = (this.t('battleship.log.theyHitYour') || 'They hit your {ship}!').replace('{ship}', shipName);
+            this.addBattleLog('hit', theyHitMsg);
 
             if (sunk) {
                 this.mySunkShips.push(shipId);
@@ -554,10 +618,13 @@ class BattleshipGame {
                 this.ships.find(s => s.id === shipId).cells.forEach(([r, c]) => {
                     this.myGrid[r][c].sunk = true;
                 });
-                this.addBattleLog('sunk', `They sunk your ${this.getShipDisplayName(shipId)}!`);
+                const theySunkMsg = (this.t('battleship.log.theySunkYour') || 'They sunk your {ship}!').replace('{ship}', shipName);
+                this.addBattleLog('sunk', theySunkMsg);
             }
         } else {
-            this.addBattleLog('miss', `Their shot missed at ${String.fromCharCode(65 + col)}${row + 1}`);
+            const coord = `${String.fromCharCode(65 + col)}${row + 1}`;
+            const theirMissMsg = (this.t('battleship.log.theirShotMissed') || 'Their shot missed at {coord}').replace('{coord}', coord);
+            this.addBattleLog('miss', theirMissMsg);
         }
 
         this.isMyTurn = true;
@@ -573,17 +640,20 @@ class BattleshipGame {
     }
 
     updateTurnIndicator() {
-        const badge = document.getElementById('turn-badge');
         const text = document.getElementById('turn-text');
+        const badge = document.getElementById('turn-badge');
+        const scanIndicator = document.getElementById('scanning-indicator');
 
         if (this.isMyTurn) {
-            badge.className = 'inline-flex items-center gap-2 px-6 py-3 rounded-full text-lg font-bold your-turn';
-            text.textContent = 'Your Turn';
-            badge.querySelector('.material-symbols-outlined').textContent = 'gps_fixed';
+            text.textContent = this.t('battleship.yourTurn') || 'YOUR TURN';
+            text.className = 'font-bold text-green-400';
+            if (badge) badge.classList.add('border-green-500/50');
+            if (scanIndicator) scanIndicator.textContent = this.t('battleship.fireWhenReady') || 'Fire when ready';
         } else {
-            badge.className = 'inline-flex items-center gap-2 px-6 py-3 rounded-full text-lg font-bold opponent-turn';
-            text.textContent = "Opponent's Turn";
-            badge.querySelector('.material-symbols-outlined').textContent = 'hourglass_top';
+            text.textContent = this.t('battleship.opponentTurn') || "OPPONENT'S TURN";
+            text.className = 'font-bold text-red-400';
+            if (badge) badge.classList.remove('border-green-500/50');
+            if (scanIndicator) scanIndicator.textContent = this.t('battleship.scanning') || 'Scanning...';
         }
     }
 
@@ -602,12 +672,37 @@ class BattleshipGame {
 
     addBattleLog(type, message) {
         const log = document.getElementById('battle-log');
-        const entry = document.createElement('p');
-        entry.className = `log-entry ${type}`;
-        entry.textContent = message;
+
+        // Get icon and colors based on type
+        let icon = 'waves';
+        let bgClass = 'bg-[#282e39]';
+
+        if (type === 'hit') {
+            icon = 'rocket';
+            bgClass = 'bg-primary/20';
+        } else if (type === 'sunk') {
+            icon = 'warning';
+            bgClass = 'bg-red-500';
+        }
+
+        const now = new Date();
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+        const entry = document.createElement('div');
+        entry.className = 'flex gap-4 p-4 border-b border-gray-800 hover:bg-[#1a2230]/50 transition-colors';
+        entry.innerHTML = `
+            <div class="text-white flex items-center justify-center rounded-lg ${bgClass} shrink-0 size-10">
+                <span class="material-symbols-outlined text-lg">${icon}</span>
+            </div>
+            <div class="flex flex-col gap-1 flex-1">
+                <p class="text-white text-sm font-medium leading-tight">${message}</p>
+            </div>
+            <div class="text-xs text-gray-500 font-mono">${timeStr}</div>
+        `;
+
         log.insertBefore(entry, log.firstChild);
 
-        // Keep only last 10 entries
+        // Keep only last 20 entries
         while (log.children.length > 10) {
             log.removeChild(log.lastChild);
         }
@@ -629,14 +724,14 @@ class BattleshipGame {
             screen.classList.add('victory');
             screen.classList.remove('defeat');
             icon.textContent = '🏆';
-            title.textContent = 'VICTORY!';
-            subtitle.textContent = 'You destroyed the enemy fleet!';
+            title.textContent = this.t('battleship.victory') || 'VICTORY!';
+            subtitle.textContent = this.t('battleship.victoryMessage') || 'You destroyed the enemy fleet!';
         } else {
             screen.classList.add('defeat');
             screen.classList.remove('victory');
             icon.textContent = '💀';
-            title.textContent = 'DEFEAT';
-            subtitle.textContent = 'Your fleet has been destroyed.';
+            title.textContent = this.t('battleship.defeat') || 'DEFEAT';
+            subtitle.textContent = this.t('battleship.defeatMessage') || 'Your fleet has been destroyed.';
         }
 
         document.getElementById('shots-fired').textContent = this.shotsFired;

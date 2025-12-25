@@ -87,22 +87,27 @@
         </div>
         <div class="flex items-center gap-6">
             <a href="/pages/games"
-                class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">Games</a>
+                class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
+                data-i18n="nav.games">Games</a>
             <a href="/pages/about"
-                class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">About</a>
+                class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
+                data-i18n="nav.about">About</a>
             <a href="/pages/leaderboard"
-                class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">Leaderboards</a>
+                class="text-sm text-slate-500 dark:text-slate-400 hover:text-primary transition-colors"
+                data-i18n="nav.leaderboard">Leaderboards</a>
             <a href="/raselab/"
                 class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
                 <span class="material-symbols-outlined text-[14px]">science</span>
-                RaseLab
+                <span data-i18n="nav.raselab">RaseLab</span>
             </a>
             <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+            <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+            </div>
+            <div id="user-display"></div>
         </div>
     </header>
 
@@ -111,8 +116,10 @@
         <div class="w-full flex flex-col gap-6 mb-8">
             <!-- Title -->
             <div class="text-center">
-                <h1 class="text-3xl font-bold mb-2">Bomb <span class="text-primary">Squad</span></h1>
-                <p class="text-slate-500 dark:text-slate-400 text-sm">Clear the field without triggering mines!</p>
+                <h1 class="text-3xl font-bold mb-2" data-i18n="minesweeper.title">Bomb <span
+                        class="text-primary">Squad</span></h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="minesweeper.subtitle">Clear the field
+                    without triggering mines!</p>
             </div>
 
             <!-- Difficulty Selector -->
@@ -124,7 +131,8 @@
                         <span
                             class="absolute inset-0 bg-white dark:bg-slate-700 rounded-lg shadow-sm opacity-0 peer-checked:opacity-100 transition-all duration-200"></span>
                         <span
-                            class="relative text-sm font-medium text-slate-500 dark:text-slate-400 peer-checked:text-slate-900 dark:peer-checked:text-white">Easy</span>
+                            class="relative text-sm font-medium text-slate-500 dark:text-slate-400 peer-checked:text-slate-900 dark:peer-checked:text-white"
+                            data-i18n="minesweeper.easy">Easy</span>
                     </label>
                     <label class="cursor-pointer group relative px-6 py-2 rounded-lg transition-all duration-200">
                         <input checked class="peer sr-only" name="difficulty" type="radio" value="medium" data-size="12"
@@ -132,7 +140,8 @@
                         <span
                             class="absolute inset-0 bg-primary rounded-lg shadow-md shadow-primary/20 opacity-0 peer-checked:opacity-100 transition-all duration-200"></span>
                         <span
-                            class="relative text-sm font-medium text-slate-500 dark:text-slate-400 peer-checked:text-white">Medium</span>
+                            class="relative text-sm font-medium text-slate-500 dark:text-slate-400 peer-checked:text-white"
+                            data-i18n="minesweeper.medium">Medium</span>
                     </label>
                     <label class="cursor-pointer group relative px-6 py-2 rounded-lg transition-all duration-200">
                         <input class="peer sr-only" name="difficulty" type="radio" value="hard" data-size="16"
@@ -140,7 +149,8 @@
                         <span
                             class="absolute inset-0 bg-white dark:bg-slate-700 rounded-lg shadow-sm opacity-0 peer-checked:opacity-100 transition-all duration-200"></span>
                         <span
-                            class="relative text-sm font-medium text-slate-500 dark:text-slate-400 peer-checked:text-slate-900 dark:peer-checked:text-white">Hard</span>
+                            class="relative text-sm font-medium text-slate-500 dark:text-slate-400 peer-checked:text-slate-900 dark:peer-checked:text-white"
+                            data-i18n="minesweeper.hard">Hard</span>
                     </label>
                 </div>
             </div>
@@ -150,8 +160,8 @@
                 <!-- Time -->
                 <div
                     class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center col-span-2 md:col-span-2 order-1 md:order-2">
-                    <span
-                        class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Time
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1"
+                        data-i18n="minesweeper.timeElapsed">Time
                         Elapsed</span>
                     <div class="flex items-baseline gap-1 text-3xl font-mono font-bold text-slate-900 dark:text-white">
                         <span id="timerMin">00</span><span class="animate-pulse">:</span><span id="timerSec">00</span>
@@ -161,7 +171,8 @@
                 <div
                     class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between order-2 md:order-1">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400"
+                            data-i18n="minesweeper.mines">
                             Mines</p>
                         <p id="mineCount" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">10</p>
                     </div>
@@ -173,7 +184,8 @@
                 <div
                     class="bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between order-3 md:order-3">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400"
+                            data-i18n="minesweeper.flags">
                             Flags</p>
                         <p id="flagCount" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">0</p>
                     </div>
@@ -195,11 +207,10 @@
             <button id="restartBtn"
                 class="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
                 <span class="material-symbols-outlined">refresh</span>
-                New Game
+                <span data-i18n="common.newGame">New Game</span>
             </button>
         </div>
-
-        <p class="mt-6 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-6 text-sm text-slate-500 dark:text-slate-400" data-i18n="minesweeper.instructions">
             👆 Tap to reveal • 👆 Long press to flag
         </p>
 
@@ -208,12 +219,12 @@
             class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden">
             <div
                 class="bg-surface-light dark:bg-surface-dark p-8 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 max-w-md text-center">
-                <h2 id="resultText" class="text-3xl font-bold mb-4">Game Over</h2>
+                <h2 id="resultText" class="text-3xl font-bold mb-4" data-i18n="common.gameOver">Game Over</h2>
                 <p id="resultMessage" class="text-slate-500 dark:text-slate-400 mb-6"></p>
                 <button id="playAgainBtn"
                     class="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mx-auto">
                     <span class="material-symbols-outlined">refresh</span>
-                    Play Again
+                    <span data-i18n="common.playAgain">Play Again</span>
                 </button>
             </div>
         </div>

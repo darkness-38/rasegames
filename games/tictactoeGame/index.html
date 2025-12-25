@@ -97,22 +97,27 @@
                 </div>
                 <div class="flex items-center gap-6">
                     <a href="/pages/games"
-                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Games</a>
+                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+                        data-i18n="nav.games">Games</a>
                     <a href="/pages/about"
-                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">About</a>
+                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+                        data-i18n="nav.about">About</a>
                     <a href="/pages/leaderboard"
-                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Leaderboards</a>
+                        class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+                        data-i18n="nav.leaderboard">Leaderboards</a>
                     <a href="/raselab/"
                         class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
                         <span class="material-symbols-outlined text-[14px]">science</span>
-                        RaseLab
+                        <span data-i18n="nav.raselab">RaseLab</span>
                     </a>
                     <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+                    <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                        <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                        <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                    </div>
+                    <div id="user-display"></div>
                 </div>
             </div>
         </div>
@@ -128,17 +133,17 @@
                     class="glass-panel dark:bg-surface-dark bg-white rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="material-symbols-outlined text-orange-500 text-3xl">local_fire_department</span>
-                        <h3 class="text-lg font-semibold">Win Streak</h3>
+                        <h3 class="text-lg font-semibold" data-i18n="tictactoe.winStreak">Win Streak</h3>
                     </div>
                     <div
                         class="flex flex-col items-center justify-center py-6 bg-background-light dark:bg-background-dark rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
                         <span id="winStreak"
                             class="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-orange-400 to-red-600">0</span>
-                        <span
-                            class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium uppercase tracking-wider">Matches</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium uppercase tracking-wider"
+                            data-i18n="tictactoe.matches">Matches</span>
                     </div>
-                    <p id="streakMessage" class="text-xs text-center mt-4 text-gray-500 dark:text-gray-400">
-                        Win games to build your streak!
+                    <p id="streakMessage" class="text-xs text-center mt-4 text-gray-500 dark:text-gray-400"
+                        data-i18n="tictactoe.streakMessage">
                     </p>
                 </div>
 
@@ -150,8 +155,8 @@
                             class="h-10 w-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xl">
                             X</div>
                         <div>
-                            <p class="font-medium text-sm">You</p>
-                            <p class="text-xs text-gray-500">Player 1</p>
+                            <p class="font-medium text-sm" data-i18n="tictactoe.you">You</p>
+                            <p class="text-xs text-gray-500" data-i18n="tictactoe.player1">Player 1</p>
                         </div>
                     </div>
                     <div id="playerIndicator" class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
@@ -220,98 +225,108 @@
                 <div class="mt-8 w-full max-w-[420px] flex flex-col gap-5">
                     <!-- Difficulty Selector -->
                     <div class="flex flex-col gap-2">
-                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400 ml-1">Difficulty</label>
+                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400 ml-1"
+                            data-i18n="common.difficulty">Difficulty</label>
                         <div class="bg-gray-200 dark:bg-surface-dark p-1 rounded-lg flex">
                             <label class="flex-1 cursor-pointer">
                                 <input class="peer sr-only" name="difficulty" type="radio" value="easy">
-                                <div
-                                    class="py-2.5 text-center rounded-md text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 peer-checked:bg-white dark:peer-checked:bg-background-dark peer-checked:text-primary dark:peer-checked:text-white peer-checked:shadow-sm transition-all">
-                                    Easy
-                                </div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input checked class="peer sr-only" name="difficulty" type="radio" value="medium">
-                                <div
-                                    class="py-2.5 text-center rounded-md text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 peer-checked:bg-white dark:peer-checked:bg-background-dark peer-checked:text-primary dark:peer-checked:text-white peer-checked:shadow-sm transition-all">
-                                    Medium
-                                </div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input class="peer sr-only" name="difficulty" type="radio" value="hard">
-                                <div
-                                    class="py-2.5 text-center rounded-md text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 peer-checked:bg-white dark:peer-checked:bg-background-dark peer-checked:text-primary dark:peer-checked:text-white peer-checked:shadow-sm transition-all">
-                                    Hard
-                                </div>
-                            </label>
+                                class="py-2.5 text-center rounded-md text-sm font-medium text-gray-500
+                                dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 peer-checked:bg-white
+                                dark:peer-checked:bg-background-dark peer-checked:text-primary
+                                dark:peer-checked:text-white peer-checked:shadow-sm transition-all"
+                                data-i18n="minesweeper.easy">
+                                Easy
                         </div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input checked class="peer sr-only" name="difficulty" type="radio" value="medium">
+                            class="py-2.5 text-center rounded-md text-sm font-medium text-gray-500 dark:text-gray-400
+                            hover:text-gray-700 dark:hover:text-gray-200 peer-checked:bg-white
+                            dark:peer-checked:bg-background-dark peer-checked:text-primary dark:peer-checked:text-white
+                            peer-checked:shadow-sm transition-all" data-i18n="minesweeper.medium">
+                            Medium
                     </div>
-
-                    <!-- New Game Button -->
-                    <button id="restartBtn"
-                        class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-6 rounded-lg shadow-lg hover:shadow-primary/25 active:transform active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined">refresh</span>
-                        New Game
-                    </button>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                        <input class="peer sr-only" name="difficulty" type="radio" value="hard">
+                        class="py-2.5 text-center rounded-md text-sm font-medium text-gray-500 dark:text-gray-400
+                        hover:text-gray-700 dark:hover:text-gray-200 peer-checked:bg-white
+                        dark:peer-checked:bg-background-dark peer-checked:text-primary dark:peer-checked:text-white
+                        peer-checked:shadow-sm transition-all" data-i18n="minesweeper.hard">
+                        Hard
                 </div>
+                </label>
             </div>
+        </div>
 
-            <!-- RIGHT COLUMN: Detailed Stats -->
-            <div class="lg:col-span-3 order-3 flex flex-col gap-4">
-                <div
-                    class="glass-panel dark:bg-surface-dark bg-white rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 h-full">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="material-symbols-outlined text-primary text-3xl">bar_chart</span>
-                        <h3 class="text-lg font-semibold">Statistics</h3>
-                    </div>
-                    <div class="space-y-4">
-                        <!-- Wins -->
-                        <div class="flex flex-col gap-1">
-                            <div class="flex justify-between items-end">
-                                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Wins</span>
-                                <span id="winsCount" class="text-lg font-bold">0</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
-                                <div id="winsBar" class="bg-primary h-2.5 rounded-full transition-all"
-                                    style="width: 0%"></div>
-                            </div>
+        <!-- New Game Button -->
+        <button id="restartBtn"
+            class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-6 rounded-lg shadow-lg hover:shadow-primary/25 active:transform active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">refresh</span>
+            <span data-i18n="common.newGame">New Game</span>
+        </button>
+        </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Detailed Stats -->
+        <div class="lg:col-span-3 order-3 flex flex-col gap-4">
+            <div
+                class="glass-panel dark:bg-surface-dark bg-white rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 h-full">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="material-symbols-outlined text-primary text-3xl">bar_chart</span>
+                    <h3 class="text-lg font-semibold" data-i18n="common.statistics">Statistics</h3>
+                </div>
+                <div class="space-y-4">
+                    <!-- Wins -->
+                    <div class="flex flex-col gap-1">
+                        <div class="flex justify-between items-end">
+                            <span class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                                data-i18n="tictactoe.wins">Wins</span>
+                            <span id="winsCount" class="text-lg font-bold">0</span>
                         </div>
-                        <!-- Draws -->
-                        <div class="flex flex-col gap-1">
-                            <div class="flex justify-between items-end">
-                                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Draws</span>
-                                <span id="drawsCount" class="text-lg font-bold">0</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
-                                <div id="drawsBar"
-                                    class="bg-gray-400 dark:bg-gray-500 h-2.5 rounded-full transition-all"
-                                    style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <!-- Losses -->
-                        <div class="flex flex-col gap-1">
-                            <div class="flex justify-between items-end">
-                                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Losses</span>
-                                <span id="lossesCount" class="text-lg font-bold">0</span>
-                            </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
-                                <div id="lossesBar" class="bg-red-500 h-2.5 rounded-full transition-all"
-                                    style="width: 0%"></div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                            <div id="winsBar" class="bg-primary h-2.5 rounded-full transition-all" style="width: 0%">
                             </div>
                         </div>
                     </div>
-
-                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
-                        <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                            <span>Win Rate</span>
-                            <span id="winRate" class="text-white font-medium">0%</span>
+                    <!-- Draws -->
+                    <div class="flex flex-col gap-1">
+                        <div class="flex justify-between items-end">
+                            <span class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                                data-i18n="tictactoe.draws">Draws</span>
+                            <span id="drawsCount" class="text-lg font-bold">0</span>
                         </div>
-                        <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-                            <span>Total Games</span>
-                            <span id="totalGames" class="text-white font-medium">0</span>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                            <div id="drawsBar" class="bg-gray-400 dark:bg-gray-500 h-2.5 rounded-full transition-all"
+                                style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <!-- Losses -->
+                    <div class="flex flex-col gap-1">
+                        <div class="flex justify-between items-end">
+                            <span class="text-sm font-medium text-gray-500 dark:text-gray-400"
+                                data-i18n="tictactoe.losses">Losses</span>
+                            <span id="lossesCount" class="text-lg font-bold">0</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                            <div id="lossesBar" class="bg-red-500 h-2.5 rounded-full transition-all" style="width: 0%">
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                    <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+                        <span data-i18n="leaderboard.winRate">Win Rate</span>
+                        <span id="winRate" class="text-white font-medium">0%</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                        <span data-i18n="tictactoe.totalGames">Total Games</span>
+                        <span id="totalGames" class="text-white font-medium">0</span>
+                    </div>
+                </div>
             </div>
+        </div>
         </div>
     </main>
 

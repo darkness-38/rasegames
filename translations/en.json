@@ -9,7 +9,8 @@
         "signIn": "Sign In",
         "signUp": "Sign Up",
         "signOut": "Sign Out",
-        "allGames": "All Games"
+        "allGames": "All Games",
+        "raselab": "RaseLab"
     },
     "hero": {
         "welcome": "Welcome to RaseGames",
@@ -61,13 +62,23 @@
         "popular": "POPULAR",
         "hot": "HOT",
         "new": "NEW",
-        "multiplayer": "MULTIPLAYER"
+        "multiplayer": "MULTIPLAYER",
+        "mpShort": "MP"
     },
     "stats": {
         "browserGames": "Browser Games",
         "freeToPlay": "Free to Play",
         "available": "Available",
         "leaderboards": "Leaderboards"
+    },
+    "about": {
+        "title": "About",
+        "description1": "We are a small team of developers passionate about creating unique micro-gaming experiences. Our mission is to bring joy through simple yet engaging browser games.",
+        "description2": "All our games are free to play, no downloads required. Challenge yourself, compete with friends, and climb the leaderboards!",
+        "games": "Games",
+        "free": "Free",
+        "forever": "Forever",
+        "startPlaying": "Start Playing"
     },
     "raselab": {
         "title": "RaseLab",
@@ -134,7 +145,8 @@
         "newChallengesIn": "New challenges in:",
         "allCompleted": "All challenges completed!",
         "comeBackTomorrow": "Come back tomorrow for more.",
-        "waiting": "Waiting"
+        "waiting": "Waiting",
+        "noChallengesCompleted": "No challenges completed yet today."
     },
     "leaderboard": {
         "title": "Global Leaderboard",
@@ -147,16 +159,6 @@
         "score": "Score",
         "gamesPlayed": "Games Played",
         "winRate": "Win Rate"
-    },
-    "about": {
-        "title": "About RaseGames",
-        "subtitle": "Building the future of browser gaming. No downloads, no paywalls, just pure fun.",
-        "missionTitle": "Our Mission",
-        "missionText": "At RaseGames, we believe gaming should be accessible to everyone. Our mission is to create high-quality, lightweight browser games that run smoothly on any device.",
-        "technologyTitle": "Technology",
-        "technologyText": "Built with modern web technologies including HTML5 Canvas, Tailwind CSS, and Firebase. Our games are optimized for performance.",
-        "communityTitle": "Community",
-        "communityText": "Join thousands of players competing on our global leaderboards. Complete daily challenges to earn XP and unlock new ranks."
     },
     "profile": {
         "title": "Player Profile",
@@ -175,7 +177,14 @@
         "levelBadge": "Level Badge",
         "quickPlay": "Quick Play",
         "quickLinks": "Quick Links",
-        "currentProgress": "Current Progress"
+        "currentProgress": "Current Progress",
+        "rank": "Rank",
+        "challengesDone": "Challenges Done",
+        "todayProgress": "Today's Progress",
+        "snake": "Snake",
+        "tetris": "Tetris",
+        "clicker": "Clicker",
+        "fight": "Fight"
     },
     "auth": {
         "signInRequired": "Sign In Required",
@@ -199,6 +208,7 @@
         "loadingChallenges": "Loading challenges...",
         "loadingLeaderboard": "Loading leaderboard...",
         "loadingGames": "Loading games...",
+        "loadingProfile": "Loading profile...",
         "saveChanges": "Save Changes",
         "loadMore": "Load More",
         "backToGames": "Back to Games",
@@ -230,7 +240,8 @@
         "browseGames": "Browse Games",
         "secretTitle": "SECRET LEVEL UNLOCKED!",
         "secretDescription": "You found the easter egg! Enjoy this mini space shooter.",
-        "controls": "Use ← → to move, SPACE to shoot"
+        "controls": "Use ← → to move, SPACE to shoot",
+        "easterEggHint": "Press ↑ ↑ ↓ ↓ ← → ← → B A to unlock secret level... just kidding! 🕹️"
     },
     "snake": {
         "speedLevel": "Speed Level",
@@ -382,12 +393,14 @@
     },
     "memory": {
         "title": "Mind Match",
+        "subtitle": "Find all matching pairs!",
         "description": "Find all matching pairs!",
         "time": "Time",
         "moves": "Moves",
         "pairs": "Pairs",
         "congratulations": "Congratulations!",
         "allPairsFound": "You found all pairs!",
+        "foundAllPairs": "You found all pairs!",
         "finalMoves": "Moves",
         "finalTime": "Time",
         "score": "Score"
@@ -425,6 +438,8 @@
         "description": "Navigate the neon grid. Hack the system. Survive the glitch.",
         "playNow": "PLAY NOW",
         "upgrades": "UPGRADES",
+        "allGames": "ALL GAMES",
+        "jump": "JUMP",
         "coins": "COINS",
         "bestScore": "BEST SCORE",
         "jumpPower": "Jump Power",
@@ -466,8 +481,8 @@
         "opponent": "Opponent",
         "placingShips": "Placing ships...",
         "enemyWaters": "Enemy Waters",
-        "yourTurn": "Your Turn",
-        "opponentTurn": "Opponent's Turn",
+        "yourTurn": "YOUR TURN",
+        "opponentTurn": "OPPONENT'S TURN",
         "battleLog": "Battle Log",
         "battleBegins": "Battle begins!",
         "victory": "VICTORY!",
@@ -477,12 +492,35 @@
         "shotsFired": "Shots Fired",
         "accuracy": "Accuracy",
         "playAgain": "Play Again",
+        "or": "OR",
+        "online": "ONLINE",
+        "turn": "Turn",
+        "timer": "Timer",
+        "friendlyWaters": "FRIENDLY WATERS",
+        "enemyRadar": "ENEMY RADAR",
+        "scanning": "Scanning...",
+        "fireWhenReady": "Fire when ready",
+        "opponentStatus": "Opponent Status",
+        "shipsRemaining": "Ships Remaining",
+        "surrender": "Surrender",
+        "sunk": "SUNK",
         "ships": {
             "carrier": "Carrier",
             "battleship": "Battleship",
             "cruiser": "Cruiser",
             "submarine": "Submarine",
             "destroyer": "Destroyer"
+        },
+        "log": {
+            "youHitTheir": "You hit their {ship}!",
+            "youSunkTheir": "You sunk their {ship}!",
+            "shotMissedAt": "Shot missed at {coord}",
+            "theyHitYour": "They hit your {ship}!",
+            "theySunkYour": "They sunk your {ship}!",
+            "theirShotMissed": "Their shot missed at {coord}",
+            "hit": "HIT!",
+            "miss": "MISS",
+            "sunk": "SUNK!"
         }
     }
 }

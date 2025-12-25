@@ -9,7 +9,8 @@
         "signIn": "Giriş Yap",
         "signUp": "Kayıt Ol",
         "signOut": "Çıkış Yap",
-        "allGames": "Tüm Oyunlar"
+        "allGames": "Tüm Oyunlar",
+        "raselab": "RaseLab"
     },
     "hero": {
         "welcome": "RaseGames'e Hoş Geldiniz",
@@ -61,13 +62,23 @@
         "popular": "POPÜLER",
         "hot": "SICAK",
         "new": "YENİ",
-        "multiplayer": "ÇOK OYUNCULU"
+        "multiplayer": "ÇOK OYUNCULU",
+        "mpShort": "ÇO"
     },
     "stats": {
         "browserGames": "Tarayıcı Oyunu",
         "freeToPlay": "Ücretsiz",
         "available": "Erişilebilir",
         "leaderboards": "Sıralamalar"
+    },
+    "about": {
+        "title": "Hakkında",
+        "description1": "Benzersiz mikro-oyun deneyimleri oluşturma tutkusuyla dolu küçük bir geliştirici ekibiyiz. Misyonumuz, basit ama ilgi çekici tarayıcı oyunlarıyla keyif vermek.",
+        "description2": "Tüm oyunlarımız ücretsiz, indirme gerektirmez. Kendinizi zorlayın, arkadaşlarınızla yarışın ve sıralamalarda yükelin!",
+        "games": "Oyun",
+        "free": "Ücretsiz",
+        "forever": "Sonsuza Kadar",
+        "startPlaying": "Oynamaya Başla"
     },
     "raselab": {
         "title": "RaseLab",
@@ -140,7 +151,18 @@
         "gameOver": "Oyun Bitti!",
         "playAgain": "Tekrar Oyna",
         "readyToPlay": "Oynamaya Hazır mısın?",
-        "pressStart": "Başlamak için bir tuşa bas veya dokun"
+        "pressStart": "Başlamak için bir tuşa bas veya dokun",
+        "loadingProfile": "Profil yükleniyor...",
+        "newGame": "Yeni Oyun",
+        "finalScore": "Final Skoru",
+        "statistics": "İstatistikler",
+        "bestScore": "En İyi Skor",
+        "tips": "İpuçları",
+        "resetSimulation": "Simülasyonu Sıfırla",
+        "temperature": "Sıcaklık",
+        "newBest": "Yeni Rekor!",
+        "tryAgain": "Tekrar Dene",
+        "best": "En İyi"
     },
     "footer": {
         "about": "Hakkında"
@@ -162,7 +184,8 @@
         "newChallengesIn": "Yeni görevler için:",
         "allCompleted": "Tüm görevler tamamlandı!",
         "comeBackTomorrow": "Daha fazlası için yarın gel.",
-        "waiting": "Bekleniyor"
+        "waiting": "Bekleniyor",
+        "noChallengesCompleted": "Bugün henüz tamamlanan görev yok."
     },
     "leaderboard": {
         "title": "Global Sıralama",
@@ -175,16 +198,6 @@
         "score": "Puan",
         "gamesPlayed": "Oynanan Oyun",
         "winRate": "Kazanma Oranı"
-    },
-    "about": {
-        "title": "RaseGames Hakkında",
-        "subtitle": "Tarayıcı oyunlarının geleceğini inşa ediyoruz. İndirme yok, ödeme yok, sadece saf eğlence.",
-        "missionTitle": "Misyonumuz",
-        "missionText": "RaseGames'te oyunun herkes için erişilebilir olması gerektiğine inanıyoruz. Misyonumuz, her cihazda sorunsuz çalışan yüksek kaliteli, hafif tarayıcı oyunları oluşturmaktır.",
-        "technologyTitle": "Teknoloji",
-        "technologyText": "HTML5 Canvas, Tailwind CSS ve Firebase dahil olmak üzere modern web teknolojileriyle oluşturulmuştur. Oyunlarımız performans için optimize edilmiştir.",
-        "communityTitle": "Topluluk",
-        "communityText": "Global sıralamalarımızda yarışan binlerce oyuncuya katılın. XP kazanmak ve yeni rütbelerin kilidini açmak için günlük görevleri tamamlayın."
     },
     "profile": {
         "title": "Oyuncu Profili",
@@ -203,7 +216,14 @@
         "levelBadge": "Seviye Rozeti",
         "quickPlay": "Hızlı Oyna",
         "quickLinks": "Hızlı Bağlantılar",
-        "currentProgress": "Mevcut İlerleme"
+        "currentProgress": "Mevcut İlerleme",
+        "rank": "Rütbe",
+        "challengesDone": "Tamamlanan Görevler",
+        "todayProgress": "Bugünün İlerlemesi",
+        "snake": "Yılan",
+        "tetris": "Tetris",
+        "clicker": "Tıklayıcı",
+        "fight": "Dövüş"
     },
     "auth": {
         "signInRequired": "Giriş Yapılması Gerekiyor",
@@ -221,16 +241,7 @@
         "secretTitle": "GİZLİ SEVİYE AÇILDI!",
         "secretDescription": "Sürpriz yumurtayı buldun! Bu mini uzay oyununun tadını çıkar.",
         "controls": "Hareket için ← →, Ateş için BOŞLUK tuşunu kullan",
-        "best": "En İyi",
-        "newGame": "Yeni Oyun",
-        "finalScore": "Final Skoru",
-        "statistics": "İstatistikler",
-        "bestScore": "En İyi Skor",
-        "tips": "İpuçları",
-        "resetSimulation": "Simülasyonu Sıfırla",
-        "temperature": "Sıcaklık",
-        "newBest": "Yeni Rekor!",
-        "tryAgain": "Tekrar Dene"
+        "easterEggHint": "Gizli seviyeyi açmak için ↑ ↑ ↓ ↓ ← → ← → B A tuşlarına bas... şaka yapıyorum! 🕹️"
     },
     "snake": {
         "speedLevel": "Hız Seviyesi",
@@ -466,8 +477,8 @@
         "opponent": "Rakip",
         "placingShips": "Gemileri yerleştiriyor...",
         "enemyWaters": "Düşman Suları",
-        "yourTurn": "Senin Sıran",
-        "opponentTurn": "Rakibin Sırası",
+        "yourTurn": "SENİN SIRAN",
+        "opponentTurn": "RAKİBİN SIRASI",
         "battleLog": "Savaş Günlüğü",
         "battleBegins": "Savaş başlıyor!",
         "victory": "ZAFER!",
@@ -477,12 +488,35 @@
         "shotsFired": "Yapılan Atış",
         "accuracy": "İsabet Oranı",
         "playAgain": "Tekrar Oyna",
+        "or": "VEYA",
+        "online": "ÇEVRİMİÇİ",
+        "turn": "Sıra",
+        "timer": "Süre",
+        "friendlyWaters": "DOST SULARI",
+        "enemyRadar": "DÜŞMAN RADARI",
+        "scanning": "Taranıyor...",
+        "fireWhenReady": "Ateş için hazır",
+        "opponentStatus": "Rakip Durumu",
+        "shipsRemaining": "Gemi Kaldı",
+        "surrender": "Teslim Ol",
+        "sunk": "BATTI",
         "ships": {
             "carrier": "Uçak Gemisi",
             "battleship": "Savaş Gemisi",
             "cruiser": "Kruvazör",
             "submarine": "Denizaltı",
             "destroyer": "Muhrip"
+        },
+        "log": {
+            "youHitTheir": "{ship} gemisine isabet!",
+            "youSunkTheir": "{ship} gemisini batırdın!",
+            "shotMissedAt": "{coord} konumunda ıskaladın",
+            "theyHitYour": "{ship} gemisine isabet ettiler!",
+            "theySunkYour": "{ship} gemisini batırdılar!",
+            "theirShotMissed": "{coord} konumunda ıskaladılar",
+            "hit": "İSABET!",
+            "miss": "ISKALA",
+            "sunk": "BATTI!"
         }
     }
 }

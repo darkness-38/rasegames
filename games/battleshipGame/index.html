@@ -64,8 +64,10 @@
                     </a>
                 </div>
                 <div class="flex items-center gap-6">
-                    <a href="/pages/games" class="text-sm text-gray-400 hover:text-primary transition-colors">Games</a>
-                    <a href="/pages/about" class="text-sm text-gray-400 hover:text-primary transition-colors">About</a>
+                    <a href="/pages/games" class="text-sm text-gray-400 hover:text-primary transition-colors"
+                        data-i18n="nav.games">Games</a>
+                    <a href="/pages/about" class="text-sm text-gray-400 hover:text-primary transition-colors"
+                        data-i18n="nav.about">About</a>
                     <a href="/raselab/"
                         class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
                         <span class="material-symbols-outlined text-[14px]">science</span>
@@ -112,7 +114,7 @@
 
                 <div class="flex items-center gap-4">
                     <div class="flex-1 h-px bg-gray-700"></div>
-                    <span class="text-gray-500 text-sm">OR</span>
+                    <span class="text-gray-500 text-sm" data-i18n="battleship.or">OR</span>
                     <div class="flex-1 h-px bg-gray-700"></div>
                 </div>
 
@@ -199,8 +201,12 @@
                 <!-- Placement Grid -->
                 <div class="order-1 lg:order-2 flex flex-col items-center">
                     <div class="grid-container mb-4">
-                        <div class="grid-labels-top"></div>
-                        <div class="grid-labels-left"></div>
+                        <div class="grid-labels-top">
+                            <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span>
+                        </div>
+                        <div class="grid-labels-left">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                        </div>
                         <div id="placement-grid" class="game-grid"></div>
                     </div>
                     <div class="flex gap-4">
@@ -235,59 +241,167 @@
         </div>
 
         <!-- Battle Screen -->
-        <div id="battle-screen" class="screen w-full max-w-6xl">
-            <!-- Turn Indicator -->
-            <div id="turn-indicator" class="text-center mb-6">
-                <div id="turn-badge" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-lg font-bold">
-                    <span class="material-symbols-outlined">hourglass_top</span>
-                    <span id="turn-text" data-i18n="battleship.yourTurn">Your Turn</span>
+        <div id="battle-screen" class="screen w-full h-full flex flex-col lg:flex-row overflow-hidden">
+            <!-- Left Side: Game Boards -->
+            <div class="flex-1 flex flex-col p-4 lg:p-6 gap-6 overflow-y-auto">
+                <!-- Battle Header -->
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="size-10 flex items-center justify-center text-primary bg-primary/10 rounded-lg">
+                            <span class="material-symbols-outlined text-2xl">radar</span>
+                        </div>
+                        <div>
+                            <h2 class="text-white text-xl font-bold" data-i18n="battleship.title">BATTLESHIP COMMAND
+                            </h2>
+                            <div class="flex items-center gap-2 text-xs text-gray-400">
+                                <span class="inline-block size-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span data-i18n="battleship.online">ONLINE</span> - <span id="battle-room-code"
+                                    class="font-mono">------</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Turn Indicator Badge -->
+                    <div id="turn-badge"
+                        class="flex items-center gap-3 bg-surface-dark px-5 py-2 rounded-full border border-gray-700">
+                        <div class="flex flex-col items-center">
+                            <span class="text-[10px] uppercase tracking-wider text-gray-400"
+                                data-i18n="battleship.turn">Turn</span>
+                            <span id="turn-text" class="font-bold text-primary" data-i18n="battleship.yourTurn">YOUR
+                                TURN</span>
+                        </div>
+                        <div class="h-8 w-px bg-gray-700"></div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-[10px] uppercase tracking-wider text-gray-400"
+                                data-i18n="battleship.timer">Timer</span>
+                            <span id="turn-timer" class="font-bold font-mono text-white">--:--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fleet Status Summary -->
+                <div id="fleet-status-cards" class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                    <!-- Ship cards will be rendered by JS -->
+                </div>
+
+                <!-- Grids Container -->
+                <div class="flex flex-col xl:flex-row gap-6 justify-center items-start xl:items-stretch flex-1">
+                    <!-- Player Grid Section -->
+                    <div class="flex-1 w-full max-w-[500px] mx-auto flex flex-col gap-3">
+                        <div class="flex items-center justify-between border-b border-gray-700 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">security</span>
+                                <h3 class="text-white text-base font-bold" data-i18n="battleship.friendlyWaters">
+                                    FRIENDLY WATERS</h3>
+                            </div>
+                            <span class="text-xs text-gray-500 uppercase tracking-widest"
+                                data-i18n="battleship.yourFleet">Your Fleet</span>
+                        </div>
+                        <!-- Player Grid -->
+                        <div
+                            class="aspect-square w-full bg-surface-dark rounded-xl border border-gray-700/50 p-3 relative">
+                            <div class="flex mb-1 pl-7 text-gray-500 font-mono text-xs">
+                                <div class="flex-1 text-center">1</div>
+                                <div class="flex-1 text-center">2</div>
+                                <div class="flex-1 text-center">3</div>
+                                <div class="flex-1 text-center">4</div>
+                                <div class="flex-1 text-center">5</div>
+                                <div class="flex-1 text-center">6</div>
+                                <div class="flex-1 text-center">7</div>
+                                <div class="flex-1 text-center">8</div>
+                                <div class="flex-1 text-center">9</div>
+                                <div class="flex-1 text-center">10</div>
+                            </div>
+                            <div class="flex h-[calc(100%-20px)]">
+                                <div class="flex flex-col justify-around pr-1 text-gray-500 font-mono text-xs w-6">
+                                    <div>A</div>
+                                    <div>B</div>
+                                    <div>C</div>
+                                    <div>D</div>
+                                    <div>E</div>
+                                    <div>F</div>
+                                    <div>G</div>
+                                    <div>H</div>
+                                    <div>I</div>
+                                    <div>J</div>
+                                </div>
+                                <div id="defense-grid" class="battle-grid w-full h-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enemy Grid Section -->
+                    <div class="flex-1 w-full max-w-[500px] mx-auto flex flex-col gap-3">
+                        <div class="flex items-center justify-between border-b border-gray-700 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-red-500">target</span>
+                                <h3 class="text-white text-base font-bold" data-i18n="battleship.enemyRadar">ENEMY RADAR
+                                </h3>
+                            </div>
+                            <span id="scanning-indicator"
+                                class="text-xs text-red-500 uppercase tracking-widest animate-pulse"
+                                data-i18n="battleship.scanning">Scanning...</span>
+                        </div>
+                        <!-- Enemy Grid -->
+                        <div
+                            class="aspect-square w-full bg-surface-dark rounded-xl border border-gray-700/50 p-3 relative cursor-crosshair">
+                            <div class="flex mb-1 pl-7 text-gray-500 font-mono text-xs">
+                                <div class="flex-1 text-center">1</div>
+                                <div class="flex-1 text-center">2</div>
+                                <div class="flex-1 text-center">3</div>
+                                <div class="flex-1 text-center">4</div>
+                                <div class="flex-1 text-center">5</div>
+                                <div class="flex-1 text-center">6</div>
+                                <div class="flex-1 text-center">7</div>
+                                <div class="flex-1 text-center">8</div>
+                                <div class="flex-1 text-center">9</div>
+                                <div class="flex-1 text-center">10</div>
+                            </div>
+                            <div class="flex h-[calc(100%-20px)]">
+                                <div class="flex flex-col justify-around pr-1 text-gray-500 font-mono text-xs w-6">
+                                    <div>A</div>
+                                    <div>B</div>
+                                    <div>C</div>
+                                    <div>D</div>
+                                    <div>E</div>
+                                    <div>F</div>
+                                    <div>G</div>
+                                    <div>H</div>
+                                    <div>I</div>
+                                    <div>J</div>
+                                </div>
+                                <div id="attack-grid" class="battle-grid attack-mode w-full h-full"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Opponent's Grid (Attack Here) -->
-                <div class="flex flex-col items-center">
-                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-red-400">gps_fixed</span>
-                        <span data-i18n="battleship.enemyWaters">Enemy Waters</span>
+            <!-- Right Side: Battle Log -->
+            <div class="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-gray-800 bg-[#111318] flex flex-col">
+                <div class="p-4 border-b border-gray-800">
+                    <h3 class="text-white text-lg font-bold flex items-center gap-2">
+                        <span class="material-symbols-outlined">history_edu</span>
+                        <span data-i18n="battleship.battleLog">Battle Log</span>
                     </h3>
-                    <div class="grid-container">
-                        <div class="grid-labels-top"></div>
-                        <div class="grid-labels-left"></div>
-                        <div id="attack-grid" class="game-grid attack-mode"></div>
-                    </div>
-                    <!-- Enemy Fleet Status -->
-                    <div id="enemy-fleet-status" class="mt-4 flex flex-wrap justify-center gap-2">
-                        <!-- Ship status indicators -->
-                    </div>
                 </div>
-
-                <!-- Your Grid (Defense View) -->
-                <div class="flex flex-col items-center">
-                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-ocean-accent">shield</span>
-                        <span data-i18n="battleship.yourFleet">Your Fleet</span>
-                    </h3>
-                    <div class="grid-container">
-                        <div class="grid-labels-top"></div>
-                        <div class="grid-labels-left"></div>
-                        <div id="defense-grid" class="game-grid"></div>
-                    </div>
-                    <!-- Your Fleet Status -->
-                    <div id="your-fleet-status" class="mt-4 flex flex-wrap justify-center gap-2">
-                        <!-- Ship status indicators -->
-                    </div>
+                <div id="battle-log" class="flex-1 overflow-y-auto">
+                    <!-- Log entries will be added by JS -->
                 </div>
-            </div>
-
-            <!-- Battle Log -->
-            <div class="mt-8 glass-panel rounded-xl p-4 max-w-2xl mx-auto">
-                <h4 class="text-sm font-semibold text-gray-400 mb-2 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">history</span>
-                    <span data-i18n="battleship.battleLog">Battle Log</span>
-                </h4>
-                <div id="battle-log" class="max-h-24 overflow-y-auto space-y-1 text-sm">
-                    <p class="text-gray-600" data-i18n="battleship.battleBegins">Battle begins!</p>
+                <div class="p-4 bg-surface-dark border-t border-gray-700">
+                    <div class="flex justify-between text-xs text-gray-400 mb-2">
+                        <span data-i18n="battleship.opponentStatus">Opponent Status</span>
+                        <span id="enemy-ships-remaining">5 <span data-i18n="battleship.shipsRemaining">Ships
+                                Remaining</span></span>
+                    </div>
+                    <div class="w-full bg-[#111318] rounded-full h-1.5 mb-4">
+                        <div id="enemy-health-bar" class="bg-red-500 h-1.5 rounded-full transition-all"
+                            style="width: 100%"></div>
+                    </div>
+                    <button id="surrender-btn"
+                        class="w-full bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all border border-red-600/30">
+                        <span class="material-symbols-outlined">flag</span>
+                        <span data-i18n="battleship.surrender">Surrender</span>
+                    </button>
                 </div>
             </div>
         </div>

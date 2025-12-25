@@ -122,20 +122,22 @@
             </a>
         </div>
         <div class="nav-links">
-            <a href="/pages/games" class="nav-link">Games</a>
-            <a href="/pages/about" class="nav-link">About</a>
-            <a href="/pages/leaderboard" class="nav-link">Leaderboards</a>
+            <a href="/pages/games" class="nav-link" data-i18n="nav.games">Games</a>
+            <a href="/pages/about" class="nav-link" data-i18n="nav.about">About</a>
+            <a href="/pages/leaderboard" class="nav-link" data-i18n="nav.leaderboard">Leaderboards</a>
             <a href="/raselab/"
                 class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
                 <span class="material-symbols-outlined text-[14px]">science</span>
-                RaseLab
+                <span data-i18n="nav.raselab">RaseLab</span>
             </a>
             <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+            <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+            </div>
+            <div id="user-display"></div>
         </div>
     </nav>
 
@@ -149,8 +151,9 @@
                     style="font-variation-settings: 'FILL' 1;">psychology</span>
             </div>
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Mind Match</h1>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Find all matching pairs!</p>
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight" data-i18n="memory.title">Mind Match</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="memory.subtitle">Find all matching
+                    pairs!</p>
             </div>
         </div>
 
@@ -159,8 +162,8 @@
             <!-- Timer -->
             <div
                 class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50">
-                <span
-                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Time</span>
+                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1"
+                    data-i18n="memory.time">Time</span>
                 <div
                     class="flex items-center gap-2 text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-mono">
                     <span class="material-symbols-outlined text-primary text-lg">timer</span>
@@ -170,22 +173,22 @@
             <!-- Moves -->
             <div
                 class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50">
-                <span
-                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Moves</span>
+                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1"
+                    data-i18n="memory.moves">Moves</span>
                 <span id="moves" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">0</span>
             </div>
             <!-- Pairs -->
             <div
                 class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50">
-                <span
-                    class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Pairs</span>
+                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1"
+                    data-i18n="memory.pairs">Pairs</span>
                 <span id="pairs" class="text-xl sm:text-2xl font-bold text-primary">0/8</span>
             </div>
             <!-- Best Score -->
             <div
                 class="bg-white dark:bg-card-dark rounded-xl p-4 flex flex-col items-center justify-center shadow-sm border border-slate-200 dark:border-slate-800/50 bg-gradient-to-br from-amber-500/5 to-yellow-500/5">
-                <span
-                    class="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1">Best</span>
+                <span class="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1"
+                    data-i18n="common.best">Best</span>
                 <span id="bestScore" class="text-xl sm:text-2xl font-bold text-amber-600 dark:text-amber-400">--</span>
             </div>
         </div>
@@ -202,12 +205,12 @@
             <button id="restartBtn"
                 class="w-full flex items-center justify-center gap-2 h-12 sm:h-14 bg-primary hover:bg-blue-700 text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-blue-900/20 hover:shadow-xl hover:-translate-y-0.5">
                 <span class="material-symbols-outlined">refresh</span>
-                <span>New Game</span>
+                <span data-i18n="common.newGame">New Game</span>
             </button>
             <a href="/pages/games"
                 class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex items-center gap-1">
                 <span class="material-symbols-outlined text-lg">arrow_back</span>
-                Back to Games
+                <span data-i18n="common.backToGames">Back to Games</span>
             </a>
         </div>
     </main>
@@ -220,21 +223,24 @@
             <!-- Confetti -->
             <div class="text-4xl mb-4">🎉</div>
 
-            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">Congratulations!</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-6">You found all pairs!</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2"
+                data-i18n="memory.congratulations">Congratulations!</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-6" data-i18n="memory.foundAllPairs">You found all pairs!</p>
 
             <!-- Final Stats -->
             <div class="grid grid-cols-3 gap-3 mb-6">
                 <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-3">
-                    <span class="text-xs text-slate-500 dark:text-slate-400 uppercase block mb-1">Moves</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 uppercase block mb-1"
+                        data-i18n="memory.moves">Moves</span>
                     <span id="finalMoves" class="text-xl font-bold text-slate-900 dark:text-white">0</span>
                 </div>
                 <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-3">
-                    <span class="text-xs text-slate-500 dark:text-slate-400 uppercase block mb-1">Time</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 uppercase block mb-1"
+                        data-i18n="memory.time">Time</span>
                     <span id="finalTime" class="text-xl font-bold text-slate-900 dark:text-white">0:00</span>
                 </div>
                 <div class="bg-primary/10 rounded-xl p-3 border-2 border-primary">
-                    <span class="text-xs text-primary uppercase block mb-1">Score</span>
+                    <span class="text-xs text-primary uppercase block mb-1" data-i18n="common.score">Score</span>
                     <span id="finalScore" class="text-xl font-bold text-primary">0</span>
                 </div>
             </div>
@@ -242,7 +248,7 @@
             <button id="playAgainBtn"
                 class="w-full flex items-center justify-center gap-2 h-12 bg-primary hover:bg-blue-700 text-white text-base font-bold rounded-xl transition-all shadow-lg">
                 <span class="material-symbols-outlined">refresh</span>
-                Play Again
+                <span data-i18n="common.playAgain">Play Again</span>
             </button>
         </div>
     </div>

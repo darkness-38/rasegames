@@ -118,21 +118,23 @@
             <span class="logo-text">Rase Games</span>
         </a>
         <div class="nav-links">
-            <a href="/pages/games" class="nav-link">Games</a>
-            <a href="/pages/about" class="nav-link">About</a>
-            <a href="/pages/leaderboard" class="nav-link">Leaderboards</a>
+            <a href="/pages/games" class="nav-link" data-i18n="nav.games">Games</a>
+            <a href="/pages/about" class="nav-link" data-i18n="nav.about">About</a>
+            <a href="/pages/leaderboard" class="nav-link" data-i18n="nav.leaderboard">Leaderboards</a>
             <a href="/raselab/"
                 class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
                 <span class="material-symbols-outlined text-[14px]">science</span>
-                RaseLab
+                <span data-i18n="nav.raselab">RaseLab</span>
             </a>
         </div>
         <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+        <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+            <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+            <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+        </div>
+        <div id="user-display"></div>
     </nav>
 
     <div class="relative min-h-screen w-full flex flex-col overflow-hidden" style="padding-top: 70px;">
@@ -199,14 +201,14 @@
                         </div>
                         <span
                             class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">play_circle</span>
-                        <span>PLAY NOW</span>
+                        <span data-i18n="runner.playNow">PLAY NOW</span>
                     </button>
 
 
                     <a href="/runnerGame/upgrades/"
                         class="flex items-center justify-center w-full h-14 rounded-full bg-surface-dark hover:bg-surface-border/50 border border-surface-border hover:border-primary/50 text-white gap-3 text-sm font-bold tracking-[0.1em] transition-all hover:shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                         <span class="material-symbols-outlined text-text-muted">deployed_code</span>
-                        <span>UPGRADES</span>
+                        <span data-i18n="runner.upgrades">UPGRADES</span>
                         <div class="flex items-center gap-1 ml-2 px-2 py-1 bg-primary/20 rounded-full">
                             <span class="material-symbols-outlined text-primary text-sm">diamond</span>
                             <span id="headerCoins" class="text-primary text-sm font-bold">0</span>
@@ -216,9 +218,9 @@
 
                     <div class="flex justify-center gap-6 mt-4">
                         <a class="text-text-muted hover:text-white text-xs font-bold tracking-widest hover:underline decoration-primary underline-offset-4 transition-all"
-                            href="/pages/leaderboard">LEADERBOARD</a>
+                            href="/pages/leaderboard" data-i18n="nav.leaderboard">LEADERBOARD</a>
                         <a class="text-text-muted hover:text-white text-xs font-bold tracking-widest hover:underline decoration-primary underline-offset-4 transition-all"
-                            href="/pages/games">ALL GAMES</a>
+                            href="/pages/games" data-i18n="runner.allGames">ALL GAMES</a>
                     </div>
                 </div>
             </div>
@@ -296,7 +298,7 @@
                 <button id="jumpBtn"
                     class="w-full h-20 rounded-2xl bg-surface-dark border border-surface-border text-white font-bold text-lg tracking-widest active:bg-primary active:text-white transition-all flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-3xl">keyboard_arrow_up</span>
-                    <span>JUMP</span>
+                    <span data-i18n="runner.jump">JUMP</span>
                 </button>
             </div>
         </main>
@@ -330,12 +332,12 @@
                     <button id="retryBtn"
                         class="flex items-center justify-center w-full h-14 rounded-full bg-primary hover:bg-primary-light text-white gap-3 font-bold tracking-widest transition-all">
                         <span class="material-symbols-outlined">refresh</span>
-                        <span>RETRY</span>
+                        <span data-i18n="runner.retry">RETRY</span>
                     </button>
                     <button id="menuBtn"
                         class="flex items-center justify-center w-full h-12 rounded-full bg-surface-dark hover:bg-surface-border border border-surface-border text-white gap-3 font-bold tracking-widest transition-all">
                         <span class="material-symbols-outlined">home</span>
-                        <span>MAIN MENU</span>
+                        <span data-i18n="runner.mainMenu">MAIN MENU</span>
                     </button>
                 </div>
             </div>
@@ -358,7 +360,7 @@
                                 <button id="backBtn"
                                     class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-dark hover:bg-surface-border text-text-muted hover:text-white transition-all border border-surface-border">
                                     <span class="material-symbols-outlined">arrow_back</span>
-                                    <span class="font-bold text-sm">BACK</span>
+                                    <span class="font-bold text-sm" data-i18n="common.back">BACK</span>
                                 </button>
                                 <div class="flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary">terminal</span>

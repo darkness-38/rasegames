@@ -164,6 +164,8 @@
         "temperature": "Sıcaklık",
         "newBest": "Yeni Rekor!",
         "tryAgain": "Tekrar Dene",
+        "chat": "Sohbet",
+        "typeMessage": "Bir mesaj yaz...",
         "best": "En İyi"
     },
     "footer": {

@@ -2,6 +2,8 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const fs = require('fs');
+const { filterBadWords } = require('./utils/profanityFilter');
 
 const app = express();
 const server = http.createServer(app);
@@ -454,9 +456,12 @@ io.on('connection', (socket) => {
         const code = playerRooms.get(socket.id);
         if (!code) return;
 
+        // Apply profanity filter
+        const cleanMessage = filterBadWords(message);
+
         socket.to(code).emit('chatMessage', {
             from: socket.id,
-            message: message.substring(0, 100)
+            message: cleanMessage.substring(0, 100)
         });
     });
 
@@ -773,9 +778,12 @@ io.on('connection', (socket) => {
         const code = battleshipPlayerRooms.get(socket.id);
         if (!code) return;
 
+        // Apply profanity filter
+        const cleanMessage = filterBadWords(message);
+
         socket.to(`battleship:${code}`).emit('battleship:chatMessage', {
             from: socket.id,
-            message: message.substring(0, 100)
+            message: cleanMessage.substring(0, 100)
         });
     });
 

@@ -815,78 +815,71 @@ class BattleshipGame {
     // Chat methods follow
 
 
-}
-}
 
-// Initialize game when DOM is ready
-let game;
-document.addEventListener('DOMContentLoaded', () => {
-    game = new BattleshipGame();
-});
 
-// Chat Methods
-setupChat() {
-    const sendBtn = document.getElementById('chat-send-btn');
-    const input = document.getElementById('chat-input');
-    const toggleBtn = document.getElementById('chat-toggle-btn');
-    const closeBtn = document.getElementById('chat-close-btn');
+    // Chat Methods
+    setupChat() {
+        const sendBtn = document.getElementById('chat-send-btn');
+        const input = document.getElementById('chat-input');
+        const toggleBtn = document.getElementById('chat-toggle-btn');
+        const closeBtn = document.getElementById('chat-close-btn');
 
-    if (sendBtn) sendBtn.onclick = () => this.sendChatMessage();
-    if (toggleBtn) toggleBtn.onclick = () => this.toggleChat();
-    if (closeBtn) closeBtn.onclick = () => this.toggleChat();
+        if (sendBtn) sendBtn.onclick = () => this.sendChatMessage();
+        if (toggleBtn) toggleBtn.onclick = () => this.toggleChat();
+        if (closeBtn) closeBtn.onclick = () => this.toggleChat();
 
-    if (input) {
-        input.onkeydown = (e) => {
-            if (e.key === 'Enter') this.sendChatMessage();
-            e.stopPropagation();
-        };
+        if (input) {
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') this.sendChatMessage();
+                e.stopPropagation();
+            };
+        }
     }
-}
 
-toggleChat() {
-    const overlay = document.getElementById('chat-overlay');
-    const toggleBtn = document.getElementById('chat-toggle-btn');
-    const input = document.getElementById('chat-input');
+    toggleChat() {
+        const overlay = document.getElementById('chat-overlay');
+        const toggleBtn = document.getElementById('chat-toggle-btn');
+        const input = document.getElementById('chat-input');
 
-    this.isChatOpen = !this.isChatOpen;
+        this.isChatOpen = !this.isChatOpen;
 
-    if (this.isChatOpen) {
-        overlay.classList.remove('hidden');
-        toggleBtn.classList.add('hidden');
-        if (input) setTimeout(() => input.focus(), 50);
-    } else {
-        overlay.classList.add('hidden');
-        toggleBtn.classList.remove('hidden');
+        if (this.isChatOpen) {
+            overlay.classList.remove('hidden');
+            toggleBtn.classList.add('hidden');
+            if (input) setTimeout(() => input.focus(), 50);
+        } else {
+            overlay.classList.add('hidden');
+            toggleBtn.classList.remove('hidden');
+        }
     }
-}
 
-sendChatMessage() {
-    const input = document.getElementById('chat-input');
-    if (!input || !this.socket) return;
+    sendChatMessage() {
+        const input = document.getElementById('chat-input');
+        if (!input || !this.socket) return;
 
-    const message = input.value.trim();
-    if (message) {
-        this.socket.emit('battleship:chatMessage', { message });
-        this.addChatMessage('You', message, 'self');
-        input.value = '';
+        const message = input.value.trim();
+        if (message) {
+            this.socket.emit('battleship:chatMessage', message);
+            this.addChatMessage('You', message, 'self');
+            input.value = '';
+        }
     }
-}
 
-addChatMessage(author, message, type) {
-    const container = document.getElementById('chat-messages');
-    if (!container) return;
+    addChatMessage(author, message, type) {
+        const container = document.getElementById('chat-messages');
+        if (!container) return;
 
-    const div = document.createElement('div');
-    div.className = `chat-msg ${type}`;
+        const div = document.createElement('div');
+        div.className = `chat-msg ${type}`;
 
-    // Escape HTML
-    const safeMsg = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        // Escape HTML
+        const safeMsg = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-    div.innerHTML = `
+        div.innerHTML = `
             <span class="author">${author}</span>
             <div class="content">${safeMsg}</div>
         `;
 
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }

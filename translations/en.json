@@ -230,7 +230,8 @@
         "resetSimulation": "Reset Simulation",
         "temperature": "Temperature",
         "newBest": "New Best!",
-        "tryAgain": "Try Again"
+        "chat": "Chat",
+        "typeMessage": "Type a message..."
     },
     "404": {
         "title": "Page Not Found",

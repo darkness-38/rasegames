@@ -447,6 +447,32 @@
         <div id="animation-text" class="text-6xl font-black"></div>
     </div>
 
+    <!-- Chat Overlay -->
+    <div id="chat-overlay"
+        class="hidden fixed bottom-5 left-5 w-[350px] h-[300px] bg-surface-dark/90 backdrop-blur-md border border-gray-700 rounded-xl flex flex-col p-4 z-50 shadow-2xl transition-all duration-300">
+        <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-ocean-accent uppercase tracking-wider">Chat</h3>
+            <button id="chat-close-btn" class="text-gray-400 hover:text-white">
+                <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+        </div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto mb-3 space-y-2 pr-2 text-sm custom-scrollbar"></div>
+        <div class="flex gap-2">
+            <input type="text" id="chat-input" placeholder="Type a message..." maxlength="100"
+                class="flex-1 bg-black/30 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:border-ocean-accent outline-none">
+            <button id="chat-send-btn"
+                class="p-2 bg-ocean-accent text-ocean-dark rounded-lg hover:bg-white transition-colors">
+                <span class="material-symbols-outlined text-lg">send</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Chat Toggle Button -->
+    <button id="chat-toggle-btn"
+        class="hidden fixed bottom-5 left-5 size-12 rounded-full bg-ocean-accent text-ocean-dark shadow-lg shadow-ocean-accent/30 z-40 flex items-center justify-center hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined">chat</span>
+    </button>
+
     <script src="game.js"></script>
 </body>
 

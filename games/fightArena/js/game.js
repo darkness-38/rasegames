@@ -44,7 +44,11 @@ const gameState = {
     opponentInput: null,
     lastSentInput: null,
     lastSyncTime: 0,
-    syncInterval: 40 // Sync every 40ms (25Hz)
+    syncInterval: 40, // Sync every 40ms (25Hz)
+
+    // Chat
+    isChatOpen: false,
+    chatMessages: []
 };
 
 
@@ -139,7 +143,15 @@ function showOnlineMenu() {
             </div>`;
         }
 
-        multiplayer.connect();
+        if (!multiplayer.isConnected) {
+            multiplayer.connect();
+        }
+
+        // Initialize Chat UI events if not already done
+        if (!gameState.chatInitialized) {
+            initChat();
+            gameState.chatInitialized = true;
+        }
 
         // Check for connection to request list
         const checkInterval = setInterval(() => {
@@ -1661,3 +1673,205 @@ function getPing() {
     return currentPing;
 }
 
+
+// Chat Functions
+function initChat() {
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('chat-send-btn');
+    const toggleBtn = document.getElementById('chat-toggle-btn');
+
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendChatMessage);
+    }
+
+    if (input) {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+            e.stopPropagation(); // Prevent game inputs
+        });
+
+        // Prevent game inputs when typing
+        input.addEventListener('focus', () => {
+            gameState.isChatInputActive = true;
+        });
+
+        input.addEventListener('blur', () => {
+            gameState.isChatInputActive = false;
+        });
+    }
+
+    // Set listener via Multiplayer class
+    multiplayer.onChatMessage = (data) => {
+        // data = { from: socketId, message: "text" }
+        const isMe = multiplayer.socket && data.from === multiplayer.socket.id;
+        if (!isMe) {
+            addChatMessage('Opponent', data.message, 'enemy');
+
+            // Show notification if chat is closed
+            if (!gameState.isChatOpen) {
+                const toggleBtn = document.getElementById('chat-toggle-btn');
+                if (toggleBtn) {
+                    toggleBtn.classList.add('animate-pulse');
+                    setTimeout(() => toggleBtn.classList.remove('animate-pulse'), 2000);
+                }
+            }
+        }
+    };
+}
+
+function toggleChat() {
+    const overlay = document.getElementById('chat-overlay');
+    const toggleBtn = document.getElementById('chat-toggle-btn');
+    const input = document.getElementById('chat-input');
+
+    gameState.isChatOpen = !gameState.isChatOpen;
+
+    if (gameState.isChatOpen) {
+        overlay.classList.remove('hidden');
+        toggleBtn.classList.add('hidden');
+        if (input) setTimeout(() => input.focus(), 50);
+    } else {
+        overlay.classList.add('hidden');
+        toggleBtn.classList.remove('hidden');
+        if (input) input.blur();
+    }
+}
+
+function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+
+    const message = input.value.trim();
+    if (message && multiplayer.isConnected) {
+        // Use multiplayer class method
+        multiplayer.sendChatMessage(message);
+
+        // Add to local chat immediately (optimistic)
+        addChatMessage('You', message, 'self');
+
+        input.value = '';
+    }
+}
+
+function addChatMessage(author, message, type = 'normal') {
+    const container = document.getElementById('chat-messages');
+    if (!container) return;
+
+    const msgEl = document.createElement('div');
+    msgEl.className = `chat-msg ${type}`;
+
+    // Sanitize message
+    const cleanMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    if (type === 'system') {
+        msgEl.innerHTML = cleanMessage;
+    } else {
+        msgEl.innerHTML = `<span class="author">${author}:</span> <span class="content">${cleanMessage}</span>`;
+    }
+
+    container.appendChild(msgEl);
+    container.scrollTop = container.scrollHeight;
+}
+
+// Chat Functions
+function initChat() {
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('chat-send-btn');
+    const toggleBtn = document.getElementById('chat-toggle-btn');
+
+    if (sendBtn) {
+        sendBtn.addEventListener('click', sendChatMessage);
+    }
+
+    if (input) {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+            e.stopPropagation(); // Prevent game inputs
+        });
+
+        // Prevent game inputs when typing
+        input.addEventListener('focus', () => {
+            gameState.isChatInputActive = true;
+        });
+
+        input.addEventListener('blur', () => {
+            gameState.isChatInputActive = false;
+        });
+    }
+
+    // Set listener via Multiplayer class
+    multiplayer.onChatMessage = (data) => {
+        // data = { from: socketId, message: "text" }
+        const isMe = multiplayer.socket && data.from === multiplayer.socket.id;
+        if (!isMe) {
+            addChatMessage('Opponent', data.message, 'enemy');
+
+            // Show notification if chat is closed
+            if (!gameState.isChatOpen) {
+                const toggleBtn = document.getElementById('chat-toggle-btn');
+                if (toggleBtn) {
+                    toggleBtn.classList.add('animate-pulse');
+                    setTimeout(() => toggleBtn.classList.remove('animate-pulse'), 2000);
+                }
+            }
+        }
+    };
+}
+
+function toggleChat() {
+    const overlay = document.getElementById('chat-overlay');
+    const toggleBtn = document.getElementById('chat-toggle-btn');
+    const input = document.getElementById('chat-input');
+
+    gameState.isChatOpen = !gameState.isChatOpen;
+
+    if (gameState.isChatOpen) {
+        overlay.classList.remove('hidden');
+        toggleBtn.classList.add('hidden');
+        if (input) setTimeout(() => input.focus(), 50);
+    } else {
+        overlay.classList.add('hidden');
+        toggleBtn.classList.remove('hidden');
+        if (input) input.blur();
+    }
+}
+
+function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+
+    const message = input.value.trim();
+    if (message && multiplayer.isConnected) {
+        // Use multiplayer class method
+        multiplayer.sendChatMessage(message);
+
+        // Add to local chat immediately (optimistic)
+        addChatMessage('You', message, 'self');
+
+        input.value = '';
+    }
+}
+
+function addChatMessage(author, message, type = 'normal') {
+    const container = document.getElementById('chat-messages');
+    if (!container) return;
+
+    const msgEl = document.createElement('div');
+    msgEl.className = `chat-msg ${type}`;
+
+    // Sanitize message
+    const cleanMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    if (type === 'system') {
+        msgEl.innerHTML = cleanMessage;
+    } else {
+        msgEl.innerHTML = `<span class="author">${author}:</span> <span class="content">${cleanMessage}</span>`;
+    }
+
+    container.appendChild(msgEl);
+    container.scrollTop = container.scrollHeight;
+}

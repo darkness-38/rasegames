@@ -125,7 +125,6 @@ const experimentFolders = [
     'ph-scale',
     'balancing-equations',
     'gas-properties',
-    'gas-properties',
     'diffusion',
     'effusion'
 ];

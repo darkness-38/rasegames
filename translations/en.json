@@ -123,6 +123,12 @@
         "diffusion": {
             "title": "Diffusion",
             "description": "Watch molecules spread and mix"
+        },
+        "effusion": {
+            "title": "Effusion",
+            "description": "Observe gas particles escaping through a small hole.",
+            "openHole": "Open Hole",
+            "closeHole": "Close Hole"
         }
     },
     "footer": {
@@ -223,7 +229,6 @@
         "newGame": "New Game",
         "finalScore": "Final Score",
         "statistics": "Statistics",
-        "score": "Score",
         "score": "Score",
         "difficulty": "Difficulty",
         "difficultyLevels": {

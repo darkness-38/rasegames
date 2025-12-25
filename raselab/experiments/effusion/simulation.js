@@ -94,7 +94,9 @@ class EffusionSimulation {
 
         document.getElementById('toggle-divider').addEventListener('click', () => {
             this.dividerOpen = !this.dividerOpen;
-            document.getElementById('divider-text').textContent = this.dividerOpen ? 'Close Hole' : 'Open Hole';
+            const openText = (window.i18n && window.i18n.t('experiments.effusion.openHole')) || 'Open Hole';
+            const closeText = (window.i18n && window.i18n.t('experiments.effusion.closeHole')) || 'Close Hole';
+            document.getElementById('divider-text').textContent = this.dividerOpen ? closeText : openText;
 
             // Disable/enable controls based on divider state (only temp works without divider)
             setControlsEnabled(!this.dividerOpen);
@@ -149,7 +151,8 @@ class EffusionSimulation {
             document.getElementById('gas1-mass').textContent = '28';
             document.getElementById('gas2-mass').textContent = '44';
             document.getElementById('gas2-mass').textContent = '44';
-            document.getElementById('divider-text').textContent = 'Open Hole';
+            const openText = (window.i18n && window.i18n.t('experiments.effusion.openHole')) || 'Open Hole';
+            document.getElementById('divider-text').textContent = openText;
             setControlsEnabled(true);
             this.init();
         });

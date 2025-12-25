@@ -123,6 +123,12 @@
         "diffusion": {
             "title": "Difüzyon",
             "description": "Moleküllerin yayılmasını ve karışmasını izleyin"
+        },
+        "effusion": {
+            "title": "Efüzyon",
+            "description": "Gaz parçacıklarının küçük bir delikten kaçışını gözlemleyin.",
+            "openHole": "Deliği Aç",
+            "closeHole": "Deliği Kapat"
         }
     },
     "common": {
@@ -156,7 +162,6 @@
         "newGame": "Yeni Oyun",
         "finalScore": "Final Skoru",
         "statistics": "İstatistikler",
-        "score": "Puan",
         "score": "Skor",
         "difficulty": "Zorluk",
         "difficultyLevels": {

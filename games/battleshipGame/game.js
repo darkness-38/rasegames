@@ -10,6 +10,7 @@ class BattleshipGame {
         this.roomCode = null;
         this.isHost = false;
         this.playerId = null;
+        this.mode = 'online'; // 'online' or 'cpu'
 
         // Game state
         this.currentScreen = 'lobby';
@@ -45,6 +46,12 @@ class BattleshipGame {
         // Chat
         this.isChatOpen = false;
 
+        this.cpu = {
+            targetMode: null, // null, 'assist'
+            lastHit: null, // [row, col]
+            potentialTargets: [] // Array of [row, col]
+        };
+
         this.init();
     }
 
@@ -61,6 +68,8 @@ class BattleshipGame {
     }
 
     init() {
+        // Only connect socket if we intend to play online, but for now we connect on load
+        // We might want to delay this until "Multiplayer" is clicked in a future refactor
         this.connectSocket();
 
         this.setupEventListeners();
@@ -180,6 +189,14 @@ class BattleshipGame {
             this.socket.emit('battleship:createRoom');
         });
 
+        // CPU Button
+        const cpuBtn = document.getElementById('play-cpu-btn');
+        if (cpuBtn) {
+            cpuBtn.addEventListener('click', () => {
+                this.startCpuGame();
+            });
+        }
+
         document.getElementById('join-room-btn').addEventListener('click', () => {
             const code = document.getElementById('room-code-input').value.toUpperCase().trim();
             if (code.length === 6) {
@@ -208,10 +225,14 @@ class BattleshipGame {
 
         document.getElementById('ready-btn').addEventListener('click', () => {
             if (this.ships.every(s => s.placed)) {
-                this.socket.emit('battleship:ready', { grid: this.myGrid, ships: this.ships });
-                document.getElementById('ready-btn').disabled = true;
-                const waitingText = this.t('battleship.waitingForOpponent') || 'Waiting...';
-                document.getElementById('ready-btn').innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> ${waitingText}`;
+                if (this.mode === 'cpu') {
+                    this.startCpuBattle();
+                } else {
+                    this.socket.emit('battleship:ready', { grid: this.myGrid, ships: this.ships });
+                    document.getElementById('ready-btn').disabled = true;
+                    const waitingText = this.t('battleship.waitingForOpponent') || 'Waiting...';
+                    document.getElementById('ready-btn').innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> ${waitingText}`;
+                }
             }
         });
 
@@ -229,7 +250,9 @@ class BattleshipGame {
         });
 
         document.getElementById('exit-btn').addEventListener('click', () => {
-            this.socket.emit('battleship:leaveRoom');
+            if (this.mode === 'online' && this.socket) {
+                this.socket.emit('battleship:leaveRoom');
+            }
             this.resetGame();
             this.resetGame();
             this.showScreen('lobby');
@@ -239,7 +262,12 @@ class BattleshipGame {
         if (surrenderBtn) {
             surrenderBtn.addEventListener('click', () => {
                 if (confirm(this.t('battleship.surrenderConfirm') || 'Are you sure you want to surrender?')) {
-                    this.socket.emit('battleship:surrender');
+                    if (this.mode === 'online') {
+                        this.socket.emit('battleship:surrender');
+                    } else {
+                        // Immediate loss in CPU mode
+                        this.handleGameOver({ winner: 'cpu', stats: {} });
+                    }
                 }
             });
         }
@@ -484,6 +512,260 @@ class BattleshipGame {
         // Server handles this, but we can show feedback
     }
 
+    /* --- CPU MODE LOGIC --- */
+
+    startCpuGame() {
+        this.mode = 'cpu';
+        this.roomCode = null;
+        this.isHost = true;
+        this.playerId = 'player';
+
+        // Reset Game State
+        this.resetGame();
+
+        // UI Updates
+        document.getElementById('online-indicator').classList.remove('bg-green-500', 'animate-pulse');
+        document.getElementById('online-indicator').classList.add('bg-purple-500');
+        document.getElementById('online-text').textContent = 'VS CPU';
+        document.getElementById('battle-room-code').textContent = 'LOCAL';
+
+        this.showScreen('placement');
+        this.gamePhase = 'placement';
+
+        // Generate CPU Ships immediately (hidden)
+        this.placeCpuShips();
+    }
+
+    placeCpuShips() {
+        // Create duplicate ship array for CPU
+        const cpuShips = JSON.parse(JSON.stringify(this.ships));
+        // Reset their placement
+        cpuShips.forEach(s => { s.placed = false; s.cells = []; });
+
+        this.opponentGrid = this.createEmptyGrid();
+
+        // Reuse randomize logic but for opponentGrid
+        for (const ship of cpuShips) {
+            let placed = false;
+            let attempts = 0;
+            while (!placed && attempts < 200) {
+                const row = Math.floor(Math.random() * 10);
+                const col = Math.floor(Math.random() * 10);
+                const orientation = Math.random() > 0.5 ? 'horizontal' : 'vertical';
+
+                // Get cells
+                const cells = [];
+                for (let i = 0; i < ship.size; i++) {
+                    if (orientation === 'horizontal') cells.push([row, col + i]);
+                    else cells.push([row + i, col]);
+                }
+
+                // Check valid
+                const valid = cells.every(([r, c]) =>
+                    r >= 0 && r < 10 && c >= 0 && c < 10 &&
+                    this.opponentGrid[r][c].type === 'empty'
+                );
+
+                if (valid) {
+                    cells.forEach(([r, c]) => {
+                        this.opponentGrid[r][c] = { type: 'hidden-ship', shipId: ship.id };
+                    });
+                    placed = true;
+                }
+                attempts++;
+            }
+        }
+    }
+
+    startCpuBattle() {
+        this.gamePhase = 'battle';
+        this.isMyTurn = true; // Player always starts? Or random? Let's say Player starts for easier UX
+        this.showScreen('battle');
+        this.renderBattleGrids();
+        this.updateTurnIndicator();
+        this.addBattleLog('info', 'Battle started against Computer!');
+    }
+
+    cpuTurn() {
+        if (this.gamePhase !== 'battle') return;
+
+        // Simulate thinking time
+        setTimeout(() => {
+            if (this.gamePhase !== 'battle') return;
+
+            let row, col;
+
+            // AI Logic:
+            // 1. If we have potential targets (from a previous hit), try them
+            if (this.cpu.potentialTargets.length > 0) {
+                const target = this.cpu.potentialTargets.pop();
+                row = target[0];
+                col = target[1];
+            } else {
+                // 2. Random mode
+                let valid = false;
+                while (!valid) {
+                    row = Math.floor(Math.random() * 10);
+                    col = Math.floor(Math.random() * 10);
+                    // Don't shoot where we already shot
+                    if (!this.myGrid[row][col].hit && !this.myGrid[row][col].miss) {
+                        valid = true;
+                    }
+                }
+            }
+
+            // Execute Attack
+            this.processCpuAttack(row, col);
+
+        }, 1000 + Math.random() * 1000);
+    }
+
+    processCpuAttack(row, col) {
+        const cell = this.myGrid[row][col];
+        let result = 'miss';
+        let shipId = null;
+        let sunk = false;
+
+        // Check Hit
+        if (cell.type === 'ship') {
+            result = 'hit';
+            shipId = cell.shipId;
+            cell.hit = true;
+
+            // Check Sunk
+            const ship = this.ships.find(s => s.id === shipId);
+            const hits = ship.cells.filter(([r, c]) => this.myGrid[r][c].hit).length;
+            if (hits === ship.size) {
+                sunk = true;
+                // Mark sunk in grid
+                ship.cells.forEach(([r, c]) => this.myGrid[r][c].sunk = true);
+            }
+
+            // AI Intelligence: Add neighbors to potential targets
+            if (!sunk) {
+                const neighbors = [
+                    [row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]
+                ];
+                neighbors.forEach(([r, c]) => {
+                    if (r >= 0 && r < 10 && c >= 0 && c < 10 && !this.myGrid[r][c].hit && !this.myGrid[r][c].miss) {
+                        // Prioritize specific directions if we have multiple hits? For now just stack em
+                        this.cpu.potentialTargets.push([r, c]);
+                    }
+                });
+            } else {
+                // Ship sunk, maybe clear targets related to this ship if we could track them, 
+                // but simple mode: just keep popping stack
+            }
+
+        } else {
+            // Miss
+            this.myGrid[row][col].miss = true;
+        }
+
+        // Update UI
+        this.renderDefenseGrid();
+
+        // Log & Turn Switch
+        if (result === 'hit') {
+            const shipName = this.getShipDisplayName(shipId);
+            this.addBattleLog('hit', `Computer hit your ${shipName}!`);
+            if (sunk) {
+                this.addBattleLog('sunk', `Computer sunk your ${shipName}!`);
+                this.myShipsRemaining--;
+                this.mySunkShips.push(shipId);
+                this.renderFleetStatus();
+
+                if (this.myShipsRemaining === 0) {
+                    this.handleGameOver({ winner: 'cpu', stats: {} });
+                    return;
+                }
+            }
+            // CPU gets another turn on hit? Standard rules say NO usually, alternating turns.
+            // We will stick to alternating turns for simplicity and fairness
+            this.isMyTurn = true;
+        } else {
+            this.addBattleLog('miss', `Computer missed at ${String.fromCharCode(65 + col)}${row + 1}`);
+            this.isMyTurn = true;
+        }
+
+        this.updateTurnIndicator();
+    }
+
+    processPlayerAttackLocal(row, col) {
+        const cell = this.opponentGrid[row][col];
+        let result = 'miss';
+        let shipId = null;
+        let sunk = false;
+
+        if (cell.type === 'hidden-ship' || cell.type === 'ship') {
+            result = 'hit';
+            shipId = cell.shipId;
+            cell.type = 'hit'; // Reveal
+
+            // Check sunk logic for hidden ships... 
+            // We need to track damage on specific hidden ships. 
+            // Simplest way: Check all cells of that ID in opponentGrid
+            let hitCount = 0;
+            let size = 0;
+            // Scan grid to find ship size and hits (inefficient but 10x10 is tiny)
+            for (let r = 0; r < 10; r++) {
+                for (let c = 0; c < 10; c++) {
+                    if (this.opponentGrid[r][c].shipId === shipId) {
+                        size++;
+                        if (this.opponentGrid[r][c].type === 'hit') hitCount++;
+                    }
+                }
+            }
+
+            if (hitCount === size) {
+                sunk = true;
+                // Mark sunk
+                for (let r = 0; r < 10; r++) {
+                    for (let c = 0; c < 10; c++) {
+                        if (this.opponentGrid[r][c].shipId === shipId) {
+                            this.opponentGrid[r][c].type = 'sunk';
+                        }
+                    }
+                }
+                this.enemyShipsRemaining--;
+                this.enemySunkShips.push(shipId);
+            }
+
+        } else {
+            cell.type = 'miss';
+        }
+
+        // Visuals
+        this.renderAttackGrid();
+
+        if (result === 'hit') {
+            const hitText = this.t('battleship.log.hit') || 'HIT!';
+            this.showAnimation('hit', hitText);
+            const shipName = this.getShipDisplayName(shipId);
+            this.addBattleLog('hit', `You hit Enemy ${shipName}!`);
+
+            if (sunk) {
+                const sunkText = this.t('battleship.log.sunk') || 'SUNK!';
+                setTimeout(() => this.showAnimation('sunk', sunkText), 500);
+                this.addBattleLog('sunk', `You sunk Enemy ${shipName}!`);
+                this.renderFleetStatus();
+
+                if (this.enemyShipsRemaining === 0) {
+                    this.handleGameOver({ winner: 'player', stats: {} });
+                    return;
+                }
+            }
+        } else {
+            const missText = this.t('battleship.log.miss') || 'MISS';
+            this.showAnimation('miss', missText);
+            this.addBattleLog('miss', `You missed.`);
+        }
+
+        this.isMyTurn = false;
+        this.updateTurnIndicator();
+        this.cpuTurn();
+    }
+
     // Battle Phase
     renderBattleGrids() {
         this.renderAttackGrid();
@@ -591,9 +873,18 @@ class BattleshipGame {
 
     handleAttack(row, col) {
         if (!this.isMyTurn) return;
-        if (this.opponentGrid[row][col].type !== 'empty') return;
 
-        this.socket.emit('battleship:attack', { row, col });
+        if (this.mode === 'online') {
+            if (this.opponentGrid[row][col].type !== 'empty') return;
+            this.socket.emit('battleship:attack', { row, col });
+        } else {
+            // Local / CPU Mode
+            // Check if already shot
+            const type = this.opponentGrid[row][col].type;
+            if (type === 'hit' || type === 'miss' || type === 'sunk') return;
+
+            this.processPlayerAttackLocal(row, col);
+        }
         this.shotsFired++;
     }
 

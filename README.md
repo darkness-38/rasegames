@@ -253,6 +253,10 @@ rasegames/
 │   ├── leaderboard.html        # Rankings
 │   └── ...
 │
+├── 🧪 raselab/                 # Chemistry Experiments
+│   ├── experiments/            # Simulation files
+│   └── ...
+│
 ├── 🔧 scripts/                 # JavaScript
 │   ├── auth.js                 # Authentication
 │   ├── challenges.js           # XP & Challenges

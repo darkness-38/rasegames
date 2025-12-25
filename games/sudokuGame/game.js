@@ -32,7 +32,6 @@ class SudokuGame {
             });
         });
 
-        document.getElementById('note-btn').addEventListener('click', () => this.toggleNoteMode());
         document.getElementById('undo-btn').addEventListener('click', () => this.undo());
         document.getElementById('erase-btn').addEventListener('click', () => this.erase());
         document.getElementById('hint-btn').addEventListener('click', () => this.hint());
@@ -54,7 +53,6 @@ class SudokuGame {
             else if (e.key === 'ArrowDown') this.moveSelection(1, 0);
             else if (e.key === 'ArrowLeft') this.moveSelection(0, -1);
             else if (e.key === 'ArrowRight') this.moveSelection(0, 1);
-            else if (e.key.toLowerCase() === 'n') this.toggleNoteMode();
             else if (e.key.toLowerCase() === 'h') this.hint();
         });
 

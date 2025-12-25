@@ -294,7 +294,9 @@ function buyUpgrade(id) {
         renderUpgrades();
 
 
-        showNotification(`Purchased ${upgrade.name}!`, upgrade.increase + '/s');
+        const translatedName = (window.i18n && window.i18n.t(`raseClickerGame.upgradesList.${upgrade.id}.name`)) || upgrade.name;
+        const purchasedText = (window.i18n && window.i18n.t('raseClickerGame.common.purchased')) || 'Purchased';
+        showNotification(`${purchasedText} ${translatedName}!`, `+${upgrade.increase} LOC/s`);
 
 
         if (typeof playSound !== 'undefined') playSound('upgrade');
@@ -310,10 +312,15 @@ function buyClickUpgrade(id) {
         upgrade.purchased = true;
         clickPower *= upgrade.multiplier;
 
+        clickPower *= upgrade.multiplier;
+
         updateUI();
         renderClickUpgrades();
 
-        showNotification(`Purchased ${upgrade.name}!`, `Click x${upgrade.multiplier}`);
+        const translatedName = (window.i18n && window.i18n.t(`raseClickerGame.toolsList.${upgrade.id}.name`)) || upgrade.name;
+        const purchasedText = (window.i18n && window.i18n.t('raseClickerGame.common.purchased')) || 'Purchased';
+        // Note: 'Click x2' is somewhat hardcoded, simplifying to multiplier presentation
+        showNotification(`${purchasedText} ${translatedName}!`, `Click Power x${upgrade.multiplier}`);
     }
 }
 
@@ -343,6 +350,11 @@ function renderUpgrades() {
         const canAfford = score >= cost;
         const icon = iconMap[u.id] || 'terminal';
 
+        // Translation Lookup
+        const name = (window.i18n && window.i18n.t(`raseClickerGame.upgradesList.${u.id}.name`)) || u.name;
+        const desc = (window.i18n && window.i18n.t(`raseClickerGame.upgradesList.${u.id}.desc`)) || u.desc;
+        const ownedText = (window.i18n && window.i18n.t('raseClickerGame.common.owned')) || 'Owned';
+
         const item = document.createElement('div');
         item.className = `group flex flex-col gap-3 p-3 sm:p-4 rounded-xl bg-slate-50 dark:bg-[#202633] border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary transition-colors cursor-pointer ${canAfford ? '' : 'opacity-60'}`;
         item.onclick = () => buyUpgrade(u.id);
@@ -353,12 +365,12 @@ function renderUpgrades() {
                         <span class="material-symbols-outlined">${icon}</span>
                     </div>
                     <div class="min-w-0">
-                        <h4 class="font-bold text-slate-900 dark:text-white text-sm truncate">${u.name}</h4>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">${u.desc}</p>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-sm truncate">${name}</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">${desc}</p>
                     </div>
                 </div>
                 <div class="text-right shrink-0">
-                    <div class="text-xs text-slate-500 dark:text-slate-400">Owned</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">${ownedText}</div>
                     <div class="text-sm font-bold text-white font-mono">${u.count}</div>
                 </div>
             </div>
@@ -389,6 +401,12 @@ function renderClickUpgrades() {
         const canAfford = score >= u.cost;
         const icon = iconMap[u.id] || 'build';
 
+        // Translation Lookup
+        // Note the fix: toolsList uses 'u.id'
+        const name = (window.i18n && window.i18n.t(`raseClickerGame.toolsList.${u.id}.name`)) || u.name;
+        const desc = (window.i18n && window.i18n.t(`raseClickerGame.toolsList.${u.id}.desc`)) || u.desc;
+        const buyText = (window.i18n && window.i18n.t('raseClickerGame.common.buy')) || 'Buy';
+
         const item = document.createElement('div');
         item.className = `group flex flex-col gap-3 p-3 sm:p-4 rounded-xl bg-slate-50 dark:bg-[#202633] border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary transition-colors cursor-pointer ${canAfford ? '' : 'opacity-60'}`;
         item.onclick = () => buyClickUpgrade(u.id);
@@ -398,12 +416,12 @@ function renderClickUpgrades() {
                     <span class="material-symbols-outlined">${icon}</span>
                 </div>
                 <div class="min-w-0">
-                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">${u.name}</h4>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">${u.desc}</p>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">${name}</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">${desc}</p>
                 </div>
             </div>
             <button class="w-full py-2 ${canAfford ? 'bg-primary hover:bg-primary/90 text-white' : 'bg-slate-700 text-slate-500 cursor-not-allowed'} rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors">
-                <span>Buy</span>
+                <span>${buyText}</span>
                 <span class="font-mono opacity-80">${formatNumber(u.cost)} LOC</span>
                 <span class="text-xs opacity-60">• x${u.multiplier}</span>
             </button>
@@ -416,6 +434,9 @@ function renderClickUpgrades() {
         if (!u.purchased) return;
         const icon = iconMap[u.id] || 'build';
 
+        const name = (window.i18n && window.i18n.t(`raseClickerGame.toolsList.${u.id}.name`)) || u.name;
+        const ownedText = (window.i18n && window.i18n.t('raseClickerGame.common.purchased')) || 'Owned';
+
         const item = document.createElement('div');
         item.className = 'flex gap-3 p-3 sm:p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30';
         item.innerHTML = `
@@ -423,8 +444,8 @@ function renderClickUpgrades() {
                 <span class="material-symbols-outlined">${icon}</span>
             </div>
             <div class="flex-1 min-w-0">
-                <h4 class="font-bold text-emerald-400 text-sm">${u.name}</h4>
-                <p class="text-xs text-emerald-500/70">✓ Owned • x${u.multiplier} Power</p>
+                <h4 class="font-bold text-emerald-400 text-sm">${name}</h4>
+                <p class="text-xs text-emerald-500/70">✓ ${ownedText} • x${u.multiplier} Power</p>
             </div>
         `;
         clickUpgradesContainer.appendChild(item);
@@ -435,14 +456,19 @@ function renderAchievements() {
     achievementsContainer.innerHTML = '';
     achievements.forEach(a => {
         const item = document.createElement('div');
+
+        // Translation Lookup
+        const name = (window.i18n && window.i18n.t(`raseClickerGame.awardsList.${a.id}.name`)) || a.name;
+        const desc = (window.i18n && window.i18n.t(`raseClickerGame.awardsList.${a.id}.desc`)) || a.desc;
+
         item.className = `flex gap-3 p-3 sm:p-4 rounded-xl border ${a.unlocked ? 'bg-amber-500/10 border-amber-500/30' : 'bg-slate-50 dark:bg-[#202633] border-slate-200 dark:border-slate-700 opacity-60'}`;
         item.innerHTML = `
             <div class="w-10 h-10 rounded-lg ${a.unlocked ? 'bg-amber-500/20 text-amber-500' : 'bg-slate-700 text-slate-500'} flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${a.unlocked ? 'emoji_events' : 'lock'}</span>
             </div>
             <div class="flex-1 min-w-0">
-                <h4 class="font-bold ${a.unlocked ? 'text-amber-400' : 'text-slate-400'} text-sm">${a.name}</h4>
-                <p class="text-xs ${a.unlocked ? 'text-amber-500/70' : 'text-slate-500'}">${a.desc}</p>
+                <h4 class="font-bold ${a.unlocked ? 'text-amber-400' : 'text-slate-400'} text-sm">${name}</h4>
+                <p class="text-xs ${a.unlocked ? 'text-amber-500/70' : 'text-slate-500'}">${desc}</p>
                 ${a.unlocked ? `<p class="text-xs text-green-400 mt-1">+${formatNumber(a.reward)} LoC</p>` : ''}
             </div>
         `;
@@ -504,7 +530,8 @@ function unlockAchievement(a) {
     score += a.reward;
     totalEarned += a.reward;
 
-    showNotification(`🏆 ${a.name}`, `+${formatNumber(a.reward)} LoC`);
+    const translatedName = (window.i18n && window.i18n.t(`raseClickerGame.awardsList.${a.id}.name`)) || a.name;
+    showNotification(`🏆 ${translatedName}`, `+${formatNumber(a.reward)} LoC`);
     renderAchievements();
 
 
@@ -540,7 +567,10 @@ function spawnRandomEvent() {
         eventsCollected++;
 
         checkAchievements('events', eventsCollected);
-        showNotification(event.name, `+${formatNumber(reward)} LoC`);
+
+        // Translation for Event Name
+        const translatedName = (window.i18n && window.i18n.t(`raseClickerGame.events.${event.id}`)) || event.name;
+        showNotification(translatedName, `+${formatNumber(reward)} LoC`);
 
 
         createBurstEffect(el);

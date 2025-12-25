@@ -2,7 +2,7 @@
  * Diffusion Simulation
  */
 
-class DiffusionSimulation {
+class EffusionSimulation {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
@@ -51,7 +51,7 @@ class DiffusionSimulation {
         for (let i = 0; i < this.gas2Count; i++) {
             const s = Math.sqrt(this.temperature / this.gas2Mass) * 0.5;
             this.particles.push({
-                x: this.dividerX + m + Math.random() * (this.width - this.dividerX - 2 * m),
+                x: m + Math.random() * (this.dividerX - 2 * m), // Spawn on LEFT (same as Gas1)
                 y: m + Math.random() * (this.height - 2 * m),
                 vx: (Math.random() - 0.5) * s * 4,
                 vy: (Math.random() - 0.5) * s * 4,
@@ -94,7 +94,7 @@ class DiffusionSimulation {
 
         document.getElementById('toggle-divider').addEventListener('click', () => {
             this.dividerOpen = !this.dividerOpen;
-            document.getElementById('divider-text').textContent = this.dividerOpen ? 'Add Divider' : 'Remove Divider';
+            document.getElementById('divider-text').textContent = this.dividerOpen ? 'Close Hole' : 'Open Hole';
 
             // Disable/enable controls based on divider state (only temp works without divider)
             setControlsEnabled(!this.dividerOpen);
@@ -148,7 +148,8 @@ class DiffusionSimulation {
             document.getElementById('gas2-count').textContent = '50';
             document.getElementById('gas1-mass').textContent = '28';
             document.getElementById('gas2-mass').textContent = '44';
-            document.getElementById('divider-text').textContent = 'Remove Divider';
+            document.getElementById('gas2-mass').textContent = '44';
+            document.getElementById('divider-text').textContent = 'Open Hole';
             setControlsEnabled(true);
             this.init();
         });
@@ -171,7 +172,12 @@ class DiffusionSimulation {
                 if (type === 'gas1') {
                     x = m + Math.random() * (this.dividerX - 2 * m);
                 } else {
-                    x = this.dividerX + m + Math.random() * (this.width - this.dividerX - 2 * m);
+                    // Start in vacuum experiment: Spawning new particles should respect the side they are supposed to be?
+                    // Usually we spawn on the original side.
+                    // For Effusion, simpler to always spawn on LEFT if we are "adding gas".
+                    // But maybe user wants to add to right?
+                    // Let's assume injection happens on the LEFT chamber.
+                    x = m + Math.random() * (this.dividerX - 2 * m);
                 }
 
                 this.particles.push({
@@ -212,10 +218,24 @@ class DiffusionSimulation {
             if (p.y < m + p.radius) { p.vy = Math.abs(p.vy); p.y = m + p.radius; }
             if (p.y > this.height - m - p.radius) { p.vy = -Math.abs(p.vy); p.y = this.height - m - p.radius; }
 
-            if (!this.dividerOpen) {
-                const nearDiv = Math.abs(p.x - this.dividerX) < p.radius + 5;
-                // Removed gap check: particles collide with the entire divider
-                if (nearDiv) {
+            // Effusion Logic: Solid wall unless hole is open (dividerOpen=true means HOLE IS OPEN)
+            // If hole is open, only allow passage through gapY -> gapY + gapH
+
+            // Logic: 
+            // 1. Divider exists always.
+            // 2. If !dividerOpen (Hole Closed), full wall.
+            // 3. If dividerOpen (Hole Open), wall with gap.
+
+            // Wait, variable name reuse: In original, dividerOpen meant "NO DIVIDER".
+            // Here, let's redefine: dividerOpen = true -> Hole is OPEN.
+
+            const nearDiv = Math.abs(p.x - this.dividerX) < p.radius + 5;
+
+            if (nearDiv) {
+                // If hole is closed, OR if particle is NOT in the gap
+                const inGap = this.dividerOpen && (p.y > gapY && p.y < gapY + gapH);
+
+                if (!inGap) {
                     if (p.x < this.dividerX) { p.vx = -Math.abs(p.vx); p.x = this.dividerX - p.radius - 5; }
                     else { p.vx = Math.abs(p.vx); p.x = this.dividerX + p.radius + 5; }
                 }
@@ -236,9 +256,14 @@ class DiffusionSimulation {
         ctx.strokeStyle = '#3f4756'; ctx.lineWidth = 4;
         ctx.strokeRect(m, m, this.width - 2 * m, this.height - 2 * m);
 
-        if (!this.dividerOpen) {
-            ctx.fillStyle = '#6b7280';
-            // Draw solid divider
+        // Draw Divider
+        ctx.fillStyle = '#6b7280';
+        if (this.dividerOpen) {
+            // Hole Open: Draw top and bottom parts
+            ctx.fillRect(this.dividerX - 3, m, 6, gapY - m);
+            ctx.fillRect(this.dividerX - 3, gapY + gapH, 6, this.height - gapY - gapH - m);
+        } else {
+            // Hole Closed: Draw full line
             ctx.fillRect(this.dividerX - 3, m, 6, this.height - 2 * m);
         }
 
@@ -254,4 +279,4 @@ class DiffusionSimulation {
     animate() { this.update(); this.draw(); requestAnimationFrame(() => this.animate()); }
 }
 
-document.addEventListener('DOMContentLoaded', () => { new DiffusionSimulation('simulation-canvas'); });
+document.addEventListener('DOMContentLoaded', () => { new EffusionSimulation('simulation-canvas'); });

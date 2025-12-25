@@ -224,7 +224,13 @@
         "finalScore": "Final Score",
         "statistics": "Statistics",
         "score": "Score",
+        "score": "Score",
         "difficulty": "Difficulty",
+        "difficultyLevels": {
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard"
+        },
         "bestScore": "Best Score",
         "tips": "Tips",
         "resetSimulation": "Reset Simulation",
@@ -261,7 +267,140 @@
         "tools": "Tools",
         "awards": "Awards",
         "infrastructure": "Infrastructure",
-        "certifications": "Certifications"
+        "certifications": "Certifications",
+        "upgradesList": {
+            "localhost": {
+                "name": "Localhost",
+                "desc": "A humble beginning."
+            },
+            "git_repo": {
+                "name": "Git Repository",
+                "desc": "Version control is key."
+            },
+            "vps": {
+                "name": "VPS Server",
+                "desc": "Your own virtual server."
+            },
+            "cloud_cluster": {
+                "name": "Cloud Cluster",
+                "desc": "Scale to the clouds."
+            },
+            "cdn": {
+                "name": "CDN Network",
+                "desc": "Global content delivery."
+            },
+            "firewall": {
+                "name": "Enterprise Firewall",
+                "desc": "Maximum security."
+            },
+            "ai_assistant": {
+                "name": "AI Co-Pilot",
+                "desc": "AI writes code for you."
+            },
+            "quantum": {
+                "name": "Quantum Computer",
+                "desc": "Beyond classical limits."
+            },
+            "data_center": {
+                "name": "Hyperscale Data Center",
+                "desc": "Infinite compute power."
+            },
+            "neural_net": {
+                "name": "Neural Network Farm",
+                "desc": "Sentient code generation."
+            }
+        },
+        "toolsList": {
+            "mech_keyboard": {
+                "name": "Mechanical Keyboard",
+                "desc": "Faster typing."
+            },
+            "dual_monitor": {
+                "name": "Dual Monitors",
+                "desc": "More screen real estate."
+            },
+            "overclock": {
+                "name": "Overclocked CPU",
+                "desc": "Push the limits."
+            },
+            "ergonomic": {
+                "name": "Ergonomic Setup",
+                "desc": "Code all day."
+            },
+            "liquid_cooling": {
+                "name": "Liquid Cooling",
+                "desc": "Stay cool under pressure."
+            },
+            "caffeine": {
+                "name": "IV Caffeine Drip",
+                "desc": "Never sleep again."
+            }
+        },
+        "awardsList": {
+            "hello_world": {
+                "name": "Hello World",
+                "desc": "Earn 100 LoC"
+            },
+            "script_kiddie": {
+                "name": "Script Kiddie",
+                "desc": "Click 100 times"
+            },
+            "junior_dev": {
+                "name": "Junior Developer",
+                "desc": "Earn 1,000 LoC"
+            },
+            "clicker": {
+                "name": "Compulsive Clicker",
+                "desc": "Click 500 times"
+            },
+            "mid_dev": {
+                "name": "Mid-Level Developer",
+                "desc": "Earn 10,000 LoC"
+            },
+            "senior_dev": {
+                "name": "Senior Developer",
+                "desc": "Earn 100,000 LoC"
+            },
+            "full_stack": {
+                "name": "Full Stack Developer",
+                "desc": "Earn 1,000,000 LoC"
+            },
+            "tech_lead": {
+                "name": "Tech Lead",
+                "desc": "Earn 10,000,000 LoC"
+            },
+            "cto": {
+                "name": "CTO",
+                "desc": "Earn 100,000,000 LoC"
+            },
+            "backup_secure": {
+                "name": "Backup Secured",
+                "desc": "Manually save the game"
+            },
+            "first_upgrade": {
+                "name": "First Upgrade",
+                "desc": "Buy your first upgrade"
+            },
+            "collector": {
+                "name": "Collector",
+                "desc": "Own 10 upgrades total"
+            },
+            "event_hunter": {
+                "name": "Event Hunter",
+                "desc": "Catch 5 random events"
+            }
+        },
+        "events": {
+            "bug_bounty": "🐛 Bug Bounty!",
+            "data_packet": "📦 Data Packet!",
+            "coffee": "☕ Coffee Break!",
+            "sponsor": "💰 Sponsor Deal!"
+        },
+        "common": {
+            "owned": "Owned",
+            "buy": "Buy",
+            "purchased": "Owned"
+        }
     },
     "fightArenaGame": {
         "title": "FIGHT ARENA",

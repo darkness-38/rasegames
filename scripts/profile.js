@@ -243,7 +243,7 @@ async function saveProfile(e) {
         });
 
         // Update username in all leaderboard entries
-        const games = ['tictactoe', 'minesweeper', 'memory', 'game2048', 'flappy', 'snake', 'clicker', 'runner', 'tetris'];
+        const games = ['tictactoe', 'minesweeper', 'memory', 'game2048', 'flappy', 'snake', 'clicker', 'runner', 'tetris', 'fightarena', 'battleship', 'pong'];
         for (const game of games) {
             try {
                 const snapshot = await db.ref(`leaderboards/${game}`)
@@ -252,12 +252,16 @@ async function saveProfile(e) {
                     .once('value');
 
                 if (snapshot.exists()) {
-                    const updates = {};
+                    const updatePromises = [];
                     snapshot.forEach(child => {
-                        updates[`leaderboards/${game}/${child.key}/name`] = username;
+                        // Update each entry individually to avoid root-level permission issues
+                        const promise = child.ref.update({ name: username })
+                            .catch(err => console.error(`Failed to update entry in ${game}:`, err));
+                        updatePromises.push(promise);
                     });
-                    if (Object.keys(updates).length > 0) {
-                        await db.ref().update(updates);
+                    if (updatePromises.length > 0) {
+                        await Promise.all(updatePromises);
+                        console.log(`Updated ${updatePromises.length} entries in ${game} for user ${username}`);
                     }
                 }
             } catch (e) {

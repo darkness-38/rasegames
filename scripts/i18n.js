@@ -102,6 +102,11 @@ const i18n = {
         return typeof value === 'string' ? value : null;
     },
 
+    // Alias for getTranslation
+    t(key) {
+        return this.getTranslation(key);
+    },
+
     async setLanguage(lang) {
         if (lang !== 'en' && lang !== 'tr') return;
 

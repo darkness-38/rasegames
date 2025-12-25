@@ -231,8 +231,18 @@ class BattleshipGame {
         document.getElementById('exit-btn').addEventListener('click', () => {
             this.socket.emit('battleship:leaveRoom');
             this.resetGame();
+            this.resetGame();
             this.showScreen('lobby');
         });
+
+        const surrenderBtn = document.getElementById('surrender-btn');
+        if (surrenderBtn) {
+            surrenderBtn.addEventListener('click', () => {
+                if (confirm(this.t('battleship.surrenderConfirm') || 'Are you sure you want to surrender?')) {
+                    this.socket.emit('battleship:surrender');
+                }
+            });
+        }
     }
 
     showScreen(screenName) {
@@ -746,6 +756,20 @@ class BattleshipGame {
             icon.textContent = '🏆';
             title.textContent = this.t('battleship.victory') || 'VICTORY!';
             subtitle.textContent = this.t('battleship.victoryMessage') || 'You destroyed the enemy fleet!';
+
+            // Calculate and submit score
+            if (window.Leaderboard && window.Leaderboard.submit) {
+                // Base score 1000
+                // + 100 per remaining ship
+                // + Accuracy bonus (max 500)
+                // - 10 per shot fired
+                const accuracy = this.shotsFired > 0 ? (this.hitsLanded / this.shotsFired) : 0;
+                const score = Math.max(0, 1000 + (this.myShipsRemaining * 100) + Math.round(accuracy * 500) - (this.shotsFired * 10));
+
+                window.Leaderboard.submit('battleship', score).then(success => {
+                    if (success) console.log('Score submitted:', score);
+                });
+            }
         } else {
             screen.classList.add('defeat');
             screen.classList.remove('victory');

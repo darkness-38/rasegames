@@ -125,7 +125,9 @@ const experimentFolders = [
     'ph-scale',
     'balancing-equations',
     'gas-properties',
-    'diffusion'
+    'gas-properties',
+    'diffusion',
+    'effusion'
 ];
 
 let experimentsData = [];
@@ -140,6 +142,7 @@ async function loadExperiments() {
                 const manifest = await response.json();
                 experiments.push({
                     id: experiments.length + 1,
+                    folder: folder, // Store folder for translation lookup
                     ...manifest,
                     link: `./experiments/${folder}/index.html`
                 });
@@ -217,17 +220,27 @@ function renderExperiments(experiments) {
     }
 
     experiments.forEach(ex => {
+        // CamelCase conversion for translation keys
+        const camelKey = ex.folder.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+
+        // Translation Lookups
+        const title = (window.i18n && window.i18n.t(`experiments.${camelKey}.title`)) || ex.title;
+        const desc = (window.i18n && window.i18n.t(`experiments.${camelKey}.description`)) || ex.desc;
+        const subject = (window.i18n && window.i18n.t(`raselab.${ex.subject.toLowerCase()}`)) || ex.subject;
+        const difficulty = (window.i18n && window.i18n.t(`common.difficulty.${ex.difficulty.toLowerCase()}`)) || ex.difficulty;
+        const startText = (window.i18n && window.i18n.t('raselab.startExperiment')) || 'Start Experiment';
+
         const card = document.createElement('div');
         card.className = "group flex flex-col rounded-xl bg-white dark:bg-[#1e2330] overflow-hidden border border-[#e5e7eb] dark:border-[#2a3140] hover:border-primary/50 dark:hover:border-primary/50 transition-all shadow-sm hover:shadow-lg hover:shadow-primary/10";
 
         const buttonContent = ex.link
             ? `<a href="${ex.link}" class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
                     <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                    Start Experiment
+                    ${startText}
                 </a>`
             : `<button class="flex items-center justify-center w-full h-11 gap-2 rounded-lg bg-primary text-white font-bold hover:bg-blue-600 transition-colors shadow-lg shadow-primary/25">
                     <span class="material-symbols-outlined text-[20px]">play_arrow</span>
-                    Start Experiment
+                    ${startText}
                 </button>`;
 
         const subjectBadgeClass = ex.subject === 'Physics'
@@ -240,16 +253,16 @@ function renderExperiments(experiments) {
                 <div class="absolute inset-0 bg-gradient-to-t from-[#1e2330] to-transparent opacity-60"></div>
                 <div class="absolute top-3 left-3 flex gap-2">
                     <span class="px-2.5 py-1 rounded-md ${subjectBadgeClass} text-xs font-bold backdrop-blur-md flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">${ex.icon}</span> ${ex.subject}
+                        <span class="material-symbols-outlined text-[14px]">${ex.icon}</span> ${subject}
                     </span>
                 </div>
                 <div class="absolute top-3 right-3">
-                    <span class="px-2 py-1 rounded-md bg-black/40 text-white/80 text-xs font-medium backdrop-blur-md">${ex.difficulty}</span>
+                    <span class="px-2 py-1 rounded-md bg-black/40 text-white/80 text-xs font-medium backdrop-blur-md">${difficulty}</span>
                 </div>
             </div>
             <div class="flex flex-col p-5 gap-3 flex-1 relative bg-white dark:bg-[#1e2330]">
-                <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">${ex.title}</h3>
-                <p class="text-sm text-[#637588] dark:text-[#9da6b9] leading-relaxed line-clamp-2">${ex.desc}</p>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">${title}</h3>
+                <p class="text-sm text-[#637588] dark:text-[#9da6b9] leading-relaxed line-clamp-2">${desc}</p>
                 <div class="mt-auto pt-4 w-full">
                     ${buttonContent}
                 </div>

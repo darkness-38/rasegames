@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link crossorigin rel="preconnect" href="https://fonts.gstatic.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
         rel="stylesheet">
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
@@ -21,6 +21,8 @@
     <!-- Auth & i18n -->
     <script src="/scripts/i18n.js"></script>
     <script src="/scripts/auth.js"></script>
+    <script src="/scripts/firebase-config.js"></script>
+    <script src="/scripts/leaderboard.js"></script>
     <!-- Theme Configuration -->
     <script>
         tailwind.config = {
@@ -46,6 +48,7 @@
             },
         }
     </script>
+    <link rel="stylesheet" href="/styles/style.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/styles/auth.css">
 </head>
@@ -54,40 +57,35 @@
     class="bg-background-dark text-white font-display min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200">
 
     <!-- RaseGames Header -->
-    <header class="w-full border-b border-gray-800 bg-surface-dark sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3">
-                    <a href="/pages/games"
-                        class="text-xl font-bold tracking-tight hover:text-primary transition-colors">
-                        Rase Games
-                    </a>
-                </div>
-                <div class="flex items-center gap-6">
-                    <a href="/pages/games" class="text-sm text-gray-400 hover:text-primary transition-colors"
-                        data-i18n="nav.games">Games</a>
-                    <a href="/pages/about" class="text-sm text-gray-400 hover:text-primary transition-colors"
-                        data-i18n="nav.about">About</a>
-                    <a href="/raselab/"
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
-                        <span class="material-symbols-outlined text-[14px]">science</span>
-                        RaseLab
-                    </a>
-                    <!-- Language Toggle -->
-                    <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                        <button onclick="i18n.setLanguage('en')" data-lang-option="en"
-                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                        <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
-                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                    </div>
-                    <div id="user-display"></div>
-                </div>
-            </div>
+    <!-- RaseGames Header -->
+    <nav class="navbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000;">
+        <div class="logo">
+            <a href="/pages/games" style="text-decoration: none; color: inherit;">
+                <span class="logo-text">Rase Games</span>
+            </a>
         </div>
-    </header>
+        <div class="nav-links">
+            <a href="/pages/games" class="nav-link" data-i18n="nav.games">Games</a>
+            <a href="/pages/about" class="nav-link" data-i18n="nav.about">About</a>
+            <a href="/pages/leaderboard" class="nav-link" data-i18n="nav.leaderboard">Leaderboards</a>
+            <a href="/raselab/"
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
+                <span class="material-symbols-outlined text-[14px]">science</span>
+                RaseLab
+            </a>
+            <!-- Language Toggle -->
+            <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+            </div>
+            <div id="user-display"></div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow flex flex-col items-center justify-center p-4">
+    <main class="flex-grow flex flex-col items-center justify-center p-4 pt-24">
 
         <!-- Lobby Screen -->
         <div id="lobby-screen" class="screen active w-full max-w-lg">

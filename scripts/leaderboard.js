@@ -204,6 +204,25 @@ async function getLeaderboard(game, limit = 10) {
         return [];
     }
 
+    // Handle "all" games request
+    if (game === 'all') {
+        const games = ['snake', 'tetris', 'runner', 'flappy', 'fightarena', 'battleship', 'game2048', 'minesweeper', 'memory', 'tictactoe', 'clicker', 'pong'];
+        try {
+            const promises = games.map(g => getLeaderboard(g, 5)); // Get top 5 from each
+            const results = await Promise.all(promises);
+            let allEntries = results.flat();
+
+            // Sort by score descending (naive comparison across games)
+            allEntries.sort((a, b) => b.score - a.score);
+
+            // Take top 50
+            return allEntries.slice(0, 50);
+        } catch (e) {
+            console.error('Get all leaderboards error:', e);
+            return [];
+        }
+    }
+
     try {
         console.log(`Fetching leaderboard: ${game}`);
         const snapshot = await db.ref(`leaderboards/${game}`)
@@ -215,7 +234,9 @@ async function getLeaderboard(game, limit = 10) {
         snapshot.forEach(child => {
             entries.push({
                 name: child.val().name,
-                score: child.val().score
+                username: child.val().name, // Compatibility
+                score: child.val().score,
+                gameId: game // Attach gameId for display
             });
         });
 
@@ -275,8 +296,22 @@ async function loadAllLeaderboards() {
         getLeaderboard('minesweeper'),
         getLeaderboard('memory'),
         getLeaderboard('game2048'),
-        getLeaderboard('tictactoe')
+        getLeaderboard('tictactoe'),
+        getLeaderboard('battleship')
     ]);
+
+    renderLeaderboard('snake-leaderboard', snake);
+    renderLeaderboard('clicker-leaderboard', clicker);
+    renderLeaderboard('runner-leaderboard', runner);
+    renderLeaderboard('tetris-leaderboard', tetris);
+    renderLeaderboard('flappy-leaderboard', flappy);
+    renderLeaderboard('pong-leaderboard', pong);
+    renderLeaderboard('minesweeper-leaderboard', minesweeper);
+    renderLeaderboard('memory-leaderboard', memory);
+    renderLeaderboard('game2048-leaderboard', game2048);
+    renderLeaderboard('tictactoe-leaderboard', tictactoe);
+    // No specific element for battleship in all-dashboard view yet, but good to have fetched
+    // Use renderLeaderboard if there's an element, or generic container
 
     renderLeaderboard('snake-leaderboard', snake);
     renderLeaderboard('clicker-leaderboard', clicker);

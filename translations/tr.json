@@ -157,7 +157,13 @@
         "finalScore": "Final Skoru",
         "statistics": "İstatistikler",
         "score": "Puan",
+        "score": "Skor",
         "difficulty": "Zorluk",
+        "difficultyLevels": {
+            "easy": "Kolay",
+            "medium": "Orta",
+            "hard": "Zor"
+        },
         "bestScore": "En İyi Skor",
         "tips": "İpuçları",
         "resetSimulation": "Simülasyonu Sıfırla",
@@ -262,7 +268,140 @@
         "tools": "Araçlar",
         "awards": "Ödüller",
         "infrastructure": "Altyapı",
-        "certifications": "Sertifikalar"
+        "certifications": "Sertifikalar",
+        "upgradesList": {
+            "localhost": {
+                "name": "Localhost",
+                "desc": "Mütevazı bir başlangıç."
+            },
+            "git_repo": {
+                "name": "Git Deposu",
+                "desc": "Sürüm kontrolü anahtardır."
+            },
+            "vps": {
+                "name": "VPS Sunucu",
+                "desc": "Kendi sanal sunucunuz."
+            },
+            "cloud_cluster": {
+                "name": "Bulut Kümesi",
+                "desc": "Bulutlara ölçeklenin."
+            },
+            "cdn": {
+                "name": "CDN Ağı",
+                "desc": "Küresel içerik dağıtımı."
+            },
+            "firewall": {
+                "name": "Kurumsal Güvenlik Duvarı",
+                "desc": "Maksimum güvenlik."
+            },
+            "ai_assistant": {
+                "name": "Yapay Zeka Yardımcı Pilot",
+                "desc": "Yapay zeka sizin için kod yazar."
+            },
+            "quantum": {
+                "name": "Kuantum Bilgisayar",
+                "desc": "Klasik sınırların ötesinde."
+            },
+            "data_center": {
+                "name": "Hiper Ölçekli Veri Merkezi",
+                "desc": "Sonsuz işlem gücü."
+            },
+            "neural_net": {
+                "name": "Yapay Sinir Ağı Çiftliği",
+                "desc": "Duygusal kod üretimi."
+            }
+        },
+        "toolsList": {
+            "mech_keyboard": {
+                "name": "Mekanik Klavye",
+                "desc": "Daha hızlı yazma."
+            },
+            "dual_monitor": {
+                "name": "Çift Monitör",
+                "desc": "Daha fazla ekran alanı."
+            },
+            "overclock": {
+                "name": "Hız Aşırtmalı İşlemci",
+                "desc": "Sınırları zorla."
+            },
+            "ergonomic": {
+                "name": "Ergonomik Kurulum",
+                "desc": "Tüm gün kodla."
+            },
+            "liquid_cooling": {
+                "name": "Sıvı Soğutma",
+                "desc": "Basınç altında serin kal."
+            },
+            "caffeine": {
+                "name": "Damardan Kafein",
+                "desc": "Bir daha asla uyuma."
+            }
+        },
+        "awardsList": {
+            "hello_world": {
+                "name": "Merhaba Dünya",
+                "desc": "100 SK kazan"
+            },
+            "script_kiddie": {
+                "name": "Çaylak Yazılımcı",
+                "desc": "100 kez tıkla"
+            },
+            "junior_dev": {
+                "name": "Kıdemli Olmayan Geliştirici",
+                "desc": "1,000 SK kazan"
+            },
+            "clicker": {
+                "name": "Takıntılı Tıklayıcı",
+                "desc": "500 kez tıkla"
+            },
+            "mid_dev": {
+                "name": "Orta Seviye Geliştirici",
+                "desc": "10,000 SK kazan"
+            },
+            "senior_dev": {
+                "name": "Kıdemli Geliştirici",
+                "desc": "100,000 SK kazan"
+            },
+            "full_stack": {
+                "name": "Full Stack Geliştirici",
+                "desc": "1,000,000 SK kazan"
+            },
+            "tech_lead": {
+                "name": "Teknik Lider",
+                "desc": "10,000,000 SK kazan"
+            },
+            "cto": {
+                "name": "CTO",
+                "desc": "100,000,000 SK kazan"
+            },
+            "backup_secure": {
+                "name": "Yedekleme Güvende",
+                "desc": "Oyunu manuel olarak kaydet"
+            },
+            "first_upgrade": {
+                "name": "İlk Yükseltme",
+                "desc": "İlk yükseltmeni satın al"
+            },
+            "collector": {
+                "name": "Koleksiyoncu",
+                "desc": "Toplam 10 yükseltmeye sahip ol"
+            },
+            "event_hunter": {
+                "name": "Etkinlik Avcısı",
+                "desc": "5 rastgele olay yakala"
+            }
+        },
+        "events": {
+            "bug_bounty": "🐛 Hata Ödülü!",
+            "data_packet": "📦 Veri Paketi!",
+            "coffee": "☕ Kahve Molası!",
+            "sponsor": "💰 Sponsor Anlaşması!"
+        },
+        "common": {
+            "owned": "Sahip",
+            "buy": "Satın Al",
+            "purchased": "Alındı"
+        }
     },
     "fightArenaGame": {
         "title": "FIGHT ARENA",

@@ -163,6 +163,9 @@
                         <button onclick="loadLeaderboard('fightarena')"
                             class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
                             data-game="fightarena">⚔️ Fight Arena</button>
+                        <button onclick="loadLeaderboard('battleship')"
+                            class="game-filter-btn px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors"
+                            data-game="battleship">🚢 Battleship</button>
                     </div>
                 </div>
 
@@ -216,10 +219,16 @@
         const gameIcons = {
             'snake': '🐍', 'tetris': '🧱', 'runner': '🏃', 'clicker': '💎',
             'flappy': '🐦', '2048': '🔢', 'memory': '🃏', 'minesweeper': '💣',
-            'tictactoe': '⭕', 'fightarena': '⚔️', 'all': '🎮'
+            'tictactoe': '⭕', 'fightarena': '⚔️', 'battleship': '🚢', 'pong': '🏓', 'all': '🎮'
         };
 
-        function createPodiumCard(entry, rank) {
+        const gameNames = {
+            'snake': 'Snake', 'tetris': 'Tetris', 'runner': 'Cyber Runner', 'clicker': 'Rase Clicker',
+            'flappy': 'Pixel Bird', '2048': 'Power 2048', 'memory': 'Mind Match', 'minesweeper': 'Bomb Squad',
+            'tictactoe': 'Tic Tac Toe', 'fightarena': 'Fight Arena', 'battleship': 'Battleship', 'pong': 'Pong'
+        };
+
+        function createPodiumCard(entry, rank, gameId) {
             const colors = {
                 1: { border: 'border-t-rank-gold', bg: 'bg-gold-gradient', glow: 'gold-glow', size: 'h-[400px]', avatar: 'size-28', badge: 'bg-rank-gold text-black' },
                 2: { border: 'border-t-rank-silver', bg: 'bg-silver-gradient', glow: 'silver-glow', size: 'h-[340px]', avatar: 'size-20', badge: 'bg-rank-silver text-black' },
@@ -229,6 +238,11 @@
             const icon = rank === 1 ? 'emoji_events' : 'military_tech';
             const iconColor = rank === 1 ? 'text-rank-gold' : rank === 2 ? 'text-rank-silver' : 'text-rank-bronze';
 
+            // Use entry.name instead of entry.username, and use passed gameId
+            const displayName = entry.name || entry.username || 'Anonymous';
+            const displayGame = gameNames[gameId] || gameNames[entry.gameId] || 'Game';
+            const displayIcon = gameIcons[gameId] || gameIcons[entry.gameId] || '🎮';
+
             return `
                 <div class="w-full md:w-[${rank === 1 ? '320' : '280'}px] relative ${rank === 1 ? 'z-10 -mt-10 md:-mt-0' : ''} order-${rank === 1 ? '1 md:order-2' : rank === 2 ? '2 md:order-1' : '3'}">
                     <div class="flex flex-col items-center bg-surface-dark ${c.bg} border border-t-4 border-white/10 ${c.border} rounded-xl p-6 ${c.glow} card-hover-effect ${c.size}">
@@ -237,12 +251,12 @@
                         </div>
                         <div class="mt-8 mb-4 relative">
                             <div class="${c.avatar} rounded-full bg-primary/20 flex items-center justify-center text-4xl border-2 ${c.border.replace('border-t-', 'border-')}">
-                                ${entry.username?.charAt(0)?.toUpperCase() || '?'}
+                                ${displayName.charAt(0).toUpperCase()}
                             </div>
                             <div class="absolute -bottom-2 -right-2 ${c.badge} font-bold size-6 flex items-center justify-center rounded-full border border-surface-dark">${rank}</div>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-1">${entry.username || 'Anonymous'}</h3>
-                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-4">${gameIcons[entry.gameId] || '🎮'} ${entry.gameName || 'Game'}</p>
+                        <h3 class="text-xl font-bold text-white mb-1">${displayName}</h3>
+                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-4">${displayIcon} ${displayGame}</p>
                         <div class="w-full grid grid-cols-1 gap-2 mt-auto">
                             <div class="bg-background-dark/50 rounded-lg p-3 text-center">
                                 <p class="text-[10px] text-gray-500 uppercase">Score</p>
@@ -254,9 +268,13 @@
             `;
         }
 
-        function createLeaderboardRow(entry, rank) {
+        function createLeaderboardRow(entry, rank, gameId) {
             const bgColors = ['bg-red-900/50', 'bg-blue-900/50', 'bg-green-900/50', 'bg-yellow-900/50', 'bg-purple-900/50'];
             const bgColor = bgColors[rank % bgColors.length];
+
+            const displayName = entry.name || entry.username || 'Anonymous';
+            const displayGame = gameNames[gameId] || gameNames[entry.gameId] || 'Game';
+            const displayIcon = gameIcons[gameId] || gameIcons[entry.gameId] || '🎮';
 
             return `
                 <div class="group flex flex-col md:grid md:grid-cols-12 gap-4 items-center bg-surface-dark hover:bg-white/5 border border-white/5 rounded-lg p-4 transition-all duration-200 hover:border-primary/30 hover:translate-x-1">
@@ -265,15 +283,15 @@
                     </div>
                     <div class="col-span-5 flex items-center gap-3 w-full md:w-auto">
                         <div class="size-10 rounded-full ${bgColor} flex items-center justify-center text-white font-bold border border-white/10">
-                            ${entry.username?.substring(0, 2)?.toUpperCase() || '??'}
+                            ${displayName.substring(0, 2).toUpperCase()}
                         </div>
                         <div>
-                            <h4 class="text-white font-bold group-hover:text-primary transition-colors">${entry.username || 'Anonymous'}</h4>
+                            <h4 class="text-white font-bold group-hover:text-primary transition-colors">${displayName}</h4>
                         </div>
                     </div>
                     <div class="hidden md:flex col-span-3 items-center gap-2">
-                        <span class="text-2xl">${gameIcons[entry.gameId] || '🎮'}</span>
-                        <span class="text-gray-300 text-sm">${entry.gameName || 'Game'}</span>
+                        <span class="text-2xl">${displayIcon}</span>
+                        <span class="text-gray-300 text-sm">${displayGame}</span>
                     </div>
                     <div class="hidden md:block col-span-3 text-right text-white font-bold">${entry.score?.toLocaleString() || 0}</div>
                 </div>
@@ -299,14 +317,10 @@
             listContainer.innerHTML = '<p class="text-gray-500 text-center py-10">Loading...</p>';
 
             try {
-                // Use LeaderboardSystem if available
+                // Use Leaderboard global object
                 let entries = [];
-                if (window.LeaderboardSystem && typeof window.LeaderboardSystem.getLeaderboard === 'function') {
-                    if (gameFilter === 'all') {
-                        entries = await LeaderboardSystem.getLeaderboard('all', 50);
-                    } else {
-                        entries = await LeaderboardSystem.getLeaderboard(gameFilter, 50);
-                    }
+                if (window.Leaderboard && typeof window.Leaderboard.get === 'function') {
+                    entries = await window.Leaderboard.get(gameFilter, 50);
                 }
 
                 if (entries.length === 0) {
@@ -323,12 +337,12 @@
 
                 // Top 3 for podium
                 const top3 = entries.slice(0, 3);
-                podiumContainer.innerHTML = top3.map((e, i) => createPodiumCard(e, i + 1)).join('');
+                podiumContainer.innerHTML = top3.map((e, i) => createPodiumCard(e, i + 1, gameFilter)).join('');
 
                 // Rest for list
                 const rest = entries.slice(3);
                 if (rest.length > 0) {
-                    listContainer.innerHTML = rest.map((e, i) => createLeaderboardRow(e, i + 4)).join('');
+                    listContainer.innerHTML = rest.map((e, i) => createLeaderboardRow(e, i + 4, gameFilter)).join('');
                 } else {
                     listContainer.innerHTML = '';
                 }

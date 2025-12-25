@@ -787,6 +787,39 @@ io.on('connection', (socket) => {
         });
     });
 
+    // Surrender
+    socket.on('battleship:surrender', () => {
+        console.log(`[BATTLESHIP] Surrender received from ${socket.id}`);
+        const code = battleshipPlayerRooms.get(socket.id);
+        if (!code) {
+            console.log('[BATTLESHIP] Surrender failed: Player not in a room');
+            return;
+        }
+
+        const room = battleshipRooms.get(code);
+        if (!room) {
+            console.log('[BATTLESHIP] Surrender failed: Room not found');
+            return;
+        }
+
+        const winner = room.host === socket.id ? room.guest : room.host;
+
+        // Calculate stats (optional, could be improved)
+        const stats = {
+            shots: 0,
+            accuracy: 0
+        };
+
+        io.to(`battleship:${code}`).emit('battleship:gameOver', {
+            winner: winner,
+            stats: stats,
+            reason: 'surrender'
+        });
+
+        // Reset room state for possible rematch
+        room.state = 'gameover';
+    });
+
     // Leave room
     socket.on('battleship:leaveRoom', () => {
         leaveBattleshipRoom(socket.id);

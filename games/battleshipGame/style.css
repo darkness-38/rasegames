@@ -8,12 +8,9 @@
 }
 
 /* Screen Management */
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
+/* Screen Management */
+.screen:not(.active) {
+    display: none !important;
 }
 
 /* Grid Container */
@@ -557,17 +554,21 @@
         font-size: 9px;
     }
 }
+
 /* Chat Styles */
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.2);
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #00d4ff;
     border-radius: 3px;
 }
+
 .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: #00d4ff rgba(0, 0, 0, 0.2);
@@ -605,6 +606,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

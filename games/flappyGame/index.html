@@ -53,22 +53,24 @@
                 class="text-xl font-bold leading-tight tracking-tight hover:text-primary transition-colors">Rase
                 Games</a>
         </div>
-        <div class="flex items-center gap-6">
-            <a href="/pages/games" class="text-sm text-[#9da6b9] hover:text-primary transition-colors">Games</a>
-            <a href="/pages/about" class="text-sm text-[#9da6b9] hover:text-primary transition-colors">About</a>
-            <a href="/pages/leaderboard"
-                class="text-sm text-[#9da6b9] hover:text-primary transition-colors">Leaderboards</a>
-            <a href="/raselab/"
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
-                <span class="material-symbols-outlined text-[14px]">science</span>
-                RaseLab
-            </a>
-            <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+        <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+            <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+            <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+        </div>
+        <div id="user-display"></div>
+        <a href="/pages/games" class="text-sm text-[#9da6b9] hover:text-primary transition-colors"
+            data-i18n="nav.games">Games</a>
+        <a href="/pages/about" class="text-sm text-[#9da6b9] hover:text-primary transition-colors"
+            data-i18n="nav.about">About</a>
+        <a href="/pages/leaderboard" class="text-sm text-[#9da6b9] hover:text-primary transition-colors"
+            data-i18n="nav.leaderboard">Leaderboards</a>
+        <a href="/raselab/"
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
+            <span class="material-symbols-outlined text-[14px]">science</span>
+            <span data-i18n="raselab.title">RaseLab</span>
+        </a>
         </div>
     </header>
 
@@ -82,9 +84,10 @@
                     <div>
                         <h1 class="text-white tracking-light text-2xl font-bold leading-tight flex items-center gap-2">
                             <span class="material-symbols-outlined text-primary">flutter_dash</span>
-                            Pixel Bird
+                            <span data-i18n="flappy.title">Pixel Bird</span>
                         </h1>
-                        <p class="text-[#9da6b9] text-sm mt-1">Tap or press Space to fly!</p>
+                        <p class="text-[#9da6b9] text-sm mt-1" data-i18n="flappy.tapToFly">Tap or press Space to fly!
+                        </p>
                     </div>
                 </div>
 
@@ -98,12 +101,13 @@
                         class="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-20">
                         <div class="text-center p-8">
                             <div class="text-6xl mb-4">🐦</div>
-                            <h2 class="text-3xl font-bold mb-2 text-white">Pixel Bird</h2>
-                            <p class="text-[#9da6b9] mb-6">Avoid the pipes and fly high!</p>
+                            <h2 class="text-3xl font-bold mb-2 text-white" data-i18n="flappy.title">Pixel Bird</h2>
+                            <p class="text-[#9da6b9] mb-6" data-i18n="flappy.instruction">Avoid the pipes and fly high!
+                            </p>
                             <button id="startBtn"
                                 class="flex items-center justify-center gap-2 px-8 py-3 bg-primary hover:bg-blue-700 text-white font-bold rounded-lg transition-colors shadow-[0_4px_0_#0a3690] active:shadow-none active:translate-y-[4px] mx-auto">
                                 <span class="material-symbols-outlined">play_arrow</span>
-                                Start Game
+                                <span data-i18n="common.startGame">Start Game</span>
                             </button>
                         </div>
                     </div>
@@ -112,18 +116,20 @@
                     <div id="gameOverScreen"
                         class="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                         <div class="text-center p-8 bg-[#1c1f27] rounded-2xl border border-[#282e39] max-w-sm">
-                            <h2 class="text-3xl font-bold mb-4 text-red-500">Game Over</h2>
+                            <h2 class="text-3xl font-bold mb-4 text-red-500" data-i18n="common.gameOver">Game Over</h2>
                             <div class="bg-[#282e39] rounded-xl p-4 mb-4">
-                                <p class="text-[#9da6b9] text-xs uppercase mb-1">Final Score</p>
+                                <p class="text-[#9da6b9] text-xs uppercase mb-1" data-i18n="common.finalScore">Final
+                                    Score</p>
                                 <p id="finalScore" class="text-5xl font-bold text-white">0</p>
                             </div>
                             <div id="newBest" class="text-yellow-500 font-bold mb-4 hidden">
-                                <span class="material-symbols-outlined">emoji_events</span> New Best!
+                                <span class="material-symbols-outlined">emoji_events</span> <span
+                                    data-i18n="common.newBest">New Best!</span>
                             </div>
                             <button id="restartBtn"
                                 class="flex items-center justify-center gap-2 px-8 py-3 bg-primary hover:bg-blue-700 text-white font-bold rounded-lg transition-colors shadow-[0_4px_0_#0a3690] active:shadow-none active:translate-y-[4px] mx-auto">
                                 <span class="material-symbols-outlined">refresh</span>
-                                Try Again
+                                <span data-i18n="common.tryAgain">Try Again</span>
                             </button>
                         </div>
                     </div>
@@ -136,11 +142,13 @@
                 <div class="bg-[#1c1f27] rounded-xl border border-[#282e39] p-6 shadow-sm">
                     <div class="flex items-center gap-2 mb-6 text-[#9da6b9]">
                         <span class="material-symbols-outlined">bar_chart</span>
-                        <h3 class="text-sm font-bold uppercase tracking-wider">Statistics</h3>
+                        <h3 class="text-sm font-bold uppercase tracking-wider" data-i18n="common.statistics">Statistics
+                        </h3>
                     </div>
                     <div class="flex flex-col gap-6">
                         <div>
-                            <p class="text-[#9da6b9] text-xs font-medium uppercase mb-1">Current Score</p>
+                            <p class="text-[#9da6b9] text-xs font-medium uppercase mb-1"
+                                data-i18n="common.currentScore">Current Score</p>
                             <div class="flex items-baseline gap-2">
                                 <span id="score" class="text-5xl font-bold text-white tracking-tighter">0</span>
                             </div>
@@ -148,7 +156,8 @@
                         <div class="h-px w-full bg-[#282e39]"></div>
                         <div class="flex justify-between items-center">
                             <div>
-                                <p class="text-[#9da6b9] text-xs font-medium uppercase mb-1">Best Score</p>
+                                <p class="text-[#9da6b9] text-xs font-medium uppercase mb-1"
+                                    data-i18n="common.bestScore">Best Score</p>
                                 <p id="highScore" class="text-2xl font-bold text-white">0</p>
                             </div>
                             <div
@@ -163,16 +172,16 @@
                 <div class="bg-[#1c1f27] rounded-xl border border-[#282e39] p-6 shadow-sm flex-1">
                     <div class="flex items-center gap-2 mb-4 text-[#9da6b9]">
                         <span class="material-symbols-outlined">gamepad</span>
-                        <h3 class="text-sm font-bold uppercase tracking-wider">Controls</h3>
+                        <h3 class="text-sm font-bold uppercase tracking-wider" data-i18n="common.controls">Controls</h3>
                     </div>
                     <ul class="flex flex-col gap-3">
                         <li class="flex items-center justify-between text-sm">
-                            <span class="text-white">Flap / Jump</span>
+                            <span class="text-white" data-i18n="flappy.flapJump">Flap / Jump</span>
                             <kbd
                                 class="px-2 py-1 bg-[#282e39] rounded border-b-2 border-[#0f1218] text-xs font-mono text-white min-w-[60px] text-center">SPACE</kbd>
                         </li>
                         <li class="flex items-center justify-between text-sm">
-                            <span class="text-white">Click / Tap</span>
+                            <span class="text-white" data-i18n="flappy.clickTap">Click / Tap</span>
                             <kbd
                                 class="px-2 py-1 bg-[#282e39] rounded border-b-2 border-[#0f1218] text-xs font-mono text-white min-w-[60px] text-center">CLICK</kbd>
                         </li>
@@ -183,20 +192,20 @@
                 <div class="bg-[#1c1f27] rounded-xl border border-[#282e39] p-6 shadow-sm">
                     <div class="flex items-center gap-2 mb-4 text-[#9da6b9]">
                         <span class="material-symbols-outlined">lightbulb</span>
-                        <h3 class="text-sm font-bold uppercase tracking-wider">Tips</h3>
+                        <h3 class="text-sm font-bold uppercase tracking-wider" data-i18n="common.tips">Tips</h3>
                     </div>
                     <ul class="flex flex-col gap-2 text-sm text-[#9da6b9]">
                         <li class="flex items-start gap-2">
                             <span class="text-primary">•</span>
-                            Stay near the center
+                            <span data-i18n="flappy.tips.1">Stay near the center</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="text-primary">•</span>
-                            Time your flaps carefully
+                            <span data-i18n="flappy.tips.2">Time your flaps carefully</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="text-primary">•</span>
-                            Keep a steady rhythm
+                            <span data-i18n="flappy.tips.3">Keep a steady rhythm</span>
                         </li>
                     </ul>
                 </div>

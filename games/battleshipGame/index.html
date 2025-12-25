@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship - Rase Games</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link crossorigin rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Socket.io -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <!-- Auth & i18n -->
+    <script src="/scripts/i18n.js"></script>
+    <script src="/scripts/auth.js"></script>
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f49bd",
+                        "primary-dark": "#0a3690",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a1628",
+                        "surface-dark": "#0f1d32",
+                        "surface-light": "#ffffff",
+                        "ocean": "#0d2847",
+                        "ocean-light": "#1a3a5c",
+                        "ocean-accent": "#00d4ff",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/styles/auth.css">
+</head>
+
+<body
+    class="bg-background-dark text-white font-display min-h-screen flex flex-col overflow-x-hidden transition-colors duration-200">
+
+    <!-- RaseGames Header -->
+    <header class="w-full border-b border-gray-800 bg-surface-dark sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <a href="/pages/games"
+                        class="text-xl font-bold tracking-tight hover:text-primary transition-colors">
+                        Rase Games
+                    </a>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="/pages/games" class="text-sm text-gray-400 hover:text-primary transition-colors">Games</a>
+                    <a href="/pages/about" class="text-sm text-gray-400 hover:text-primary transition-colors">About</a>
+                    <a href="/raselab/"
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
+                        <span class="material-symbols-outlined text-[14px]">science</span>
+                        RaseLab
+                    </a>
+                    <!-- Language Toggle -->
+                    <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                        <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                        <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                            class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+                    </div>
+                    <div id="user-display"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4">
+
+        <!-- Lobby Screen -->
+        <div id="lobby-screen" class="screen active w-full max-w-lg">
+            <div class="text-center mb-8">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ocean-accent/10 text-ocean-accent text-sm font-bold mb-4">
+                    <span class="material-symbols-outlined">sailing</span>
+                    <span data-i18n="badges.multiplayer">MULTIPLAYER</span>
+                </div>
+                <h1 class="text-5xl font-black mb-2 bg-gradient-to-r from-ocean-accent via-blue-400 to-cyan-300 bg-clip-text text-transparent"
+                    data-i18n="battleship.title">
+                    BATTLESHIP
+                </h1>
+                <p class="text-gray-400" data-i18n="battleship.subtitle">Naval Warfare Strategy</p>
+            </div>
+
+            <div class="glass-panel rounded-2xl p-8 space-y-6">
+                <!-- Create Room Button -->
+                <button id="create-room-btn"
+                    class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-ocean-accent to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-ocean-accent/25 flex items-center justify-center gap-3">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span data-i18n="battleship.createRoom">Create Room</span>
+                </button>
+
+                <div class="flex items-center gap-4">
+                    <div class="flex-1 h-px bg-gray-700"></div>
+                    <span class="text-gray-500 text-sm">OR</span>
+                    <div class="flex-1 h-px bg-gray-700"></div>
+                </div>
+
+                <!-- Join Room -->
+                <div class="space-y-3">
+                    <label class="text-sm text-gray-400" data-i18n="battleship.enterCode">Enter Room Code</label>
+                    <div class="flex gap-3">
+                        <input id="room-code-input" type="text" maxlength="6" placeholder="ABC123"
+                            class="flex-1 px-4 py-3 rounded-xl bg-ocean/50 border border-gray-700 focus:border-ocean-accent focus:ring-1 focus:ring-ocean-accent text-white text-center text-xl font-mono uppercase tracking-widest placeholder:text-gray-600">
+                        <button id="join-room-btn"
+                            class="px-6 py-3 rounded-xl bg-ocean-light hover:bg-ocean border border-gray-700 hover:border-ocean-accent text-white font-bold transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">login</span>
+                            <span data-i18n="battleship.joinRoom">Join</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="lobby-error"
+                    class="hidden text-red-400 text-center text-sm py-2 px-4 rounded-lg bg-red-500/10"></div>
+            </div>
+
+            <!-- Available Rooms -->
+            <div class="mt-8">
+                <h3 class="text-gray-400 text-sm font-medium mb-3 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg">groups</span>
+                    <span data-i18n="battleship.availableRooms">Available Rooms</span>
+                </h3>
+                <div id="rooms-list" class="space-y-2 max-h-48 overflow-y-auto">
+                    <p class="text-gray-600 text-sm text-center py-4" data-i18n="battleship.noRooms">No rooms available
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Waiting Screen -->
+        <div id="waiting-screen" class="screen w-full max-w-lg text-center">
+            <div class="glass-panel rounded-2xl p-8">
+                <div class="animate-pulse mb-6">
+                    <span class="text-6xl">🚢</span>
+                </div>
+                <h2 class="text-2xl font-bold mb-2" data-i18n="battleship.waitingForOpponent">Waiting for opponent...
+                </h2>
+                <p class="text-gray-400 mb-6" data-i18n="battleship.shareCode">Share this code with your friend</p>
+
+                <div class="bg-ocean/50 rounded-xl p-4 mb-6">
+                    <p class="text-sm text-gray-400 mb-2" data-i18n="battleship.roomCode">Room Code</p>
+                    <p id="display-room-code" class="text-4xl font-mono font-bold tracking-widest text-ocean-accent">
+                    </p>
+                </div>
+
+                <button id="cancel-waiting-btn"
+                    class="px-6 py-3 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 font-medium transition-all">
+                    <span data-i18n="battleship.cancelMatch">Cancel</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Ship Placement Screen -->
+        <div id="placement-screen" class="screen w-full max-w-6xl">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold mb-2" data-i18n="battleship.placeYourShips">Place Your Ships</h2>
+                <p class="text-gray-400" data-i18n="battleship.placementInstructions">Click to place, R to rotate</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- Ships to Place -->
+                <div class="glass-panel rounded-xl p-4 order-2 lg:order-1">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-ocean-accent">anchor</span>
+                        <span data-i18n="battleship.yourFleet">Your Fleet</span>
+                    </h3>
+                    <div id="ships-to-place" class="space-y-3">
+                        <!-- Ships will be added here -->
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-700">
+                        <p class="text-sm text-gray-400 mb-2">
+                            <span class="material-symbols-outlined text-sm align-middle">screen_rotation</span>
+                            <span data-i18n="battleship.rotateHint">Press R to rotate ship</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Placement Grid -->
+                <div class="order-1 lg:order-2 flex flex-col items-center">
+                    <div class="grid-container mb-4">
+                        <div class="grid-labels-top"></div>
+                        <div class="grid-labels-left"></div>
+                        <div id="placement-grid" class="game-grid"></div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button id="random-placement-btn"
+                            class="px-6 py-3 rounded-xl bg-ocean-light hover:bg-ocean border border-gray-700 text-white font-medium transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">casino</span>
+                            <span data-i18n="battleship.randomize">Randomize</span>
+                        </button>
+                        <button id="ready-btn" disabled
+                            class="px-8 py-3 rounded-xl bg-green-600 hover:bg-green-500 disabled:bg-gray-700 disabled:text-gray-500 text-white font-bold transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span data-i18n="battleship.ready">Ready</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Opponent Status -->
+                <div class="glass-panel rounded-xl p-4 order-3">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-red-400">person</span>
+                        <span data-i18n="battleship.opponent">Opponent</span>
+                    </h3>
+                    <div id="opponent-status" class="text-center py-8">
+                        <div
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 text-yellow-400">
+                            <div class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></div>
+                            <span data-i18n="battleship.placingShips">Placing ships...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Battle Screen -->
+        <div id="battle-screen" class="screen w-full max-w-6xl">
+            <!-- Turn Indicator -->
+            <div id="turn-indicator" class="text-center mb-6">
+                <div id="turn-badge" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-lg font-bold">
+                    <span class="material-symbols-outlined">hourglass_top</span>
+                    <span id="turn-text" data-i18n="battleship.yourTurn">Your Turn</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Opponent's Grid (Attack Here) -->
+                <div class="flex flex-col items-center">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-red-400">gps_fixed</span>
+                        <span data-i18n="battleship.enemyWaters">Enemy Waters</span>
+                    </h3>
+                    <div class="grid-container">
+                        <div class="grid-labels-top"></div>
+                        <div class="grid-labels-left"></div>
+                        <div id="attack-grid" class="game-grid attack-mode"></div>
+                    </div>
+                    <!-- Enemy Fleet Status -->
+                    <div id="enemy-fleet-status" class="mt-4 flex flex-wrap justify-center gap-2">
+                        <!-- Ship status indicators -->
+                    </div>
+                </div>
+
+                <!-- Your Grid (Defense View) -->
+                <div class="flex flex-col items-center">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-ocean-accent">shield</span>
+                        <span data-i18n="battleship.yourFleet">Your Fleet</span>
+                    </h3>
+                    <div class="grid-container">
+                        <div class="grid-labels-top"></div>
+                        <div class="grid-labels-left"></div>
+                        <div id="defense-grid" class="game-grid"></div>
+                    </div>
+                    <!-- Your Fleet Status -->
+                    <div id="your-fleet-status" class="mt-4 flex flex-wrap justify-center gap-2">
+                        <!-- Ship status indicators -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battle Log -->
+            <div class="mt-8 glass-panel rounded-xl p-4 max-w-2xl mx-auto">
+                <h4 class="text-sm font-semibold text-gray-400 mb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">history</span>
+                    <span data-i18n="battleship.battleLog">Battle Log</span>
+                </h4>
+                <div id="battle-log" class="max-h-24 overflow-y-auto space-y-1 text-sm">
+                    <p class="text-gray-600" data-i18n="battleship.battleBegins">Battle begins!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen w-full max-w-lg text-center">
+            <div class="glass-panel rounded-2xl p-8">
+                <div id="result-icon" class="text-8xl mb-4">🏆</div>
+                <h2 id="result-title" class="text-4xl font-black mb-2" data-i18n="battleship.victory">VICTORY!</h2>
+                <p id="result-subtitle" class="text-gray-400 mb-8" data-i18n="battleship.victoryMessage">You destroyed
+                    the enemy fleet!</p>
+
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-ocean/50 rounded-xl p-4">
+                        <p class="text-2xl font-bold text-ocean-accent" id="shots-fired">0</p>
+                        <p class="text-sm text-gray-400" data-i18n="battleship.shotsFired">Shots Fired</p>
+                    </div>
+                    <div class="bg-ocean/50 rounded-xl p-4">
+                        <p class="text-2xl font-bold text-green-400" id="accuracy">0%</p>
+                        <p class="text-sm text-gray-400" data-i18n="battleship.accuracy">Accuracy</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 justify-center">
+                    <button id="rematch-btn"
+                        class="px-6 py-3 rounded-xl bg-gradient-to-r from-ocean-accent to-blue-500 text-white font-bold transition-all hover:scale-105 flex items-center gap-2">
+                        <span class="material-symbols-outlined">replay</span>
+                        <span data-i18n="battleship.playAgain">Play Again</span>
+                    </button>
+                    <button id="exit-btn"
+                        class="px-6 py-3 rounded-xl bg-gray-700 hover:bg-gray-600 text-white font-medium transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined">home</span>
+                        <span data-i18n="common.back">Back</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Hit/Miss Animation Overlay -->
+    <div id="animation-overlay" class="fixed inset-0 pointer-events-none z-50 flex items-center justify-center hidden">
+        <div id="animation-text" class="text-6xl font-black"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

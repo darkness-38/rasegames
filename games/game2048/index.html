@@ -100,22 +100,24 @@
                 class="text-xl font-bold leading-tight tracking-tight hover:text-primary transition-colors">Rase
                 Games</a>
         </div>
-        <div class="flex items-center gap-6">
-            <a href="/pages/games" class="text-sm text-[#9da6b9] hover:text-primary transition-colors">Games</a>
-            <a href="/pages/about" class="text-sm text-[#9da6b9] hover:text-primary transition-colors">About</a>
-            <a href="/pages/leaderboard"
-                class="text-sm text-[#9da6b9] hover:text-primary transition-colors">Leaderboards</a>
-            <a href="/raselab/"
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
-                <span class="material-symbols-outlined text-[14px]">science</span>
-                RaseLab
-            </a>
-            <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+        <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+            <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+            <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+        </div>
+        <div id="user-display"></div>
+        <a href="/pages/games" class="text-sm text-[#9da6b9] hover:text-primary transition-colors"
+            data-i18n="nav.games">Games</a>
+        <a href="/pages/about" class="text-sm text-[#9da6b9] hover:text-primary transition-colors"
+            data-i18n="nav.about">About</a>
+        <a href="/pages/leaderboard" class="text-sm text-[#9da6b9] hover:text-primary transition-colors"
+            data-i18n="nav.leaderboard">Leaderboards</a>
+        <a href="/raselab/"
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all no-underline hover:scale-105">
+            <span class="material-symbols-outlined text-[14px]">science</span>
+            <span data-i18n="raselab.title">RaseLab</span>
+        </a>
         </div>
     </header>
 
@@ -132,22 +134,24 @@
                             class="size-10 flex items-center justify-center bg-primary rounded-lg shadow-lg shadow-primary/20">
                             <span class="material-symbols-outlined text-2xl">bolt</span>
                         </span>
-                        Power 2048
+                        <span data-i18n="game2048.title">Power 2048</span>
                     </h1>
-                    <p class="text-slate-400 text-sm font-medium leading-relaxed">Join the numbers and reach the <span
-                            class="text-white font-bold">2048 tile!</span></p>
+                    <p class="text-slate-400 text-sm font-medium leading-relaxed" data-i18n="game2048.joinNumbers">Join
+                        the numbers and reach the <span class="text-white font-bold">2048 tile!</span></p>
                 </div>
 
                 <!-- Tile Cards -->
                 <div class="flex gap-3">
                     <div
                         class="flex min-w-[100px] flex-col gap-1 rounded-lg bg-[#1e293b] border border-[#3b4354] py-2 px-4 items-center text-center shadow-lg">
-                        <span class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase">Current</span>
+                        <span class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase"
+                            data-i18n="common.currentScore">Current</span>
                         <span id="currentTile" class="text-white text-xl font-bold leading-none">0</span>
                     </div>
                     <div
                         class="flex min-w-[100px] flex-col gap-1 rounded-lg bg-[#1e293b] border border-[#3b4354] py-2 px-4 items-center text-center shadow-lg">
-                        <span class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase">Best</span>
+                        <span class="text-[#9da6b9] text-xs font-bold tracking-widest uppercase"
+                            data-i18n="common.best">Best</span>
                         <span id="bestTile" class="text-white text-xl font-bold leading-none">0</span>
                     </div>
                 </div>
@@ -167,12 +171,12 @@
                     <button id="restartBtn"
                         class="flex items-center justify-center rounded-lg h-10 px-6 bg-primary hover:bg-primary-dark transition-colors text-white text-sm font-bold tracking-wide shadow-lg shadow-primary/20">
                         <span class="material-symbols-outlined mr-2 text-[20px]">restart_alt</span>
-                        New Game
+                        <span data-i18n="common.newGame">New Game</span>
                     </button>
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-between items-center text-[#9da6b9] text-sm">
-                    <p class="mb-2 sm:mb-0">
+                    <p class="mb-2 sm:mb-0" data-i18n="game2048.controls">
                         Use <strong class="text-white">arrow keys</strong> or <strong class="text-white">swipe</strong>
                         to move
                     </p>
@@ -191,13 +195,13 @@
     <div id="gameOverScreen"
         class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden">
         <div class="bg-[#1e293b] p-8 rounded-2xl shadow-2xl border border-[#3b4354] max-w-md text-center">
-            <h2 class="text-3xl font-bold mb-4 text-red-400">Game Over</h2>
-            <p class="text-slate-400 mb-2">Highest Tile</p>
+            <h2 class="text-3xl font-bold mb-4 text-red-400" data-i18n="common.gameOver">Game Over</h2>
+            <p class="text-slate-400 mb-2" data-i18n="game2048.highestTile">Highest Tile</p>
             <p id="finalScore" class="text-5xl font-bold text-white mb-6">0</p>
             <button id="gameOverRestartBtn"
                 class="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mx-auto">
                 <span class="material-symbols-outlined">restart_alt</span>
-                Try Again
+                <span data-i18n="common.tryAgain">Try Again</span>
             </button>
         </div>
     </div>

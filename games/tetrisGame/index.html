@@ -70,24 +70,26 @@
                 <div class="size-8 text-primary">
                     <span class="material-symbols-outlined !text-[32px]">arrow_back</span>
                 </div>
-                <span class="text-sm text-gray-400">Back to Games</span>
+                <span class="text-sm text-gray-400" data-i18n="common.backToGames">Back to Games</span>
             </a>
         </div>
         <div class="flex items-center gap-3">
             <div class="size-8 text-primary animate-pulse">
                 <span class="material-symbols-outlined !text-[32px]">grid_view</span>
             </div>
-            <h2
-                class="text-white text-xl lg:text-2xl font-bold leading-tight tracking-[0.05em] drop-shadow-[0_0_8px_rgba(15,73,189,0.8)]">
+            <h2 class="text-white text-xl lg:text-2xl font-bold leading-tight tracking-[0.05em] drop-shadow-[0_0_8px_rgba(15,73,189,0.8)]"
+                data-i18n="tetris.title">
                 CYBER BLOCKS</h2>
         </div>
         <div class="flex items-center gap-3">
             <!-- Language Toggle -->
-                <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
-                    <button onclick="i18n.setLanguage('en')" data-lang-option="en" class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
-                    <button onclick="i18n.setLanguage('tr')" data-lang-option="tr" class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
-                </div>
-                <div id="user-display"></div>
+            <div class="flex items-center gap-1 bg-[#282e39] rounded-full p-1">
+                <button onclick="i18n.setLanguage('en')" data-lang-option="en"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">EN</button>
+                <button onclick="i18n.setLanguage('tr')" data-lang-option="tr"
+                    class="px-2 py-1 rounded-full text-xs font-bold transition-all">TR</button>
+            </div>
+            <div id="user-display"></div>
             <button
                 class="flex items-center justify-center rounded-lg h-10 w-10 hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
                 <span class="material-symbols-outlined">volume_up</span>
@@ -109,7 +111,8 @@
                     </div>
                     <div class="flex items-center gap-2 mb-2">
                         <span class="material-symbols-outlined text-primary text-xl">trophy</span>
-                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">Score</p>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase" data-i18n="common.score">
+                            Score</p>
                     </div>
                     <p id="score"
                         class="text-white text-3xl font-bold leading-none tracking-tight tabular-nums drop-shadow-md">0
@@ -125,7 +128,8 @@
                     </div>
                     <div class="flex items-center gap-2 mb-2">
                         <span class="material-symbols-outlined text-purple-400 text-xl">trending_up</span>
-                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">Level</p>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase" data-i18n="common.level">
+                            Level</p>
                     </div>
                     <p id="level" class="text-white text-3xl font-bold leading-none tracking-tight tabular-nums">01</p>
                 </div>
@@ -138,16 +142,18 @@
                     </div>
                     <div class="flex items-center gap-2 mb-2">
                         <span class="material-symbols-outlined text-cyan-400 text-xl">layers</span>
-                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase">Lines</p>
+                        <p class="text-gray-400 text-xs font-bold tracking-widest uppercase" data-i18n="tetris.lines">
+                            Lines</p>
                     </div>
                     <p id="lines" class="text-white text-3xl font-bold leading-none tracking-tight tabular-nums">0</p>
                 </div>
 
                 <!-- Controls Legend (Desktop) -->
                 <div class="hidden lg:flex flex-col gap-3 mt-4 p-4 border border-white/5 rounded-xl bg-black/20">
-                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Controls</p>
+                    <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1"
+                        data-i18n="common.controls">Controls</p>
                     <div class="flex items-center justify-between text-xs text-gray-400">
-                        <span>Move</span>
+                        <span data-i18n="tetris.move">Move</span>
                         <div class="flex gap-1">
                             <span class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_back</span>
                             <span
@@ -155,19 +161,19 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-400">
-                        <span>Rotate</span>
+                        <span data-i18n="tetris.rotate">Rotate</span>
                         <span class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_upward</span>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-400">
-                        <span>Drop</span>
+                        <span data-i18n="tetris.drop">Drop</span>
                         <span class="material-symbols-outlined text-sm bg-white/10 rounded p-0.5">arrow_downward</span>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-400">
-                        <span>Hard Drop</span>
+                        <span data-i18n="tetris.hardDrop">Hard Drop</span>
                         <div class="px-1.5 py-0.5 bg-white/10 rounded text-[10px] font-mono">SPACE</div>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-400">
-                        <span>Hold</span>
+                        <span data-i18n="tetris.hold">Hold</span>
                         <div class="px-1.5 py-0.5 bg-white/10 rounded text-[10px] font-mono">C</div>
                     </div>
                 </div>
@@ -194,11 +200,14 @@
                                 <span class="material-symbols-outlined text-primary text-3xl">play_arrow</span>
                             </div>
                             <div class="space-y-1 relative z-10">
-                                <h3 class="text-white text-xl font-bold tracking-tight">CYBER BLOCKS</h3>
-                                <p class="text-gray-400 text-sm">Press any key to start</p>
+                                <h3 class="text-white text-xl font-bold tracking-tight" data-i18n="tetris.title">CYBER
+                                    BLOCKS</h3>
+                                <p class="text-gray-400 text-sm" data-i18n="common.pressStart">Press any key to start
+                                </p>
                             </div>
                             <button onclick="initGame()"
-                                class="w-full cursor-pointer rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-neon text-white text-sm font-bold tracking-widest transition-all">
+                                class="w-full cursor-pointer rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-neon text-white text-sm font-bold tracking-widest transition-all"
+                                data-i18n="common.startGame">
                                 START GAME
                             </button>
                         </div>
@@ -217,12 +226,14 @@
                                 <span class="material-symbols-outlined text-red-500 text-3xl">close</span>
                             </div>
                             <div class="space-y-1 relative z-10">
-                                <h3 class="text-white text-xl font-bold tracking-tight">GAME OVER</h3>
+                                <h3 class="text-white text-xl font-bold tracking-tight" data-i18n="common.gameOver">GAME
+                                    OVER</h3>
                                 <p class="text-gray-400 text-sm">Score: <span id="finalScore"
                                         class="text-primary font-bold">0</span></p>
                             </div>
                             <button id="restartBtn"
-                                class="w-full cursor-pointer rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-neon text-white text-sm font-bold tracking-widest transition-all">
+                                class="w-full cursor-pointer rounded-lg h-12 bg-primary hover:bg-blue-600 shadow-neon text-white text-sm font-bold tracking-widest transition-all"
+                                data-i18n="common.playAgain">
                                 PLAY AGAIN
                             </button>
                         </div>
@@ -236,7 +247,8 @@
                 <div
                     class="flex flex-col rounded-xl overflow-hidden bg-surface-dark/50 backdrop-blur border border-white/10 shadow-lg">
                     <div class="px-5 py-3 border-b border-white/5 bg-white/5 flex justify-between items-center">
-                        <h3 class="text-white tracking-widest text-sm font-bold leading-tight">NEXT BLOCK</h3>
+                        <h3 class="text-white tracking-widest text-sm font-bold leading-tight"
+                            data-i18n="tetris.nextBlock">NEXT BLOCK</h3>
                         <span class="material-symbols-outlined text-primary text-sm animate-pulse">emergency</span>
                     </div>
                     <div class="p-4 flex justify-center items-center min-h-[120px] relative bg-black/30">
@@ -248,7 +260,8 @@
                 <div
                     class="flex flex-col rounded-xl overflow-hidden bg-surface-dark/50 backdrop-blur border border-white/10 shadow-lg opacity-80 hover:opacity-100 transition-opacity">
                     <div class="px-5 py-3 border-b border-white/5 bg-white/5 flex justify-between items-center">
-                        <h3 class="text-gray-400 tracking-widest text-xs font-bold leading-tight">HOLD</h3>
+                        <h3 class="text-gray-400 tracking-widest text-xs font-bold leading-tight"
+                            data-i18n="tetris.hold">HOLD</h3>
                         <div class="text-[10px] border border-white/20 px-1 rounded text-gray-500">C</div>
                     </div>
                     <div class="p-4 flex justify-center items-center min-h-[100px] bg-black/30">

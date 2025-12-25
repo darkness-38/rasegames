@@ -64,12 +64,12 @@
                 <a href="../../index.html"
                     class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span class="hidden sm:inline">Experiments</span>
+                    <span class="hidden sm:inline" data-i18n="raselab.experiments">Experiments</span>
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-purple-400">blur_on</span>
-                    <h1 class="text-xl font-bold">Diffusion</h1>
+                    <h1 class="text-xl font-bold" data-i18n="diffusion.title">Diffusion</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -95,8 +95,8 @@
                     <span class="material-symbols-outlined text-purple-400 text-3xl">info</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">Diffusion</h2>
-                    <p class="text-[#9da6b9] leading-relaxed">
+                    <h2 class="text-lg font-bold text-white mb-2" data-i18n="diffusion.title">Diffusion</h2>
+                    <p class="text-[#9da6b9] leading-relaxed" data-i18n="diffusion.description">
                         Mix two gases and watch them diffuse! Experiment with concentration, temperature,
                         mass, and radius to see how these factors affect the rate of diffusion.
                     </p>
@@ -112,11 +112,11 @@
                         class="absolute top-4 left-4 z-10 flex items-center gap-4 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                            <span class="text-sm text-white">Gas 1</span>
+                            <span class="text-sm text-white" data-i18n="diffusion.gas1">Gas 1</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <span class="text-sm text-white">Gas 2</span>
+                            <span class="text-sm text-white" data-i18n="diffusion.gas2">Gas 2</span>
                         </div>
                     </div>
                     <canvas id="simulation-canvas" class="w-full aspect-video"></canvas>
@@ -125,28 +125,30 @@
                 <!-- Particle Counts -->
                 <div class="grid grid-cols-2 gap-6">
                     <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                        <h3 class="text-sm font-bold text-white mb-4 text-center">Left Chamber</h3>
+                        <h3 class="text-sm font-bold text-white mb-4 text-center" data-i18n="diffusion.leftChamber">Left
+                            Chamber</h3>
                         <div class="flex justify-around">
                             <div class="text-center">
                                 <div class="text-3xl font-black text-blue-400" id="left-gas1">50</div>
-                                <div class="text-xs text-[#9da6b9]">Gas 1</div>
+                                <div class="text-xs text-[#9da6b9]" data-i18n="diffusion.gas1">Gas 1</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-3xl font-black text-red-400" id="left-gas2">0</div>
-                                <div class="text-xs text-[#9da6b9]">Gas 2</div>
+                                <div class="text-xs text-[#9da6b9]" data-i18n="diffusion.gas2">Gas 2</div>
                             </div>
                         </div>
                     </div>
                     <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
-                        <h3 class="text-sm font-bold text-white mb-4 text-center">Right Chamber</h3>
+                        <h3 class="text-sm font-bold text-white mb-4 text-center" data-i18n="diffusion.rightChamber">
+                            Right Chamber</h3>
                         <div class="flex justify-around">
                             <div class="text-center">
                                 <div class="text-3xl font-black text-blue-400" id="right-gas1">0</div>
-                                <div class="text-xs text-[#9da6b9]">Gas 1</div>
+                                <div class="text-xs text-[#9da6b9]" data-i18n="diffusion.gas1">Gas 1</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-3xl font-black text-red-400" id="right-gas2">50</div>
-                                <div class="text-xs text-[#9da6b9]">Gas 2</div>
+                                <div class="text-xs text-[#9da6b9]" data-i18n="diffusion.gas2">Gas 2</div>
                             </div>
                         </div>
                     </div>
@@ -159,12 +161,12 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-yellow-400">vertical_split</span>
-                        Divider
+                        <span data-i18n="diffusion.divider">Divider</span>
                     </h3>
                     <button id="toggle-divider"
                         class="w-full p-4 rounded-xl bg-yellow-500/20 text-yellow-400 font-bold hover:bg-yellow-500/30 transition-colors flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined">lock_open</span>
-                        <span id="divider-text">Remove Divider</span>
+                        <span id="divider-text" data-i18n="diffusion.removeDivider">Remove Divider</span>
                     </button>
                 </div>
 
@@ -172,7 +174,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-orange-400">thermostat</span>
-                        Temperature
+                        <span data-i18n="common.temperature">Temperature</span>
                     </h3>
                     <input type="range" id="temp-slider" min="100" max="500" value="300"
                         class="w-full h-3 bg-gradient-to-r from-blue-500 to-red-500 rounded-lg appearance-none cursor-pointer">
@@ -181,11 +183,11 @@
 
                 <!-- Gas 1 Properties -->
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-blue-500/30">
-                    <h3 class="text-lg font-bold text-blue-400 mb-4">Gas 1 (Blue)</h3>
+                    <h3 class="text-lg font-bold text-blue-400 mb-4" data-i18n="diffusion.gas1Blue">Gas 1 (Blue)</h3>
                     <div class="space-y-4">
                         <div>
                             <label class="text-sm text-[#9da6b9] flex justify-between">
-                                <span>Particles</span>
+                                <span data-i18n="gas.particles">Particles</span>
                                 <span id="gas1-count">50</span>
                             </label>
                             <input type="range" id="gas1-slider" min="10" max="100" value="50"
@@ -193,7 +195,7 @@
                         </div>
                         <div>
                             <label class="text-sm text-[#9da6b9] flex justify-between">
-                                <span>Mass (amu)</span>
+                                <span data-i18n="diffusion.mass">Mass (amu)</span>
                                 <span id="gas1-mass">28</span>
                             </label>
                             <input type="range" id="gas1-mass-slider" min="2" max="100" value="28"
@@ -204,11 +206,11 @@
 
                 <!-- Gas 2 Properties -->
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-red-500/30">
-                    <h3 class="text-lg font-bold text-red-400 mb-4">Gas 2 (Red)</h3>
+                    <h3 class="text-lg font-bold text-red-400 mb-4" data-i18n="diffusion.gas2Red">Gas 2 (Red)</h3>
                     <div class="space-y-4">
                         <div>
                             <label class="text-sm text-[#9da6b9] flex justify-between">
-                                <span>Particles</span>
+                                <span data-i18n="gas.particles">Particles</span>
                                 <span id="gas2-count">50</span>
                             </label>
                             <input type="range" id="gas2-slider" min="10" max="100" value="50"
@@ -216,7 +218,7 @@
                         </div>
                         <div>
                             <label class="text-sm text-[#9da6b9] flex justify-between">
-                                <span>Mass (amu)</span>
+                                <span data-i18n="diffusion.mass">Mass (amu)</span>
                                 <span id="gas2-mass">44</span>
                             </label>
                             <input type="range" id="gas2-mass-slider" min="2" max="100" value="44"
@@ -229,7 +231,7 @@
                 <button id="reset-btn"
                     class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined">restart_alt</span>
-                    Reset Simulation
+                    <span data-i18n="common.resetSimulation">Reset Simulation</span>
                 </button>
             </div>
         </div>

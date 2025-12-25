@@ -108,13 +108,30 @@ Test your memory with card matching. Beat the clock!
 
 </td>
 </tr>
+</tr>
 <tr>
-<td align="center" colspan="3">
+<td align="center">
 
 ### ⭕ Tic Tac Pro
 *Strategy*
 
 Play against a smart AI opponent. Can you beat it on hard mode?
+
+</td>
+<td align="center">
+
+### 🧩 Sudoku
+*Puzzle*
+
+Classic logic puzzle with multiple difficulties, note-taking, and hint system.
+
+</td>
+<td align="center">
+
+### 🧪 RaseLab
+*Education*
+
+Interactive chemistry simulations. Explore atoms, molecules, and reactions!
 
 </td>
 </tr>
@@ -152,11 +169,17 @@ Every day brings **3 new challenges** tailored to your level. Complete them to e
 - ☁️ Cloud sync across all devices
 
 ### ⚔️ Real-Time Multiplayer
-Fight Arena features **real-time online battles** powered by Socket.io:
+Fight Arena & Battleship feature **real-time online battles** powered by Socket.io:
 - 🎮 Create or join rooms instantly
-- 🥊 Choose from 3 unique fighters
-- 🏟️ Multiple arena stages
-- 💬 In-game chat
+- 🥊 Choose your strategy
+- 💬 **In-Game Chat** - Taunt your opponents or stratigize!
+- 🤖 **VS CPU** - Practice against AI when offline
+
+### 🧪 RaseLab Simulations
+Explore interactive science experiments directly in your browser:
+- ⚛️ **Orbitals** - 3D atomic visualization
+- 💨 **Gas Laws** & **Effusion** - Particle physics simulations
+- ⚖️ **Balancing Equations** - mastering stoichiometry
 
 ---
 

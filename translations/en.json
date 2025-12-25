@@ -42,7 +42,8 @@
         "pixelBird": "Pixel Bird",
         "mindMatch": "Mind Match",
         "bombSquad": "Bomb Squad",
-        "ticTacToe": "Tic Tac Toe"
+        "ticTacToe": "Tic Tac Toe",
+        "battleship": "Battleship"
     },
     "gameTypes": {
         "idle": "Idle",
@@ -443,5 +444,45 @@
         "upgradeCost": "Upgrade Cost",
         "balance": "Balance:",
         "purchase": "Purchase"
+    },
+    "battleship": {
+        "title": "BATTLESHIP",
+        "subtitle": "Naval Warfare Strategy",
+        "createRoom": "Create Room",
+        "joinRoom": "Join",
+        "enterCode": "Enter Room Code",
+        "roomCode": "Room Code",
+        "availableRooms": "Available Rooms",
+        "noRooms": "No rooms available",
+        "waitingForOpponent": "Waiting for opponent...",
+        "shareCode": "Share this code with your friend",
+        "cancelMatch": "Cancel",
+        "placeYourShips": "Place Your Ships",
+        "placementInstructions": "Click to place, R to rotate",
+        "yourFleet": "Your Fleet",
+        "rotateHint": "Press R to rotate ship",
+        "randomize": "Randomize",
+        "ready": "Ready",
+        "opponent": "Opponent",
+        "placingShips": "Placing ships...",
+        "enemyWaters": "Enemy Waters",
+        "yourTurn": "Your Turn",
+        "opponentTurn": "Opponent's Turn",
+        "battleLog": "Battle Log",
+        "battleBegins": "Battle begins!",
+        "victory": "VICTORY!",
+        "victoryMessage": "You destroyed the enemy fleet!",
+        "defeat": "DEFEAT",
+        "defeatMessage": "Your fleet has been destroyed.",
+        "shotsFired": "Shots Fired",
+        "accuracy": "Accuracy",
+        "playAgain": "Play Again",
+        "ships": {
+            "carrier": "Carrier",
+            "battleship": "Battleship",
+            "cruiser": "Cruiser",
+            "submarine": "Submarine",
+            "destroyer": "Destroyer"
+        }
     }
 }

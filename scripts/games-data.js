@@ -91,6 +91,15 @@ const GAMES_DATA = {
         tags: 'Strategy, AI',
         gradient: 'from-violet-500/20 to-purple-600/20',
         badge: null
+    },
+    'battleship': {
+        name: 'Battleship',
+        path: '/games/battleshipGame/',
+        emoji: '🚢',
+        categories: ['strategy', 'multiplayer'],
+        tags: 'Strategy, Naval',
+        gradient: 'from-cyan-600/20 to-blue-700/20',
+        badge: { text: 'MULTIPLAYER', color: 'bg-green-500' }
     }
 };
 

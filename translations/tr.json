@@ -42,7 +42,8 @@
         "pixelBird": "Piksel Kuş",
         "mindMatch": "Hafıza Eşleştirme",
         "bombSquad": "Bomba Timi",
-        "ticTacToe": "XOX"
+        "ticTacToe": "XOX",
+        "battleship": "Amiral Battı"
     },
     "gameTypes": {
         "idle": "Boşta",
@@ -443,5 +444,45 @@
         "upgradeCost": "Yükseltme Maliyeti",
         "balance": "Bakiye:",
         "purchase": "Satın Al"
+    },
+    "battleship": {
+        "title": "AMİRAL BATTI",
+        "subtitle": "Deniz Savaşı Stratejisi",
+        "createRoom": "Oda Oluştur",
+        "joinRoom": "Katıl",
+        "enterCode": "Oda Kodunu Gir",
+        "roomCode": "Oda Kodu",
+        "availableRooms": "Mevcut Odalar",
+        "noRooms": "Mevcut oda yok",
+        "waitingForOpponent": "Rakip bekleniyor...",
+        "shareCode": "Bu kodu arkadaşınla paylaş",
+        "cancelMatch": "İptal",
+        "placeYourShips": "Gemilerini Yerleştir",
+        "placementInstructions": "Yerleştirmek için tıkla, döndürmek için R",
+        "yourFleet": "Filonuz",
+        "rotateHint": "Gemiyi döndürmek için R tuşuna bas",
+        "randomize": "Rastgele",
+        "ready": "Hazır",
+        "opponent": "Rakip",
+        "placingShips": "Gemileri yerleştiriyor...",
+        "enemyWaters": "Düşman Suları",
+        "yourTurn": "Senin Sıran",
+        "opponentTurn": "Rakibin Sırası",
+        "battleLog": "Savaş Günlüğü",
+        "battleBegins": "Savaş başlıyor!",
+        "victory": "ZAFER!",
+        "victoryMessage": "Düşman filosunu yok ettin!",
+        "defeat": "YENİLGİ",
+        "defeatMessage": "Filon yok edildi.",
+        "shotsFired": "Yapılan Atış",
+        "accuracy": "İsabet Oranı",
+        "playAgain": "Tekrar Oyna",
+        "ships": {
+            "carrier": "Uçak Gemisi",
+            "battleship": "Savaş Gemisi",
+            "cruiser": "Kruvazör",
+            "submarine": "Denizaltı",
+            "destroyer": "Muhrip"
+        }
     }
 }

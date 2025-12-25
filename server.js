@@ -94,7 +94,7 @@ pageRedirects.forEach(page => {
 });
 
 // Redirect old game URLs to new games/ folder
-const gameRedirects = ['game2048', 'snakeGame', 'tetrisGame', 'flappyGame', 'memoryGame', 'minesweeperGame', 'tictactoeGame', 'raseClicker', 'runnerGame', 'fightArena'];
+const gameRedirects = ['game2048', 'snakeGame', 'tetrisGame', 'flappyGame', 'memoryGame', 'minesweeperGame', 'tictactoeGame', 'raseClicker', 'runnerGame', 'fightArena', 'battleshipGame'];
 gameRedirects.forEach(game => {
     app.get(`/${game}`, (req, res) => {
         res.redirect(301, `/games/${game}`);
@@ -500,6 +500,322 @@ function broadcastRoomList() {
 
 
 
+
+
+// ============================================
+// BATTLESHIP GAME LOGIC
+// ============================================
+
+const battleshipRooms = new Map();
+const battleshipPlayerRooms = new Map();
+
+function generateBattleshipRoomCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+}
+
+function createBattleshipRoom(hostId) {
+    let code = generateBattleshipRoomCode();
+    while (battleshipRooms.has(code)) {
+        code = generateBattleshipRoomCode();
+    }
+
+    const room = {
+        code,
+        host: hostId,
+        guest: null,
+        hostGrid: null,
+        guestGrid: null,
+        hostShips: null,
+        guestShips: null,
+        hostReady: false,
+        guestReady: false,
+        currentTurn: null,
+        state: 'waiting', // waiting, placement, battle, finished
+        hostShotsFired: 0,
+        guestShotsFired: 0
+    };
+
+    battleshipRooms.set(code, room);
+    battleshipPlayerRooms.set(hostId, code);
+
+    console.log(`[BATTLESHIP] Created room: ${code} by ${hostId}`);
+    return room;
+}
+
+function checkShipSunk(grid, ships, shipId) {
+    const ship = ships.find(s => s.id === shipId);
+    if (!ship) return false;
+
+    return ship.cells.every(([row, col]) => {
+        return grid[row][col].hit === true;
+    });
+}
+
+function checkAllShipsSunk(ships) {
+    return ships.every(ship => ship.sunk === true);
+}
+
+function broadcastBattleshipRoomList() {
+    const roomList = Array.from(battleshipRooms.values())
+        .filter(r => r.state === 'waiting')
+        .map(r => ({
+            code: r.code,
+            host: r.host
+        }));
+    io.emit('battleship:roomList', roomList);
+}
+
+// Battleship socket events
+io.on('connection', (socket) => {
+    // Get room list
+    socket.on('battleship:getRooms', () => {
+        const roomList = Array.from(battleshipRooms.values())
+            .filter(r => r.state === 'waiting')
+            .map(r => ({
+                code: r.code,
+                host: r.host
+            }));
+        socket.emit('battleship:roomList', roomList);
+    });
+
+    // Create room
+    socket.on('battleship:createRoom', () => {
+        // Leave any existing room first
+        const existingCode = battleshipPlayerRooms.get(socket.id);
+        if (existingCode) {
+            leaveBattleshipRoom(socket.id);
+        }
+
+        const room = createBattleshipRoom(socket.id);
+        socket.join(`battleship:${room.code}`);
+        socket.emit('battleship:roomCreated', { code: room.code });
+        broadcastBattleshipRoomList();
+    });
+
+    // Join room
+    socket.on('battleship:joinRoom', (code) => {
+        const upperCode = code.toUpperCase();
+        const room = battleshipRooms.get(upperCode);
+
+        if (!room) {
+            socket.emit('battleship:joinError', { message: 'Room not found!' });
+            return;
+        }
+        if (room.guest) {
+            socket.emit('battleship:joinError', { message: 'Room is full!' });
+            return;
+        }
+        if (room.host === socket.id) {
+            socket.emit('battleship:joinError', { message: 'Cannot join your own room!' });
+            return;
+        }
+
+        room.guest = socket.id;
+        room.state = 'placement';
+        battleshipPlayerRooms.set(socket.id, upperCode);
+
+        socket.join(`battleship:${upperCode}`);
+
+        // Randomly decide who goes first
+        room.currentTurn = Math.random() > 0.5 ? room.host : room.guest;
+
+        // Notify both players to go to placement phase
+        io.to(`battleship:${upperCode}`).emit('battleship:gameStart', {
+            firstTurn: room.currentTurn
+        });
+
+        broadcastBattleshipRoomList();
+        console.log(`[BATTLESHIP] ${socket.id} joined room ${upperCode}`);
+    });
+
+    // Player ready (ships placed)
+    socket.on('battleship:ready', (data) => {
+        const code = battleshipPlayerRooms.get(socket.id);
+        if (!code) return;
+
+        const room = battleshipRooms.get(code);
+        if (!room) return;
+
+        if (room.host === socket.id) {
+            room.hostReady = true;
+            room.hostGrid = data.grid;
+            room.hostShips = data.ships;
+        } else if (room.guest === socket.id) {
+            room.guestReady = true;
+            room.guestGrid = data.grid;
+            room.guestShips = data.ships;
+        }
+
+        // Notify opponent
+        socket.to(`battleship:${code}`).emit('battleship:opponentReady');
+
+        // Check if both ready
+        if (room.hostReady && room.guestReady) {
+            room.state = 'battle';
+            io.to(`battleship:${code}`).emit('battleship:battleStart', {
+                firstTurn: room.currentTurn
+            });
+            console.log(`[BATTLESHIP] Battle started in room ${code}`);
+        }
+    });
+
+    // Attack
+    socket.on('battleship:attack', (data) => {
+        const code = battleshipPlayerRooms.get(socket.id);
+        if (!code) return;
+
+        const room = battleshipRooms.get(code);
+        if (!room || room.state !== 'battle') return;
+
+        // Verify it's the player's turn
+        if (room.currentTurn !== socket.id) return;
+
+        const { row, col } = data;
+        const isHost = room.host === socket.id;
+        const targetGrid = isHost ? room.guestGrid : room.hostGrid;
+        const targetShips = isHost ? room.guestShips : room.hostShips;
+
+        // Track shots
+        if (isHost) {
+            room.hostShotsFired++;
+        } else {
+            room.guestShotsFired++;
+        }
+
+        const cell = targetGrid[row][col];
+        let result = 'miss';
+        let shipId = null;
+        let sunk = false;
+
+        if (cell.type === 'ship') {
+            result = 'hit';
+            shipId = cell.shipId;
+            targetGrid[row][col].hit = true;
+
+            // Check if ship is sunk
+            const ship = targetShips.find(s => s.id === shipId);
+            if (ship) {
+                const allCellsHit = ship.cells.every(([r, c]) => targetGrid[r][c].hit === true);
+                if (allCellsHit) {
+                    sunk = true;
+                    ship.sunk = true;
+                }
+            }
+        }
+
+        // Send result to attacker
+        socket.emit('battleship:attackResult', { row, col, result, shipId, sunk });
+
+        // Send attack info to defender
+        socket.to(`battleship:${code}`).emit('battleship:opponentAttack', { row, col, result, shipId, sunk });
+
+        // Check for game over
+        const allSunk = targetShips.every(s => s.sunk === true);
+        if (allSunk) {
+            room.state = 'finished';
+            io.to(`battleship:${code}`).emit('battleship:gameOver', {
+                winner: socket.id,
+                stats: {
+                    hostShots: room.hostShotsFired,
+                    guestShots: room.guestShotsFired
+                }
+            });
+            console.log(`[BATTLESHIP] Game over in room ${code}. Winner: ${socket.id}`);
+        } else {
+            // Switch turns
+            room.currentTurn = isHost ? room.guest : room.host;
+        }
+    });
+
+    // Request rematch
+    socket.on('battleship:requestRematch', () => {
+        const code = battleshipPlayerRooms.get(socket.id);
+        if (!code) return;
+
+        const room = battleshipRooms.get(code);
+        if (!room) return;
+
+        if (room.host === socket.id) {
+            room.hostWantsRematch = true;
+        } else {
+            room.guestWantsRematch = true;
+        }
+
+        socket.to(`battleship:${code}`).emit('battleship:rematchRequested');
+
+        // Check if both want rematch
+        if (room.hostWantsRematch && room.guestWantsRematch) {
+            // Reset room state
+            room.hostGrid = null;
+            room.guestGrid = null;
+            room.hostShips = null;
+            room.guestShips = null;
+            room.hostReady = false;
+            room.guestReady = false;
+            room.state = 'placement';
+            room.hostWantsRematch = false;
+            room.guestWantsRematch = false;
+            room.hostShotsFired = 0;
+            room.guestShotsFired = 0;
+            room.currentTurn = Math.random() > 0.5 ? room.host : room.guest;
+
+            io.to(`battleship:${code}`).emit('battleship:rematchAccepted');
+        }
+    });
+
+    // Leave room
+    socket.on('battleship:leaveRoom', () => {
+        leaveBattleshipRoom(socket.id);
+    });
+
+    // Handle disconnect for battleship
+    socket.on('disconnect', () => {
+        leaveBattleshipRoom(socket.id);
+    });
+});
+
+function leaveBattleshipRoom(playerId) {
+    const code = battleshipPlayerRooms.get(playerId);
+    if (!code) return;
+
+    const room = battleshipRooms.get(code);
+    if (!room) return;
+
+    battleshipPlayerRooms.delete(playerId);
+
+    if (room.host === playerId) {
+        // Host left, close room
+        if (room.guest) {
+            io.to(room.guest).emit('battleship:opponentLeft');
+            battleshipPlayerRooms.delete(room.guest);
+        }
+        battleshipRooms.delete(code);
+    } else if (room.guest === playerId) {
+        // Guest left
+        if (room.state === 'waiting' || room.state === 'placement') {
+            // Room can continue waiting for new guest
+            room.guest = null;
+            room.guestReady = false;
+            room.guestGrid = null;
+            room.guestShips = null;
+            room.state = 'waiting';
+            io.to(room.host).emit('battleship:opponentLeft');
+        } else {
+            // Mid-game, notify host
+            io.to(room.host).emit('battleship:opponentLeft');
+            battleshipPlayerRooms.delete(room.host);
+            battleshipRooms.delete(code);
+        }
+    }
+
+    broadcastBattleshipRoomList();
+    console.log(`[BATTLESHIP] Player ${playerId} left room ${code}`);
+}
 
 
 server.listen(PORT, () => {

@@ -321,6 +321,7 @@
         "bannerTitle": "pH Mixing Laboratory",
         "bannerText": "Mix solutions drop by drop and watch the pH change! Click any solution to add a drop to the beaker.",
         "phValue": "pH Value",
+        "phScaleLabel": "pH Scale",
         "scaleTitle": "pH Scale",
         "acidic": "Acidic",
         "neutral": "Neutral",
@@ -524,5 +525,59 @@
             "miss": "MISS",
             "sunk": "SUNK!"
         }
+    },
+    "orbitals": {
+        "title": "Atomic Orbitals",
+        "whatAre": "What are Atomic Orbitals?",
+        "whatAreDesc": "Orbitals are regions around the atomic nucleus where electrons have the highest probability of being found. Each orbital is defined by specific quantum numbers and has different shapes.",
+        "3dView": "3D View",
+        "orbitalSelection": "Orbital Selection",
+        "quantumNumbers": "Quantum Numbers",
+        "principalQuantum": "Principal Quantum Number (n)",
+        "energyLevel": "Energy level",
+        "angularMomentum": "Angular Momentum (l)",
+        "orbitalShape": "Orbital shape (s=0, p=1, d=2)",
+        "orbitalOrientation": "Orbital orientation",
+        "maxElectrons": "Max Electrons",
+        "inThisOrbital": "In this orbital",
+        "electronConfig": "Electron Configuration",
+        "selectElement": "Select Element:",
+        "electronConfiguration": "Electron Configuration:",
+        "orbitalDiagram": "Orbital Diagram:",
+        "orbitalInfo": "Orbital Information"
+    },
+    "coulombs": {
+        "title": "Coulomb's Law",
+        "electricField": "Electric Field",
+        "forceCalc": "Force Calculation",
+        "electrostaticForce": "Electrostatic Force (F)",
+        "charge1": "Charge 1",
+        "charge2": "Charge 2",
+        "magnitude": "Magnitude (μC)",
+        "distance": "Distance",
+        "dragToChange": "Drag charges to change",
+        "attractive": "ATTRACTIVE",
+        "attractiveDesc": "Opposite charges attract",
+        "repulsive": "REPULSIVE",
+        "repulsiveDesc": "Like charges repel"
+    },
+    "statesOfMatter": {
+        "title": "States of Matter",
+        "molecularView": "Molecular View",
+        "tempControl": "Temperature Control",
+        "moleculeType": "Molecule Type",
+        "currentState": "Current State",
+        "energyLevels": "Energy Levels"
+    },
+    "balancingEquations": {
+        "title": "Balancing Chemical Equations",
+        "reactants": "Reactants (Left Side)",
+        "products": "Products (Right Side)",
+        "notBalanced": "NOT BALANCED",
+        "balanced": "BALANCED!",
+        "adjustHint": "Adjust the coefficients to balance the equation",
+        "successHint": "All atoms are balanced on both sides!",
+        "checkBalance": "Check Balance",
+        "nextEquation": "Next Equation"
     }
 }

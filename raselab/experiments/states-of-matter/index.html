@@ -78,12 +78,12 @@
                 <a href="../../index.html"
                     class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span class="hidden sm:inline">Experiments</span>
+                    <span class="hidden sm:inline" data-i18n="raselab.experiments">Experiments</span>
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-blue-400">ac_unit</span>
-                    <h1 class="text-xl font-bold">States of Matter</h1>
+                    <h1 class="text-xl font-bold" data-i18n="statesOfMatter.title">States of Matter</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -108,7 +108,7 @@
                     <span class="material-symbols-outlined text-blue-400 text-3xl">info</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">States of Matter</h2>
+                    <h2 class="text-lg font-bold text-white mb-2" data-i18n="statesOfMatter.title">States of Matter</h2>
                     <p class="text-[#9da6b9] leading-relaxed">
                         Watch molecules form a solid, liquid, or gas. Add or remove heat and observe phase changes.
                         See how temperature affects molecular motion and arrangement.
@@ -124,7 +124,8 @@
                     <div
                         class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
                         <span class="material-symbols-outlined text-blue-400">science</span>
-                        <span class="text-sm font-medium text-white">Molecular View</span>
+                        <span class="text-sm font-medium text-white" data-i18n="statesOfMatter.molecularView">Molecular
+                            View</span>
                     </div>
                     <canvas id="simulation-canvas" class="w-full aspect-video"></canvas>
                 </div>
@@ -133,7 +134,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-orange-400">thermostat</span>
-                        Temperature Control
+                        <span data-i18n="statesOfMatter.tempControl">Temperature Control</span>
                     </h3>
                     <div class="flex items-center gap-4">
                         <button id="cool-btn"
@@ -163,7 +164,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-purple-400">category</span>
-                        Molecule Type
+                        <span data-i18n="statesOfMatter.moleculeType">Molecule Type</span>
                     </h3>
                     <div class="grid grid-cols-2 gap-3" id="molecule-buttons">
                         <button
@@ -185,7 +186,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-teal-400">water_drop</span>
-                        Current State
+                        <span data-i18n="statesOfMatter.currentState">Current State</span>
                     </h3>
                     <div id="state-display" class="text-center">
                         <div class="text-4xl font-black text-blue-400 mb-2">SOLID</div>
@@ -197,7 +198,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-yellow-400">show_chart</span>
-                        Energy Levels
+                        <span data-i18n="statesOfMatter.energyLevels">Energy Levels</span>
                     </h3>
                     <div class="space-y-3">
                         <div class="flex items-center gap-3">
@@ -223,7 +224,7 @@
                 <button id="reset-btn"
                     class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined">restart_alt</span>
-                    Reset Simulation
+                    <span data-i18n="common.resetSimulation">Reset Simulation</span>
                 </button>
             </div>
         </div>

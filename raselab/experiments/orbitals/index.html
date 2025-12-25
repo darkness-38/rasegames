@@ -112,12 +112,12 @@
                 <a href="../../index.html"
                     class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span class="hidden sm:inline">Experiments</span>
+                    <span class="hidden sm:inline" data-i18n="raselab.experiments">Experiments</span>
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-purple-400">blur_circular</span>
-                    <h1 class="text-xl font-bold">Atomic Orbitals</h1>
+                    <h1 class="text-xl font-bold" data-i18n="orbitals.title">Atomic Orbitals</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -145,8 +145,9 @@
                     <span class="material-symbols-outlined text-purple-400 text-3xl">info</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">What are Atomic Orbitals?</h2>
-                    <p class="text-[#9da6b9] leading-relaxed">
+                    <h2 class="text-lg font-bold text-white mb-2" data-i18n="orbitals.whatAre">What are Atomic Orbitals?
+                    </h2>
+                    <p class="text-[#9da6b9] leading-relaxed" data-i18n="orbitals.whatAreDesc">
                         Orbitals are regions around the atomic nucleus where electrons have the highest probability
                         of being found.
                         Each orbital is defined by specific quantum numbers and has different shapes.
@@ -163,7 +164,7 @@
                     <div
                         class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
                         <span class="material-symbols-outlined text-purple-400">3d_rotation</span>
-                        <span class="text-sm font-medium text-white">3D View</span>
+                        <span class="text-sm font-medium text-white" data-i18n="orbitals.3dView">3D View</span>
                     </div>
                     <canvas id="orbital-canvas"
                         class="w-full aspect-square cursor-grab active:cursor-grabbing"></canvas>
@@ -188,7 +189,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-purple-400">category</span>
-                        Orbital Selection
+                        <span data-i18n="orbitals.orbitalSelection">Orbital Selection</span>
                     </h3>
                     <div class="grid grid-cols-4 sm:grid-cols-6 gap-3" id="orbital-buttons">
                         <!-- s orbitals -->
@@ -240,28 +241,34 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-teal-400">functions</span>
-                        Quantum Numbers
+                        <span data-i18n="orbitals.quantumNumbers">Quantum Numbers</span>
                     </h3>
                     <div class="grid grid-cols-2 gap-4" id="quantum-numbers">
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Principal Quantum Number (n)</div>
+                            <div class="text-sm text-[#9da6b9] mb-1" data-i18n="orbitals.principalQuantum">Principal
+                                Quantum Number (n)</div>
                             <div class="text-3xl font-bold text-purple-400" id="quantum-n">1</div>
-                            <div class="text-xs text-[#637588] mt-1">Energy level</div>
+                            <div class="text-xs text-[#637588] mt-1" data-i18n="orbitals.energyLevel">Energy level</div>
                         </div>
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Angular Momentum (l)</div>
+                            <div class="text-sm text-[#9da6b9] mb-1" data-i18n="orbitals.angularMomentum">Angular
+                                Momentum (l)</div>
                             <div class="text-3xl font-bold text-blue-400" id="quantum-l">0</div>
-                            <div class="text-xs text-[#637588] mt-1">Orbital shape (s=0, p=1, d=2)</div>
+                            <div class="text-xs text-[#637588] mt-1" data-i18n="orbitals.orbitalShape">Orbital shape
+                                (s=0, p=1, d=2)</div>
                         </div>
                         <div class="quantum-number p-4 rounded-xl">
                             <div class="text-sm text-[#9da6b9] mb-1">Magnetic (m<sub>l</sub>)</div>
                             <div class="text-3xl font-bold text-teal-400" id="quantum-ml">0</div>
-                            <div class="text-xs text-[#637588] mt-1">Orbital orientation</div>
+                            <div class="text-xs text-[#637588] mt-1" data-i18n="orbitals.orbitalOrientation">Orbital
+                                orientation</div>
                         </div>
                         <div class="quantum-number p-4 rounded-xl">
-                            <div class="text-sm text-[#9da6b9] mb-1">Max Electrons</div>
+                            <div class="text-sm text-[#9da6b9] mb-1" data-i18n="orbitals.maxElectrons">Max Electrons
+                            </div>
                             <div class="text-3xl font-bold text-pink-400" id="max-electrons">2</div>
-                            <div class="text-xs text-[#637588] mt-1">In this orbital</div>
+                            <div class="text-xs text-[#637588] mt-1" data-i18n="orbitals.inThisOrbital">In this orbital
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,12 +277,13 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-pink-400">science</span>
-                        Electron Configuration
+                        <span data-i18n="orbitals.electronConfig">Electron Configuration</span>
                     </h3>
 
                     <!-- Element Selector -->
                     <div class="mb-4">
-                        <label class="text-sm text-[#9da6b9] mb-2 block">Select Element:</label>
+                        <label class="text-sm text-[#9da6b9] mb-2 block" data-i18n="orbitals.selectElement">Select
+                            Element:</label>
                         <div class="grid grid-cols-6 sm:grid-cols-9 gap-2" id="element-selector">
                             <!-- First 20 elements -->
                         </div>
@@ -283,13 +291,15 @@
 
                     <!-- Configuration Display -->
                     <div class="p-4 rounded-xl bg-[#282e39] border border-[#3f4756]">
-                        <div class="text-sm text-[#9da6b9] mb-2">Electron Configuration:</div>
+                        <div class="text-sm text-[#9da6b9] mb-2" data-i18n="orbitals.electronConfiguration">Electron
+                            Configuration:</div>
                         <div class="text-xl font-mono text-white" id="config-display">1s<sup>1</sup></div>
                     </div>
 
                     <!-- Visual Orbital Diagram -->
                     <div class="mt-4 p-4 rounded-xl bg-[#282e39] border border-[#3f4756]">
-                        <div class="text-sm text-[#9da6b9] mb-3">Orbital Diagram:</div>
+                        <div class="text-sm text-[#9da6b9] mb-3" data-i18n="orbitals.orbitalDiagram">Orbital Diagram:
+                        </div>
                         <div id="orbital-diagram" class="flex flex-wrap gap-3">
                             <!-- Dynamic orbital boxes -->
                         </div>
@@ -300,7 +310,7 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-yellow-400">lightbulb</span>
-                        Orbital Information
+                        <span data-i18n="orbitals.orbitalInfo">Orbital Information</span>
                     </h3>
                     <div id="orbital-info" class="text-[#9da6b9] leading-relaxed">
                         <p class="mb-3"><strong class="text-white">1S Orbital:</strong> The lowest energy orbital.

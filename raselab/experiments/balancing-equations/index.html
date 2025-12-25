@@ -84,12 +84,12 @@
                 <a href="../../index.html"
                     class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span class="hidden sm:inline">Experiments</span>
+                    <span class="hidden sm:inline" data-i18n="raselab.experiments">Experiments</span>
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-orange-400">balance</span>
-                    <h1 class="text-xl font-bold">Balancing Chemical Equations</h1>
+                    <h1 class="text-xl font-bold" data-i18n="balancingEquations.title">Balancing Chemical Equations</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -115,10 +115,10 @@
                     <span class="material-symbols-outlined text-orange-400 text-3xl">info</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">Balancing Chemical Equations</h2>
-                    <p class="text-[#9da6b9] leading-relaxed">
-                        Adjust coefficients to balance the number of atoms on both sides of the equation.
-                        Remember: Matter cannot be created or destroyed (Law of Conservation of Mass).
+                    <h2 class="text-lg font-bold text-white mb-2" data-i18n="balancingEquations.title">Balancing
+                        Chemical Equations</h2>
+                    Adjust coefficients to balance the number of atoms on both sides of the equation.
+                    Remember: Matter cannot be created or destroyed (Law of Conservation of Mass).
                     </p>
                 </div>
             </div>
@@ -134,7 +134,7 @@
             <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                 <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-blue-400">arrow_back</span>
-                    Reactants (Left Side)
+                    <span data-i18n="balancingEquations.reactants">Reactants (Left Side)</span>
                 </h3>
                 <div id="reactant-counts" class="space-y-2">
                     <!-- Dynamic content -->
@@ -143,7 +143,7 @@
             <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                 <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-green-400">arrow_forward</span>
-                    Products (Right Side)
+                    <span data-i18n="balancingEquations.products">Products (Right Side)</span>
                 </h3>
                 <div id="product-counts" class="space-y-2">
                     <!-- Dynamic content -->
@@ -154,8 +154,10 @@
         <!-- Balance Status -->
         <div class="mb-8 p-6 rounded-2xl border-2 transition-all" id="balance-status">
             <div class="text-center">
-                <div class="text-3xl font-black mb-2" id="status-text">NOT BALANCED</div>
-                <p class="text-[#9da6b9]" id="status-hint">Adjust the coefficients to balance the equation</p>
+                <div class="text-3xl font-black mb-2" id="status-text" data-i18n="balancingEquations.notBalanced">NOT
+                    BALANCED</div>
+                <p class="text-[#9da6b9]" id="status-hint" data-i18n="balancingEquations.adjustHint">Adjust the
+                    coefficients to balance the equation</p>
             </div>
         </div>
 
@@ -168,17 +170,17 @@
             <button id="check-btn"
                 class="px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center gap-2">
                 <span class="material-symbols-outlined">check</span>
-                Check Balance
+                <span data-i18n="balancingEquations.checkBalance">Check Balance</span>
             </button>
             <button id="reset-btn"
                 class="px-6 py-3 rounded-xl bg-[#282e39] text-white font-bold hover:bg-[#3f4756] transition-colors flex items-center gap-2">
                 <span class="material-symbols-outlined">restart_alt</span>
-                Reset
+                <span data-i18n="common.reset">Reset</span>
             </button>
             <button id="next-btn"
                 class="px-6 py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-700 transition-colors flex items-center gap-2">
                 <span class="material-symbols-outlined">arrow_forward</span>
-                Next Equation
+                <span data-i18n="balancingEquations.nextEquation">Next Equation</span>
             </button>
         </div>
     </main>

@@ -768,6 +768,17 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Chat Message
+    socket.on('battleship:chatMessage', (message) => {
+        const code = battleshipPlayerRooms.get(socket.id);
+        if (!code) return;
+
+        socket.to(`battleship:${code}`).emit('battleship:chatMessage', {
+            from: socket.id,
+            message: message.substring(0, 100)
+        });
+    });
+
     // Leave room
     socket.on('battleship:leaveRoom', () => {
         leaveBattleshipRoom(socket.id);

@@ -78,12 +78,12 @@
                 <a href="../../index.html"
                     class="flex items-center gap-2 text-[#9da6b9] hover:text-white transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span class="hidden sm:inline">Experiments</span>
+                    <span class="hidden sm:inline" data-i18n="raselab.experiments">Experiments</span>
                 </a>
                 <div class="h-6 w-px bg-[#282e39]"></div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-purple-400">electric_bolt</span>
-                    <h1 class="text-xl font-bold">Coulomb's Law</h1>
+                    <h1 class="text-xl font-bold" data-i18n="coulombs.title">Coulomb's Law</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -109,7 +109,7 @@
                     <span class="material-symbols-outlined text-purple-400 text-3xl">info</span>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-2">Coulomb's Law</h2>
+                    <h2 class="text-lg font-bold text-white mb-2" data-i18n="coulombs.title">Coulomb's Law</h2>
                     <p class="text-[#9da6b9] leading-relaxed">
                         Visualize the electrostatic force between two charges. Drag the charges to change distance,
                         and adjust their magnitudes to see how the force changes. F = k × q₁ × q₂ / r²
@@ -125,7 +125,8 @@
                     <div
                         class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-lg bg-black/40 backdrop-blur-md">
                         <span class="material-symbols-outlined text-purple-400">electric_bolt</span>
-                        <span class="text-sm font-medium text-white">Electric Field</span>
+                        <span class="text-sm font-medium text-white" data-i18n="coulombs.electricField">Electric
+                            Field</span>
                     </div>
                     <canvas id="simulation-canvas"
                         class="w-full aspect-video cursor-grab active:cursor-grabbing"></canvas>
@@ -135,10 +136,11 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-yellow-400">calculate</span>
-                        Force Calculation
+                        <span data-i18n="coulombs.forceCalc">Force Calculation</span>
                     </h3>
                     <div class="text-center p-6 rounded-xl bg-[#282e39]">
-                        <div class="text-sm text-[#9da6b9] mb-2">Electrostatic Force (F)</div>
+                        <div class="text-sm text-[#9da6b9] mb-2" data-i18n="coulombs.electrostaticForce">Electrostatic
+                            Force (F)</div>
                         <div class="text-4xl font-black text-yellow-400" id="force-display">0.00 N</div>
                         <div class="text-sm text-[#9da6b9] mt-4 font-mono" id="formula-display">
                             F = k × |q₁| × |q₂| / r²
@@ -153,11 +155,12 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-red-400">add_circle</span>
-                        Charge 1
+                        <span data-i18n="coulombs.charge1">Charge 1</span>
                     </h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="text-sm text-[#9da6b9] block mb-2">Magnitude (μC)</label>
+                            <label class="text-sm text-[#9da6b9] block mb-2" data-i18n="coulombs.magnitude">Magnitude
+                                (μC)</label>
                             <input type="range" id="charge1-slider" min="-10" max="10" value="5"
                                 class="w-full h-3 bg-[#282e39] rounded-lg appearance-none cursor-pointer">
                             <div class="text-center text-2xl font-bold text-red-400 mt-2" id="charge1-display">+5 μC
@@ -170,11 +173,12 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-blue-400">remove_circle</span>
-                        Charge 2
+                        <span data-i18n="coulombs.charge2">Charge 2</span>
                     </h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="text-sm text-[#9da6b9] block mb-2">Magnitude (μC)</label>
+                            <label class="text-sm text-[#9da6b9] block mb-2" data-i18n="coulombs.magnitude">Magnitude
+                                (μC)</label>
                             <input type="range" id="charge2-slider" min="-10" max="10" value="-3"
                                 class="w-full h-3 bg-[#282e39] rounded-lg appearance-none cursor-pointer">
                             <div class="text-center text-2xl font-bold text-blue-400 mt-2" id="charge2-display">-3 μC
@@ -187,19 +191,22 @@
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-teal-400">straighten</span>
-                        Distance
+                        <span data-i18n="coulombs.distance">Distance</span>
                     </h3>
                     <div class="text-center">
                         <div class="text-4xl font-black text-teal-400" id="distance-display">1.00 m</div>
-                        <p class="text-[#9da6b9] text-sm mt-2">Drag charges to change</p>
+                        <p class="text-[#9da6b9] text-sm mt-2" data-i18n="coulombs.dragToChange">Drag charges to change
+                        </p>
                     </div>
                 </div>
 
                 <!-- Force Type Indicator -->
                 <div class="p-6 rounded-2xl bg-[#1e2330] border border-[#282e39]">
                     <div id="force-type" class="text-center">
-                        <div class="text-2xl font-bold text-green-400 mb-2">ATTRACTIVE</div>
-                        <p class="text-[#9da6b9] text-sm">Opposite charges attract</p>
+                        <div class="text-2xl font-bold text-green-400 mb-2" data-i18n="coulombs.attractive">ATTRACTIVE
+                        </div>
+                        <p class="text-[#9da6b9] text-sm" data-i18n="coulombs.attractiveDesc">Opposite charges attract
+                        </p>
                     </div>
                 </div>
 
@@ -207,7 +214,7 @@
                 <button id="reset-btn"
                     class="w-full p-4 rounded-xl bg-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined">restart_alt</span>
-                    Reset Simulation
+                    <span data-i18n="common.resetSimulation">Reset Simulation</span>
                 </button>
             </div>
         </div>

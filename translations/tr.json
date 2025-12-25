@@ -321,6 +321,7 @@
         "bannerTitle": "pH Karışım Laboratuvarı",
         "bannerText": "Çözeltileri damla damla karıştırın ve pH değişimini izleyin! Behire damla eklemek için herhangi bir çözeltiye tıklayın.",
         "phValue": "pH Değeri",
+        "phScaleLabel": "pH Ölçeği",
         "scaleTitle": "pH Ölçeği",
         "acidic": "Asidik",
         "neutral": "Nötr",
@@ -524,5 +525,59 @@
             "miss": "ISKALA",
             "sunk": "BATTI!"
         }
+    },
+    "orbitals": {
+        "title": "Atomik Orbitaller",
+        "whatAre": "Atomik Orbitaller Nedir?",
+        "whatAreDesc": "Orbitaller, elektronların bulunma olasılığının en yüksek olduğu atom çekirdeği etrafındaki bölgelerdir. Her orbital belirli kuantum sayılarıyla tanımlanır ve farklı şekillere sahiptir.",
+        "3dView": "3B Görünüm",
+        "orbitalSelection": "Orbital Seçimi",
+        "quantumNumbers": "Kuantum Sayıları",
+        "principalQuantum": "Ana Kuantum Sayısı (n)",
+        "energyLevel": "Enerji seviyesi",
+        "angularMomentum": "Açısal Momentum (l)",
+        "orbitalShape": "Orbital şekli (s=0, p=1, d=2)",
+        "orbitalOrientation": "Orbital yönelimi",
+        "maxElectrons": "Maks Elektron",
+        "inThisOrbital": "Bu orbitalde",
+        "electronConfig": "Elektron Konfigürasyonu",
+        "selectElement": "Element Seç:",
+        "electronConfiguration": "Elektron Konfigürasyonu:",
+        "orbitalDiagram": "Orbital Diyagramı:",
+        "orbitalInfo": "Orbital Bilgisi"
+    },
+    "coulombs": {
+        "title": "Coulomb Yasası",
+        "electricField": "Elektrik Alanı",
+        "forceCalc": "Kuvvet Hesaplama",
+        "electrostaticForce": "Elektrostatik Kuvvet (F)",
+        "charge1": "Yük 1",
+        "charge2": "Yük 2",
+        "magnitude": "Büyüklük (μC)",
+        "distance": "Mesafe",
+        "dragToChange": "Değiştirmek için yükleri sürükle",
+        "attractive": "ÇEKİCİ",
+        "attractiveDesc": "Zıt yükler birbirini çeker",
+        "repulsive": "İTİCİ",
+        "repulsiveDesc": "Aynı yükler birbirini iter"
+    },
+    "statesOfMatter": {
+        "title": "Maddenin Halleri",
+        "molecularView": "Moleküler Görünüm",
+        "tempControl": "Sıcaklık Kontrolü",
+        "moleculeType": "Molekül Tipi",
+        "currentState": "Mevcut Durum",
+        "energyLevels": "Enerji Seviyeleri"
+    },
+    "balancingEquations": {
+        "title": "Kimyasal Denklemleri Denkleştirme",
+        "reactants": "Reaktanlar (Sol Taraf)",
+        "products": "Ürünler (Sağ Taraf)",
+        "notBalanced": "DENKLEŞMEDI",
+        "balanced": "DENKLEŞTI!",
+        "adjustHint": "Denklemi dengelemek için katsayıları ayarla",
+        "successHint": "Tüm atomlar her iki tarafta denk!",
+        "checkBalance": "Dengeleme Kontrol",
+        "nextEquation": "Sonraki Denklem"
     }
 }

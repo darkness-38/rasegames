@@ -1087,6 +1087,20 @@
             <button class="menu-btn" onclick="restartMatch()">Restart</button>
             <button class="menu-btn" onclick="exitToMenu()">Main Menu</button>
         </div>
+
+        <!-- Chat Overlay -->
+        <div id="chat-overlay" class="hidden">
+            <div id="chat-messages"></div>
+            <div id="chat-controls">
+                <input type="text" id="chat-input" placeholder="Type a message..." maxlength="100">
+                <button id="chat-send-btn">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
+        <button id="chat-toggle-btn" class="hidden" onclick="toggleChat()">
+            <span class="material-symbols-outlined">chat</span>
+        </button>
     </div>
 
 

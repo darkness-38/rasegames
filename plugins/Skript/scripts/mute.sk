@@ -1,0 +1,63 @@
+# Mute command with reason and timed unmute
+command /mute <offline player> <integer> [<text>]:
+    permission: sunucu.mute
+    permission message: &cBu komutu kullanmak için yetkiniz yok.
+    trigger:
+        if arg-1 is sender:
+            send "&cKendinizi susturamazsınız." to sender
+            stop
+        if arg-1 is not online:
+            send "&cBelirtilen oyuncu çevrimiçi değil." to sender
+            stop
+        if {mute::%uuid of arg-1%} is true:
+            send "&c%arg-1% zaten susturulmuş durumda." to sender
+            stop
+
+        set {_minutes} to arg-2
+        set {_reason} to arg-3
+        if {_reason} is not set:
+            set {_reason} to "Sebep belirtilmedi."
+
+        set {mute::%uuid of arg-1%} to true
+        set {mute::reason::%uuid of arg-1%} to {_reason}
+        set {mute::by::%uuid of arg-1%} to sender's name
+        set {mute::expires::%uuid of arg-1%} to now + {_minutes} minutes
+
+        send "&a%arg-1% adlı oyuncu &c%{_minutes}% dakika &eaşağıdaki yüzden dolayı susturuldu: &c%{mute::reason::%uuid of arg-1%}%" to sender
+        send "&cSusturuldunuz: &e%{_minutes}% dakika%nl%&cSebep: &e%{mute::reason::%uuid of arg-1%}%%nl%&cSusturan: &e%{mute::by::%uuid of arg-1%}%" to arg-1
+
+        wait {_minutes} minutes
+        if {mute::%uuid of arg-1%} is true:
+            delete {mute::%uuid of arg-1%}
+            delete {mute::reason::%uuid of arg-1%}
+            delete {mute::by::%uuid of arg-1%}
+            delete {mute::expires::%uuid of arg-1%}
+            if arg-1 is online:
+                send "&aSusturulmanızın süresi doldu, tekrar yazabilirsiniz." to arg-1
+
+
+command /unmute <offline player>:
+    permission: sunucu.mute
+    permission message: &cBu komutu kullanmak için yetkiniz yok.
+    trigger:
+        if {mute::%uuid of arg-1%} is not true:
+            send "&c%arg-1% zaten susturulmuş değil." to sender
+            stop
+
+        set {_reason} to {mute::reason::%uuid of arg-1%}
+        set {_by} to {mute::by::%uuid of arg-1%}
+
+        delete {mute::%uuid of arg-1%}
+        delete {mute::reason::%uuid of arg-1%}
+        delete {mute::by::%uuid of arg-1%}
+        delete {mute::expires::%uuid of arg-1%}
+
+        send "&a%arg-1% adlı oyuncunun susturması kaldırıldı." to sender
+        if arg-1 is online:
+            send "&aSusturmanız kaldırıldı. Sebep: &e%{_reason}% &aSusturan: &e%{_by}%" to arg-1
+
+
+on chat:
+    if {mute::%uuid of player%} is true:
+        cancel event
+        send "&cSusturuldunuz. Sebep: &e%{mute::reason::%uuid of player%}%" to player

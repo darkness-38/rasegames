@@ -1,0 +1,70 @@
+# Timed Mute System
+# Command: /mute <player> <duration> <reason>
+# Command: /unmute <player>
+
+options:
+    prefix: &8[&cMute&8]
+
+command /mute <offline player> <timespan> [<text>]:
+    permission: mute.use
+    permission message: &cYou don't have permission to use this command.
+    trigger:
+        if arg-3 is not set:
+            set {_reason} to "No reason specified"
+        else:
+            set {_reason} to arg-3
+
+        if {muted::%uuid of arg-1%} is true:
+            send "{@prefix} &e%arg-1% &cis already muted." to sender
+            stop
+
+        set {muted::%uuid of arg-1%} to true
+        set {mute-reason::%uuid of arg-1%} to {_reason}
+        set {mute-expire::%uuid of arg-1%} to (now + arg-2)
+
+        broadcast "{@prefix} &e%arg-1% &chas been muted for &e%arg-2% &cby &e%sender%&c. Reason: &f%{_reason}%"
+
+        wait arg-2
+        if {muted::%uuid of arg-1%} is true:
+            delete {muted::%uuid of arg-1%}
+            delete {mute-reason::%uuid of arg-1%}
+            delete {mute-expire::%uuid of arg-1%}
+            broadcast "{@prefix} &e%arg-1% &ahas been automatically unmuted."
+
+command /unmute <offline player>:
+    permission: mute.use
+    permission message: &cYou don't have permission to use this command.
+    trigger:
+        if {muted::%uuid of arg-1%} is not true:
+            send "{@prefix} &e%arg-1% &cis not muted." to sender
+            stop
+
+        delete {muted::%uuid of arg-1%}
+        delete {mute-reason::%uuid of arg-1%}
+        delete {mute-expire::%uuid of arg-1%}
+
+        broadcast "{@prefix} &e%arg-1% &ahas been unmuted by &e%sender%&a."
+
+every 30 seconds:
+    loop {muted::*}:
+        set {_uuid} to loop-index
+        if {mute-expire::%{_uuid}%} is set:
+            if now is after {mute-expire::%{_uuid}%}:
+                delete {muted::%{_uuid}%}
+                delete {mute-reason::%{_uuid}%}
+                delete {mute-expire::%{_uuid}%}
+
+on join:
+    if {muted::%uuid of player%} is true:
+        if {mute-expire::%uuid of player%} is set:
+            if now is after {mute-expire::%uuid of player%}:
+                delete {muted::%uuid of player%}
+                delete {mute-reason::%uuid of player%}
+                delete {mute-expire::%uuid of player%}
+
+on chat:
+    if {muted::%uuid of player%} is true:
+        cancel event
+        send "{@prefix} &cYou are muted. Reason: &f%{mute-reason::%uuid of player%}%" to player
+        if {mute-expire::%uuid of player%} is set:
+            send "{@prefix} &cYour mute expires in: &f%difference between now and {mute-expire::%uuid of player%}%" to player
